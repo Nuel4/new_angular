@@ -1,0 +1,189 @@
+<div class="editImmunz">
+  <div class="modal-header">
+    <h4 class="modal-title">Edit Immunization</h4>
+    <button type="button" class="close" (click)="activeModal.dismiss()">&times;</button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+
+      <div class="col-12 col-lg-12 col-md-12 col-sm-12 mt-2">
+        <h6>Patient Detail:</h6>
+      </div>
+
+      <div class="col-12 col-lg-3 col-md-3 col-sm-6">
+        <div class="form-group yeats-form-group " style="padding-bottom: 0;">
+          <label class="formLabel yeats-form-label d-inline"><b>Patient Name:</b>
+            {{LastName}},{{FirstName}}</label>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-3 col-md-3 col-sm-6">
+        <div class="form-group yeats-form-group " style="padding-bottom: 0;">
+          <label class="formLabel yeats-form-label d-inline"><b>Date of Birth:</b>
+            {{dateformater(DateOfBirth)}}</label>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-3 col-md-3 col-sm-6">
+        <div class="form-group yeats-form-group " style="padding-bottom: 0;">
+          <label class="formLabel yeats-form-label d-inline"><b>Gender:</b>
+            {{Sex?'Male':'Female'}}</label>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-3 col-md-3 col-sm-6">
+        <div class="form-group yeats-form-group " style="padding-bottom: 0;">
+          <label class="formLabel yeats-form-label d-inline"><b>Phone:</b> {{MobilePhone}}</label>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-3 col-md-3 col-sm-6">
+        <div class="form-group yeats-form-group " style="padding-bottom: 0;">
+          <label class="formLabel yeats-form-label d-inline"><b>Address:</b> {{PrimaryAddressLine1}},
+            {{PrimaryAddressLine2}}</label>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-12 col-md-12 col-sm-12">
+        <hr>
+        <h6>Immunization:</h6>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Immunization</label>
+          <p-dropdown [options]="immlist" [(ngModel)]="selectedimm" placeholder="Select a Immunization"
+            optionLabel="Description" [showClear]="true" (onChange)="loadBatch()"></p-dropdown>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label"> &nbsp; </label>
+          <p-checkbox class="yeats-form-control" [(ngModel)]="dategiven" label="Date Given" binary="false">
+          </p-checkbox>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Given Date</label>
+          <p-calendar [(ngModel)]="dateadministered" [showIcon]="true" [disabled]="dategiven"></p-calendar>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Batch Number</label>
+          <p-dropdown [options]="batchlist" [(ngModel)]="selectedbatchno" optionLabel="BatchNumber" [showClear]="true"
+            (onChange)="getBatchData()"></p-dropdown>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <!-- <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Month & Year</label>
+          <p-calendar [(ngModel)]="monthyear" [showIcon]="true" [disabled]="!dategiven"></p-calendar>
+        </div> -->
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Month & Year</label>
+          <p-calendar [disabled]="!dategiven" [showIcon]="true" [(ngModel)]="monthyear" view="month" dateFormat="mm/yy"
+            [yearNavigator]="true" yearRange="2000:2030"></p-calendar>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Expiration Date</label>
+          <p-calendar [(ngModel)]="expdate" [showIcon]="true" disabled></p-calendar>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Administered By<span class="required">*</span></label>
+          <p-dropdown [options]="administerlist" [(ngModel)]="selectedAdminster" placeholder="Select a Administer"
+            optionLabel="physicianName" [showClear]="true"></p-dropdown>
+        </div>
+      </div>
+      
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Route</label>
+          <p-dropdown [options]="routelist" [(ngModel)]="selectedRoute" placeholder="Select a route" optionLabel="Route"
+            [showClear]="true"></p-dropdown>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label"> 
+          <p-checkbox class="yeats-form-control" [(ngModel)]="givenelsewhere" label="Given Elsewhere" binary="false">
+          </p-checkbox>
+        </label>
+        <div  *ngIf="givenelsewhere">
+          <!-- <label class="formLabel yeats-form-label"><span class="required">*</span>&nbsp;</label> -->
+          <input type="text" pInputText class=" form-control yeats-form-control" name="elsewhere"
+            [(ngModel)]="elsewhere">
+        </div>
+        </div>
+      </div>
+
+      <!-- <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+       
+      </div> -->
+
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Site</label>
+          <p-dropdown [options]="sitelist" [(ngModel)]="selectedsite" placeholder="Select a site"
+            optionLabel="Description" [showClear]="true"></p-dropdown>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label for="" class="yeats-form-label">Dose</label>
+          <input type="text" class="form-control yeats-form-control w-50 d-inline " [(ngModel)]="dose"
+            placeholder="dose">
+          <input type="text" class="form-control yeats-form-control w-50 d-inline border-left-0 " [(ngModel)]="unit"
+            placeholder="unit">
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Manufacture</label>
+          <input type="text" pInputText class=" form-control yeats-form-control" [(ngModel)]="manufacture"
+            name="manufacture" [(ngModel)]="manufacture">
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Drug</label>
+          <input type="text" pInputText class=" form-control yeats-form-control" name="Drug" [(ngModel)]="drug">
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Status</label>
+          <p-dropdown [options]="statuslist" [(ngModel)]="selectedstatus" placeholder="Select a Status"
+            optionLabel="name" [showClear]="true"></p-dropdown>
+        </div>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="form-group yeats-form-group ">
+        <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right mr-2"
+          (click)="changetoedit()">Cancel</button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="onSave()">Save</button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="changetobatch()">Add
+          Batch</button>
+      </div>
+    </div>
+  </div>
+</div>

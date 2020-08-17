@@ -1,0 +1,43 @@
+<div class="Graphs">
+  <div class="card border-0 box-shadow cardMargin">
+    <div class="card-header transparent border-0 text-muted">
+      <div class="card-body">
+        <div class="row" style="justify-content: center">
+          <p style="font-size: 14px;padding: 7px 8px">Select graph</p>
+          <p-radioButton [disabled]="labReportsTab" value="month" label="0 to 36 Months" [(ngModel)]="graphType" class="radioButton">
+          </p-radioButton>
+          <p-radioButton [disabled]="labReportsTab" value="year" label="2 to 20 Years" [(ngModel)]="graphType" class="radioButton"></p-radioButton>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card border-0 box-shadow cardMargin">
+    <div class="card-header transparent border-0 text-muted">
+      <div class="card-body">
+        <p-tabView (onChange)="tabChange($event)">
+          <p-tabPanel header="Patient Weight Chart">
+            <app-patient-weight-chart [graphdata]="graphData" [graphtype]="graphType"></app-patient-weight-chart>
+          </p-tabPanel>
+          <p-tabPanel header="Patient Height Chart">
+            <app-patient-height-chart [graphdata]="graphData" [graphtype]="graphType"></app-patient-height-chart>
+          </p-tabPanel>
+          <p-tabPanel header="Head Circumference" *ngIf="graphType == 'month'">
+            <app-head-circumference [graphdata]="graphData" [graphtype]="graphType"></app-head-circumference>
+          </p-tabPanel>
+          <p-tabPanel header="BMI Chart" *ngIf="graphType == 'year'">
+            <app-bmi-chart [graphdata]="graphData" [graphtype]="graphType"></app-bmi-chart>
+          </p-tabPanel>
+          <p-tabPanel header="Blood Pressure Chart">
+            <app-blood-pressure-chart [graphdata]="graphData" [graphtype]="graphType"></app-blood-pressure-chart>
+          </p-tabPanel>
+          <p-tabPanel header="Lab Results Chart">
+            <app-lab-results-chart></app-lab-results-chart>
+          </p-tabPanel>
+          <p-tabPanel header="Vitals">
+            <app-vitals></app-vitals>
+          </p-tabPanel>
+        </p-tabView>
+      </div>
+    </div>
+  </div>
+</div>

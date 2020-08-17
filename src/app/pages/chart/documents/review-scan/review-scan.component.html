@@ -1,0 +1,93 @@
+<div class="reviewScan">
+  <div class="card border-0 box-shadow">
+    <div class="card-header transparent border-0 text-muted">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 mt-2">
+          <div class="form-group yeats-form-group yeats-form-label" *ngIf="!isdisabled">
+            <button pButton class="yeats-btn yeats-btn-primary mr-2"><i class="fa fa-chevron-down mr-1"
+                aria-hidden="true"></i>Mark As Reviewed</button>
+            <button pButton class="yeats-btn yeats-btn-primary mr-2" data-toggle="modal"
+              data-target="#editScanDetailsModal">Edit Scan Details</button>
+          </div>
+          <div class="form-group yeats-form-group yeats-form-label" *ngIf="isdisabled">
+            <button pButton class="yeats-btn yeats-btn-primary mr-2" [disabled]="true"><i
+                class="fa fa-chevron-down mr-1" aria-hidden="true"></i>Mark As Reviewed</button>
+            <button pButton class="yeats-btn yeats-btn-primary mr-2" [disabled]="true">Edit Scan Details</button>
+          </div>
+
+        </div>
+        <div class="col-lg-12 col-md-12 sm-12">
+          <div class="yeats-tables">
+            <p-table [value]="values" selectionMode="single" [(selection)]="selectRow"
+              (onRowSelect)="onRowSelect($event)" dataKey="pagesinscan">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th *ngFor="let col of cols">
+                    {{col.header}}
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-value>
+                <tr [pSelectableRow]="value">
+                  <td *ngFor="let col of cols">
+                    {{value[col.field]}}
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editScanDetailsModal" tabindex="-1" role="dialog"
+  aria-labelledby="editScanDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:700px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editScanDetailsModalLabel">Edit Scan Information</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="" class="yeats-form-label">Name</label>
+              <input type="text" pInputText class="form-control yeats-form-control">
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Dms Category</label>
+              <p-dropdown [options]="cities" [(ngModel)]="selectedCity" optionLabel="name" [showClear]="true">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Review Status</label>
+              <p-dropdown [options]="cities" [(ngModel)]="selectedCity" optionLabel="name" [showClear]="true">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Document Date</label>
+              <p-calendar class="yeats-form-control" [showIcon]="true">
+              </p-calendar>
+            </div>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right"
+              (click)="activeModal.close('Close click')">Cancel</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

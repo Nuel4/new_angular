@@ -1,0 +1,123 @@
+<div class="card-block settings" style="top:-40px !important;width:900px;">
+  <div class="modal-content">
+    <div widget class="card border-0 box-shadow">
+      <div class="modal-header">
+        <h4 class="modal-title" style="margin-left: .5rem;">
+          <i class="fa fa-arrow-left" style="color:#fff;" (click)="reset()"></i><span
+            style="margin-left: .5rem;">Patient Summary</span>
+        </h4>
+      </div>
+      <div class="card-block widget-body">
+        <p-tabView>
+          <p-tabPanel header="Encounters">
+            <p-accordion>
+              <p-accordionTab *ngFor="let rowData of EncounterList.Results" (click)="onExpand(rowData)">
+                <p-header>
+                  <!-- <p-table  class="tableStyle" [value]="cars">
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th>Vin</th>
+                        <th>Year</th>
+                        <th>Brand</th>
+                        <th>Color</th>
+                      </tr>
+                    </ng-template>
+                  </p-table> -->
+
+                  <span style="margin-right:9rem;">
+                   {{rowData.date_created | date:'dd-MM-yyyy'}}
+                  </span>
+                  <span style="margin-right:9rem;">
+                    {{rowData.chief_complaint}}
+                  </span>
+                  <span style="margin-right:9rem;">
+                    <!-- {{rowData.}} -->
+                  </span>
+                  <span>
+                    {{rowData.physician}}
+                  </span>
+                  <!-- </div> -->
+                  <!-- </div> -->
+                </p-header>
+                Content 1
+              </p-accordionTab>
+              <!-- <p-accordionTab>
+                <p-header>
+                  hello
+                </p-header>
+                Content 2
+              </p-accordionTab>
+              <p-accordionTab>
+                <p-header>
+                  hello
+                </p-header>
+                content3
+              </p-accordionTab> -->
+            </p-accordion>
+          </p-tabPanel>
+          <p-tabPanel header="Clinical Summary">
+            Content 2
+          </p-tabPanel>
+          <p-tabPanel header="Appointments">
+            <div>
+              <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-12 pull-left">
+                  <div class="form-group yeats-form-group text-left">
+                    <label class="formLabel yeats-form-label">Appointment Status</label>
+                    <p-dropdown [options]="apptStatus" [(ngModel)]="selectedApptStatus" name="apptstatus"
+                      placeholder="Select Appointment Status" [showClear]="true" optionLabel="appointmentStatus"
+                      (onChange)="getpatientappointment()">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="col-lg-9 col-sm-9 col-12">
+                  <div class="form-group yeats-form-group text-left">
+                    <label class="formLabel yeats-form-label"> </label>
+                    <button pButton class="yeats-btn yeats-btn-primary pull-right" (click)="bookAppointment()">New Appointment</button>
+                  </div>
+                </div>
+              </div>
+              <div class="tableLabel mt-2">
+                <b>Scheduled Appointments:</b>
+              </div>
+              <div class="yeats-tables">
+                <p-table [value]="patientAppointment.Results" [paginator]="true" [rows]="rows"
+                  [totalRecords]="totalRecords" [lazy]="true" (onLazyLoad)="paginateAppointment($event)">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>User</th>
+                      <th>Type</th>
+                      <th>Status</th>
+                      <th>Cancelled By</th>
+                      <th>Date Cancelled</th>
+                      <th>Cancelled Reason</th>
+                      <th>Action</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-rowdata>
+                    <tr>
+                      <td>{{rowdata.appointmentdate | date:'MM/dd/yyyy' }}</td>
+                      <td>{{rowdata.appointmentdate | date:'hh:mm a' }}</td>
+                      <td>{{rowdata.username}}</td>
+                      <td>{{rowdata.appointmenttype}}</td>
+                      <td>{{rowdata.appointmentstatus}}</td>
+                      <td>{{rowdata.cancelledby}}</td>
+                      <td>{{rowdata.datecancelled}}</td>
+                      <td>{{rowdata.cancelledstatus}}</td>
+                      <td style="font-size:15px !important;">
+                        <i *ngIf="rowdata.appointmentstatus === 'Scheduled'" class="fa fa-undo mr-2" pTooltip="Reschedule" tooltipPosition="top"></i>
+                        <i *ngIf="rowdata.appointmentstatus === 'Scheduled'" class="fa fa-times mr-2" pTooltip="Cancel Appointment" tooltipPosition="top"></i>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </div>
+          </p-tabPanel>
+        </p-tabView>
+      </div>
+    </div>
+  </div>
+</div>

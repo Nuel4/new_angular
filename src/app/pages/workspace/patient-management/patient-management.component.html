@@ -1,0 +1,78 @@
+<div class="patientManagement">
+  <div class="card border-0 box-shadow cardMargin">
+    <div class="card-header transparent border-0 text-muted">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-3 col-md-6">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Patient Name</label>
+              <div class="ui-inputgroup">
+                <input placeholder="Enter Patient Name" id="patientName" [(ngModel)]="patientName"
+                  (keyup)="updateFilter($event)" type="text" class=" form-control yeats-form-control d-inline" />
+                <button pButton type="button" icon="fa fa-search" class="ui-button-warn"></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-9 col-sm-6 col-12">
+            <div class="form-group yeats-form-group pull-left">
+              <label for="findPatient" class="formLabel yeats-form-label">&nbsp;</label>
+              <button pButton class="yeats-btn yeats-btn-primary pull-right" (click)="onAddPatient($event)">
+                Add New Patient
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card border-0 box-shadow cardMargin">
+    <div class="card-header transparent border-0 text-muted">
+      <div class="card-body">
+        <div class="yeats-tables">
+          <div *ngIf="isLoader" class="row">
+            <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading">
+            </div>
+          </div>
+          <p-table #dt [columns]="cols" [value]="patientMasterData" dataKey="PatientId" rowExpandMode="single" [resizableColumns]="true"
+            [paginator]="true" [rows]="10" [totalRecords]=" totalRecords" [lazy]="true" (onLazyLoad)="paginate($event)"
+            [loading]="isLoader" *ngIf="!isLoader">
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th style="width: 3em"></th>
+                <th *ngFor="let col of columns">
+                  {{ col.header }}
+                </th>
+                <th>Action</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+              <tr [pSelectableRow]="rowData">
+                <td>
+                  <a style="padding-left:10px" href="#" [pRowToggler]="rowData" (click)="!expanded 
+                                    ? onExpand(rowData) : ''">
+                    <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+                  </a>
+                </td>
+                <td *ngFor="let col of columns">{{ rowData[col.field] }}</td>
+                <td>
+                  <!-- <i  class="fa fa-edit" aria-hidden="true"
+                                        (click)="onEditPatient(rowData)"></i> -->
+                  <img style="cursor: pointer;" class="yeats-icons" src="../../../../assets/images/Edit.svg"
+                    (click)="onEditPatient(rowData)" alt="edit">
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+              <tr>
+                <td [attr.colspan]="columns.length + 2">
+                  <app-patient-tabview [rowData]="rowData"></app-patient-tabview>
+      </td>
+      </tr>
+      </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+</div>
+</div>

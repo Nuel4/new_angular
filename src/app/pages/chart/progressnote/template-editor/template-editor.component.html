@@ -1,0 +1,136 @@
+<div class="template-editor">
+  <div class="card" style="height:608px;">
+    <div class="row mt-2">
+      <span style="margin-left: 32px;"><b><i style="font-size: 17px">
+            {{ this.authStore.PatientDetail.LastName }} , {{ this.authStore.PatientDetail.FirstName }}
+          </i>
+          {{ this.authStore.PatientDetail.DateOfBirth | date: "MM-dd-yyyy" }} {{ age }}
+        </b></span>
+      <span>
+        Gender: <b>{{ gender }} </b> &nbsp;Unique#: <b> </b> &nbsp;Smoking:
+        <b> {{ smokingStatus }} </b> &nbsp;Insurance: <b> </b> &nbsp;Signedby:
+        <b> </b></span>
+    </div>
+    <div class="row mt-3">
+      <div class="col-12 col-lg-2" style="height:79%;overflow-y: scroll">
+        <div *ngFor="let button of Identifier; let i = index">
+          <!-- <button *ngIf="button.SectionIdentifier !== null"
+            pButton
+            class="yeats-btn yeats-btn-primary ml-3 mb-2"
+            style="width: 85%"
+            (click)="buttonOnClick(button.SectionIdentifier, i)"
+          >
+            {{ button.SectionIdentifier }}
+          </button> -->
+          <button pButton [disabled]="button.disabled" *ngIf="button.ParentSectionId == null" class="yeats-btn yeats-btn-primary ml-3 mb-2"
+            style="width: 85%" (click)="buttonOnClick('click', i)">
+            {{button.SectionHeading}}
+          </button>
+        </div>
+        <br />
+      </div>
+      <div class="col-12 col-lg-7">
+        <div class="smart-text">
+          <div class="input ml-2 mt-1">
+            <app-dynamic-form [fields]="regConfig">
+            </app-dynamic-form>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-3" style="height:79%;overflow-y: scroll; padding-left: 0;">
+        <pre> {{form.value | json}} </pre>
+        <!-- <p-tabView>
+          <p-tabPanel header="PN" tooltip="Progressnote">
+            <app-progressnote></app-progressnote>
+          </p-tabPanel>
+          <p-tabPanel header="PL" tooltip="Problem list">
+            <app-problem-list></app-problem-list>
+          </p-tabPanel>
+          <p-tabPanel header="PMH" tooltip="Past Medical History">
+            <app-past-medical-history></app-past-medical-history>
+          </p-tabPanel>
+          <p-tabPanel header="Imm" tooltip="Immunization">
+            <app-immunizations></app-immunizations>
+          </p-tabPanel>
+          <p-tabPanel header="Ord" tooltip="Orders">
+            <app-labs></app-labs>
+          </p-tabPanel>
+          <p-tabPanel header="Al" tooltip="Allergies">
+            <app-allergies></app-allergies>
+          </p-tabPanel>
+          <p-tabPanel header="Med" tooltip="Medication">
+            <app-medications></app-medications>
+          </p-tabPanel>
+        </p-tabView> -->
+      </div>
+    </div>
+    <div class="row multipleSelection" style="margin-top: -100px;">
+      <div class="col-12 col-lg-2">
+        <p></p>
+      </div>
+      <div class="col-12 col-lg-8 col-md-8 col-sm-8">
+        <div class="row">
+          <div class="col-lg-3">
+            <div class="form-group yeats-form-group">
+              <label class="formLabel yeats-form-label"></label>
+              <p-multiSelect class="multiselect" [options]="options" placeholder="Option" [(ngModel)]="item"
+                [panelStyle]="{ minWidth: '12em' }" itemSize="34" [filter]="false" [showHeader]="false"
+                maxSelectedLabels="1"></p-multiSelect>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group yeats-form-group">
+              <label class="formLabel yeats-form-label">Time Spent</label>
+              <input type="text" pInputText class="form-control yeats-form-control" [(ngModel)]="timeSpent" />min
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group yeats-form-group ml-3">
+              <label class="formLabel yeats-form-label">Initials</label>
+              <input type="text" pInputText class="form-control yeats-form-control" [(ngModel)]="initials" />
+            </div>
+          </div>
+          <div class="col-12 col-lg-3 col-md-3 col-sm-3">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Consultation Date</label>
+              <p-calendar class="yeats-form-control" [showIcon]="true" [(ngModel)]="consultationDate">
+              </p-calendar>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-lg-2">
+        <p></p>
+      </div>
+      <div class="col-12 col-lg-8 col-md-8 col-sm-8" style="margin-top: -10px;">
+        <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2 mb-2" (click)="closeProgressNote()">
+          Close
+        </button>
+        <ng-container *ngIf="showButtons">
+          <button pButton [disabled]="isSigned" class="yeats-btn yeats-btn-primary pull-right ml-2" (click)="openModal('save_sign')">
+            Save & Sign
+          </button>
+          <button [disabled]="isSigned" pButton class="yeats-btn yeats-btn-primary pull-right ml-2" (click)="saveProgressNote(true)">
+            Save
+          </button>
+          <button pButton class="yeats-btn yeats-btn-primary pull-right ml-2" (click)="openModal('follw_up_visit')">
+            Follow Up Visit
+          </button>
+          <p-splitButton class="yeats-btn yeats-btn-primary pull-right ml-2" label="Summmary" (onClick)="GetPatientEncounter()" [model]="summaryItems"></p-splitButton>
+          <!-- <button pButton class="yeats-btn yeats-btn-primary pull-right ml-2" (click)="getSummary()">
+            Summary
+          </button> -->
+          <button pButton class="yeats-btn yeats-btn-primary pull-right ml-2" (click)="openPrescribe()">
+            Prescribe
+          </button>
+          <button pButton class="yeats-btn yeats-btn-primary pull-right ml-2" (click)="openModal('import')">
+            Import
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

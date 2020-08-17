@@ -1,0 +1,511 @@
+<div class="claim-modal">
+  <!--Delete Modal-->
+  <div *ngIf="IsDelete">
+    <div class="modal-header">
+      <h4 class="modal-title">Delete Confirmation</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Are you sure you want to delete this item?
+    </div>
+    <div class="col-12">
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3"
+        (click)="deleteApprovedRemittance()"
+      >
+        Delete
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+        (click)="modal.close('Close click')"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+
+  <!--View Claim Content -->
+  <div *ngIf="isContent">
+    <div class="modal-header">
+      <h4 class="modal-title">View Claim Content</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <textarea
+        [rows]="5"
+        [cols]="60"
+        value="{{ claimBody.ClaimBody }}"
+        readonly="true"
+        pInputTextarea
+        autoResize="autoResize"
+      ></textarea>
+    </div>
+    <div class="col-12">
+      <button
+        pButton
+        class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+        style="margin-bottom:3em "
+        (click)="modal.close('Close click')"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+
+  <!--View Super Bill Claim-->
+  <div *ngIf="viewBill">
+    <div class="modal-header">
+      <h4 class="modal-title">Superbill Claim View</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="yeats-tables">
+        <p-table
+          [value]="superBillData"
+         
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th *ngFor="let col of cols">
+                {{ col.header }}
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-car>
+            <tr>
+              <td *ngFor="let col of cols">
+                {{ car[col.field] }}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <p-paginator [rows]="rows" (onPageChange)="selectedPage($event)" [totalRecords]="totrec"></p-paginator>
+    </div>
+    <div class="col-12">
+      <button
+        pButton
+        class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+        (click)="modal.close('Close click')"
+      >
+        Cancel
+      </button>
+      <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3">
+        OK
+      </button>
+    </div>
+  </div>
+
+  <!--Physian Practice Information Modal-->
+  <div *ngIf="physicianInformation">
+    <div class="modal-header">
+      <h4 class="modal-title">Physician and Practice Information</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body physician_modal">
+      <div class="row">
+        <div class="col-lg-6">
+          <p-fieldset *ngIf="praDetails" legend="Practice">
+            <div class="row">
+              <div class="col-lg-12">
+                <label for="" class="yeats-form-label"
+                  >Practice Name<span class="star">*</span></label
+                >
+                <input
+                  type="text"
+                  pInputText
+                  class="form-control yeats-form-control"
+                  [(ngModel)]="practiceDetails.PracticeName"
+                  placeholder="Enter name"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label for="" class="yeats-form-label"
+                  >Address Line 1<span class="star">*</span></label
+                >
+                <input
+                  type="text"
+                  pInputText
+                  class="form-control yeats-form-control"
+                  [(ngModel)]="practiceDetails.AddressLine1"
+                  placeholder="Enter Address Line"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label for="" class="yeats-form-label">Address Line 2</label>
+                <input
+                  type="text"
+                  pInputText
+                  class="form-control yeats-form-control"
+                  [(ngModel)]="practiceDetails.AddressLine2"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label for="" class="yeats-form-label"
+                  >City<span class="star">*</span></label
+                >
+                <input
+                  type="text"
+                  [(ngModel)]="practiceDetails.City"
+                  pInputText
+                  class="form-control yeats-form-control"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label class="formLabel yeats-form-label"
+                  >State<span class="star">*</span></label
+                >
+                <p-dropdown
+                  [options]="statesList"
+                  [(ngModel)]="practiceState"
+                  optionLabel="label"
+                  [showClear]="true"
+                >
+                </p-dropdown>
+              </div>
+
+              <div class="col-lg-12">
+                <label for="" class="yeats-form-label"
+                  >Zip code <span class="star">*</span></label
+                >
+                <p-inputMask
+                  mask="99999"
+                  [(ngModel)]="practiceDetails.ZipCode"
+                  placeholder="99999"
+                ></p-inputMask>
+              </div>
+              <div class="col-lg-12">
+                <label for="" class="yeats-form-label">Zip code4</label>
+                <p-inputMask
+                  mask="9999"
+                  [(ngModel)]="practiceDetails.ZipPlus4"
+                  placeholder="9999"
+                ></p-inputMask>
+              </div>
+              <div class="col-lg-12">
+                <label for="" class="yeats-form-label"
+                  >Main Phone<span class="star">*</span></label
+                >
+                <input
+                  type="number"
+                  [(ngModel)]="practiceDetails.MainPhone"
+                  pInputText
+                  class="form-control yeats-form-control"
+                  placeholder="Enter Main Phone Number"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label for="" class="yeats-form-label"
+                  >Federal Tax Id<span class="star">*</span></label
+                >
+                <input
+                  type="number"
+                  pInputText
+                  [(ngModel)]="practiceDetails.Fax"
+                  class="form-control yeats-form-control"
+                  placeholder="Enter Federal Tax Id"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label for="" class="yeats-form-label"
+                  >NPI Number<span class="star">*</span></label
+                >
+                <input
+                  type="number"
+                  pInputText
+                  class="form-control yeats-form-control"
+                  [(ngModel)]="
+                    practiceDetails.OrganizationNationalProviderIdentifier
+                  "
+                  placeholder="Enter NPI Number"
+                />
+              </div>
+            </div>
+          </p-fieldset>
+        </div>
+        <div class="col-lg-6">
+          <p-fieldset legend="Facility">
+            <div class="row">
+              <div class="col-lg-12">
+                <label for="" class="yeats-form-label"
+                  >Facility Name<span class="star">*</span></label
+                >
+                <input
+                  type="text"
+                  [(ngModel)]="facilityDetails.FacilityName"
+                  pInputText
+                  class="form-control yeats-form-control"
+                  placeholder="Enter name"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label for="" class="yeats-form-label"
+                  >Address Line 1<span class="star">*</span></label
+                >
+                <input
+                  type="text"
+                  pInputText
+                  class="form-control yeats-form-control"
+                  [(ngModel)]="facilityDetails.AddressLine1"
+                  placeholder="Enter Address Line"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label for="" class="yeats-form-label">Address Line 2</label>
+                <input
+                  type="text"
+                  pInputText
+                  class="form-control yeats-form-control"
+                  [(ngModel)]="facilityDetails.AddressLine2"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label for="" class="yeats-form-label"
+                  >City<span class="star">*</span></label
+                >
+                <input
+                  type="text"
+                  pInputText
+                  class="form-control yeats-form-control"
+                  [(ngModel)]="facilityDetails.City"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label class="formLabel yeats-form-label"
+                  >State<span class="star">*</span></label
+                >
+                <p-dropdown
+                  [options]="statesList"
+                  [(ngModel)]="StateCode"
+                  optionLabel="label"
+                  [showClear]="true"
+                >
+                </p-dropdown>
+              </div>
+
+              <div class="col-lg-12">
+                <label for="" class="yeats-form-label"
+                  >Zip code <span class="star">*</span></label
+                >
+                <p-inputMask
+                  mask="99999"
+                  [(ngModel)]="facilityDetails.ZipCode"
+                  placeholder="99999"
+                ></p-inputMask>
+              </div>
+              <div class="col-lg-12">
+                <label for="" class="yeats-form-label">Zip code4</label>
+                <p-inputMask
+                  mask="9999"
+                  [(ngModel)]="facilityDetails.ZipPlus4"
+                  placeholder="9999"
+                ></p-inputMask>
+              </div>
+              <div class="col-lg-12">
+                <label for="" class="yeats-form-label"
+                  >Main Phone<span class="star">*</span></label
+                >
+                <input
+                  type="number"
+                  pInputText
+                  class="form-control yeats-form-control"
+                  [(ngModel)]="facilityDetails.MainPhone"
+                  placeholder="Enter Main Phone Number"
+                />
+              </div>
+
+              <div class="col-lg-12">
+                <label for="" class="yeats-form-label"
+                  >NPI Number<span class="star">*</span></label
+                >
+                <input
+                  type="number"
+                  pInputText
+                  class="form-control yeats-form-control"
+                  [(ngModel)]="facilityDetails.FacilityNpi"
+                  placeholder="Enter NPI Number"
+                />
+              </div>
+            </div>
+          </p-fieldset>
+        </div>
+        <div class="col-lg-12 mt-2">
+          <p-fieldset legend="Rendering Physician">
+            <div class="row">
+              <div class="col-lg-4">
+                <label for="" class="yeats-form-label"
+                  >Physician First Name<span class="star">*</span></label
+                >
+                <input
+                  type="text"
+                  pInputText
+                  class="form-control yeats-form-control"
+                  [(ngModel)]="physicianList.physicianFirstName"
+                  placeholder="Enter Physician First Name"
+                />
+              </div>
+              <div class="col-lg-4">
+                <label for="" class="yeats-form-label"
+                  >Physician Last Name<span class="star">*</span></label
+                >
+                <input
+                  type="text"
+                  pInputText
+                  class="form-control yeats-form-control"
+                  [(ngModel)]="physicianList.physicianLastName"
+                  placeholder="Enter Physician Last Name"
+                />
+              </div>
+              <div class="col-lg-4">
+                <label for="" class="yeats-form-label"
+                  >Physician NPI<span class="star">*</span></label
+                >
+                <input
+                  type="number"
+                  pInputText
+                  class="form-control yeats-form-control"
+                  [(ngModel)]="
+                    physicianList.physicianNationalProviderIdentifier
+                  "
+                  placeholder="Enter Physician NPI Number"
+                />
+              </div>
+            </div>
+          </p-fieldset>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <button
+        pButton
+        class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+        (click)="modal.close('Close click')"
+      >
+        Cancel
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3"
+        (click)="updatePracticeInfo()"
+      >
+        Save
+      </button>
+    </div>
+  </div>
+
+  <!--Comments Modal in Remittance Claim-->
+  <div *ngIf="commentInfo">
+    <div class="modal-header">
+      <h4 class="modal-title">Information Window</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+     
+      {{ remitAdvice.Comments }}
+    </div>
+    <div class="col-12">
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3"
+        (click)="modal.close('Close click')"
+      >
+        OK
+      </button>
+    </div>
+  </div>
+
+  <!--ReSubmit Modal-->
+  <div *ngIf="reSubmit">
+    <div class="modal-header">
+      <h4 class="modal-title">Information Window</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Exception of type
+      'System.ServiceModel.DomainServices.Client.DomainOperationException' was
+      thrown.
+    </div>
+    <div class="col-12">
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3"
+        (click)="modal.close('Close click')"
+      >
+        OK
+      </button>
+    </div>
+  </div>
+
+
+
+  <!--Download Remittance-->
+  <div *ngIf="downloadRemmitance">
+    <div class="modal-header">
+      <h4 class="modal-title">Information Window</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Remittance Advice dowloaded successfully
+    </div>
+    <div class="col-12">
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3"
+        (click)="modal.close('Close click')"
+      >
+        OK
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+#div1, #div2,#div3, #div4, #div5, #div6,#div7, #div8 {
+    float: left;
+    width: 100px;
+    height: 100px;
+    color: white;
+    margin: 10px;
+    // padding: 10px;
+    border: 1px solid black;
+}
+#drag1,#drag2,#drag3,#drag4,#drag5,#drag6,#drag7,#drag8 {
+    width: 98px;
+    margin-left: -15px;
+    height: 98px;
+   background-image: linear-gradient(to bottom, #114886 22%, #fff 15%);
+
+}
+.tiles{
+    padding-right: 0px;
+    padding-left: 35px;
+    padding-top: 30px;
+}
+// #drag2 {
+//     width: 98px;
+//     height: 32px;
+//    background-color: red; 
+// }
+// #drag3 {
+//     width: 98px;
+//     height: 32px;
+//    background-color: green; 
+// }
+// #drag4 {
+//     width: 98px;
+//     height: 32px;
+//    background-color: yellow; 
+// }

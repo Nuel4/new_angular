@@ -1,0 +1,217 @@
+<div class="BillarsNote" *ngIf="openBillersModal">
+  <div class="modal-header">
+    <div class="modal-title">Biller's Notes</div>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="p-view">
+      <p>Biller's note for <b>{{this.patientData.patientname ? this.patientData.patientname : this.patientData.LastName + " " + this.patientData.FirstName}}</b></p>
+    </div>
+    <div class="row mt-3">
+      <div class="col-lg-2 col-sm-2 col-12">Notes :</div>
+      <div class="col-lg-10 col-sm-10 col-12">
+        <textarea
+          [(ngModel)]="billers_notes.text"
+          *ngIf="!data"
+          style="height: 120px;width:100%"
+        >
+        </textarea>
+      </div>
+      <div class="col-lg-12 col-sm-12 col-12"  *ngIf="enable_update">Update History: {{ updatedHistory }}</div>
+    </div>
+    <p-checkbox
+      label="Show Note on patient statement"
+      (onChange)="onChecked(!check_box)"
+    ></p-checkbox>
+    <div style="text-align: right;">
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary ml-3 mb-3"
+        (click)="saveNote()"
+        *ngIf="!enable_update"
+      >
+        Save
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary ml-3 mb-3"
+        (click)="updateBillerNote()"
+        *ngIf="enable_update"
+      >
+        Update
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary ml-3 mb-3"
+        (click)="clearNotes()"
+      >
+        Clear
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary ml-3 mb-3"
+        (click)="activeModal.dismiss('Cross click')"
+      >
+        Close
+      </button>
+    </div>
+    <div class="yeats-tables" *ngIf="billersNoteList.Results && billersNoteList.Results.length > 0">
+      <p-table [columns]="cols" [value]="billersNoteList.Results" [paginator]="true" [rows]="billersNoteList.PageSize" 
+      [lazy]="true" (onLazyLoad)="paginate($event)" [totalRecords]="billersNoteList.TotalItems">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th
+              *ngFor="let col of columns; let i = index"
+              [pSortableColumn]="col.field"
+              pEditableColumn
+              (click)="openFilter(i)"
+            >
+              <span *ngIf="headerIndex !== i">{{ col.header }}</span
+              ><span *ngIf="headerIndex === i && !col.filter">{{
+                col.header
+              }}</span>
+              <i
+                class="fa fa-filter"
+                *ngIf="headerIndex !== i && col.filter"
+              ></i>
+              <p-cellEditor *ngIf="col.filter">
+                <ng-template pTemplate="input">
+                  <input
+                    pInputText
+                    type="text"
+                    placeholder="{{ col.header }}"
+                    style="width:100%; height: 75%;"
+                  />
+                </ng-template>
+              </p-cellEditor>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr>
+            <td *ngFor="let col of columns">
+              <span *ngIf="col.field === 'edit'"
+                ><i class="fa fa-edit" (click)="onSelectedRowEdit(rowData)"></i
+              ></span>
+              <span *ngIf="col.field === 'delete'"
+                ><i class="fa fa-trash" (click)="onSelectedRowDelete(rowData)"></i
+              ></span>
+              <span>{{ rowData[col.field] }}</span>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <!-- <p-paginator
+      [rows]="billersNoteList.PageSize"
+      [totalRecords]="billersNoteList.TotalItems"
+      (onPageChange)="paginate($event)"
+    ></p-paginator> -->
+  </div>
+</div>
+
+<div *ngIf="openPastModal">
+  <div class="modal-header">
+    <div class="modal-title">Past Patient Statements</div>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row ml-3">
+      <label>Patient Name:</label> {{ patientData.patientname }}
+    </div>
+    <div class="yeats-tables">
+      <p-table
+        [columns]="cols"
+        [value]="pastStaetments"
+      >
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th
+              *ngFor="let col of columns; let i = index"
+              [pSortableColumn]="col.field"
+              pEditableColumn
+              (click)="openFilter(i)"
+            >
+              <span *ngIf="headerIndex !== i">{{ col.header }}</span
+              ><span *ngIf="headerIndex === i && !col.filter">{{
+                col.header
+              }}</span>
+              <i
+                class="fa fa-filter"
+                *ngIf="headerIndex !== i && col.filter"
+              ></i>
+              <p-cellEditor *ngIf="col.filter">
+                <ng-template pTemplate="input">
+                  <input
+                    pInputText
+                    type="text"
+                    placeholder="{{ col.header }}"
+                    (keyup)="filterTableData($event.target.value, col.field)"
+                    style="width:100%; height: 75%;"
+                  />
+                </ng-template>
+              </p-cellEditor>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr *ngFor="let past of pastStaetments">
+            <td>{{past.date}}</td>
+            <td>
+              {{ past.fileName }}
+            </td>
+            <td><i class="fa fa-print"></i></td>
+            <td><i class="fa fa-email"></i></td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <p-paginator
+      [rows]="pastStaetments.PageSize"
+      [totalRecords]="pastStaetments.TotalItems"
+      (onPageChange)="onPastPageChange($event)"
+    ></p-paginator>
+  </div>
+  <div class="modal-footer">
+    <button
+      pButton
+      class="yeats-btn yeats-btn-primary ml-3 mb-3"
+      (click)="activeModal.dismiss('Cross click')"
+    >Close</button>
+  </div>
+</div>
+
+
+<!-- <div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Modal Heading</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+    
+          <div class="modal-body">
+            Modal body..
+          </div>
+    
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          </div>
+    
+        </div>
+      </div>
+</div> -->

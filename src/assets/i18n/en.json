@@ -1,0 +1,10 @@
+{
+  "Title": "YC",
+  "English": "English",
+  "Flag": "flag-icon-gb",
+  "French": "French",
+  "HOME": {
+    "TITLE": "Hello Angular 2 with ng2-translate!",
+    "SELECT": "Change language"
+  }
+}

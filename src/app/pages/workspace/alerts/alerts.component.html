@@ -1,0 +1,163 @@
+<div class="workspaceHomeThirdBlock">
+  <div class="" *ngIf="toWorkSpace">
+    <app-widget-header [widgetData]="widgetData" (refreshWidget)="refreshData()"></app-widget-header>
+  </div>
+  <div class="gridster-item-content alertsBlock">
+    <div class="filterBlock">
+      <div class="col-lg-5 col-md-5">
+        <div class="form-group yeats-form-group">
+          <p-dropdown class="form-group yeats-form-group type" [options]="AlertType" optionLabel="value" [showClear]="true"
+            [(ngModel)]="AlerttypeData" placeholder="Select Alert Type" (onChange)="Alertstypevalue(AlerttypeData)">
+          </p-dropdown>
+        </div>
+      </div>
+      <div class="col-lg-5 col-md-5" >
+        <div class="form-group yeats-form-group ">
+          <p-dropdown [options]="actionCodeList" class="action" [(ngModel)]="newAlerts" optionLabel="label" [showClear]="true"
+            (onChange)="actionCodeValue(newAlerts)" placeholder="Select Action">
+          </p-dropdown>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-2 searchIcon">
+        <div class="form-group yeats-form-group ">
+          <button pButton icon="fa fa-search" data-toggle="modal" data-target="#searchAlertModal" style="height: 24px"
+            (click)="search()"></button>
+        </div>
+      </div>
+    </div>
+    <div class="tableBlock">
+      <div class="eachAlerts" *ngFor="let item of alerts;last as l">
+        <div class="col-lg-8">
+          {{item.AlertMessage}}
+        </div>
+        <!-- <div class="col-1">
+          <i class="fa fa-user" aria-hidden="true" (click)="findPatient()"></i>
+        </div> -->
+        <div class="col-lg-2"
+          *ngIf="!(item.RenewalRequestGuid == 'Refill Requests:' || item.RenewalRequestGuid == 'Pending Rx:')">
+          <i class="fa fa-book books pull-right" aria-hidden="true" data-toggle="tooltip" title="Process Alert" (click)="toOrders(item)"></i>
+        </div>
+        <div class="col-lg-2"
+          *ngIf="item.RenewalRequestGuid == 'Refill Requests:' || item.RenewalRequestGuid == 'Pending Rx:'">
+          <i class="fa fa-adjust processAlert pull-right" (click)="processAlert(item)" aria-hidden="true" data-toggle="tooltip"
+            title="Process Alert"></i>
+        </div>
+        <div class="col-lg-2">
+          <!-- <i class="fa fa-pencil" (click)="editbutton(item)" aria-hidden="true" data-toggle="tooltip"
+            title="Edit Alert"></i> -->
+            <img src="../../../../assets/images/Edit.svg" style="cursor: pointer;float: right;" alt="Edit" (click)="editbutton(item)">
+        </div>
+      </div>
+
+      <div class="paginator">
+        <p-paginator [rows]="4" [totalRecords]="totalRecords" (onPageChange)="paginate($event)">
+        </p-paginator>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- <div class="row" style="height:55%">
+    <div class="alerts">
+      <div class="" *ngIf="toWorkSpace">
+        <app-widget-header [widgetData]="widgetData" (refreshWidget)="refreshData()"></app-widget-header>
+      </div>
+      <div class="gridster-item-content">
+
+        <div [class]="toWorkSpace?'widget-container':''">
+          <div class="mycard">
+            <div class="card border-0 box-shadow cardMargin">
+              <div class="card-header transparent border-0 text-muted">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-lg-5 col-md-5">
+                      <div class="form-group yeats-form-group">
+                        <p-dropdown class="form-group yeats-form-group" [options]="AlertType" optionLabel="value"
+                          [showClear]="true" [(ngModel)]="AlerttypeData" placeholder="Select Alert Type"
+                          (onChange)="Alertstypevalue(AlerttypeData)"></p-dropdown>
+                      </div>
+                    </div>
+                    <div class="col-lg-5 col-md-5">
+                      <div class="form-group yeats-form-group ">
+                        <p-dropdown [options]="actionCodeList" [(ngModel)]="newAlerts" optionLabel="label"
+                          [showClear]="true" (onChange)="actionCodeValue(newAlerts)" placeholder="Select Action">
+                        </p-dropdown>
+                      </div>
+                    </div>
+                    <div class="col-lg-2 col-md-2">
+                      <div class="form-group yeats-form-group ">
+                        <button pButton icon="fa fa-search" data-toggle="modal" data-target="#searchAlertModal"
+                          style="height: 24px" (click)="search()"></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="innercard">
+            <div class="card border-0 box-shadow cardMargin">
+              <div class="card-header transparent border-0 text-muted">
+                <div class="card-body">
+                  <div class="row" *ngFor="let item of alerts;last as l">
+                    <div class="col-12">
+                      <div class="card border-0 box-shadow" style="margin-top:5px">
+                        <div class="card-header transparent border-0 text-muted">
+                          <div class="card-body">
+                            <div class="row">
+                              <div class="col-8">
+                                {{item.AlertMessage}}
+                              </div>
+                              <div class="col-1">
+                                <i class="fa fa-user" aria-hidden="true" (click)="findPatient()"></i>
+                              </div>
+                              <div class="col-1"
+                                *ngIf="!(item.RenewalRequestGuid == 'Refill Requests:' || item.RenewalRequestGuid == 'Pending Rx:')">
+                                <i class="fa fa-book" aria-hidden="true" data-toggle="tooltip"
+                                  title="Process Alert"></i>
+                              </div>
+                              <div class="col-1"
+                                *ngIf="item.RenewalRequestGuid == 'Refill Requests:' || item.RenewalRequestGuid == 'Pending Rx:'">
+                                <i class="fa fa-adjust" (click)="processAlert(item)" aria-hidden="true"
+                                  data-toggle="tooltip" title="Process Alert"></i>
+                              </div>
+                              <div class="col-1">
+                                <i class="fa fa-pencil" (click)="editbutton(item)" aria-hidden="true"
+                                  data-toggle="tooltip" title="Edit Alert"></i>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group yeats-form-group ">
+                    <p-paginator [rows]="5" [totalRecords]="totalRecords" (onPageChange)="paginate($event)">
+                    </p-paginator>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div> -->
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+    </div>
+  </ng-template>
+  <app-myposts [refresh]="refresh"></app-myposts>
+</div>

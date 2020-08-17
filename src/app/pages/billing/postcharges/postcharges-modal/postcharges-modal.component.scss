@@ -1,0 +1,67 @@
+.icdsearchmodal{
+    .pos{
+        p-dropdown {
+            /* width: 100% !important; */
+            width: 48px !important;
+             margin-left: -9px; 
+        }
+        .ui-dropdown .ui-dropdown-trigger .ui-dropdown-trigger-icon {
+            font-size: 10px;
+            margin-left: 3px;
+            /* top: 50%; */
+            /* left: 50%; */
+            /* margin-top: -.5em; */
+            /* margin-left: -.5em; */
+            /* position: absolute; */
+        }
+    }
+  
+    p-checkbox .ui-chkbox-label {
+        margin-top: 0px;
+    }
+    .yeats-form-group{
+        min-height:3rem;
+    }
+    .labelStyle{
+        font-size:13px;
+    }
+
+    .modal-header{
+        margin-top:-25px;
+    }
+    
+.todisplay{
+    font-weight: 500;
+     font-size: 0.75rem;
+     padding: 10px;
+ }
+ .yeats-tables{
+   
+    .yeats-form-group{
+      margin-bottom: 0 ;
+      margin: 0 ;
+      padding-bottom: 10px;
+       min-height: 2rem !important;
+    }
+   }
+    .modal-body {
+        position: relative;
+        flex: 1 1 auto;
+        padding: 5px;
+    }
+    .ui-tabview {
+        padding-top:0.5rem !important;
+        padding-bottom: 0px;
+    }
+    .ui-tabview .ui-tabview-panels {
+        padding-top:0px;
+    }
+    .InsuranceStyle{
+        .yeats-form-label{
+            margin-top:0px !important;
+        }
+    }
+    .ICdLabel{
+        text-align: left !important;
+    }
+}

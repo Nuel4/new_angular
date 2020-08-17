@@ -1,0 +1,30 @@
+ @import "theme/styles/variables";
+ @import "theme/styles/mixins";
+ @import "~@swimlane/ngx-datatable/release/themes/material.css";
+ @import "~@swimlane/ngx-datatable/release/themes/bootstrap.css";
+ @import "~@swimlane/ngx-datatable/release/themes/dark.css";
+ @import "~@swimlane/ngx-datatable/release/assets/icons.css";
+ @import "~angular-calendar/css/angular-calendar.css";
+ @import "theme/styles/libs-override";
+ @import "theme/styles/base";
+ @import './../assets/styles/custom-styles';
+  .app.sidebar-fixed.horizontal-menu .main-content,
+ .app.sidebar-fixed.horizontal-menu .app-footer {
+   padding: 10px;
+   background-color: #f5f6fa;
+ }
+
+/* global SCSS */
+
+.btn-primary {
+  background: #007ad9;
+  color: #ffffff;
+}
+
+.height-28 {
+  height: 28px !important;
+}
+
+i {
+  cursor: pointer;
+}

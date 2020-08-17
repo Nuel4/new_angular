@@ -1,0 +1,345 @@
+<div class="uploadMaster">
+    <div class="row">
+        <div class="col-xl-3 col-sm-3 col-12">
+            <label for="uploadType" class="formLabel">Upload Type</label>
+            <select class="form-control" id="uploadType" [(ngModel)]="uploadType" name="uploadType">
+                <option value="item">Item</option>
+                <option value="batch">Batch</option>
+            </select>
+        </div>
+        <div class="col-xl-3 col-sm-3 col-12">
+            <p for="uploadType" class="formLabel">Select File</p>
+            <label for="file-upload" class="custom-file-upload">
+                <i class="fa fa-cloud-upload"></i> Select File
+            </label>
+            <p class="filename">{{file ? file.name : ''}}</p>
+            <input id="file-upload" type="file" (change)="incomingfile($event)" accept=".xlsx" />
+        </div>
+        <div class="col-xl-3 col-sm-3 col-12">
+            <button type="button" class="btn btn-primary btn-custom" (click)="Upload()">Upload</button>
+        </div>
+        <div class="col-xl-3 col-sm-3 col-12">
+            <button type="button" class="btn btn-primary btn-save" (click)="uploadList(uploadDatas)">Validate & Save</button>
+        </div>
+    </div>
+    <br>
+    <div *ngIf="uploadDatas.length > 0">
+        <h5>{{uploadType == 'item' ? 'Item Details' : 'Batch Deatils'}}</h5>
+        <p-table [value]="uploadDatas" *ngIf="uploadType == 'item'">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Item Name</th>
+                    <th>Category</th>
+                    <th>Item Code</th>
+                    <th>Store</th>
+                    <th>UOM</th>
+                    <th>Status</th>
+                    <th>Default Order Quantity</th>
+                    <th>Threshold Quantity</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData>
+                <tr>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input type="text" [(ngModel)]="rowData.Name" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.Name}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <select class="form-control" id="category" [(ngModel)]="rowData.Category" name="Category"
+                                    required>
+                                    <option *ngFor="let data of categoryData" value="{{data.InvCategoryId}}">{{data.InvCategoryName}}</option>
+                                </select>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                <select class="form-control" id="category" [(ngModel)]="rowData.Category" name="Category">
+                                    <option *ngFor="let data of categoryData" value="{{data.InvCategoryId}}">{{data.InvCategoryName}}</option>
+                                </select>
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input type="text" [(ngModel)]="rowData.Code" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.Code}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <select class="form-control" id="store" [(ngModel)]="rowData.Store" name="store"
+                                    required>
+                                    <option *ngFor="let data of storeData" value="{{data.InvStoreId}}">{{data.StoreName}}</option>
+                                </select>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                <select class="form-control" id="store" [(ngModel)]="rowData.Store" name="store">
+                                    <option *ngFor="let data of storeData" value="{{data.InvStoreId}}">{{data.StoreName}}</option>
+                                </select>
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input type="text" [(ngModel)]="rowData.UOM" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.UOM}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <select class="form-control" id="status" [(ngModel)]="rowData.Status" name="IsActive"
+                                    required>
+                                    <option value="true">Active</option>
+                                    <option value="false">Inactive</option>
+                                </select>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                <select class="form-control" id="status" [(ngModel)]="rowData.Status" name="IsActive">
+                                    <option value="true">Active</option>
+                                    <option value="false">Inactive</option>
+                                </select>
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input type="text" [(ngModel)]="rowData.DefaultOrderQuantity" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.DefaultOrderQuantity}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input type="text" [(ngModel)]="rowData.ThresholdQuantity" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.ThresholdQuantity}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+        <p-table [value]="uploadDatas" *ngIf="uploadType == 'batch'">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Agent</th>
+                    <th>Item Name</th>
+                    <th>Description</th>
+                    <th>Comments</th>
+                    <th>Batch No</th>
+                    <th>Lot No</th>
+                    <th>Batch Quantity</th>
+                    <th>Current Quantity</th>
+                    <th>Item Id</th>
+                    <th>Mnf Name</th>
+                    <th>StoreId</th>
+                    <!-- <th>Order No</th> -->
+                    <th>Code</th>
+                    <th>Mnf Date</th>
+                    <th>Ex Date</th>
+                    <th>Status</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData>
+                <tr>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input type="text" [(ngModel)]="rowData.Agent" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.Agent}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input type="text" [(ngModel)]="rowData.ItemName" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.ItemName}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input type="text" [(ngModel)]="rowData.Description" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.Description}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input type="text" [(ngModel)]="rowData.Comments" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.Comments}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input type="text" [(ngModel)]="rowData.BatchNumber" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.BatchNumber}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input type="text" [(ngModel)]="rowData.LotNumber" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.LotNumber}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input type="number" [(ngModel)]="rowData.BatchQuantity" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.BatchQuantity}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input type="text" [(ngModel)]="rowData.CurrentQuantity" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.CurrentQuantity}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input type="text" [(ngModel)]="rowData.InvItemMasterId" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.InvItemMasterId}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input type="text" [(ngModel)]="rowData.ManufacturerName" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.ManufacturerName}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <select class="form-control" id="store" [(ngModel)]="rowData.InvStoreId" name="store"
+                                    required>
+                                    <option *ngFor="let data of storeData" value="{{data.InvStoreId}}">{{data.StoreName}}</option>
+                                </select>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                <select class="form-control" id="store" [(ngModel)]="rowData.Store" name="store">
+                                    <option *ngFor="let data of storeData" value="{{data.InvStoreId}}">{{data.StoreName}}</option>
+                                </select>
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+
+                    <!-- <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input type="text" [(ngModel)]="rowData.OrderNumber" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.OrderNumber}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td> -->
+
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input type="text" [(ngModel)]="rowData.BatchCode" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.BatchCode}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input type="text" [(ngModel)]="rowData.ManufacturedDate" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.ManufacturedDate}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input type="text" [(ngModel)]="rowData.ExpiryDate" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.ExpiryDate}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <select class="form-control" id="status" [(ngModel)]="rowData.IsActive" name="IsActive"
+                                    required>
+                                    <option value="true">Active</option>
+                                    <option value="false">Inactive</option>
+                                </select>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                <select class="form-control" id="status" [(ngModel)]="rowData.IsActive" name="IsActive">
+                                    <option value="true">Active</option>
+                                    <option value="false">Inactive</option>
+                                </select>
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

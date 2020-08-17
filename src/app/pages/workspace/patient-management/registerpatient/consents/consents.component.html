@@ -1,0 +1,95 @@
+<div class="consentsModule">
+        <form #f="ngForm" (ngSubmit)="onSubmit(patientData.value)">
+    <div class="row rowMargin">
+        <div class="form-group yeats-form-group">
+            <label class="formLabel yeats-form-label"> HIPAA consents have been discussed with patient</label>
+            <div class="d-inline mr-16">
+                <p-checkbox class="yeats-form-control" name="HipaaViaMail" id="HipaaViaMail" [(ngModel)]="patientData.HipaaViaMail" label="Via Mail"
+                    binary="true"></p-checkbox>
+            </div>
+            <div class="d-inline mr-16">
+                <p-checkbox class="yeats-form-control" name="HipaaViaVoice" id="HipaaViaVoice" #HipaaViaVoice="ngModel" [(ngModel)]="patientData.HipaaViaVoice" label="Via Voice"
+                    binary="true"></p-checkbox>
+            </div>
+            <div class="d-inline mr-16">
+                <p-checkbox class="yeats-form-control" name="HipaaViaNotice" id="HipaaViaNotice" #HipaaViaNotice="ngModel" [(ngModel)]="patientData.HipaaViaNotice"
+                    label="Via printed notice" binary="true"></p-checkbox>
+            </div>
+            <div class="d-inline mr-16">
+                <p-checkbox class="yeats-form-control" name="HipaaViaMessage" id="HipaaViaMessage" #HipaaViaMessage="ngModel" [(ngModel)]="patientData.HipaaViaMessage" label="Via message"
+                    binary="true"></p-checkbox>
+            </div>
+        </div>
+    </div>
+    <div class="row rowMargin">
+        <div class="form-group yeats-form-group">
+            <label class="formLabel yeats-form-label"> Patient authorizes practice to contact/send remainders
+                via</label>
+            <div class="d-inline mr-16">
+                <p-checkbox class="yeats-form-control" name="HipaaAllowSms" id="HipaaAllowSms" #HipaaAllowSms="ngModel" [(ngModel)]="patientData.HipaaAllowSms" label="Allow text message"
+                    binary="true"></p-checkbox>
+            </div>
+            <div class="d-inline mr-16">
+                <p-checkbox class="yeats-form-control" name="HipaaAllowEmail" id="HipaaAllowEmail" #HipaaAllowEmail="ngModel" [(ngModel)]="patientData.HipaaAllowEmail" label="Allow email" binary="true">
+                </p-checkbox>
+            </div>
+            <div class="d-inline mr-16">
+                <p-checkbox class="yeats-form-control" name="HippaAllowPhoneCall" id="HippaAllowPhoneCall" #HippaAllowPhoneCall="ngModel" [(ngModel)]="patientData.HippaAllowPhoneCall" label="Allow phone call"
+                    binary="true">
+                </p-checkbox>
+            </div>
+            <div class="d-inline mr-16">
+                <p-checkbox class="yeats-form-control fwb" name="HippaAllowPatientPortal" id="HippaAllowPatientPortal" #HippaAllowPatientPortal="ngModel" [(ngModel)]="patientData.HippaAllowPatientPortal" label="Allow patient portal"
+                    binary="true" (click)="patientportal(HippaAllowPatientPortal)"></p-checkbox>
+            </div>
+        </div>
+    </div>
+    <div class="row rowMargin">
+        <div class="form-group yeats-form-group">
+            <label class="formLabel yeats-form-label">Accept Assignment</label>
+            <div class="d-inline mr-16">
+                <p-checkbox class="yeats-form-control" name="AcceptAssignment" id="AcceptAssignment" #AcceptAssignment="ngModel" [(ngModel)]="patientData.AcceptAssignment" label="Accept Assignment"
+                    binary="true"></p-checkbox>
+            </div>
+        </div>
+    </div>
+    <div class="row rowMargin">
+        <div class="form-group yeats-form-group">
+            <label class="formLabel yeats-form-label"> Patient Portal</label>
+            <div class="d-inline mr-16">
+                <p-checkbox class="yeats-form-control" name="isApproved" id="isApproved" #isApproved="ngModel" [(ngModel)]="portalData.isApproved" (onChange)="portalChange()" label="Is Approved" binary="true">Is Approved
+                </p-checkbox>
+            </div>
+            <div class="d-inline mr-16">
+                <p-checkbox class="yeats-form-control" name="isActive" id="isActive" #isActive="ngModel" [(ngModel)]="portalData.isActive" (onChange)="portalChange()" label="Is Active" binary="true">
+                </p-checkbox>
+            </div>
+            <div class="d-inline mr-16">
+                <p-checkbox class="yeats-form-control" name="PasswordPolicy" id="PasswordPolicy" #PasswordPolicy="ngModel" (onChange)="portalChange()" [(ngModel)]="portalData.PasswordPolicy"
+                    label="Enforce Password Policy" binary="true"></p-checkbox>
+            </div>
+            <div class="d-inline mr-16">
+                <button pButton [disabled]="portalSelected" class="yeats-btn yeats-btn-primary" type="button" (click)="postPatientLogin()">Save</button>
+            </div>
+        </div>
+        
+    </div>
+    </form>
+    <div class="row mt-3">
+            <div class="col-6">
+                    <button pButton *ngIf="showprtandchrge" class="yeats-btn yeats-btn-primary mr-3" icon="fa fa-print" label="print" (click)="chargeSlips('PatientPrint')">Print</button>
+                    <button pButton *ngIf="showprtandchrge" class="yeats-btn yeats-btn-primary" icon="fa fa-file-text-o" (click)="chargeSlips('PatientChargeSlips')" label="Charge Slip">Charge
+                      Slip</button>
+                  </div>
+                  <div class="col-6">
+        <div class="col-12">
+            <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+                (click)="openNext()">Next</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" (click)="onSubmit(patientData.value)">Save</button>
+            <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3" (click)="onClose()">Close</button>
+        </div>
+    </div>
+    </div>
+</div>
+
+

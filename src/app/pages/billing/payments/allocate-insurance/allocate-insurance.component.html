@@ -1,0 +1,575 @@
+<div class="allocate-insurance">
+  <div class="modal-header ">
+    <div class="title">Allocate Insurance Payment</div>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="card border-0 box-shadow cardMargin">
+      <div class="card-header transparent border-0 text-muted">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-3 col-md-3 col-3">
+                Patient Details:<span style="font-size:14px;"> {{ patientInfo.LastName }} {{ patientInfo.FirstName }}</span>
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+                Unique No:{{patientInfo.UniqueNumber}}
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+                DOB:<span>{{ patientInfo.DateOfBirth | date: 'dd/MM/yyyy' }}</span>
+              </div>
+            <div class="col-lg-3 col-md-3 col-3">
+                Cell Phone:{{ patientInfo.MobilePhone }}
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+                Acc.Bal.Due:
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+              Pat.Bal.Due:
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+              Ins.Bal.Due:
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+                Unallocated Payments:
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+                Primary Insurance: {{insuranceInfo?insuranceInfo[0]?insuranceInfo[0].insurancename:'':''}}
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+                Secondary Insurance:{{insuranceInfo?insuranceInfo[1]?insuranceInfo[1].insurancename:'':''}}
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+                Tertiary Insurance:{{insuranceInfo?insuranceInfo[2]?insuranceInfo[2].insurancename:'':''}}
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <div class="row">
+       <div class="col-lg-12 col-md-12 col-12">
+          <label class="formLabel yeats-form-label"><b>Payments Pending Allocation</b></label>
+             <div class="yeats-tables">
+              <p-table [columns]="cols" [value]="patientPaymentTableData">
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <!-- <th></th> -->
+                    <th *ngFor="let col of columns">{{ col.header }}</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                  <tr>
+                    <!-- <td *ngFor="let col of columns">
+                      {{ rowData[col.field] }}
+                    </td> -->
+                    <td>{{rowData.PaymentDate | date:'dd/MM/yyyy'}}</td>
+                    <td>{{rowData.Amount}}</td>
+                    <td>{{rowData.PaidBy}}</td>
+                    <td>{{rowData.Method}}</td>
+                    <td>{{rowData.Reference}}</td>
+                    <td>{{rowData.PaymentType}}</td>
+                    <td>{{rowData.PreviouslyApplied}}</td>
+                    <td>{{rowData.BalanceAvailable}}</td>
+
+                    
+
+                  </tr>
+                </ng-template>
+              </p-table>
+              </div>
+            </div>
+       </div>
+       <div class="row">
+         <div class="col-lg-12 col-md-12 col-12">
+          <label class="formLabel yeats-form-label">
+           <b>Displaying bills associated with the Insurance Provider. To
+            apply payments enter details here</b></label>
+            <div class="yeats-tables">
+             <p-table [columns]="col" [value]="BillsData" dataKey="BillHeaderId" rowExpandMode="single">
+              <ng-template pTemplate="header" let-columns>
+
+               <tr>
+                 <th></th>
+                 <th *ngFor="let col of columns">{{ col.header }}</th>
+               </tr>
+             </ng-template>
+              <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+               <tr>
+                   <td>
+                      <a href="#" [pRowToggler]="rowData" >
+                          <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" (click)="onRowSelect(rowData)" ></i>
+                      </a>
+                  </td>
+                  <td *ngFor="let col of columns">
+                      {{ rowData[col.field] }}
+                  </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+              <tr>
+                  <td [attr.colspan]="columns.length + 1">
+                     <div class="yeats-tables Expandtablestyle">
+                      <p-table [columns]="ExpandTable"  [value]="ExpandBillsData" >
+                          <ng-template pTemplate="header" let-columns>
+                              <tr>
+                                  <th *ngFor="let col of columns">
+                                      {{col.header}}
+                                  </th>
+                              </tr>
+                          </ng-template>
+                          <ng-template pTemplate="body" let-rowData let-columns="columns">
+                              <tr>
+                                  <td *ngFor="let col of columns">
+                                          {{rowData[col.field]}}
+                                  </td>
+                              </tr>
+                          </ng-template>
+                      </p-table>
+                    </div>
+                  </td>
+              </tr>
+
+          </ng-template>
+
+          
+        </p-table>
+       </div>
+      </div>
+    </div>
+    <!-- <div class="row">
+        <div class="col-lg-12 col-md-12 col-12">
+        <label class="formLabel yeats-form-label">
+        <b>To apply payments to Non-Procedural office charges,enter details here</b></label>
+     <div class="yeats-tables">
+      <p-table [columns]="PaymentsDetail" [value]="provider">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns">{{ col.header }}</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr>
+            <td *ngFor="let col of columns">
+              {{ rowData[col.field] }}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+     </div>
+    </div>
+  </div> -->
+  <div class="row" *ngIf="patientNew">
+      <div class="col-lg-3">
+          <div class="form-group yeats-form-group ">
+              <label for="" class="yeats-form-label"
+                >Patient Payment Transaction Type<span class="star">*</span>
+              </label>
+              <p-dropdown
+                [options]="patientFinancialCode"
+                [(ngModel)]="selectedPatientPayment"
+                optionLabel="Description"
+                [showClear]="true"
+                placeholder="Select Financial Type"
+              >
+              </p-dropdown>
+            </div>
+      </div>
+      <div class="col-lg-3">
+          <div class="form-group yeats-form-group ">
+              <label for="" class="yeats-form-label"
+                >Write-Off Transaction Code<span class="star">*</span>
+              </label>
+              <p-dropdown
+                [options]="writeoffinancialCode"
+                [(ngModel)]="selectedWrite"
+                optionLabel="Description"
+                [showClear]="true"
+              >
+              </p-dropdown>
+            </div>
+      </div>
+    </div>
+  <div class="row" *ngIf="patientPayment">
+    <div class="col-lg-3">
+        <div class="form-group yeats-form-group ">
+            <label for="" class="yeats-form-label"
+              >Patient Payment Transaction Type<span class="star">*</span>
+            </label>
+            <p-dropdown
+              [options]="patientFinancialCode"
+              [(ngModel)]="selectedPatientPayment"
+              optionLabel="Description"
+              [showClear]="true"
+              placeholder="Select Financial Type"
+            >
+            </p-dropdown>
+          </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="form-group yeats-form-group ">
+            <label for="" class="yeats-form-label"
+              >Write-Off Transaction Code<span class="star">*</span>
+            </label>
+            <p-dropdown
+              [options]="writeoffinancialCode"
+              [(ngModel)]="selectedWrite"
+              optionLabel="Description"
+              [showClear]="true"
+            >
+            </p-dropdown>
+          </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="insurancePayment">
+    <div class="col-lg-12">
+        <div class="form-group yeats-form-group ">
+            <label for="" class="yeats-form-label"> </label>
+            <p-checkbox
+              [(ngModel)]="text"
+              label="Don't send statements for this patient"
+            >
+            </p-checkbox>
+          </div>
+    </div>
+      <div class="col-lg-3 col-md-3 col-3">
+          <div class="form-group yeats-form-group ">
+            <label for="" class="yeats-form-label"
+              >Insurance Payment Transaction Type<span class="star">*</span>
+            </label>
+            <p-dropdown
+              [options]="financialType"
+              [(ngModel)]="selectedType"
+              optionLabel="FinancialTypeDesc"
+              [showClear]="true"
+              placeholder="Select Financial Type"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-3">
+          <div class="form-group yeats-form-group ">
+            <label for="" class="yeats-form-label"
+              >Insurance Payment Transaction Code<span class="star">*</span>
+            </label>
+            <p-dropdown
+              [options]="insuranceFinancialCode"
+              [(ngModel)]="selectedCode"
+              optionLabel="Description"
+              [showClear]="true"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-3">
+          <div class="form-group yeats-form-group ">
+            <label for="" class="yeats-form-label"
+              >Adjustment Transaction Code<span class="star">*</span>
+            </label>
+            <p-dropdown
+              [options]="adjustmentFinancialCode"
+              [(ngModel)]="selectedAdjustment"
+              optionLabel="Description"
+              [showClear]="true"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-3">
+          <div class="form-group yeats-form-group ">
+            <label for="" class="yeats-form-label"
+              >Write-Off Transaction Code<span class="star">*</span>
+            </label>
+            <p-dropdown
+              [options]="writeoffinancialCode"
+              [(ngModel)]="selectedWrite"
+              optionLabel="Description"
+              [showClear]="true"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-lg-12">
+              <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right" (click)="activeModal.close('Close click')">
+                Cancel
+              </button>
+              <button pButton class="yeats-btn yeats-btn-primary pull-right mr-1" (click)="onSave()">
+                Save
+              </button>
+          </div>
+
+        </div>
+
+
+  </div>
+</div>
+
+
+
+
+<!-- <div class="allocate-insurance">
+  <div class="card border-0 box-shadow">
+    <div class="card-header transparent border-0 text-muted">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-3">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Patient Details</label>
+              <input
+                pInputText
+                type="text"
+                class="form-control yeats-form-control"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Unique Number</label>
+              <input
+                pInputText
+                type="text"
+                class="form-control yeats-form-control"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Acc.Bal.Due: </label>
+              <input
+                pInputText
+                type="text"
+                class="form-control yeats-form-control"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Pat.Bal.Due:</label>
+              <input
+                pInputText
+                type="text"
+                class="form-control yeats-form-control"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Ins.Bal.Due:</label>
+              <input
+                pInputText
+                type="text"
+                class="form-control yeats-form-control"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label"
+                >Unallocated Payments:</label
+              >
+              <input
+                pInputText
+                type="text"
+                class="form-control yeats-form-control"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">DOB:</label>
+              <input
+                pInputText
+                type="text"
+                class="form-control yeats-form-control"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Cell Phone:</label>
+              <input
+                pInputText
+                type="text"
+                class="form-control yeats-form-control"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label"
+                >Primary Insurance</label
+              >
+              <input
+                pInputText
+                type="text"
+                class="form-control yeats-form-control"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label"
+                >Secondary Insurance</label
+              >
+              <input
+                pInputText
+                type="text"
+                class="form-control yeats-form-control"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-lg-3"></div>
+          <div class="col-lg-3"></div>
+          <h5>Payments Pending Allocation</h5>
+          <div class="row">
+            <div class="col-lg-12">
+              <p-table [columns]="cols" [value]="patient">
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th></th>
+                    <th *ngFor="let col of columns">{{ col.header }}</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                  <tr>
+                    <td><span>></span></td>
+                    <td *ngFor="let col of columns">
+                      {{ rowData[col.field] }}
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-lg-12 mt-2">
+              <h6>
+                <b
+                  >Displaying bills associated with the Insurance Provider. To
+                  apply payments enter details here:</b
+                >
+              </h6>
+              <p-table [columns]="col" [value]="provider">
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th *ngFor="let col of columns">{{ col.header }}</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td *ngFor="let col of columns">
+                      {{ rowData[col.field] }}
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+          <div class="row"><div class="col-lg-3"></div></div>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group yeats-form-group ">
+                <label for="" class="yeats-form-label"> </label>
+                <p-checkbox
+                  [(ngModel)]="text"
+                  label="Don't send statements for this patient"
+                >
+                </p-checkbox>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group yeats-form-group ">
+                <label for="" class="yeats-form-label"
+                  >Insurance Payment Transaction Type
+                </label>
+                <p-dropdown
+                  [options]="type"
+                  [(ngModel)]="selectedType"
+                  optionLabel="name"
+                  [showClear]="true"
+                >
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group yeats-form-group ">
+                <label for="" class="yeats-form-label"
+                  >Insurance Payment Transaction Code
+                </label>
+                <p-dropdown
+                  [options]="code"
+                  [(ngModel)]="selectedCode"
+                  optionLabel="name"
+                  [showClear]="true"
+                >
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group yeats-form-group ">
+                <label for="" class="yeats-form-label"
+                  >Adjustment Transaction Code
+                </label>
+                <p-dropdown
+                  [options]="adjustment"
+                  [(ngModel)]="selectedAdjustment"
+                  optionLabel="name"
+                  [showClear]="true"
+                >
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group yeats-form-group ">
+                <label for="" class="yeats-form-label"
+                  >Write-Off Transaction Code
+                </label>
+                <p-dropdown
+                  [options]="writeoff"
+                  [(ngModel)]="selectedWrite"
+                  optionLabel="name"
+                  [showClear]="true"
+                >
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <button
+                pButton
+                class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right"
+              >
+                Cancel
+              </button>
+              <button
+                pButton
+                class="yeats-btn yeats-btn-primary pull-right mr-1"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->

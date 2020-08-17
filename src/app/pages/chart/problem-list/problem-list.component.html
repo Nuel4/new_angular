@@ -1,0 +1,89 @@
+<div class="problemList">
+<div *ngIf="toChart">
+<app-widget-header [widgetData]="widgetData" (refreshWidget)="refreshData()"></app-widget-header>
+</div>
+<div class="gridster-item-content">
+<div class="yeats-tables">
+    <div *ngIf="isLoader" class="row">
+        <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading">
+        </div>
+    </div>
+  <p-table [columns]="cols" [value]="problemList" dataKey="CodeDescription" [loading]="isLoader" *ngIf="!isLoader" [scrollable]="true" dataKey="MrProblemListId">
+      <ng-template pTemplate="header" let-columns>
+          <tr>
+              <th style="width: 4em"></th>
+              <th *ngFor="let col of columns" class="a" data-toggle="tooltip" title={{col.header}} >{{col.header}}</th>
+              <!-- <th>Problem</th>
+              <th>ICD10</th>
+              <th>Status</th>
+              <th>Diagnosis</th>
+              <th>Edit</th>
+              <th>Delete</th> -->
+          </tr>
+      </ng-template>
+      <!-- <ng-template pTemplate="body">
+          <tr *ngFor ="let item of problemList">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+          </tr>
+      </ng-template> -->
+      <ng-template pTemplate="body" let-rowData let-expanded="expanded" >
+            <!-- <tr *ngIf="rowData.Icd9Description !== null"> -->
+                <tr [pSelectableRow]="rowData" >
+                    <!-- <tr [pSelectableRow]="rowData" *ngIf='!(rowData.CodeDescription == null)'> -->
+                <td>
+                    <a style="padding-left:10px" href="#" [pRowToggler]="rowData">
+                        <i [ngClass]="expanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"></i>
+                    </a>
+                </td>
+                <td colspan = "5"  >
+                 [{{rowData.Code}}] {{rowData.CodeDescription}}
+                 <!-- [{{rowData.Icd9Code}}] {{rowData.Icd9Description}} -->
+                 <!-- {{rowData.Icd9Description}} -->
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+            <tr>
+                <td [attr.colspan]="columns.length + 1">
+                    <p-table >
+                        <ng-template pTemplate="header">
+                            <tr>
+                                    <!-- <td *ngFor="let col of columns">{{ rowData[col.field] }}</td> -->
+<td style="width: 3em"></td>
+                                <!-- <td>[{{rowData.Icd9Code}}] {{rowData.Icd9Description}}</td> -->
+                                <td><p-checkbox [(ngModel)]="rowData.IsIcd10" binary="true" [disabled]="true"></p-checkbox></td>
+                                <td>{{rowData.Status}}</td>
+                                <td>{{rowData.DateDiagnosed | date: 'MM/dd/yyyy'}}</td>
+                                <td><i class="fa fa-pencil" (click)="editModal(rowData)" style="cursor: pointer"></i></td>
+                                <td><i class="fa fa-times" (click)="deleteModal(rowData)" style="cursor: pointer"></i></td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </td>
+            </tr>
+        </ng-template>
+  </p-table>
+</div>
+<p-paginator [rows]="rows" (onPageChange)="paginate($event)" [totalRecords]="totalRecords"></p-paginator>
+</div>
+</div>
+<!-- <div id="deleteModal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the record?
+            </div>
+            <div class="col-12">
+                <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3">Delete</button>
+                <button pButton class="yeats-btn yeats-btn-secondary ui-buttton-secondary ml-3" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div> -->

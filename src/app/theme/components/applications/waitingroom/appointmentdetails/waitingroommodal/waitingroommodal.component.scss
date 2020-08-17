@@ -1,0 +1,97 @@
+.my-class > .modal-dialog { 
+    max-width: 30%;
+}
+.delete-class > .modal-dialog{ 
+    margin-top: 15%;
+    max-width: 30%;
+
+}
+.account-summary > .modal-dialog{
+    margin-top:4%;
+    max-width:50%;
+}
+
+// .modal-body {
+//     max-height:10%;
+//     overflow-y: auto;
+//     overflow-x:hidden;
+// }
+// .waitingRoom > .modal-dialog{
+//     margin-top:5%;
+//     max-width: 80%; 
+// }
+
+// .waitingRoomCopay > .modal-dialog{
+//     margin-top:5%;
+//     max-width: 80%; 
+// }
+
+// .account-summary > .modal-dialog{
+//     margin-top:15%;
+//     max-width: 50%;
+// }
+
+// .dropdown{
+//     width: 24% !important;
+// }
+
+.documents{
+    .modal-content {
+        min-width: 167% !important;
+        margin-left: -34% !important;
+    }
+
+    .dropdown{
+        width: 14% !important;
+    }
+}
+
+.forms {
+    .modal-content {
+        min-width: 100% !important;
+        // margin-left: -34% !important;
+    }
+}
+
+.copay {
+.u-mb {
+    margin-bottom: 6px;
+}
+.modal-content {
+    min-width: 100% !important;
+    // margin-left: -34% !important;
+}
+.modal-footer{
+    // height: 60px;
+    margin-bottom: -16px;
+}
+}
+
+.u-margin {
+    margin: 0px 14px;
+}
+
+.u-ml {
+    margin-left: 0px;
+}
+
+.cancel-appt {
+    .dropdown {
+        width: 86% !important;
+    }
+    .modal-footer{
+        height: 60px;
+        margin-bottom: -16px;
+    }
+}
+
+.label-header {
+font-weight: bold;
+}
+
+.p-view {
+    background: #1F70BA;
+    border: solid 1px #1F70BA;
+    border-radius: 6px;
+    color: #fff;
+}

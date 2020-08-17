@@ -1,0 +1,249 @@
+<div class="billingPhysicianModal">
+  <!--Billing Details Modal-->
+  <div *ngIf="billingDetails">
+          <div class="modal-header">
+            <h4 class="modal-title">Physicin Billing Details</h4>
+            <button
+              type="button"
+              class="close"
+              aria-label="Close"
+              (click)="modal.dismiss('Cross click')"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-lg-4">
+                  <label class="yeats-form-label"><b>Physician</b></label> 
+                  <label class="yeats-form-label">{{physicianName}}</label> 
+              </div>
+              <div class="col-lg-4">
+                  <label class="yeats-form-label"><b>Facility</b></label> 
+                  <label class="yeats-form-label">{{facilityName}}</label> 
+              </div>
+              <div class="col-lg-4">
+                  <label class="yeats-form-label">National Physician Identifier Number<span class="required">*</span></label> 
+                  <input type="text" [(ngModel)]="physicianNumber" pInputText class="form-control yeats-form-control">
+              </div>
+              <div class="col-lg-4">
+                  <label class="yeats-form-label">Physician Tax Identifier<span class="required">*</span></label> 
+                  <input type="text" [(ngModel)]="taxNumber" pInputText class="form-control yeats-form-control">
+              </div>
+              <div class="col-lg-4">
+                  <label class="yeats-form-label">Unique Physician Identification Number<span class="required">*</span></label> 
+                  <input type="text" [(ngModel)]="uniqueNumber" pInputText class="form-control yeats-form-control">
+              </div>
+              <div class="col-lg-4">
+                  <div class="form-group yeats-form-group ">
+                      <label    class="yeats-form-label">&nbsp;</label> 
+                      <p-checkbox [(ngModel)]="medicareParticipant" label="Medicare Participant" binary="true" >
+                      </p-checkbox>
+                    </div>
+              </div>
+              <div class="col-lg-4">
+                  <div class="form-group yeats-form-group ">
+                      <label class="yeats-form-label">&nbsp;</label> 
+                      <p-checkbox [(ngModel)]="hospiceEmployed" label="Hospice Employed " binary="true" >
+                      </p-checkbox>
+                    </div>
+              </div>
+              <div class="col-lg-4">
+                  <div class="form-group yeats-form-group ">
+                      <label class="yeats-form-label">&nbsp;</label> 
+                      <p-checkbox [(ngModel)]="eligibiltyVerification" label="Require Patient Eligibilty Verification" binary="true">
+                      </p-checkbox>
+                    </div>
+              </div>
+              <div class="col-lg-4">
+                  <label class="yeats-form-label">State License Number </label> 
+                  <input type="text" [(ngModel)]="stateLicNumber" pInputText class="form-control yeats-form-control">
+              </div>
+              <div class="col-lg-4">
+                  <label class="yeats-form-label">Group National Physician Identifier</label> 
+                  <input type="text" [(ngModel)]="groupNationalIden" pInputText class="form-control yeats-form-control">
+              </div>
+              <div class="col-lg-4">
+                  <label class="yeats-form-label">Speciality License Number</label> 
+                  <input type="text" [(ngModel)]="specialityNumber" pInputText class="form-control yeats-form-control">
+              </div>
+              <div class="col-lg-4">
+                  <label class="yeats-form-label">DEA Number<span class="required">*</span></label> 
+                  <input type="text" [(ngModel)]="DEANumber" pInputText class="form-control yeats-form-control">
+              </div>
+              <div class="col-lg-4">
+                  <label class="yeats-form-label">Claims Submitter ID</label> 
+                  <input type="text" [(ngModel)]="submitterId" pInputText class="form-control yeats-form-control">
+              </div>
+              <div class="col-lg-4">
+                  <label class="yeats-form-label">Mammography Certification Number</label> 
+                  <input type="text" [(ngModel)]="CertificationNumber" pInputText class="form-control yeats-form-control">
+              </div>
+              <div class="col-lg-4">
+                  <label class="yeats-form-label">Care Plan Oversight Number</label> 
+                  <input type="text" [(ngModel)]="overSightNumber" pInputText class="form-control yeats-form-control">
+              </div>
+              <div class="col-lg-4">
+                  <label class="yeats-form-label">Other License Number</label> 
+                  <input type="text" [(ngModel)]="otherLicNumber" pInputText class="form-control yeats-form-control">
+              </div>
+              <div class="col-lg-4">
+                  <label class="yeats-form-label">Other License Description</label> 
+                  <textarea [rows]="5" [cols]="30" [(ngModel)]="otherLicDescription" pInputTextarea autoResize="autoResize"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+           
+            <button
+              pButton
+              class="yeats-btn yeats-btn-danger ui-button-danger pull-right ml-3"
+              (click)="modal.close('Close click')"
+            >
+              Cancel
+            </button>
+            <button
+            pButton
+            class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3"
+           (click)="updatePhysician()"
+          >
+            Save Changes
+          </button>
+          </div>
+  </div>
+
+
+  <!--Insurance Details Modal-->
+  <div *ngIf="insuranceDetails">
+    <div class="modal-header">
+      <h4 class="modal-title">Physicin Insurance Details</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="yeats-tables">
+      <p-table [columns]="cols" [value]="physicianInsuranceData" selectionMode="single" dataKey="PhysicianInsuranceIdentificationId" [(selection)]="selectedRowValue" [paginator]="true" [rows]="3">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns">
+                    {{col.header}}
+                </th>
+                <th>Delete</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr (click)="selectedRow(rowData)" [pSelectableRow]="rowData">
+                <td *ngFor="let col of columns">
+                        {{rowData[col.field]}}
+                </td>
+                <td><i class="pi pi-times" (click)="deletePhysicianInsurance(rowData)"></i></td>
+            </tr>
+        </ng-template>
+    </p-table>
+    </div>
+    
+    <div class="row">
+      <div class="col-12">
+          <button
+          pButton
+          class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3"
+         
+        >
+          Add New Insurance
+        </button>
+      </div>
+      <div class="col-lg-4">
+          <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Insurance Provider<span class="required">*</span></label>
+              <p-dropdown [options]="insuranceProviderList" [(ngModel)]="selectedInsuranceProvider" placeholder="Select Insurance Provider" optionLabel="insuranceProviderName" [showClear]="true">
+              </p-dropdown> </div>
+      </div>
+      <div class="col-lg-4">
+          <label class="yeats-form-label">Submit Password</label> 
+          <input type="text" [(ngModel)]="password" pInputText class="form-control yeats-form-control">
+      </div>
+      <div class="col-lg-4">
+          <label class="yeats-form-label">NM109 Loop 1000A</label> 
+          <input type="text" [(ngModel)]="nmLoop" pInputText class="form-control yeats-form-control">
+      </div>
+      <div class="col-lg-4">
+          <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Production Status<span class="required">*</span></label>
+              <p-dropdown [options]="productionStatus" [(ngModel)]="selectedProductionStatus" placeholder="Select Production Status" optionLabel="label" [showClear]="true">
+              </p-dropdown> </div>
+      </div>
+      <div class="col-lg-4">
+          <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">ID Qualifier<span class="required">*</span></label>
+              <p-dropdown [options]="idQualifier" [(ngModel)]="selectedQualifier" placeholder="Select ID Qualifier" optionLabel="label" [showClear]="true">
+              </p-dropdown> </div>
+      </div>
+      <div class="col-lg-4">
+          <div class="form-group yeats-form-group ">
+              <label class="yeats-form-label">&nbsp;</label> 
+              <p-checkbox [(ngModel)]="individualProvider" label="Individual Provider" binary="true" >
+              </p-checkbox>
+            </div>
+      </div>
+      <div class="col-lg-6">
+          <div class="form-group yeats-form-group ">
+              <label class="yeats-form-label">&nbsp;</label> 
+              <p-checkbox [(ngModel)]="transmitNPI" label="Transmit NPI Only and Do Not Include Legacy IDs " binary="true" >
+              </p-checkbox>
+            </div>
+      </div>
+      <div class="col-lg-6">
+          <div class="form-group yeats-form-group ">
+              <label class="yeats-form-label">&nbsp;</label> 
+              <p-checkbox [(ngModel)]="excludeLoop" label="Exclude loop 2310D(Rendering provider loop)bit" binary="true" >
+              </p-checkbox>
+            </div>
+      </div>
+      <div class="col-lg-6">
+          <div class="form-group yeats-form-group ">
+              <label class="yeats-form-label">&nbsp;</label> 
+              <p-checkbox [(ngModel)]="taxId" label="Exclude Tax Id/SSN from 2301B(Rendering Provider Loop) bit" binary="true" >
+              </p-checkbox>
+            </div>
+      </div>
+      <div class="col-lg-6">
+          <div class="form-group yeats-form-group ">
+              <label class="yeats-form-label">&nbsp;</label> 
+              <p-checkbox [(ngModel)]="qualifier" label="Use '9F' qualifier, not 'G1' for Prior Authorization" binary="true" >
+              </p-checkbox>
+            </div>
+      </div>
+    </div>
+    </div>
+    <div class="col-12">
+     
+      <button
+        pButton
+        class="yeats-btn yeats-btn-danger ui-button-danger pull-right ml-3"
+        (click)="modal.close('Close click')"
+      >
+        Cancel
+      </button>
+      <button
+      pButton
+      class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3"
+     (click)="newPhysicianInsurance()" *ngIf="save"
+    >
+      Save 
+    </button>
+    <button
+      pButton
+      class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3"
+     (click)="editPhysicianInsurance(rowData)" *ngIf="update"
+    >
+     Update
+    </button>
+    </div>
+</div>
+</div>

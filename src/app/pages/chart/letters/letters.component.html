@@ -1,0 +1,59 @@
+<div class="card border-0 box-shadow letters">
+    <!-- <div class="card-header transparent border-0 text-muted"> -->
+    <!-- <h5>(Patient Name) Letters</h5>
+         <hr/> -->
+    <div class="card-header transparent border-0 text-muted">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-3 col-md-3 col-lg-10 mt-2">
+                    <button pButton icon="fa fa-plus" (click)="addnewletter($event)" label="Delete Letter"
+                    class="yeats-btn yeats-btn-primary">Add New Letter</button>
+                </div>
+                <!-- <div class="col-lg-2 mt-2">
+                    <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right" (click)="onClose()">Cancel</button>
+                </div>       -->
+                <!-- </div> -->
+                <!-- <div class="col-3 col-md-3 col-lg-3 mt-3"> -->
+                    <!-- <button pButton icon="fa fa-pencil" (click)="addnewletter($event)" label="Add New Letter"
+                        class="yeats-btn yeats-btn-primary ml-2 mt-2">Edit Letter</button>      -->
+                <!-- </div> -->
+                <!-- <div class="col-3 col-md-3 col-lg-3 mt-3"> -->
+                    <!-- <button pButton icon="fa fa-times" (click)="addnewletter($event)" label="Add New Letter"
+                        class="yeats-btn yeats-btn-primary ml-2 mt-2">Delete Letter</button> -->
+                <!-- </div> -->
+            </div>
+                <div class="col-12 col-md-12 col-lg-12">
+                    <div class="yeats-tables">
+                    <p-table [columns]="cols" [value]="referalLetter" sortMode="single">
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                    {{col.header}}
+                                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-columns="columns">
+                            <tr>
+                                <td *ngFor="let col of columns">
+                                    {{rowData[col.field]}}
+                                </td>
+                                <td>
+                                  <!-- <button pButton class="yeats-btn yeats-btn-primary" [disabled]="true">Edit</button>
+                                  <button pButton class="yeats-btn yeats-btn-primary" [disabled]="true">Cancel</button> -->
+                                 <img src="../../../../assets/images/Edit.svg" alt="Edit" (click)="openEditor(rowData)"> 
+                                 
+                                 <img src="../../../../assets/images/Delete.svg" alt="Delete" class="pl-1"  (click)=" openDeleteModal(rowData.ReferralLetterId)" style="cursor:pointer;">
+                                 <!-- <i class="fa fa-times" (click)="cancelReferralLetters(rowData.ReferralLetterId)"></i> -->
+                                    <!-- <p-button [disabled]="true" label="Cancel" class="buttonstyle"></p-button> -->
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+              </div>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>

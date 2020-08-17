@@ -1,0 +1,438 @@
+<div class="addInsuranceProvider">
+  <div *ngIf="addInsuranceCompany">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Add/Edit Insurance Provider</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Insurance Provider Name <span class="required">*</span></label>
+            <input type="text" [(ngModel)]="insuranceProviderName" class="form-control yeats-form-control"
+              placeholder="Enter Name" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Insurance Provider Code</label>
+            <input type="text" [(ngModel)]="insuranceProviderCode" class="form-control yeats-form-control"
+              placeholder="Enter Code" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Payer ID</label>
+            <input type="text" [(ngModel)]="payerId" class="form-control yeats-form-control"
+              placeholder="Enter ID" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label for="ndcunitMeasure" class="formLabel yeats-form-label">Insurance Provider Type <span
+                class="required">*</span></label>
+            <p-dropdown [options]="insuranceProviderType" [(ngModel)]="selectedInsuranceProvider" placeholder="Select Insurance Provider Type"
+              optionLabel="label" [showClear]="true">
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label for="ndcunitMeasure" class="formLabel yeats-form-label">Fee Schedule Type <span
+                class="required">*</span></label>
+            <p-dropdown [options]="feeScheduleType" [(ngModel)]="selectedFeeType" placeholder="Select Fee Schedule Type"
+              optionLabel="Name" [showClear]="true">
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label for="ndcunitMeasure" class="formLabel yeats-form-label">RVU Payment Method</label>
+            <p-dropdown [options]="rvuPaymentData" [(ngModel)]="selectedRvu" placeholder="Select Method"
+              optionLabel="RvuPaymentMethodName" [showClear]="true">
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Address Line 1</label>
+            <input type="text" [(ngModel)]="addressLine1" class="form-control yeats-form-control"
+              placeholder="Enter Address" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Address Line 2</label>
+            <input type="text" [(ngModel)]="addressLine2" class="form-control yeats-form-control"
+              placeholder="Enter Address" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">City</label>
+            <input type="text" [(ngModel)]="city" class="form-control yeats-form-control"
+              placeholder="Enter City" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label for="ndcunitMeasure" class="formLabel yeats-form-label">State Code</label>
+            <p-dropdown [options]="stateList" [(ngModel)]="selectState" placeholder="Select State"
+              optionLabel="label" [showClear]="true">
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <div class="row">
+              <div class="col-lg-7 col-sm-7 col-7">
+                <label class="formLabel yeats-form-label">Zip Code</label>
+                <p-inputMask mask="99999" [(ngModel)]="zipCode" placeholder="99999"></p-inputMask>
+              </div>
+              <div class="col-lg-5 col-sm-5 col-5">
+                <label class="formLabel yeats-form-label">Zip+4</label>
+                <p-inputMask mask="9999" [(ngModel)]="zipPlus" placeholder="9999"></p-inputMask>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class=" form-group yeats-form-group">
+            <label for="SSN" class="yeats-form-label">Main Phone</label>
+            <p-inputMask mask="(999) 999-9999" [(ngModel)]="mainPhone" placeholder="(999) 99-9999" (keyup)="onInputChange($event.target.value)"></p-inputMask>
+            
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class=" form-group yeats-form-group">
+            <label for="SSN" class="yeats-form-label">Alt Phone</label>
+            <p-inputMask mask="(999) 999-9999" [(ngModel)]="altPhone" placeholder="(999) 99-9999" (keyup)="altPhoneChange($event.target.value)"></p-inputMask>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class=" form-group yeats-form-group">
+            <label for="SSN" class="yeats-form-label">Eligibility Verification Phone</label>
+            <p-inputMask mask="(999) 999-9999" [(ngModel)]="eligibilityVerificationPhone" placeholder="(999) 99-9999" (keyup)="eligibilityExtChange($event.target.value)"></p-inputMask>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Eligibility Verification Contact Name</label>
+            <input type="text" [(ngModel)]="elgibContactName" class="form-control yeats-form-control"
+              placeholder="Enter Contact Name" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class=" form-group yeats-form-group">
+            <label for="SSN" class="yeats-form-label">Authorization Phone</label>
+            <p-inputMask mask="(999) 999-9999" [(ngModel)]="authPhone" placeholder="(999) 99-9999"></p-inputMask>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Authorization Contact Name</label>
+            <input type="text" [(ngModel)]="authContactName" class="form-control yeats-form-control"
+              placeholder="Enter Contact Name" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class=" form-group yeats-form-group">
+            <label for="SSN" class="yeats-form-label">Fax</label>
+            <p-inputMask mask="(999) 999-9999" [(ngModel)]="fax" placeholder="(999) 99-9999"></p-inputMask>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Email</label>
+            <input type="email" [(ngModel)]="email" class="form-control yeats-form-control"
+              placeholder="Enter Email" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group">
+            <label class="formLabel yeats-form-label">In Active</label>
+            <p-checkbox class="yeats-form-control" [(ngModel)]="inActive" binary="true"></p-checkbox>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group">
+            <label class="formLabel yeats-form-label">NPI Only</label>
+            <p-checkbox class="yeats-form-control" [(ngModel)]="npiOnly" binary="true"></p-checkbox>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label for="ndcunitMeasure" class="formLabel yeats-form-label">AR Type</label>
+            <p-dropdown [options]="insuranceCategory" [(ngModel)]="selectedARTypes" placeholder="Select AR Type"
+              optionLabel="InsuranceCategoryName" [showClear]="true">
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label for="ndcunitMeasure" class="formLabel yeats-form-label">ID Qualifier <span
+                class="required">*</span></label>
+            <p-dropdown [options]="idQualifier" [(ngModel)]="selectedIdQualifier" placeholder="Select ID Qualifier"
+              optionLabel="label" [showClear]="true">
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Insurance Provider Carrier Id</label>
+            <input type="text" [(ngModel)]="providerCarrId" class="form-control yeats-form-control"
+              placeholder="Enter Carrier ID" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Primary EDI Receiver</label>
+            <input type="text" [(ngModel)]="primaryEDI" class="form-control yeats-form-control"
+              placeholder="Enter EDI Receiver" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Secondary EDI Receiver</label>
+            <input type="text" [(ngModel)]="secondaryEDI" class="form-control yeats-form-control"
+              placeholder="Enter EDI Receiver" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Tertiary EDI Receiver</label>
+            <input type="text" [(ngModel)]="tertiaryEDI" class="form-control yeats-form-control"
+              placeholder="Enter EDI Receiver" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Eligibility Verification Payer Identifier</label>
+            <input type="text" [(ngModel)]="EvPayerIdentifier" class="form-control yeats-form-control"
+              placeholder="Enter Identifier" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">CMS Identifer</label>
+            <input type="text" [(ngModel)]="cmsIdentifier" class="form-control yeats-form-control"
+              placeholder="Enter CMS Identifer" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Alternate CMS Identifer</label>
+            <input type="text" [(ngModel)]="altCMSIdentifier" class="form-control yeats-form-control"
+              placeholder="Enter CMS Identifer" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Maximum Transactions Per Claim</label>
+            <input type="text" [(ngModel)]="maximumTransaction" class="form-control yeats-form-control"
+              placeholder="Enter Transactions per Claim" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Complimentary Crossover</label>
+            <input type="text" [(ngModel)]="complimentaryCross" class="form-control yeats-form-control"
+              placeholder="Enter CMS Identifer" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group">
+            <label class="formLabel yeats-form-label">Group Taxonomy Code Required</label>
+            <p-checkbox class="yeats-form-control" [(ngModel)]="groupTaxanomy" binary="false"></p-checkbox>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">x12 Receiver ID</label>
+            <input type="text" [(ngModel)]="x12ReceiverID" class="form-control yeats-form-control"
+              placeholder="Enter Receiver ID" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">x12 Default Partner ID</label>
+            <input type="text" [(ngModel)]="x12DefaultID" class="form-control yeats-form-control"
+              placeholder="Enter Partner ID" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Medigap COBA ID</label>
+            <input type="text" [(ngModel)]="mediGap" class="form-control yeats-form-control"
+              placeholder="Enter COBA ID" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Clearinghouse Commercial ID</label>
+            <input type="text" [(ngModel)]="clearingHouseCommercial" class="form-control yeats-form-control"
+              placeholder="Enter Commercial ID" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Clearinghouse Submitter ID</label>
+            <input type="text" [(ngModel)]="clearingSubmitter" class="form-control yeats-form-control"
+              placeholder="Enter Submitter ID" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Clearinghouse Destination ID</label>
+            <input type="text" [(ngModel)]="destinationId" class="form-control yeats-form-control"
+              placeholder="Enter Destination ID" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Insurance Provider Group Name</label>
+            <input type="text" [(ngModel)]="providerGroupName" class="form-control yeats-form-control"
+              placeholder="Enter Group Name" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group">
+            <label class="formLabel yeats-form-label">Submit Claims as Group Practice</label>
+            <p-checkbox class="yeats-form-control" [(ngModel)]="submitClaims" binary="false"></p-checkbox>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Group Practice ID</label>
+            <input type="text" [(ngModel)]="groupPracticeId" class="form-control yeats-form-control"
+              placeholder="Enter Practice ID" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">ICD-10 Effective Date</label>
+            <p-calendar class="yeats-form-control" [(ngModel)]="icd10EffectiveDate" [showIcon]="true"
+              >
+            </p-calendar>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Receiver Name <span class="required">*</span></label>
+            <input type="text" [(ngModel)]="receiverName" class="form-control yeats-form-control"
+              placeholder="Enter Name" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Receiver ID <span class="required">*</span></label>
+            <input type="text" [(ngModel)]="receiverId" class="form-control yeats-form-control"
+              placeholder="Enter ID" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Insurance Company Name</label>
+            <input type="text" [(ngModel)]="insCompanyName" class="form-control yeats-form-control"
+              placeholder="Enter Company Name" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Insurance Company Payer ID</label>
+            <input type="text" [(ngModel)]="insuPayerId" class="form-control yeats-form-control"
+              placeholder="Enter ID" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Insurance Company Type</label>
+            <input type="text" [(ngModel)]="insCompanyType" class="form-control yeats-form-control"
+              placeholder="Enter Company Type" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Supervising Provider Secondary ID Qualifier</label>
+            <input type="text" [(ngModel)]="supervisingId" class="form-control yeats-form-control"
+              placeholder="Enter ID Qualifier" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Billing Provider Secondary ID Qualifier</label>
+            <input type="text" [(ngModel)]="billingProvider" class="form-control yeats-form-control"
+              placeholder="Enter ID Qualifier" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Rendering Provider Secondary ID Qualifier</label>
+            <input type="text" [(ngModel)]="renderingProvider" class="form-control yeats-form-control"
+              placeholder="Enter ID Qualifier" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Referring Provider Secondary ID Qualifier</label>
+            <input type="text" [(ngModel)]="referringProvider" class="form-control yeats-form-control"
+              placeholder="Enter ID Qualifier" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Service Facility Secondary ID Qualifier</label>
+            <input type="text" [(ngModel)]=servicefacility class="form-control yeats-form-control"
+              placeholder="Enter ID Qualifier" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Other Subscriber Insurance Type Code</label>
+            <input type="text" [(ngModel)]="otherSubscriber" class="form-control yeats-form-control"
+              placeholder="Enter Code" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group">
+            <label class="formLabel yeats-form-label">Wrap Ansi File</label>
+            <p-checkbox class="yeats-form-control" [(ngModel)]="wrapANSIFile" binary="false"></p-checkbox>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group">
+            <label class="formLabel yeats-form-label">Pilot Claim</label>
+            <p-checkbox class="yeats-form-control" [(ngModel)]="pilotClaims" binary="true"></p-checkbox>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group">
+            <label class="formLabel yeats-form-label">Use 2420A not 2310B</label>
+            <p-checkbox class="yeats-form-control" [(ngModel)]="Use2420aNot2310b" binary="true"></p-checkbox>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group">
+            <label class="formLabel yeats-form-label">Use Patient Loop 2000c</label>
+            <p-checkbox class="yeats-form-control" [(ngModel)]="UsesPatientLoop2000c" binary="true"></p-checkbox>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+      <div class="col-12">
+        <button pButton class="yeats-btn yeats-btn-danger ui-button-danger pull-right ml-3"
+         (click)="closeModal()">Cancel</button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" *ngIf="save" (click)="addInsuranceProvider()">Save</button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" *ngIf="update" (click)="updateInsuranceProvider()">Update</button>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>

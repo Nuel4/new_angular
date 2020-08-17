@@ -1,0 +1,241 @@
+<div class="billingSetupPractice">
+  <label class="formLabel yeats-form-label"
+    ><b>Billing Details : OtherID Numbers for Insurance Cos.[payers]</b></label
+  >
+  <div class="row">
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group">
+        <label class="formLabel yeats-form-label"
+          >Billing Details for Practice</label
+        >
+        <p-checkbox
+          class="yeats-form-control"
+          [(ngModel)]="applyForAll"
+          label="Apply to all Facilities"
+          (onChange)="getFacilityInsuranceProvider()"
+          binary="true"
+        ></p-checkbox>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group">
+        <label for="allFacility" class="formLabel yeats-form-label"
+          >Facility</label
+        >
+        <p-dropdown
+          [options]="facilities"
+          [(ngModel)]="selectedFacility"
+          placeholder="Select Facility"
+          (onChange)="getFacilityInsuranceProvider()"
+          optionLabel="FacilityName"
+          [showClear]="true"
+          [disabled]="applyForAll"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+  </div>
+
+  <label class="formLabel yeats-form-label"
+    >Select the Insurance Provider and then enter two-digit qualifier,
+    immediately followed by the service facility location's provider
+    number</label
+  >
+  <div class="row">
+    <div class="col-12">
+    <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" (click)="saveChanges()" [disabled]="saveFacilityInsurance">
+      Save Changes
+    </button>
+    <button
+      pButton
+      class="yeats-btn yeats-btn-primary pull-right ml-3"
+      (click)="addInsuranceCo()" [disabled]="addInsurance"
+    >
+      Add Insurance Co.
+    </button>
+  </div>
+  </div>
+  <div class="yeats-tables">
+    <p-table class="InsuranceProvider"
+      [columns]="cols"
+      [value]="FacilityInsuranceProvider"
+      [scrollable]="true" scrollHeight="200px"
+      [rows]="5"
+      dataKey="InsuranceProviderName"
+    >
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns">
+            {{ col.header }}
+          </th>
+          <th>Delete</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+          <td pEditableColumn>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-dropdown
+                [appendTo]="body"
+                  [options]="insuranceProvidersList"
+                  [(ngModel)]="rowData.InsuranceProviderName"
+                  optionLabel="InsuranceProviderName"
+                  (onChange)="updateInsuranceId(rowData)"
+                  [style]="{ width: '100%' }"
+                  
+                  placeholder="Select Insurance Provider"
+                >
+                </p-dropdown>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ rowData.InsuranceProviderName.InsuranceProviderName? rowData.InsuranceProviderName.InsuranceProviderName : '' }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td pEditableColumn>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input 
+                  type="text"
+                  pInputText
+                  [(ngModel)]="rowData.LocationProviderNumber"
+                  class="form-control yeats-form-control"
+                  placeholder="Enter Result"
+                />
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ rowData.LocationProviderNumber }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td style="text-align:center">
+            
+                <button
+                pButton
+                class="yeats-btn yeats-btn-primary"  pCancelEditableRow 
+                (click)="deleteFacilityProvider(rowData)" [disabled]="deleteFaciltyInsurane"
+              >
+                Delete
+              </button>
+            
+          </td>
+          <!-- <td><i class="pi pi-trash" (click)="deleteFacilityProvider(rowData)"></i></td> -->
+        </tr>
+        <!-- <tr ngIf="addInsurance">
+          <td pEditableColumn>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-dropdown
+                  [options]="insuranceProvidersList"
+                  [(ngModel)]="addInsuranceProviderName"
+                  optionLabel="InsuranceProviderName"
+                  [style]="{ width: '100%' }"
+                > 
+                </p-dropdown>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ addInsuranceProviderName }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td pEditableColumn>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input
+                  type="text"
+                  pInputText
+                  [(ngModel)]="addResult"
+                  class="form-control yeats-form-control"
+                  placeholder="Enter Result"
+                />
+              </ng-template>
+              <ng-template pTemplate="output">
+{{addResult}}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td></td>
+        </tr> -->
+      </ng-template>
+    </p-table>
+  </div>
+
+  <div
+    class="modal fade"
+    id="addInsuranceCompany"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div
+      class="modal-dialog modal-dialog-centered"
+      role="document"
+      style="max-width:700px"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            Add/Edit Insurance Company
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-6 col-sm-12 col-12">
+              <div class="form-group yeats-form-group ">
+                <label for="ndcunitMeasure" class="formLabel yeats-form-label"
+                  >Insurance Provider</label
+                >
+                <p-dropdown
+                  [options]="insuranceProvidersList"
+                  [(ngModel)]="rowClicked.InsuranceProviderName"
+                  placeholder="Select AR Type"
+                  optionLabel="InsuranceProviderName"
+                  [showClear]="true"
+                >
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-6 col-sm-12 col-12">
+              <div class="form-group yeats-form-group">
+                <label class="formLabel yeats-form-label"
+                  >Location Provider Number</label
+                >
+                <input
+                  type="text"
+                  [(ngModel)]="rowClicked.InsuranceProviderCode"
+                  class="form-control yeats-form-control"
+                  placeholder="Enter Location Provider Number"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            pButton
+            class="yeats-btn yeats-btn-danger ui-button-danger pull-right ml-3 mt-3"
+            data-dismiss="modal"
+          >
+            Cancel
+          </button>
+          <button
+            pButton
+            class="yeats-btn yeats-btn-primary pull-right ml-3 mt-3"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

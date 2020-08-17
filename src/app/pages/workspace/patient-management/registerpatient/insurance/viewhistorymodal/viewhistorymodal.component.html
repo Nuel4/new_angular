@@ -1,0 +1,40 @@
+<div class="viewHistoryM">
+  <div class="modal-header">
+    <h4 class="modal-title">View Insurance History</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="isLoader" class="row">
+      <div class="col-12 text-center"><img src="../../../../../../../assets/img/loader.gif" alt="loading"></div>
+    </div>
+    <!-- Datagrid-->
+    <div class="yeats-tables">
+
+      <p-table *ngIf="!isLoader" dataKey="ReferringPhysicianId" [paginator]="true" [columns]='col'
+        [loading]="isLoader" [value]="tableValue" [rows]="pageSize" [totalRecords]="totalItems" [lazy]="true"
+        (onLazyLoad)="paginate($event)">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns">{{ col.header }}</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr>
+            <td *ngFor="let col of columns">
+              {{ rowData[col.field] }}
+              </td>
+          </tr>
+        </ng-template>
+      </p-table>
+  </div>
+  <div class="modal-footer">
+    <div class="col-12">
+      <!-- <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3"
+        (click)="ConfirmDelete.emit(true); modal.close('Close click')">Delete</button> -->
+      <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+        (click)="modal.close('Close click')">Cancel</button>
+    </div>
+  </div>
+</div>

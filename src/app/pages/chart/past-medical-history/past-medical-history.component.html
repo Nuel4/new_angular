@@ -1,0 +1,42 @@
+<div class="pmh">
+  <div class="add-pmh" *ngIf="isenableWidgetPmh">
+    <app-add-pmh (refreshData)="refreshData()" [PEValueObj]="PEValueObj"></app-add-pmh>
+  </div>
+
+
+
+  <div *ngIf="toChart">
+    <app-widget-header [widgetData]="widgetData" (refreshWidget)="refreshData()"></app-widget-header>
+  </div>
+  <div class="gridster-item-content">
+    <div *ngIf="isLoader" class="row">
+      <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+    </div>
+    <div class="yeats-tables">
+      <p-table [columns]="cols" [value]="pmhList" [scrollable]="true">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns">
+              {{col.header}}
+            </th>
+          </tr>
+
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData>
+          <tr>
+            <td>{{rowData.DateEntered | date: 'MM/dd/yyyy'}}</td>
+            <td class="a" data-toggle="tooltip" title={{rowData.PmhData}}>{{rowData.PmhData}}</td>
+            <td *ngIf="rowData.Category === 1">Problem</td>
+            <td *ngIf="rowData.Category === 2">Surgery</td>
+            <td><i class="fa fa-pencil" (click)="editPmh(rowData)" style="cursor: pointer"></i></td>
+            <td><i class="fa fa-times" (click)="deletePmh(rowData)" style="cursor: pointer"></i></td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <p-paginator *ngIf="isenableWidgetPmh" [rows]="rows" (onPageChange)="paginate($event)"
+      [totalRecords]="totalRecords"></p-paginator>
+    <p-paginator *ngIf="!isenableWidgetPmh" styleClass="paginator" [rows]="rows" (onPageChange)="paginate($event)"
+      [totalRecords]="totalRecords"></p-paginator>
+  </div>
+</div>

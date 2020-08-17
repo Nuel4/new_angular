@@ -1,0 +1,35 @@
+<div class="orders">
+<div *ngIf="toChart">
+  <app-widget-header [widgetData]="widgetData" (refreshWidget)="refreshData()" (OnItemChange)="itemChange($event)" (OnTestChange)="testChange($event)" (OnStatusChange)="statusChange($event)"></app-widget-header>
+  </div>
+  <div class="gridster-item-content">
+
+    <div class="yeats-tables">
+      <p-table [value]="OrdersList">
+          <ng-template pTemplate="header" >
+              <tr>
+                  <th class="a" data-toggle="tooltip" title='Date'>Date</th>
+                  <th class="a" data-toggle="tooltip" title='Test name'>Test name</th>
+                  <th class="a" data-toggle="tooltip" title='Status'>Status</th>
+                  <th class="a" data-toggle="tooltip" title='Is electronic'>Is electronic</th>
+                  <th class="a" data-toggle="tooltip" title='Print'>Print</th>
+                  <th class="a" data-toggle="tooltip" title='Emdeon report'>Emdeon report</th>
+              </tr>
+              
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData>
+              <tr >
+                  <td class="a" data-toggle="tooltip" [title]='rowData.OrderDate | date: "dd/MM/yyyy"'>{{rowData.OrderDate | date: 'dd/MM/yyyy'}}</td>
+                  <td class="a" data-toggle="tooltip" [title]='rowData.LabOrderItemName'>{{rowData.LabOrderItemName}}</td>
+                  <td class="a" data-toggle="tooltip" [title]='rowData.PhysicianReviewStatus'>{{rowData.PhysicianReviewStatus}}</td>
+                  <td><p-checkbox [(ngModel)]="rowData.IsElectronic" binary="true" disabled="true"></p-checkbox></td>
+                  <td> <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary">View</button></td>
+                  <!-- <td><i class="fa fa-pencil" (click)="routeToEditImm(rowData.MrPatientImmmunizationId)" style="cursor: pointer;"></i></td> -->
+             <td></td>
+                </tr>
+          </ng-template>
+      </p-table>
+  </div>
+  <p-paginator [rows]="rows" (onPageChange)="paginate($event)" [totalRecords]="totalRecords"></p-paginator>
+</div>
+</div>

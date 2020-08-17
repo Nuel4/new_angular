@@ -1,0 +1,131 @@
+<div class="arWorklists">
+  <div class="row">
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="cptcode" class="formLabel yeats-form-label">Physician</label>
+        <p-dropdown [options]="physicianLists" [(ngModel)]="selectedPhysician" placeholder="Select Physician"
+          optionLabel="physicianName" [showClear]="true">
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="cptcode" class="formLabel yeats-form-label">Insurance Provider</label>
+        <p-dropdown [options]="insuranceProvidersList" [(ngModel)]="selectedProvider"
+          placeholder="Select Insurance Provider" optionLabel="insuranceProviderNamewithCode" [showClear]="true">
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-12 col-12">
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label"> Show bills with</label>
+        <p-checkbox class="yeats-form-control" [(ngModel)]="patientBalance" label="Patient Balance Due" binary="true">
+        </p-checkbox>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-12 col-12">
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">&nbsp;</label>
+        <p-checkbox class="yeats-form-control" [(ngModel)]="insuranceBalance" label="Insurance Balance Due"
+          binary="true">
+        </p-checkbox>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-12 col-12">
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">Bills with balance due's age in days:</label>
+        <div class="row">
+          <div class="col-6">
+            <p-checkbox class="yeats-form-control" [(ngModel)]="belowSixtyDays" label="30-60 Days" binary="true">
+            </p-checkbox>
+          </div>
+          <div class="col-6">
+            <p-checkbox class="yeats-form-control" [(ngModel)]="belowNintyDays" label="61-90 Days" binary="true">
+            </p-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-12 col-12">
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">&nbsp;</label>
+        <div class="row">
+          <div class="col-6">
+            <p-checkbox class="yeats-form-control" [(ngModel)]="belowOneTwentyDays" label="90-120 Days" binary="true">
+            </p-checkbox>
+          </div>
+          <div class="col-6">
+            <p-checkbox class="yeats-form-control" [(ngModel)]="aboveOneTwentyDays" label="121+ Days" binary="true">
+            </p-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="cptcode" class="formLabel yeats-form-label">Show Bills with Balance</label>
+        <p-dropdown [options]="showBillsBalance" [(ngModel)]="selectedCategory" placeholder="Select Balance"
+          optionLabel="name" [showClear]="true">
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">Amount ($)</label>
+        <input type="text" [(ngModel)]="balanceAmount" class="form-control yeats-form-control"
+          placeholder="Enter Amount" />
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3 mb-3" (click)="clearData()"> Clear </button>
+      <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3" (click)="getPatientARWorkListbyParam()">Show Bills</button>
+    </div>
+  </div>
+  <div class="yeats-tables">
+    <p-table [columns]="arWorklistColumns" [value]="ARWorklistTableData"  datakey="billId" selectionMode="multiple" [(selection)]="rowData" [paginator]="true" [rows]="5">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns">
+            {{col.header}}
+          </th>
+          <th>Alerts</th>
+          <th>Biller's Note</th>
+          <th>View Account</th>
+          <th>View Bill</th>
+          <th>Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+          <td *ngFor="let col of columns">
+            {{rowData[col.field]}}
+          </td>
+          <td>
+            <i class="pi pi-bell" (click)="openAlertModal()"></i>
+          </td>
+          <td>
+              <i class="pi pi-file" (click)="openBillerNote('Payment')"></i>
+          </td>
+          <td>
+            <i class="pi pi-folder-open" (click)="openActSummary()"></i>
+          </td>
+          <td>
+            <i class="pi pi-search" (click)="openViewBill(rowData)"></i>
+          </td>
+          <td>
+            <i class="pi pi-money-bill" (click)="openActionModel(rowData)"></i>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <button pButton class="yeats-btn yeats-btn-primary pull-right mt-3 mb-3 ml-3">Post Selected to
+        Collections</button>
+      <button pButton class="yeats-btn yeats-btn-primary pull-right mt-3 mb-3 ml-3" (click)="ExportFile(rowData)">Export Selected to Excel</button>
+    </div>
+  </div>
+</div>

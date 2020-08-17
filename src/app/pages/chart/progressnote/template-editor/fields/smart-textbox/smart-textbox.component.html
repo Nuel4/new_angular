@@ -1,0 +1,22 @@
+<div class="smarttext ml-2">
+  <div class="col-12">
+    <div class="form-group yeats-form-group" [formGroup]="group">
+      <!-- <label class="formLabel yeats-form-label" *ngIf="field.label">{{field.label?field.label:''}}</label> -->
+      <div id="inputgroup" class="ui-inputgroup ">
+        <!-- <quill-editor id="snow-container" class="editor-container" [(ngModel)]="htmlText" [formControlName]="field.name" style="width: 100%" placeholder="Enter Text"
+          [modules]="quillConfig" (onSelectionChanged)="contentChanged($event)" 
+          (onEditorCreated)="editorCreated($event)">
+        </quill-editor> -->
+        <textarea #editor [formControlName]="field.name" [id]="field.name"></textarea>
+        <!-- <ckeditor #editor [formControlName]="field.name" [(ngModel)]="htmlText"></ckeditor> -->
+        <!-- <div id="snow-container"></div> -->
+      </div>
+      <!-- <div class="toolTip"></div> -->
+    </div>
+  </div>
+  <div class="col-12">
+    <button pButton class="yeats-btn mb-3 yeats-btn-primary pull-right ml-2" (click)="openSmartLoadModel()">
+      Load smart text
+    </button>
+  </div>
+</div>

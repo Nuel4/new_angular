@@ -1,0 +1,35 @@
+<div class="registerPatient">
+    <div class="card border-0 box-shadow cardMargin">
+        <div class="card-header transparent border-0 text-muted">
+            <div class="card-body">
+                <p-tabView [activeIndex]="index" (onChange)="handleChange($event)">
+                    <p-tabPanel header="Patient Details">
+                        <app-patientdetails [_patientIdToEdit]="selectedPatientId" [_showprtandchrge]="showprtandchrge"  [_patientDetailsData]="patientDetailsData" [patientLanguage]="patientLanguage" (modalEvent)="displaymodal($event)" (childEvent)=submitPatient($event)
+                       [patientSalutation]="patientSalutation"  (next)="openfirstNext($event)" (crgslip)="chargeSlips($event)" >
+                        </app-patientdetails >
+                    </p-tabPanel >
+                    <p-tabPanel header="Insurance" [disabled]="isNew || (patientDetailsData.PatientStatus? (patientDetailsData.PatientStatus === 'Inactive') : false)" >
+                        <app-insurance (next)="openNext()" [patientIdToEdit]="selectedPatientId" (crgslip)="chargeSlips($event)" [_showprtandchrge]="showprtandchrge"  (Insurancepost)=submitInsurance($event) (modal)="displaymodal($event)"></app-insurance >
+                    </p-tabPanel >
+                    <!-- isNew -->
+                    <p-tabPanel header="Other Information"  [disabled]="isNew || (patientDetailsData.PatientStatus? (patientDetailsData.PatientStatus === 'Inactive') : false)" >
+                        <app-otherinformation [_patientIdToEdit]="selectedPatientId" (crgslip)="chargeSlips($event)"  [_showprtandchrge]="showprtandchrge" [patientLanguage]="patientLanguage" (next)="openNext()"></app-otherinformation >
+                    </p-tabPanel >
+                    <p-tabPanel header="Consents" [disabled]="isNew || (patientDetailsData.PatientStatus? (patientDetailsData.PatientStatus === 'Inactive') : false)" >
+                        <app-consents [_patientIdToEdit]="selectedPatientId" (crgslip)="chargeSlips($event)" [_showprtandchrge]="showprtandchrge" (next)="openNext()"> </app-consents>
+                    </p-tabPanel >
+                    <p-tabPanel header="Files" [disabled]="isNew || (patientDetailsData.PatientStatus? (patientDetailsData.PatientStatus === 'Inactive') : false)" >
+                        <app-files [_patientIdToEdit]="selectedPatientId" (crgslip)="chargeSlips($event)" [_showprtandchrge]="showprtandchrge" (next)="openNext()"> </app-files>
+                    </p-tabPanel >
+                    <p-tabPanel header="Messages" [disabled]="isNew" >
+                        <app-messages [_patientIdToEdit]="selectedPatientId" (crgslip)="chargeSlips($event)" [_showprtandchrge]="showprtandchrge" (next)="openNext()"> </app-messages>
+                    </p-tabPanel >
+                    <p-tabPanel header="Pharmacies" [disabled]="isNew" >
+                        <app-pharmacies [_patientIdToEdit]="selectedPatientId" (crgslip)="chargeSlips($event)" [_showprtandchrge]="showprtandchrge" (next)="openNext()"> </app-pharmacies>
+                    </p-tabPanel >
+                </p-tabView>
+            </div>
+        </div>
+    </div>
+</div>
+

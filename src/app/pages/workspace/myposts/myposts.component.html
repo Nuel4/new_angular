@@ -1,0 +1,80 @@
+<!-- <div class="myposts"> -->
+  <header class='widget-header d-flex justify-content-between'>
+    <h5 class="mb-0 ml-1">
+      <span style="font-size:16px;font-weight:bold;font-family:'Muli',sans-serif;">My Posts</span>
+    </h5>
+    <div class="gridster-item-content">
+      <i class="fa fa-plus" (click)="open('Add')" style="width: 3em;height: 3em;padding: 12px;cursor: pointer !important"></i>
+    </div>
+  </header>
+  <div class="postsBlock">
+
+    <div class="eachPosts" *ngFor="let item of notes;last as l">
+        <div class="col-lg-8 a note">
+          {{item.Note}}
+        </div>
+        <div class="col-lg-2">
+          <!-- <i class="fa fa-pencil" data-toggle="tooltip" title="Edit Post" (click)="edit('Edit', item)" aria-hidden="true"></i> -->
+          <img src="../../../../assets/images/Edit.svg" style="cursor: pointer;float: right;" title="Edit Post" (click)="edit('Edit', item)">
+        </div>
+        <div class="col-lg-2">
+          <!-- <i class="fa fa-trash" (click)="deleteNotes(item.MyPostsId)" data-toggle="tooltip" title="Delete Post" aria-hidden="true"></i> -->
+          <img src="../../../../assets/images/Delete.svg" style="cursor: pointer;float: right" (click)="deleteNotes(item.MyPostsId)" title="Delete Post">
+        </div>
+    </div>
+
+    <div class="paginator">
+      <p-paginator [rows]="5" [totalRecords]="totalRecords" (onPageChange)="paginate($event)"></p-paginator>
+    </div>
+  <!-- </div> -->
+  <!-- <div class="header">
+    <header class='widget-header d-flex justify-content-between'>
+      <h5 class="mb-0 ml-1">
+        <span style="font-size:14px;font-weight:bold;">My Posts</span>
+      </h5>
+      <div class="gridster-item-content">
+
+        <i class="fa fa-plus" (click)="open('Add')" style="padding: 6px" aria-hidden="true"></i>
+      </div>
+    </header>
+  </div>
+  <div class="gridster-item-content">
+    <div class="widget-container">
+
+      <div class="mycard">
+        <div class="card border-0 box-shadow cardMargin" style="height:100%">
+          <div class="card-header transparent border-0 text-muted" style="height:100%">
+            <div class="card-body" style="height:100%">
+              <div style="height:70%">
+              <div *ngFor="let item of notes;last as l">
+                <div class="card border-0 box-shadow cardMargin" [style.marginBottom]="l?'15px':'0px'">
+                  <div class="card-header transparent border-0 text-muted">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-9 a">
+                          {{item.Note}}
+                        </div>
+                        <div class="col-1">
+                          <i class="fa fa-pencil" (click)="edit('Edit', item)" aria-hidden="true"></i>
+
+                        </div>
+                        <div class="col-1">
+                          <i class="fa fa-trash" (click)="deleteNotes(item.MyPostsId)" aria-hidden="true"></i>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+              <div class="form-group yeats-form-group ">
+                  <p-paginator [rows]="5" [totalRecords]="totalRecords" (onPageChange)="paginate($event)"></p-paginator>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+</div>

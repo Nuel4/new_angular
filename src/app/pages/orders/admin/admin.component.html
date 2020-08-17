@@ -1,0 +1,11 @@
+<div class="card">
+<div>  
+    <p-radioButton class="radioBtn" value="Test Code Preference" label="Test Code Preference" [(ngModel)]="radioValue" (click)="getAdminOrder()"></p-radioButton>
+    <p-radioButton class="radioBtn" value="ICD9 Code Preference" label="ICD9 Code Preference" [(ngModel)]="radioValue" (click)="getAdminOrder()"></p-radioButton>
+</div>
+    <div class="card-header">Lab</div>
+    <div class="card-body embed-responsive embed-responsive-16by9">
+        <iframe *ngIf="enableFrame" class="embed-responsive-item" [src]="labOrderAdmin">
+        </iframe>
+    </div>
+</div>

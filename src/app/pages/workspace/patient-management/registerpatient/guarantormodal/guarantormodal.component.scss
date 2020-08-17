@@ -1,0 +1,77 @@
+.Policy{
+    .modal-content{
+        min-width: 200% !important;
+        margin-left: -50% !important;
+    }
+    .ui-fieldset-legend{
+        width: 14% !important;
+        font-size: 0.7rem !important;
+    }  
+    .invalid-feedback{
+        color: red;
+      }
+      .color{
+          color: black;
+          background-color: black;
+      }
+      .hr-text {
+        line-height: 1em;
+        position: relative;
+        outline: 0;
+        border: 0;
+        color: black;
+        text-align: center;
+        height: 1.5em;
+        opacity: .5;
+        &:before {
+          content: '';
+          // use the linear-gradient for the fading effect
+          // use a solid background color for a solid bar
+          background: linear-gradient(to right, transparent, #818078, transparent);
+          position: absolute;
+          left: 0;
+          top: 50%;
+          width: 100%;
+          height: 1px;
+        }
+        &:after {
+          content: attr(data-content);
+          position: relative;
+          display: inline-block;
+          color: black;
+      
+          padding: 0 .5em;
+          line-height: 1.5em;
+          // this is really the only tricky part, you need to specify the background color of the container element...
+          color: #818078;
+          background-color: #fcfcfa;
+        }
+      }
+      .imgCard{
+        bottom: 0;
+      height: 100%;
+      left: 0;
+      object-fit: cover;
+      object-position: top center;
+      -ms-object-fit: cover;
+      -ms-object-position: top center;
+      background-size: cover !important;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 50%;
+      }
+    // z-index: 88888;
+    // .ui-state-default{
+    //     width: 14% !important;
+    //     font-size: 0.7rem !important;
+    // } 
+    // .ui-unselectable-text{
+    //     font-size: 0.7rem !important;
+    //     padding: 2px !important;
+    // }
+    // .legend{
+    //     width: 14% !important;
+    //     font-size: 0.7rem !important;
+    // }
+}

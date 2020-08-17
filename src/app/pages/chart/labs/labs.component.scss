@@ -1,0 +1,42 @@
+.orders{
+
+.m-img-upload-btn{
+    position: absolute;
+    padding: 0;
+    width: calc(100% - 30px);
+    height: 38px;
+    opacity: 0;
+}
+p-dropdown{
+    margin-top: 3px;
+}
+.a {
+    // width:50px;
+    // text-overflow: ellipsis;
+    cursor: pointer;
+    // word-break: break-all;
+    overflow:hidden;
+    white-space: nowrap;
+  }
+
+// .ui-table-scrollable-body{
+//   height: 165px;
+// }
+
+.ui-paginator{
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  font-size: 11px;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  font-size: 11px;
+}
+.yeats-tables{
+  margin-top: 0px !important;
+}
+// .yeats-tables p-table th, .yeats-tables p-table tr{
+//   height: 32px !important;
+// }
+}

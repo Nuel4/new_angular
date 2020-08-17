@@ -1,0 +1,107 @@
+<div class="messages noticeBoardComponent">
+  <div class="card border-0 box-shadow">
+    <div>
+        <!-- <button
+          pButton
+          class="yeats-btn yeats-btn-primary pull-right mr-3 mt-3 "
+          (click)="openbsmodal(false)"
+        >
+          <i class="fa fa-plus" aria-hidden="true"></i> Add Message
+        </button>
+        <button
+          pButton
+          class="yeats-btn yeats-btn-primary pull-right mr-3 mt-3 "
+          (click)="openbsmodal(false)"
+        >
+          <i class="fa fa-plus" aria-hidden="true"></i> Add Message
+        </button>
+        <button
+          pButton
+          class="yeats-btn yeats-btn-primary pull-right mr-3 mt-3 "
+          (click)="openbsmodal(false)"
+        >
+          <i class="fa fa-plus" aria-hidden="true"></i> Add Message
+        </button> -->
+        <button
+        pButton
+        class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right mr-3 mt-3 "
+        (click)="closeMessages()"
+      >
+         Close
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary pull-right mr-3 mt-3 "
+        (click)="openbsmodal(false)"
+      >
+        <i class="fa fa-plus" aria-hidden="true"></i> Add Message
+      </button>
+    </div>
+    <div class="card-header transparent border-0 text-muted">
+      <div class="card-body">
+        <div class="row">
+          <!-- <label class="formLabel yeats-form-label"><b>Patient Messages:</b></label> -->
+          <div class="col-12 col-md-12 col-lg-12">
+            <div class="yeats-tables">
+              <p-table
+                [columns]="cols"
+                [value]="messages_list"
+                sortMode="multiple"
+              >
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th>Recipients</th>
+                    <th
+                      *ngFor="let col of columns"
+                      [pSortableColumn]="col.field"
+                    >
+                      {{ col.header }}
+                      <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                  <tr (click)="openbsmodal(false, rowData)">
+                    <td style="text-align: center;" (dblclick)="onDoubleClick('add_problem');">
+                      <span class="tooltip">
+                        <i
+                          class="fa fa-user"
+                          placement="right"
+                          style="cursor:pointer;"
+                          aria-hidden="true"
+                          (mouseenter)="onMouseOver(rowData)"
+                          (mouseleave)="onMouseOver()"
+                        >
+                          <span
+                            class="tooltiptext"
+                            *ngIf="recipientList.length > 0"
+                            ><ul style="list-style:none">
+                              <li *ngFor="let user of recipientList">
+                                {{ user.Username }}
+                              </li>
+                            </ul></span
+                          >
+                          <!-- <input *ngFor="let user of recipientList" [ngbTooltip]="user.username" placement="right"> -->
+                        </i>
+                      </span>
+                      <!-- <span *ngIf="recipientList.length > 0"><i class="fa fa-user" style="cursor:pointer;" aria-hidden="true" (mouseenter)="onMouseOver(rowData)" *ngFor="let user of recipientList" [ngbTooltip]="user.username" placement="right"></i></span> -->
+                    </td>
+                    <td (dblclick)="onDoubleClick('add_allergy');">
+                      {{ rowData.displayDate | date:'dd/MM/yyyy HH:mm a'}}
+                    </td>
+                    <td (dblclick)="onDoubleClick('add_vaitals');"> {{ rowData.Posting }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+            <p-paginator
+              [rows]="messagesSent.PageSize"
+              [totalRecords]="messagesSent.TotalItems"
+              (onPageChange)="paginate($event)"
+            ></p-paginator>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

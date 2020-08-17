@@ -1,0 +1,85 @@
+<div class="modal-header">
+  <div class="modal-title">Patient Eligibility Verification Results</div>
+  <button
+  type="button"
+  class="close"
+  aria-label="Close"
+  (click)="activeModal.dismiss('Cross click')"
+>
+  <span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+    <div class="p-view">
+      <p style="margin-left:5px;">
+        Patient {{ patientData.patientname }}
+      </p>
+</div>
+<div class="row">
+  <div class="col-lg-3 col-sm-3 col-12">
+      <label>Date From</label>
+      <p-calendar class="yeats-form-control" [showIcon]="true" [(ngModel)]="end_date" [showTime]="true" class="csdatepicker" >
+</p-calendar>
+  </div>
+  <div class="col-lg-3 col-sm-3 col-12">
+    <label>Date To</label>
+    <p-calendar class="yeats-form-control" [showIcon]="true" [(ngModel)]="end_date" [showTime]="true" class="csdatepicker" >
+</p-calendar>
+  </div>
+</div>
+<div class="row">
+    <div class="col-lg-3 col-sm-3 col-12">
+        <label>Status</label>
+        <p-dropdown [options]="statusList" [(ngModel)]="selectedStatus" optionLabel="statusName"
+                        [showClear]="true" placeholder="Select Role" >
+        </p-dropdown>
+    </div>
+    <div class="col-lg-6 col-sm-6 col-12"></div>
+    <div class="col-lg-3 col-sm-3 col-12">
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 " (click)="onRoleChange()">Search</button>
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 " (click)="activeModal.dismiss('Cross click')">Cancel</button>
+    </div>
+</div>
+<p>Results:</p>
+<div class="yeats-tables">
+        <p-table [columns]="cols" [value]="documentsLists">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th
+                *ngFor="let col of columns; let i = index"
+                [pSortableColumn]="col.field"
+                pEditableColumn
+                (click)="openFilter(i)"
+              >
+                <span *ngIf="headerIndex !== i">{{ col.header }}</span
+                ><span *ngIf="headerIndex === i && !col.filter">{{
+                  col.header
+                }}</span>
+                <i
+                  class="fa fa-filter"
+                  *ngIf="headerIndex !== i && col.filter"
+                ></i>
+                <p-cellEditor *ngIf="col.filter">
+                  <ng-template pTemplate="input">
+                    <input
+                      pInputText
+                      type="text"
+                      placeholder="{{ col.header }}"
+                      (keyup)="filterTableData($event.target.value, col.field)"
+                      style="width:100%; height: 75%;"
+                    />
+                  </ng-template>
+                </p-cellEditor>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns">
+                <span>{{ rowData[col.field] }}</span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+</div>

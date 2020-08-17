@@ -1,0 +1,370 @@
+<div class="profilePage">
+  <div class="text-muted">
+    <div class="card border-0 box-shadow">
+      <div class="card-header transparent border-0 text-muted">
+        <div class="card-body">
+
+          <div class="row mt-2">
+            <div class="col-12 col-lg-12 col-md-12 col-sm-12">
+
+              <div class="row">
+                <div class="col-lg-12">
+
+                  <b style="font-size: 1.5em;">Personal Details</b>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class="form-group yeats-form-group ">
+                    <label class="formLabel yeats-form-label">Salutation</label>
+                    <p-dropdown [options]="salutation" [(ngModel)]="selectedSalutation"
+                      placeholder="Select a Salutation" optionLabel="SalutationCode" [showClear]="true"></p-dropdown>
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">First Name <span class="required">*</span> </label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="firstname"
+                      [(ngModel)]="firstname">
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Middle Name</label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="middlename"
+                      [(ngModel)]="middlename">
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Last Name <span class="required">*</span></label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="lastname"
+                      [(ngModel)]="lastname">
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">SSN <span class="required">*</span></label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="SSN" [(ngModel)]="SSN">
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Work Phone </label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="WorkPhone"
+                      [(ngModel)]="workPhone">
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Home Phone </label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="HomePhone"
+                      [(ngModel)]="homePhone">
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Cell Phone <span class="required">*</span></label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="CellPhone"
+                      [(ngModel)]="cellPhone">
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Email <span class="required">*</span></label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="Email"
+                      [(ngModel)]="email">
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Alt Email </label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="AltEmail"
+                      [(ngModel)]="altEmail">
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Fax </label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="fax" [(ngModel)]="fax">
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Alt Phone </label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="AltPhone"
+                      [(ngModel)]="altPhone">
+                  </div>
+                </div>
+
+                <div class="col-lg-3 col-sm-6 col-12">
+                  <div class="form-group yeats-form-group ">
+                    <label for="photoImage" class="formLabel yeats-form-label">Photo</label>
+                    <p-fileUpload name="demo[]" class="photo" url="./upload.php" [showCancelButton]="false"
+                      (onSelect)="onUpload($event)" [multiple]="false" accept=".png" [showUploadButton]="false">
+                      <ng-template pTemplate="content">
+                        <!-- <ul *ngIf="uploadedFiles.length"> -->
+                        <!-- <li *ngFor="let file of uploadedFiles">{{file.name}}</li> -->
+                        <!-- </ul> -->
+                      </ng-template>
+                    </p-fileUpload>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 col-12">
+                  <img class="imgCard" width="89.997" height="90" [src]="url" style="border-radius: 0%;" />
+                </div>
+              </div>
+
+            </div>
+            <div class="col-12 col-lg-12 col-md-12 col-sm-12">
+
+              <div class="row">
+                <div class="col-lg-12">
+
+                  <b style="font-size: 1.5em;">Address Details</b>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-sm-12 col-12">
+                  <!-- <label class="formLabel yeats-form-label">International Address</label> -->
+                  <p-checkbox class="yeats-form-control" [(ngModel)]="internationalAddress" binary="true"
+                    label="International Address"></p-checkbox>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-sm-12 col-12">
+                  <label class="formLabel yeats-form-label">Primary Address</label>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Address Line 1 <span class="required">*</span></label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="paddressline1"
+                      [(ngModel)]="paddressline1">
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Address Line 2</label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="paddressline2"
+                      [(ngModel)]="paddressline2">
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">City <span class="required">*</span></label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="pcity"
+                      [(ngModel)]="pcity">
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">State Code <span class="required">*</span></label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="pstatecode"
+                      [(ngModel)]="pstatecode">
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Zip Code <span class="required">*</span></label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="pzipcode"
+                      [(ngModel)]="pzipcode">
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Zip + 4 <span class="required">*</span></label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="pzip4"
+                      [(ngModel)]="pzip4">
+                  </div>
+                </div>
+
+                <div class="col-xl-12 col-lg-12 col-sm-12 col-12">
+                  <label class="formLabel yeats-form-label">Secondary Address</label>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Address Line 1 </label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="saddressline1"
+                      [(ngModel)]="saddressline1">
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Address Line 2</label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="saddressline2"
+                      [(ngModel)]="saddressline2">
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">City </label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="scity"
+                      [(ngModel)]="scity">
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">State Code </label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="sstatecode"
+                      [(ngModel)]="sstatecode">
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Zip Code </label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="szipcode"
+                      [(ngModel)]="szipcode">
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Zip + 4 </label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" name="szip4"
+                      [(ngModel)]="szip4">
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+            <div class="col-12 col-lg-12 col-md-12 col-sm-12">
+
+              <div class="row">
+                <div class="col-lg-12">
+
+                  <b style="font-size: 1.5em;">Preferences</b>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-sm-3 col-3">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Speciality</label>
+                    <p-listbox [options]="specialityList" [(ngModel)]="selectedSpeciality" optionLabel="SpecialityName"
+                      multiple="true" checkbox="true" [listStyle]="{'max-height':'250px'}"></p-listbox>
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-3 col-3">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Qualification</label>
+                    <p-listbox [options]="qualification" [(ngModel)]="selectedQualification" optionLabel="ShortForm"
+                      multiple="true" checkbox="true" [listStyle]="{'max-height':'250px'}">
+                    </p-listbox>
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-3 col-3">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Message Type</label>
+                    <p-listbox [options]="cdsMessageType" [(ngModel)]="selectedMessageType"
+                      optionLabel="ShortDescription" multiple="true" checkbox="true"
+                      [listStyle]="{'max-height':'250px'}"></p-listbox>
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-sm-3 col-3" *ngIf="physicianDetail">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Preferred Template Group(s)</label>
+                    <p-listbox [options]="activeTemplateGroup" [(ngModel)]="selectedPreferredTemplateGrp"
+                      optionLabel="GroupName" multiple="true" checkbox="true" [listStyle]="{'max-height':'250px'}">
+                    </p-listbox>
+                  </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-sm-3 col-3">
+                  <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Note</label>
+                    <textarea [rows]="2" [cols]="30" pInputTextarea autoResize="autoResize"
+                      [(ngModel)]="generalNote"></textarea>
+                  </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-sm-3 col-3" *ngIf="physicianDetail">
+                  <div class="form-group yeats-form-group ">
+                    <label class="formLabel yeats-form-label">Preferred Facility1</label>
+                    <p-dropdown [options]="facility" [(ngModel)]="selectedFacility" placeholder="Select a Salutation"
+                      optionLabel="FacilityName" [showClear]="true"></p-dropdown>
+                  </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-sm-3 col-3" *ngIf="nonPhysician">
+                  <div class="form-group yeats-form-group ">
+                    <label class="formLabel yeats-form-label">Preferred Facility1</label>
+                    <p-dropdown [options]="preferredFacility" [(ngModel)]="selectedPreferredFacility"
+                      placeholder="Select a Salutation" optionLabel="FacilityName" [showClear]="true"></p-dropdown>
+                  </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-sm-3 col-3" *ngIf="nonPhysician">
+                  <div class="form-group yeats-form-group ">
+                    <label class="formLabel yeats-form-label">Preferred Facility2</label>
+                    <p-dropdown [options]="preferredFacility" [(ngModel)]="selectedPreferredFacility"
+                      placeholder="Select a Salutation" optionLabel="FacilityName" [showClear]="true"></p-dropdown>
+                  </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-sm-3 col-3" *ngIf="nonPhysician">
+                  <div class="form-group yeats-form-group ">
+                    <label class="formLabel yeats-form-label">Preferred Facility3</label>
+                    <p-dropdown [options]="preferredFacility" [(ngModel)]="selectedPreferredFacility"
+                      placeholder="Select a Salutation" optionLabel="FacilityName" [showClear]="true"></p-dropdown>
+                  </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-sm-3 col-3" *ngIf="nonPhysician">
+                  <div class="form-group yeats-form-group ">
+                      <label class="formLabel yeats-form-label">Preferred Physician1</label>
+                <p-dropdown [options]="physicianUsers" [(ngModel)]="selectedPhysicianUsers" placeholder="Select a Salutation"
+                optionLabel="physicianName" [showClear]="true"></p-dropdown>
+                </div>
+              </div>
+              <div class="col-xl-3 col-lg-3 col-sm-3 col-3" *ngIf="nonPhysician">
+                <div class="form-group yeats-form-group ">
+                    <label class="formLabel yeats-form-label">Preferred Physician2</label>
+              <p-dropdown [options]="physicianUsers" [(ngModel)]="selectedPhysicianUsers2" placeholder="Select a Salutation"
+              optionLabel="physicianName" [showClear]="true"></p-dropdown>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-sm-3 col-3" *ngIf="nonPhysician">
+              <div class="form-group yeats-form-group ">
+                  <label class="formLabel yeats-form-label">Preferred Physician3</label>
+            <p-dropdown [options]="physicianUsers" [(ngModel)]="selectedPhysicianUsers3" placeholder="Select a Salutation"
+            optionLabel="physicianName" [showClear]="true"></p-dropdown>
+            </div>
+          </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-12 col-md-12 col-sm-12 mt-3">
+              <div class="form-group yeats-form-group ">
+                <button pButton class="yeats-btn yeats-btn-primary  mr-2 " (click)="pinModal()">Pin</button>
+                <button pButton class="yeats-btn yeats-btn-primary ui-button-primary  mr-2"
+                  (click)="changePassword()">Change Password</button>
+                <button pButton class="yeats-btn yeats-btn-primary ui-button-primary  mr-2"
+                  (click)="editUserInfo()">Save & Next</button>
+                <button pButton class="yeats-btn yeats-btn-primary ui-button-primary  mr-2"
+                  (click)="userSchedule()">Schedule</button>
+                <button pButton class="yeats-btn yeats-btn-primary ui-button-primary  mr-2"
+                  (click)="tilePicker()">Charts Tile
+                  Picker</button>
+                <button pButton class="yeats-btn yeats-btn-primary ui-button-primary  mr-2"
+                  (click)="preferredIcds()">Preferred ICD's</button>
+                <button pButton class="yeats-btn yeats-btn-primary ui-button-primary  mr-2"
+                  (click)="preferredCpt()">Preferred CPT's</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

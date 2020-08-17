@@ -1,0 +1,289 @@
+<div class="secondaryInsurance">
+  <form [formGroup]="secondaryInsuranceForm" (ngSubmit)="OnInsuranceSave(secondaryInsuranceForm.value)">
+
+
+    <div class="row">
+      <div class="col-lg-3 col-sm-6 col-12 insuranceHead" >
+        <div class="form-group yeats-form-group">
+          <label class="custom-control custom-radio">
+              <p-radioButton name="groupname" value="true" [disabled]="isInsuranceCompany" label="Patient Owned Policy" formControlName="InsuredIsPatient" (onClick)="InsuredIsPatient()"></p-radioButton><span class="required">*</span>
+            <!-- <p-radioButton name="Insuredis" value="true" id="Insuredis" label="Patient Owned Policy"
+              formControlName="InsuredIsPatient" inputId="Insuredis" (onClick)="InsuredIsPatient()"></p-radioButton>
+            <span class="required">*</span> -->
+          </label>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12 insuranceHead" >
+        <div class="form-group yeats-form-group ">
+          <label class="custom-control custom-radio">
+              <p-radioButton name="groupname" value="false" label="Policy Owned by others" formControlName="InsuredIsPatient" (onClick)="InsuredIsGuarantor()"></p-radioButton>
+            <!-- <p-radioButton name="Insuredis" value="true" id="Insuredis" label="Policy Owned by others"
+              formControlName="InsuredIsGuarantor" inputId="Insuredis" (onClick)="InsuredIsGuarantor()"></p-radioButton> -->
+          </label>
+        </div>
+      </div>
+      <!-- <div class="col-lg-3 col-sm-6 col-12" *ngIf="(secondaryInsuranceForm.get('InsuredIsPatient').hasError('required')||secondaryInsuranceForm.get('InsuredIsGuarantor').hasError('required'))">
+        <div class="invalid-feedback">
+          <label class="custom-control custom-radio"> Please select the Policy owners </label>
+        </div>
+      </div> -->
+      <div class="col-lg-3 col-sm-6 col-12" *ngIf="Guarantorvalue">
+        <div class="form-group yeats-form-group">
+          <button pButton class="yeats-btn yeats-btn-primary" type="button" [disabled]="isInsuranceCompany" (click)="openmodal()">Policy Owner Details</button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group">
+          <label for="secondaryInsuranceCompany" class="formLabel yeats-form-label">Insurance Company</label>
+          <p-dropdown [options]="insuranceCompany" optionLabel="InsuranceProviderName"  name="InsuranceProviderId"
+            formControlName="InsuranceProviderId" placeholder="Select Insurance Company" [(ngModel)]="assignInsurance"
+             (onChange)="selectedInsurance($event)"></p-dropdown>
+          <!-- <p-dropdown [options]="insuranceCompany" optionLabel="InsuranceProviderName"
+            formControlName="InsuranceProviderId" placeholder="Select Insurance Company" name="InsuranceProviderId"
+            id="InsuranceProviderId" (onChange)="selectedInsurance($event)">
+          </p-dropdown> -->
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group">
+          <label class="formLabel yeats-form-label">&nbsp;</label>
+          <button pButton class="yeats-btn yeats-btn-danger ui-button-danger w-45"
+            style="margin-right:10%" [disabled]="isInsuranceCompany" type="button" (click)="clearClick()">Clear</button>
+          <button pButton class="yeats-btn yeats-btn-primary w-45" [disabled]="isInsuranceCompany" type="button" (click)=viewHistory()>View History</button>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group">
+          <label for="primaryInsuranceCode" class="formLabel yeats-form-label">Insurance Code</label>
+          <input type="text" formControlName="InsuranceCode" class="form-control yeats-form-control"
+            id="primaryInsuranceCode" name="primaryInsuranceCode" value="insuranceCompanydetails.title"
+            placeholder="Enter Insurance Code" />
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group">
+          <label for="SubmitterInsuranceNumber" class="formLabel yeats-form-label">Payer</label>
+          <input type="text" formControlName="SubmitterInsuranceNumber" class="form-control yeats-form-control"
+            id="SubmitterInsuranceNumber" name="SubmitterInsuranceNumber" placeholder="Enter Payer" disabled="payer" />
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group">
+          <label for="CopayAmount" class="formLabel yeats-form-label">Co-Pay Amount($)</label>
+          <input type="text" formControlName="CopayAmount" class="form-control yeats-form-control" id="CopayAmount"
+            name="CopayAmount" placeholder="Enter Co-Pay" />
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group">
+          <label for="PolicyNumber" class="formLabel yeats-form-label">Policy Number</label>
+          <input type="text" formControlName="PolicyNumber" class="form-control yeats-form-control" id="PolicyNumber"
+            name="PolicyNumber" placeholder="Enter Policy Number" />
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group">
+          <label for="GroupNumber" class="formLabel yeats-form-label">Group Number</label>
+          <input type="text" formControlName="GroupNumber" class="form-control yeats-form-control" id="GroupNumber"
+            name="GroupNumber" placeholder="Enter Group Number" />
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">&nbsp;</label>
+            <button pButton class="yeats-btn yeats-btn-primary w-45" style="margin-right:10%" type="button" (click)="verify()">Verify</button>
+            <button pButton class="yeats-btn yeats-btn-primary w-45" type="button" (click)="verificationResult()">Verification Result</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label for="RejectionReason" class="formLabel yeats-form-label">&nbsp;</label>
+          <div class="row">
+            <div class="col-6">
+              <label class="custom-control custom-radio">
+                <p-radioButton name="Verified" value="false" label="Verified" formControlName="Verified"
+                  inputId="Verified" (onclick)="Verified()"></p-radioButton>
+              </label>
+            </div>
+            <div class="col-6">
+              <label class="custom-control custom-radio">
+                <p-radioButton name="Verified" value="false" label="Rejected" formControlName="Rejected"
+                  inputId="Verified" (onclick)="Rejected()"></p-radioButton>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label for="RejectionReason" class="formLabel yeats-form-label">Rejected Reason</label>
+          <input type="text" formControlName="RejectionReason" class="form-control yeats-form-control"
+            [disabled]="!Rejected" id="RejectionReason" name="RejectionReason" placeholder="Reason for Rejection" />
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label for="VerificationDate" class="formLabel yeats-form-label">Verification Date</label>
+          <p-calendar class="yeats-form-control" formControlName="VerificationDate" [showIcon]="true"
+            placeholder="Enter Date" name="VerificationDate" id="VerificationDate" monthNavigator="true"
+            yearNavigator="true" [disabled]="Verified" yearRange="1900:2030">
+          </p-calendar>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Effective Date</label>
+          <p-calendar class="yeats-form-control csdatepicker" formControlName="EffectiveDateFrom" [showIcon]="true"
+            id="EffectiveDateFrom" name="EffectiveDateFrom" monthNavigator="true" yearNavigator="true" [readonlyInput]="true"
+            yearRange="1900:2030">
+          </p-calendar>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Expiration Date</label>
+          <p-calendar class="yeats-form-control" formControlName="ExpirationDate" [showIcon]="true" id="ExpirationDate" [readonlyInput]="true"
+            name="ExpirationDate" monthNavigator="true" yearNavigator="true" yearRange="1900:2030">
+          </p-calendar>
+        </div>
+      </div>
+    </div>
+
+    <div class="row checkboxGroup">
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group">
+          <label class="formLabel yeats-form-label"> &nbsp;</label>
+          <p-checkbox class="yeats-form-control" formControlName="EligibleForMedical" label="Eligible for medical"
+            id="EligibleForMedical" name="EligibleForMedical" binary="false"></p-checkbox>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group">
+          <label class="formLabel yeats-form-label"> &nbsp;</label>
+          <p-checkbox class="yeats-form-control" formControlName="EligibleForPrescriptions"
+            label="Eligible for prescriptions" id="EligibleForPrescriptions" name="EligibleForPrescriptions"
+            binary="false"></p-checkbox>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group">
+          <label class="formLabel yeats-form-label"> &nbsp;</label>
+          <p-checkbox class="yeats-form-control" formControlName="EligibleForVision" label="Eligible for vision"
+            id="EligibleForVision" name="EligibleForVision" binary="false"></p-checkbox>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group">
+          <label class="formLabel yeats-form-label"> &nbsp;</label>
+          <p-checkbox class="yeats-form-control" formControlName="EligibleForDental" label="Eligible for dental"
+            id="EligibleForDental" name="EligibleForDental" binary="false"></p-checkbox>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group">
+          <label class="formLabel yeats-form-label"> &nbsp;</label>
+          <p-checkbox class="yeats-form-control" formControlName="EligibleForHospitalization"
+            label="Eligible for hospitalization" id="EligibleForHospitalization" name="EligibleForHospitalization"
+            binary="false"></p-checkbox>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group">
+          <label class="formLabel yeats-form-label"> &nbsp;</label>
+          <p-checkbox class="yeats-form-control" formControlName="EligibleForDurableMedicalEquipment"
+            label="Eligible for durable medical equipment" id="EligibleForDurableMedicalEquipment"
+            name="EligibleForDurableMedicalEquipment" binary="false"></p-checkbox>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group">
+          <label class="formLabel yeats-form-label"> &nbsp;</label>
+          <p-checkbox class="yeats-form-control" formControlName="AcceptAssignment" label="Accept Assignment"
+            id="AcceptAssignment" name="AcceptAssignment" binary="false"></p-checkbox>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label for="AllowedVisits" class="formLabel yeats-form-label">Allowable visits</label>
+          <input type="text" formControlName="AllowedVisits" class="form-control yeats-form-control" id="AllowedVisits"
+            name="AllowedVisits" placeholder="Enter Allowable Visits" />
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label for="VisitsUsed" class="formLabel yeats-form-label">Used Visits</label>
+          <input type="text" formControlName="VisitsUsed" class="form-control yeats-form-control" id="VisitsUsed"
+            name="VisitsUsed" placeholder="Enter Used visits" />
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label for="ReferralNumber" class="formLabel yeats-form-label">Referral Number</label>
+          <input type="text" formControlName="ReferralNumber" class="form-control yeats-form-control"
+            id="ReferralNumber" name="ReferralNumber" placeholder="Enter Referral Number" />
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12 ">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Referral Start Date</label>
+          <p-calendar class="yeats-form-control" formControlName="ReferralStartDate" [showIcon]="true" [readonlyInput]="true" appendTo="body"
+            id="ReferralStartDate" monthNavigator="true" yearNavigator="true" yearRange="1900:2030"
+            name="ReferralStartDate">
+          </p-calendar>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12 ">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Referral Expiration Date</label>
+          <p-calendar class="yeats-form-control" formControlName="ReferralExpiryDate" [showIcon]="true"
+            id="ReferralExpiryDate" name="ReferralExpiryDate" monthNavigator="true" yearNavigator="true" [readonlyInput]="true" appendTo="body"
+            yearRange="1900:2030">
+          </p-calendar>
+        </div>
+      </div>
+    </div>
+
+
+  </form>
+  <div class="row">
+    <div class="col-6">
+      <button pButton *ngIf="showprtandchrge" class="yeats-btn yeats-btn-primary mr-3" icon="fa fa-print" label="print" (click)="chargeSlips('PatientPrint')">Print</button>
+      <button pButton *ngIf="showprtandchrge" class="yeats-btn yeats-btn-primary" icon="fa fa-file-text-o" (click)="chargeSlips('PatientChargeSlips')" label="Charge Slip">Charge
+        Slip</button>
+    </div>
+    <div class="col-6">
+      <!-- <div class="row mt-3"> -->
+      <div class="col-12">
+        <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+          (click)="onNext()">Next</button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3"
+          (click)="OnInsuranceSave(secondaryInsuranceForm.value)"
+          [disabled]="secondaryInsuranceForm.invalid">Save</button>
+        <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+          (click)="onClose()">Close</button>
+      </div>
+      <!-- </div> -->
+    </div>
+  </div>
+</div>

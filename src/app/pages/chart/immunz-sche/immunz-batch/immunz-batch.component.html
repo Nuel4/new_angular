@@ -1,0 +1,131 @@
+<div class="ImmunzBatch">
+  <div class="modal-header">
+    <h4 class="modal-title">Immunization Batch</h4>
+    <button type="button" class="close" (click)="onCancel()">&times;</button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Batch Number<span class="required">*</span></label>
+          <input type="text" pInputText class=" form-control yeats-form-control" [(ngModel)]="batchno">
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Expiration Date<span class="required">*</span></label>
+          <p-calendar [(ngModel)]="expiredate" [showIcon]="true"></p-calendar>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Batch Count<span class="required">*</span></label>
+          <input type="text" pInputText class=" form-control yeats-form-control" [(ngModel)]="batchcount">
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Remaining<span class="required">*</span></label>
+          <input type="text" pInputText class=" form-control yeats-form-control" [(ngModel)]="remaining">
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Drug</label>
+          <input type="text" pInputText class=" form-control yeats-form-control" [(ngModel)]="drug">
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Trade Name</label>
+          <input type="text" pInputText class=" form-control yeats-form-control" [(ngModel)]="tradename">
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Manufacture</label>
+          <input type="text" pInputText class=" form-control yeats-form-control" [(ngModel)]="manufacture">
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Code</label>
+          <input type="text" pInputText class=" form-control yeats-form-control" [(ngModel)]="code">
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Agent</label>
+          <input type="text" pInputText class=" form-control yeats-form-control" [(ngModel)]="agent">
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label for="" class="yeats-form-label"> </label>
+          <p-checkbox [(ngModel)]="isActive" label="Active" binary="false"></p-checkbox>
+        </div>
+      </div>
+
+      <div class="col-xl-12 col-lg-12 col-sm-12 col-12">
+        <div class="form-group yeats-form-group ">
+          <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right mr-2"
+            (click)="onCancel()">Cancel</button>
+          <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="onFormReset()">Clear</button>
+          <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="UpdateBatch()" *ngIf="isUpdate">Update</button>
+          <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="AddBatch()" *ngIf="!isUpdate">Add</button>
+        </div>
+      </div>
+
+      <div class="col-xl-12 col-lg-12 col-sm-12 col-12">
+        <br>
+        <div class="yeats-tables">
+          <p-table [value]="immunBatchList" [paginator]="true" [pageLinks]="3" [responsive]="true" [rows]="PageSize"
+            [totalRecords]="TotalItems" [lazy]="true" (onLazyLoad)="paginate($event)">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Batch Number</th>
+                <th>Expiration Date</th>
+                <th>Batch Count</th>
+                <th>Remaining</th>
+                <th>Drug</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-imm>
+              <tr>
+                <td>{{imm.BatchNumber}}</td>
+                <td>{{imm.ExpiryDate | date:'yyyy/MM/dd' }}</td>
+                <td>{{imm.BatchCount}}</td>
+                <td>{{imm.Remaining}}</td>
+                <td>{{imm.Drug}}</td>
+                <td>{{imm.Status}}</td>
+                <td>
+                  <i class="pi pi-pencil" pTooltip="Edit Immunization Batch"
+                    tooltipPosition="top" (click)="loadBatchData(imm.MrImmunizationBatchId)"></i>
+                  <i class="pi pi-trash" pTooltip="Delete Immunization Batch"
+                    tooltipPosition="top" (click)="DeleteBatchData(imm)"></i>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  <!-- <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+  </div> -->
+</div>

@@ -1,0 +1,300 @@
+<div class="electronicClaims">
+  <div class="row">
+    <div class="col-lg-3 col-sm-6 col-12 ">
+      <label class="formLabel yeats-form-label">Billing Date Range:</label>
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">From</label>
+        <p-calendar
+          class="yeats-form-control"
+          [(ngModel)]="electronicBillingRangeFrom"
+          [showIcon]="true"
+          monthNavigator="true"
+          yearNavigator="true"
+          yearRange="1900:2030"
+        >
+        </p-calendar>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12 ">
+      <label class="formLabel yeats-form-label">&nbsp;</label>
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">Untill</label>
+        <p-calendar
+          class="yeats-form-control"
+          [(ngModel)]="electronicBillingRangeTo"
+          [showIcon]="true"
+          monthNavigator="true"
+          yearNavigator="true"
+          yearRange="1900:2030"
+        >
+        </p-calendar>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <label class="formLabel yeats-form-label">&nbsp;</label>
+      <div class="form-group yeats-form-group ">
+        <label for="electronicPhysician" class="formLabel yeats-form-label"
+          >Physician</label
+        >
+        <p-dropdown
+          [options]="physicianLists"
+          [(ngModel)]="electronicPhysician"
+          placeholder="Select Physician"
+          optionLabel="physicianName"
+          [showClear]="true"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <label class="formLabel yeats-form-label">&nbsp;</label>
+      <div class="form-group yeats-form-group ">
+        <label for="electronicPhysician" class="formLabel yeats-form-label"
+          >Insurance Provider</label
+        >
+        <p-dropdown
+          [options]="insuranceProvidersList"
+          [(ngModel)]="electronicInsuranceProvider"
+          placeholder="Select Insurance Provider"
+          optionLabel="InsuranceProviderName"
+          [showClear]="true"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="electronicPhysician" class="formLabel yeats-form-label"
+          >Insurance Filter</label
+        >
+        <p-dropdown
+          [options]="insuranceFilterType"
+          [(ngModel)]="electronicInsuranceType"
+          placeholder="Select Insurance Filter"
+          optionLabel="InsuranceFilterName"
+          [showClear]="true"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="patientName" class="formLabel yeats-form-label"
+          >Patient Name</label
+        >
+        <input
+          type="text"
+          value="{{ authStore.PatientDetail?authStore.PatientDetail.LastName:'' }}"
+          class="form-control yeats-form-control"
+          id="patientName"
+          name="patientName"
+          placeholder="Patient Name"
+          disabled
+        />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="patientSSN" class="formLabel yeats-form-label">SSN</label>
+        <input
+          type="text"
+          value="{{ authStore.PatientDetail?authStore.PatientDetail.Ssn:'' }}"
+          class="form-control yeats-form-control"
+          id="patientSSN"
+          name="patientSSN"
+          placeholder="SSN"
+          disabled
+        />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="dateOfBirth" class="formLabel yeats-form-label"
+          >Date of Birth</label
+        >
+        <input
+          type="text"
+          value="{{ authStore.PatientDetail? (authStore.PatientDetail.DateOfBirth | date: 'dd-MM-yyyy'):'' }}"
+          class="form-control yeats-form-control"
+          id="dateOfBirth"
+          name="dateOfBirth"
+          placeholder="Date of birth"
+          disabled
+        />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="uniqueNumber" class="formLabel yeats-form-label"
+          >Unique Number</label
+        >
+        <input
+          type="text"
+          value="{{ authStore.PatientDetail?authStore.PatientDetail.UniqueNumber:'' }}"
+          class="form-control yeats-form-control"
+          id="uniqueNumber"
+          name="uniqueNumber"
+          placeholder="Unique Number"
+          disabled
+        />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="cellPhone" class="formLabel yeats-form-label"
+          >Cell Phone</label
+        >
+        <input
+          type="text"
+          value="{{ authStore.PatientDetail?authStore.PatientDetail.HomePhone:'' }}"
+          class="form-control yeats-form-control"
+          id="cellPhone"
+          name="cellPhone"
+          placeholder="Cell Phone"
+          disabled
+        />
+      </div>
+    </div>
+    <div class="col-lg-6 col-sm-12 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="cellPhone" class="formLabel yeats-form-label">&nbsp;</label>
+        <button
+          pButton
+          class="yeats-btn yeats-btn-danger ui-button-danger pull-right mr-3"
+          (click)="clearAllDetails()"
+        >
+          Clear
+        </button>
+        <button
+          pButton
+          class="yeats-btn yeats-btn-primary pull-right mr-3"
+          (click)="retrievePatientClaims('0')" 
+        >
+          Retrieve Claims
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="yeats-tables">
+    <p-table 
+      [columns]="cols"
+      #electronicTable
+     
+      [value]="claimData"
+      
+    >
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns">
+            {{ col.header }}
+          </th>
+          <th>Content</th>
+          <th>View</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+          <td *ngFor="let col of columns">
+            {{ rowData[col.field] }}
+          </td>
+          <td><i class="pi pi-search" (click)="viewContent(rowData)"></i></td>
+          <td><i class="pi pi-search" (click)="viewSuperBill(rowData)"></i></td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <p-paginator [rows]="rows" (onPageChange)="selectedPage($event)" [totalRecords]="totrec"></p-paginator>
+</div>
+
+<!-- <div class="row">
+  <div class="col-12">
+
+    <div widget class="card border-0 box-shadow">
+
+      <div class="card-block widget-body">
+        <form>
+          <div class="row">
+            <div class="form-group col-xl-2 col-lg-3 col-sm-6 col-12">
+              <div class="input-group">
+                <input class="form-control" placeholder="Billing Date  From" name="dateFrom" [(ngModel)]="dateFrom"
+                  ngbDatepicker #cal1="ngbDatepicker">
+                <div class="input-group-addon" (click)="cal1.toggle()">
+                  <i class="fa fa-calendar"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-xl-2 col-lg-3 col-sm-6 col-12">
+              <div class="input-group">
+                <input class="form-control" placeholder="Billing Date To" name="dateTo" [(ngModel)]="dateTo"
+                  ngbDatepicker #calTo="ngbDatepicker">
+                <div class="input-group-addon" (click)="calTo.toggle()">
+                  <i class="fa fa-calendar"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-xl-2 col-lg-3 col-sm-6 col-12">
+              <select class="custom-select" name="pInsuranceProviderId" [(ngModel)]="claimBills.pInsuranceProviderId">
+                <option value="">-- Select Insurance Provider --</option>
+                <option *ngFor="let ipl of insuranceProvidersList" [value]="ipl.InsuranceProviderId">{{ipl.InsuranceProviderName}}</option>
+              </select>
+            </div>
+            <div class="form-group col-xl-2 col-lg-3 col-sm-6 col-12">
+              <select class="custom-select" name="pPhysicianUserId" [(ngModel)]="claimBills.pPhysicianUserId">
+                <option value="">--Select Physician--</option>
+                <option *ngFor="let phy of physicianList" [value]="phy.physicianid">{{phy.firstname +" "+
+                  phy.lastname}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+
+            <div class="col-xl-12 col-lg-12 col-sm-12 col-12">
+              <label>Insurance Filter</label>
+              <label class="custom-control custom-radio">
+                <input type="radio" name="stacked-radio" class="custom-control-input radio-primary">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">All</span>
+              </label>
+              <label class="custom-control custom-radio">
+                <input type="radio" name="stacked-radio" class="custom-control-input radio-primary">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Primary</span>
+              </label>
+              <label class="custom-control custom-radio">
+                <input type="radio" name="stacked-radio" class="custom-control-input radio-primary" checked>
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Secondary</span>
+              </label>
+              <label class="custom-control custom-radio">
+                <input type="radio" name="stacked-radio" class="custom-control-input radio-primary">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Tertiary</span>
+              </label>
+              <button type="button" class="btn btn-sm btn-primary" (click)="retriveClaimBills()">Retrive Claims</button>
+              <button type="button" class="btn btn-sm btn-primary">Clear</button>
+
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+  <div class="col-12">
+    <div class="card border-0 box-shadow">
+
+      <div class="card-block pt-0 widget-body">
+        <div class="table-responsive">
+          <ng2-smart-table class="table table-hover" [settings]="settings" [source]="data" (deleteConfirm)="onDeleteConfirm($event)"
+            (rowSelect)="onRowSelect($event)" (userRowSelect)="onUserRowSelect($event)" (rowHover)="onRowHover($event)"></ng2-smart-table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div> -->

@@ -1,0 +1,42 @@
+<div class="previousres">
+  <div class="modal-header">
+    <h4 class="modal-title">View Previous Resources</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-12">
+        <div class="yeats-tables">
+          <p-table >
+            <ng-template pTemplate="header">
+              <tr>
+                <th class="a" data-toggle="tooltip" title="Document">Document</th>
+                <th class="a" data-toggle="tooltip" title="Email">Email</th>
+                <th class="a" data-toggle="tooltip" title="Date Email sent">Date Email sent</th>
+                <th class="a" data-toggle="tooltip" title="Print">Print</th>
+                <th class="a" data-toggle="tooltip" title="Date printed">Date printed</th>
+                <th class="a" data-toggle="tooltip" title="Patient portal">Patient portal</th>
+                <th class="a" data-toggle="tooltip" title="Action">Action</th>
+              </tr>
+              <tr *ngFor="let item of previousRes">
+                <td>{{item.DocumentTitle}}</td>
+                <td></td>
+                <td>{{item.DateEmailed | date: 'MM/dd/yyyy'}}</td>
+                <td></td>
+                <td>{{item.DatePrinted | date: 'MM/dd/yyyy'}}</td>
+                <td></td>
+                <td> <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary"
+                    style="margin-left: -10px">View</button></td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body">
+
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

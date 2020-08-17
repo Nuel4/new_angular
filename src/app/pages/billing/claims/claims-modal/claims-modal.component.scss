@@ -1,0 +1,23 @@
+.claim-modal {
+  .star {
+    color: red;
+  }
+
+  .physician_modal {
+    height: 40em;
+    overflow-y: scroll;
+  }
+
+  body .ui-paginator {
+    margin-top: -16px;
+  }
+
+  legend {
+    display: contents;
+    width: 100%;
+    padding: 0;
+    margin-bottom: .5rem;
+    font-size: 1.5rem;
+    line-height: inherit;
+  }
+}

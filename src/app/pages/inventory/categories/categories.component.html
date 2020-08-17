@@ -1,0 +1,106 @@
+<div *ngIf="isLoader" class="row">
+        <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+    </div>
+<div *ngIf="!isLoader" class="primeNgTable">
+    <div class="row" style="margin-bottom:15px;">
+        <div style="text-align: left">
+            <input class="globalSearchBar" type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                style="width:auto"><i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+        </div>
+        <div class="addCategory">
+            <!-- type="button" class="btn btn-primary" -->
+            <p-button label="Add Category" icon="fa fa-plus" iconPos="left" data-toggle="modal" data-target="#myModal"
+                (click)="clearData()"></p-button>
+        </div>
+    </div>
+    <p-table #dt [columns]="cols" [value]="invCategoryDatas" [paginator]="true" [rows]="5">
+        <!-- <ng-template pTemplate="caption">
+        <div style="text-align: right">
+            <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+            <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                style="width:auto">
+        </div>
+    </ng-template> -->
+        <ng-template pTemplate="header" let-columns>
+            <tr class="tableRowHead">
+                <th *ngFor="let col of columns">
+                    {{col.header}}
+                </th>
+                <th>Operations</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr class="tableRowBody" [pSelectableRow]="rowData">
+                <td *ngFor="let col of columns">
+                    {{rowData[col.field]}}
+                </td>
+                <td>
+                    <span><i class="fa fa-pencil-square-o" aria-hidden="true" (click)="editCategory(rowData.InvCategoryId)"></i></span>&nbsp;
+                    <span><i class="fa fa-trash-o" aria-hidden="true" (click)="deleteCategory(rowData)"></i></span>&nbsp;
+                    <span *ngIf="rowData.IsActive" (click)="changeStatus(rowData.InvCategoryId, false)"><i class="fa fa-check-square-o"></i></span>
+                    <span *ngIf="!rowData.IsActive" (click)="changeStatus(rowData.InvCategoryId, true)"><i class="fa fa-square-o"></i></span>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<!-- Add Category Modal -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header state modal-primary">
+                <h4 class="modal-title" *ngIf="!categoryData.InvCategoryId">Add Category</h4>
+                <h4 class="modal-title" *ngIf="categoryData.InvCategoryId">Edit Category</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form class="row">
+                    <div class="form-group col-xl-6 col-sm-6 col-12">
+                        <label for="InvCategoryName" class="formLabel">Category Name</label>
+                        <input type="text" class="form-control" placeholder="Enter Category Name" [(ngModel)]="categoryData.InvCategoryName"
+                            name="cat_name" required>
+                    </div>
+                    <div class="form-group col-xl-6 col-sm-6 col-12">
+                        <label for="ParentCategory" class="formLabel">Parent Category</label>
+                        <select class="form-control" id="exampleSelect1" [(ngModel)]="categoryData.ParentCategoryId"
+                            name="cat_parent" required>
+                            <option *ngFor="let parentCategory of invCategoryDatas" value="{{parentCategory.InvCategoryId}}">{{parentCategory.InvCategoryName}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-xl-6 col-sm-6 col-12">
+                        <label for="StoreName" class="formLabel">Store Name</label>
+                        <select class="form-control" id="exampleSelect2" [(ngModel)]="categoryData.InvStoreId" name="cat_store">
+                            <option *ngFor="let store of storeData" value="{{store.InvStoreId}}">{{store.StoreName}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-xl-6 col-sm-6 col-12">
+                        <!-- <label for="comment">Active</label>
+                        <select class="form-control" id="isActiveStatus" [(ngModel)]="categoryData.IsActive" name="cat_isActive">
+                            <option value="true">Active</option>
+                            <option value="false">Inactive</option>
+                        </select> -->
+                        <label class="custom-control custom-checkbox">
+                            <input class="custom-control-input checkbox-primary" type="checkbox" [(ngModel)]="categoryData.IsActive"
+                                (change)="onChange($event)" [checked]="categoryData.IsActive" name="isActive">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Is Active</span>
+                        </label>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" *ngIf="!categoryData.InvCategoryId" (click)="addNewCategory(categoryData)">Add</button>
+                <button type="button" class="btn btn-primary" *ngIf="categoryData.InvCategoryId" (click)="updateCategory(categoryData)">Update</button>
+            </div>
+
+        </div>
+    </div>
+</div>

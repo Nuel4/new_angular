@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="25.425" height="29" viewBox="0 0 25.425 29">
+  <g id="Patient_Accounts" data-name="Patient Accounts" transform="translate(-813.575 -78.316)">
+    <g id="Group_27990" data-name="Group 27990" transform="translate(814.575 79.316)">
+      <path id="Path_36131" data-name="Path 36131" d="M23.371,5H10.795A2.8,2.8,0,0,0,8,7.795V24.563a2.8,2.8,0,0,0,2.795,2.795H23.371a2.8,2.8,0,0,0,2.795-2.795V7.795A2.8,2.8,0,0,0,23.371,5Z" transform="translate(-5.262 -5)" fill="none" stroke="#114886" stroke-width="2"/>
+      <path id="Path_35536" data-name="Path 35536" d="M23.371,5H10.795A2.8,2.8,0,0,0,8,7.795V24.563a2.8,2.8,0,0,0,2.795,2.795H23.371a2.8,2.8,0,0,0,2.795-2.795V7.795A2.8,2.8,0,0,0,23.371,5Z" transform="translate(-8 -1.35)" fill="#fff" stroke="#114886" stroke-width="2"/>
+      <rect id="Rectangle_31" data-name="Rectangle 31" width="11.022" height="1.397" transform="translate(3.48 17.623)" fill="#114886"/>
+      <rect id="Rectangle_2657" data-name="Rectangle 2657" width="11.022" height="1.397" transform="translate(3.48 13.973)" fill="#114886"/>
+      <rect id="Rectangle_2658" data-name="Rectangle 2658" width="6.46" height="1.397" transform="translate(3.48 8.498)" fill="#114886"/>
+      <path id="Path_35538" data-name="Path 35538" d="M0,0H11.022V1.4H0Z" transform="translate(3.48 21.117)" fill="#114886"/>
+    </g>
+    <g id="Group_27992" data-name="Group 27992" transform="translate(826.549 94.788)">
+      <ellipse id="Ellipse_34" data-name="Ellipse 34" cx="6" cy="6.5" rx="6" ry="6.5" transform="translate(0.451 -0.472)" fill="#fff"/>
+      <path id="Billing" d="M27.568,20.71c0,.475-.6.731-1.166.731-.638,0-1.2-.393-1.2-.84H23.7a2.425,2.425,0,0,0,1.935,2.252V23.9h1.51V22.869a2.278,2.278,0,0,0,1.938-2.159c0-.744-.427-1.769-2.46-2.424-.859-.277-1.414-.664-1.414-.987,0-.475.6-.731,1.166-.731.638,0,1.2.393,1.2.84h1.51a2.425,2.425,0,0,0-1.938-2.253V14.111H25.63v1.03A2.277,2.277,0,0,0,23.7,17.3c0,.744.426,1.768,2.46,2.424.858.277,1.414.664,1.414.987Z" transform="translate(-20.641 -13.294)" fill="#114886"/>
+    </g>
+  </g>
+</svg>

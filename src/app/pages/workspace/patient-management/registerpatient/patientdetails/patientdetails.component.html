@@ -1,0 +1,458 @@
+<div class="patientDetails">
+  <form>
+    <div class="row">
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-first-row-grp">
+          <label for="uniquenumber" class="formLabel yeats-form-label">Patient Unique Number</label>
+          <input type="text" [(ngModel)]="patientDetail.UniqueNumber" class="form-control yeats-form-control" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+            id="uniquenumber" name="UniqueNumber" #UniqueNumber="ngModel" disabled="true" />
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class=" form-group yeats-first-row-grp">
+          <label for="SSN" class="yeats-form-label">SSN</label>
+          <p-inputMask mask="999-99-9999" [(ngModel)]="patientDetail.Ssn" placeholder="Enter SSN" name="Ssn" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+            #Ssn="ngModel"></p-inputMask>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-first-row-grp ">
+          <label class="formLabel yeats-form-label">Salutation</label>
+          <p-dropdown [options]="patientSalutation" [(ngModel)]="patientDetail.SalutationId" [appendTo]="body" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+            placeholder="Select Salutation" name="SalutationId" #SalutationId="ngModel" required>
+          </p-dropdown>
+        </div>
+
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-first-row-grp ">
+          <label class="formLabel yeats-form-label ">Date of Birth <span class="required">*</span></label>
+          <p-calendar class="yeats-form-control csdatepicker" [maxDate]="dateTime" [(ngModel)]="patientDetail.DateOfBirth" [showIcon]="true"
+            placeholder="Date of Birth" name="DateOfBirth" #DateOfBirth="ngModel" [readonlyInput]="true" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+            (onSelect)="calculateAge(patientDetail.DateOfBirth)" monthNavigator="true" yearNavigator="true"
+            yearRange="1900:2030" required>
+          </p-calendar>
+          <span *ngIf="(DateOfBirth.invalid) && DateOfBirth.errors.required"
+            class="invalid-feedback">
+            Please select date of birth
+        </span>
+          <!-- <span *ngIf="(formSumitAttempt && (!DateOfBirth.dirty))" class="invalid-feedback">
+            Please select date of birth
+          </span> -->
+          <span *ngIf="DOBV" class="invalid-feedback">
+            Please select valid date of birth
+          </span>
+        
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group">
+          <label for="" class="yeats-form-label">Age</label>
+          <input type="text" [(ngModel)]="patientDetail.ageValue" name="ageValue" #ageValue="ngModel"
+            class="form-control yeats-form-control" disabled>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group">
+          <label class="formLabel yeats-form-label"> &nbsp;</label>
+          <p-checkbox class="yeats-form-control" [(ngModel)]="patientDetail.FlagSelfPayPatient" label="Self Pay"
+            name="FlagSelfPayPatient" #FlagSelfPayPatient="ngModel" binary="false" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+            (click)="selfpayvalues(patientDetail.FlagSelfPayPatient)"></p-checkbox>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group">
+          <label for="FirstName" class="formLabel yeats-form-label">First Name <span class="required">*</span></label>
+          <input type="text" [(ngModel)]="patientDetail.FirstName" class="form-control yeats-form-control" (change)="firstNameChange($event.target.value)"
+            pattern="[a-zA-Z ]{2,30}" id="FirstName" #FirstName="ngModel" name="FirstName" required
+            placeholder="Enter First Name" minlength="4" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"/>
+            <!-- (GuarantorOwnPolicyForm.get('FirstName').invalid)&&((GuarantorOwnPolicyForm.get('FirstName').dirty)||(GuarantorOwnPolicyForm.get('FirstName').touched))&&(GuarantorOwnPolicyForm.get('FirstName').hasError('required')) -->
+            <div *ngIf="(FirstName.invalid) && FirstName.errors.required "
+            class="invalid-feedback">
+            Please enter First Name
+          </div>
+          <!-- <div *ngIf="(formSumitAttempt && (!FirstName.dirty))" class="invalid-feedback">
+            Please enter First Name
+          </div> -->
+          <div *ngIf="(FirstName.invalid) && FirstName.errors.minlength"
+            class="invalid-feedback">
+            First name must be atleast 4 characters long
+          </div>
+          <div *ngIf="(FirstName.invalid) && FirstName.errors.pattern"
+            class="invalid-feedback">
+            Name should be only Alphabets
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group">
+          <label for="LastName" class="formLabel yeats-form-label">Last Name <span class="required">*</span></label>
+          <input type="text" [(ngModel)]="patientDetail.LastName" class="form-control yeats-form-control" id="lastname" (change)="lastNameChange($event.target.value)"
+          pattern="[a-zA-Z ]{2,30}" #LastName="ngModel" name="LastName" required
+          placeholder="Enter Last Name" minlength="4" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"/>
+        <div *ngIf="(LastName.invalid) && LastName.errors.required "
+          class="invalid-feedback">
+          Please enter Last Name
+        </div>
+        <!-- <div *ngIf="(formSumitAttempt && (!LastName.dirty))" class="invalid-feedback">
+          Please enter Last Name
+        </div> -->
+        <div *ngIf="(LastName.invalid) && LastName.errors.minlength"
+          class="invalid-feedback">
+          Last name must be atleast 4 characters long
+        </div>
+        <div *ngIf="(LastName.invalid) && LastName.errors.pattern"
+          class="invalid-feedback">
+          Name should be only Alphabets
+        </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group">
+          <label for="MiddleName" class="formLabel yeats-form-label">Middle Name</label>
+          <input type="text" [(ngModel)]="patientDetail.MiddleName" class="form-control yeats-form-control" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+            #MiddleName="ngModel" id="middlename" name="MiddleName" placeholder="Enter Middle Name" />
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Patient Status <span class="required">*</span></label>
+          <p-dropdown [options]="patientStatus" [(ngModel)]="patientDetail.PatientStatus" 
+            placeholder="Select Patient Status" [showClear]="true" name="PatientStatus"
+            #PatientStatus="ngModel" required>
+          </p-dropdown>
+          <div
+            *ngIf="(PatientStatus.invalid) && PatientStatus.errors.required "
+            class="invalid-feedback">
+            Please Select Patient status
+          </div>
+          <!-- <div *ngIf="formSumitAttempt" class="invalid-feedback">
+            Please Select Patient status
+          </div> -->
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12 radioFormPatientDetials">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Gender</label>
+          <div>
+            <p-radioButton [value]="true" label="Male" [(ngModel)]="patientDetail.Sex" inputId="male" name="Sex" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+              #Sex="ngModel">
+            </p-radioButton>
+          </div>
+          <div>
+            <p-radioButton [value]="false" label="Female" [(ngModel)]="patientDetail.Sex" inputId="female" name="Sex" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+              #Sex="ngModel">
+            </p-radioButton>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12 radioFormPatientDetials">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Responsible Party</label>
+          <div>
+            <p-radioButton value="Patient" label="Patient Responsible Party" name="ResponsibleParty"
+              #ResponsibleParty="ngModel" [(ngModel)]="patientDetail.ResponsibleParty" inputId="ResponsibleParty"
+              (onClick)="hideGurantorDetails()"></p-radioButton>
+          </div>
+          <div>
+            <p-radioButton value="Gurantor" label="Guarantor Responsible Party" name="ResponsibleParty"
+              #ResponsibleParty="ngModel" [(ngModel)]="patientDetail.ResponsibleParty" inputId="ResponsibleParty"
+              (onClick)="showGurantorDetails()">
+            </p-radioButton>
+          </div>
+        </div>
+        <div id="gDetails" *ngIf="value">
+          <button pButton class="yeats-btn yeats-btn-primary mb-3" (click)="openmodal()">Guarantor
+            Details </button>
+        </div>
+      </div>
+    </div>
+    <div class="card border-0">
+      <p-accordion>
+        <p-accordionTab header="Primary Address">
+          <div class="card-block" style="padding:0">
+            <div class="row">
+              <div class="col-lg-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="PrimaryAddressLine1" class="formLabel yeats-form-label">Address Line1</label>
+                  <input type="text" [(ngModel)]="patientDetail.PrimaryAddressLine1" #PrimaryAddressLine1="ngModel"
+                    class="form-control yeats-form-control" id="PrimaryAddressLine1" name="PrimaryAddressLine1"
+                    placeholder="Enter Address 1" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"/>
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="PrimaryAddressLine2" class="formLabel yeats-form-label">Address Line 2</label>
+                  <input type="text" [(ngModel)]="patientDetail.PrimaryAddressLine2" #PrimaryAddressLine2="ngModel"
+                    class="form-control yeats-form-control" id="PrimaryAddressLine2" name="PrimaryAddressLine2"
+                    placeholder="Enter Address 2" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"/>
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="PrimaryCity" class="formLabel yeats-form-label">City</label>
+                  <input type="text" [(ngModel)]="patientDetail.PrimaryCity" class="form-control yeats-form-control"
+                    #PrimaryCity="ngModel" id="PrimaryCity" name="PrimaryCity" placeholder="Enter City" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"/>
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="PrimaryStateCode" class="formLabel yeats-form-label">State</label>
+                  <p-dropdown [options]="patientState" [(ngModel)]="patientDetail.PrimaryStateCode" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                    name="PrimaryStateCode" #PrimaryStateCode="ngModel" placeholder="Select a State" [showClear]="true">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="PrimaryZipCode" class="formLabel yeats-form-label">Zip Code<span class="required">*</span>
+                  </label>
+                  <div class="row">
+                    <div class="col-lg-5 mpr-0">
+                      <p-inputMask mask="99999" [(ngModel)]="patientDetail.PrimaryZipCode" name="PrimaryZipCode" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                        class="mpr-0" [maxlength]=5 #PrimaryZipCode="ngModel" placeholder="Enter ZipCode" required></p-inputMask>
+                        
+                    </div>
+                    <div class="col-lg-1 mp-0">
+                      -
+                    </div>
+                    <div class="col-lg-5 mpl-0">
+                      <p-inputMask mask="9999" [(ngModel)]="patientDetail.PrimaryZipPlus4" name="PrimaryZipPlus4" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                        class="mpl-0" [maxlength]=4 #PrimaryZipPlus4="ngModel" placeholder="Enter ZipCode">
+                      </p-inputMask>
+                    </div>
+                    <div
+            *ngIf="(PrimaryZipCode.invalid) && PrimaryZipCode.errors.required && (PrimaryZipPlus4.invalid) && PrimaryZipPlus4.errors.required || (formSumitAttempt && (!PrimaryZipPlus4.dirty))"
+            class="invalid-feedback">
+            Please provide zip code
+          </div>
+          <!-- <div *ngIf="formSumitAttempt" class="invalid-feedback">
+            Please provide zip code
+          </div> -->
+          <!-- <div class="invalid-feedback" *ngIf="PrimaryZipCode.errors.">Please provide valid zip code</div> -->
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="Fax" class="formLabel yeats-form-label">Fax</label>
+                  <p-inputMask mask="(999) 999-9999" [(ngModel)]="patientDetail.Fax" placeholder="Enter Fax" name="Fax" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                    #Fax="ngModel">
+                  </p-inputMask>
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="Email1" class="formLabel yeats-form-label">Email 1</label>
+                  <input type="text" [(ngModel)]="patientDetail.Email1" class="form-control yeats-form-control" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                    #Email1="ngModel" id="Email1" name="Email1" placeholder="Enter Email 1" />
+                </div>
+              </div>
+
+
+              <div class="col-lg-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="Email2" class="formLabel yeats-form-label">Email 2</label>
+                  <input type="text" [(ngModel)]="patientDetail.Email2" class="form-control yeats-form-control" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                    #Email2="ngModel" id="Email2" name="Email2" placeholder="Enter Email 2" />
+                </div>
+              </div>
+
+              <!-- [(ngModel)]="patientDetail.PhotoImage" -->
+
+              <div class="col-lg-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="photoImage" class="formLabel yeats-form-label">Photo</label>
+                  <img class='image' [src]="url">
+                  <div>
+                    <input type="file" multiple (change)="uploadImage($event)" class="m-img-upload-btn"
+                      accept=".jpeg,.png" [(ngModel)]="patientDetail.PhotoImage"  #PhotoImage="ngModel" id="PhotoImage" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                      name="PhotoImage" />
+                    <button class="btn btn-primary btn-block file-upload-btn" style="width:100px;margin-bottom:10px" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                      type="button">
+                      Choose files...
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="HomePhone" class="formLabel yeats-form-label">Home Phone<span class="required">*</span></label>
+                  <p-inputMask mask="(999) 999-9999" [(ngModel)]="patientDetail.HomePhone" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                    placeholder="Enter Home Phone" name="HomePhone" #HomePhone="ngModel" required></p-inputMask>
+                    <div 
+            *ngIf="(HomePhone.invalid) && HomePhone.errors.required "
+            class="invalid-feedback">
+            Please provide home phone number
+          </div>
+          <!-- <div *ngIf="formSumitAttempt && (!HomePhone.dirty)" class="invalid-feedback">
+            Please provide home phone number
+          </div> -->
+                </div>
+              </div>
+
+              <div class="col-lg-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="workPhone" class="formLabel yeats-form-label">Work Phone</label>
+                  <p-inputMask mask="(999) 999-9999" [(ngModel)]="patientDetail.WorkPhone"
+                    placeholder="Enter Work Phone" name="WorkPhone" #WorkPhone="ngModel">
+                  </p-inputMask>
+
+                </div>
+              </div>
+
+              <div class="col-lg-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="MobilePhone" class="formLabel yeats-form-label">Cell Phone</label>
+                  <p-inputMask mask="(999) 999-9999" [(ngModel)]="patientDetail.MobilePhone" name="MobilePhone" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                    #MobilePhone="ngModel" placeholder="Enter Cell Phone">
+                  </p-inputMask>
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group">
+                  <label for="AltPhone" class="formLabel yeats-form-label">Alternate Phone</label>
+                  <p-inputMask mask="(999) 999-9999" [(ngModel)]="patientDetail.AltPhone" name="AltPhone" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                    #AltPhone="ngModel" placeholder="Enter Alternate Phone">
+                  </p-inputMask>
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group">
+                  <label for="Occupation" class="formLabel yeats-form-label">Occupation</label>
+                  <input type="text" [(ngModel)]="patientDetail.Occupation" class="form-control yeats-form-control" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                    #Occupation="ngModel" id="Occupation" name="Occupation" placeholder="Enter Occupation" />
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group">
+                  <label for="GeneralNote" class="formLabel yeats-form-label">General Comments</label>
+                  <input type="text" [(ngModel)]="patientDetail.GeneralNote" class="form-control yeats-form-control" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                    #GeneralNote="ngModel" id="GeneralNote" name="GeneralNote" placeholder="Enter General Comments" />
+                </div>
+              </div>
+
+              <div class="col-lg-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group">
+                  <label for="MedicalChartNumber" class="formLabel yeats-form-label">Medical Chart</label>
+                  <input type="text" [(ngModel)]="patientDetail.MedicalChartNumber" #MedicalChartNumber="ngModel" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                    class="form-control yeats-form-control" id="MedicalChartNumber" name="MedicalChartNumber"
+                    placeholder="Enter Medical Chart" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </p-accordionTab>
+        <p-accordionTab header=" Meaningful Use">
+          <div class="row">
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group ">
+                <label for="EthnicityId" class="formLabel yeats-form-label">Ethnicity</label>
+                <p-dropdown [options]="patientEthnicity" [(ngModel)]="patientDetail.EthnicityId" name="EthnicityId" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                  #EthnicityId="ngModel" placeholder="Select Ethnicity" [showClear]="true">
+                </p-dropdown>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group ">
+                <label for="RaceId" class="formLabel yeats-form-label">Race</label>
+                <p-dropdown [options]="patientRace" [(ngModel)]="patientDetail.RaceId" placeholder="Select Race" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                  name="RaceId" #RaceId="ngModel" [showClear]="true">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group ">
+                <label for="Language1Id" class="formLabel yeats-form-label">Language</label>
+                <p-dropdown [options]="patientLanguage" [(ngModel)]="patientDetail.Language1Id" name="Language1Id" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                  #Language1Id="ngModel" placeholder="Select Language" [showClear]="true">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group">
+                <label for="RequiresInterpretor" class="formLabel yeats-form-label"> &nbsp;</label>
+                <p-checkbox class="yeats-form-control" [(ngModel)]="patientDetail.RequiresInterpretor" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                  name="RequiresInterpretor" #RequiresInterpretor="ngModel" label="Require Language Interpreter"
+                  binary="false"></p-checkbox>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group ">
+                <label for="ReferringOrganizationId" class="formLabel yeats-form-label">Referral Organization</label>
+                <p-dropdown [options]="referringOrganization" [(ngModel)]="patientDetail.ReferringOrganizationId" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                  name="ReferringOrganizationId" #ReferringOrganizationId="ngModel" placeholder="Select Organization"
+                  (onChange)="getReferringPhysicianByOrganization(patientDetail.ReferringOrganizationId)"
+                  [showClear]="true">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group ">
+                <label for="ReferringPhysicianId" class="formLabel yeats-form-label">Referring Physician</label>
+                <p-dropdown [options]="referringPhysician" [(ngModel)]="patientDetail.ReferringPhysicianId" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                  name="ReferringPhysicianId" #ReferringPhysicianId="ngModel" placeholder="Select Physician"
+                  [showClear]="true">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group ">
+                <label for="DefaultFacility" class="formLabel yeats-form-label">Default Facility</label>
+                <div class="ui-fluid">
+                  <p-autoComplete class="yeats-form-control autodropdown" [(ngModel)]="patientDetail.DefaultFacility"
+                    name="DefaultFacility" #DefaultFacility="ngModel" [suggestions]="selectedFacilityList" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                    [dropdown]="true" (onSelect)="SelectedFacility($event)" (completeMethod)="LoadFacility($event)"
+                    field="FacilityName" [dropdown]="true" placeholder="Enter Facility Name" [minLength]="3">
+                  </p-autoComplete>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group ">
+                <label for="DefaultPhysician" class="formLabel yeats-form-label">Default Physician</label>
+                <p-dropdown [options]="defaultPhy" [(ngModel)]="patientDetail.DefaultPhysician" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                  name="DefaultPhysician" #DefaultPhysician="ngModel" placeholder="Select Physician" [showClear]="true">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group ">
+                <label for="ReferralDetails" class="formLabel yeats-form-label">Referral Details</label>
+                <input type="text" [(ngModel)]="patientDetail.ReferralDetails" class="form-control yeats-form-control"
+                  name="ReferralDetails" #ReferralDetails="ngModel" id="ReferralDetails" [disabled]="patientDetail.PatientStatus? (patientDetail.PatientStatus === 'Inactive') : false"
+                  placeholder="Enter Referral Details" />
+              </div>
+            </div>
+          </div>
+        </p-accordionTab>
+      </p-accordion>
+      <div class="row mt-3">
+        <div class="col-6">
+          <button pButton *ngIf="showprtandchrge" class="yeats-btn yeats-btn-primary mr-3" icon="fa fa-print" label="print" (click)="chargeSlips('PatientPrint')">Print</button>
+          <button pButton *ngIf="showprtandchrge" class="yeats-btn yeats-btn-primary" icon="fa fa-file-text-o" (click)="chargeSlips('PatientChargeSlips')" label="Charge Slip">Charge
+            Slip</button>
+        </div>
+        <div class="col-6">
+          <div class="col-12">
+            <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+              [disabled]="patientDetail.valid" (click)="openNext()">Next</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" [disabled]="patientDetail.valid"
+              (click)="valueChange(patientDetail)">Save</button>
+            <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+              (click)="onClose()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:1100px">
+    </div>
+  </div>
+
+</div>

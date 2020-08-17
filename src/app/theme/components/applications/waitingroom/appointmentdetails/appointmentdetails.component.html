@@ -1,0 +1,493 @@
+<!--div id="reportstatic" class="powerbi-container"></div-->
+<div class="card-block settings" style="top:-40px !important">
+  <div class="modal-content">
+    <div widget class="card border-0 box-shadow">
+      <div class="modal-header">
+        <h4 class="modal-title" style="margin-left: .5rem;">
+          <i class="fa fa-arrow-left" style="color:#fff;" (click)="reset()"></i
+          ><span style="margin-left: .5rem;">Waiting Room</span>
+        </h4>
+      </div>
+      <div class="card-block widget-body">
+        <div class="row">
+          <div class="col">
+            <!-- <form> -->
+            <div class="row">
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label
+                  ><H5><u> Personal Details </u> </H5></label
+                >
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label>
+                  <H5> <u> Address </u> </H5></label
+                >
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label>
+                  <H5><u> Insurance Details(Primary) </u> </H5></label
+                >
+              </div>
+            </div>
+            <div class="row">
+              <div *ngIf="patient_details" class=" col-lg-3 col-sm-6 col-12">
+                <label class="lable-size"
+                  >Name: {{ patient_details.patientname }}</label
+                >
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label class="lable-size">
+                  Address: {{ patient_details.Address }}
+                  <!-- {{ patient_details.primaryaddressline1
+                  }}{{ patient_details.primaryaddressline2 }}
+                  {{ patient_details.primarycity }}
+                  {{ patient_details.primarystate }}
+                  {{ patient_details.primaryzipcode }} -->
+                </label>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label class="lable-size">
+                  Provider: {{ patient_details.primaryinsurancename }}
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-3 col-sm-6 col-12">
+                <!-- <label>DOB: {{patient_details.dateofbirth}} </label> -->
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <!-- <label> Cell: {{patient_details.mobilephone}} </label> -->
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label class="lable-size">
+                  Policy No: {{ patient_details.primaryinsurancepolicynumber }}
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label class="lable-size"
+                  >DOB:
+                  {{ patient_details.patientdateofbirth | date: "dd/MM/yyyy" }}
+                </label>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <!-- <label> Policy No: {{patient_details.primaryinsurancepolicynumber}} </label> -->
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label class="lable-size">
+                  Cell: {{ patient_details.patientmobilephone }}
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label class="lable-size">
+                  Age: {{ patient_details.age }}
+                </label>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12"></div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label class="lable-size">
+                  Home Phone Number:
+                  {{ patient_details.patienthomephone }}</label
+                >
+              </div>
+            </div>
+            <div class="row">
+              <div
+                [ngSwitch]="patient_details.sex"
+                class="col-lg-3 col-sm-6 col-12"
+              >
+                <div *ngSwitchCase="true">
+                  <label class="lable-size">Sex: Male </label>
+                </div>
+                <div *ngSwitchCase="false">
+                  <label class="lable-size">Sex: Female </label>
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12"></div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label class="lable-size">
+                  Work Phone Number:
+                  {{ patient_details.patientworkphone }}</label
+                >
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-3 col-sm-6 col-12">
+                  <div class="input-group">
+                <button pButton
+                [disabled]="enableEdit"
+                class="yeats-btn yeats-btn-primary ml-3" (click)="opneEditPatient(patient_details)"
+                  >Edit Patient Details</button
+                >
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <div class="input-group"></div>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                  <div class="input-group">
+                <button pButton
+                [disabled]="enableAppt"
+                class="yeats-btn yeats-btn-primary ml-3" (click)="openAddEditAppt()"
+                  >Walk-In Patient</button
+                >
+                </div>
+              </div>
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                <div class="input-group">
+                  <button
+                    pButton
+                    class="yeats-btn yeats-btn-primary ml-3"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Refresh Waiting Room"
+                    data-animation="false"
+                    (click)="ngOnInit()"
+                  >
+                    <i class="fa fa-refresh"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- <div class="form-group col-lg-6 col-sm-6 col-12"></div> -->
+              <div class="form-group col-lg-3 col-sm-3 col-12">
+                <p-calendar
+                  [showIcon]="true"
+                  [(ngModel)]="selected_date"
+                  [monthNavigator]="true"
+                  [yearNavigator]="true"
+                  yearRange="1900:2030"
+                  (onSelect)="onDateSelection()"
+                ></p-calendar>
+              </div>
+              <!-- <div class="form-group col-lg-3 col-sm-6 col-12"></div> -->
+              <!-- <div class="form-group col-lg-4 col-sm-8 col-12"> -->
+              <div class="row" style="margin:auto;">
+                <button
+                  pButton
+                  class="yeats-btn yeats-btn-primary ml-3 mb-3"
+                  [disabled]="enableButtons"
+                  (click)="openSmModal('cancel_appt', patient_details)"
+                >
+                  Cancel Appt
+                </button>
+                <button
+                  *ngIf="!myQueue"
+                  pButton
+                  class="yeats-btn yeats-btn-primary ml-3 mb-3"
+                  (click)="onToggleQueue(!myQueue)"
+                >
+                  My Queue
+                </button>
+                <button
+                  *ngIf="myQueue"
+                  pButton
+                  class="yeats-btn yeats-btn-primary ml-3 mb-3"
+                  (click)="onToggleQueue(!myQueue)"
+                >
+                  All Queue
+                </button>
+                <button
+                  pButton
+                  class="yeats-btn yeats-btn-primary ml-3 mb-3"
+                  (click)="viewCharts(patient_details)"
+                  [disabled]="enableButtons"
+                >
+                  View
+                </button>
+                <button
+                  pButton
+                  class="yeats-btn yeats-btn-primary ml-3 mb-3"
+                  (click)="openSmModal('forms', patient_details)"
+                  [disabled]="enableButtons"
+                >
+                  Forms
+                </button>
+                <!-- <button type="button" class="btn btn-primary tt mb-1" title="Refresh Waiting Room">Documents</button>
+              <button type="button" class="btn btn-primary tt mb-1" title="Refresh Waiting Room">Scan</button>
+              <button type="button" class="btn btn-primary tt mb-1" title="Refresh Waiting Room">Co-Pay</button> -->
+                <!-- </div>
+            <div class="form-group col-lg-4 col-sm-8 col-12"> -->
+                <button
+                  pButton
+                  class="yeats-btn yeats-btn-primary ml-3 mb-3"
+                  (click)="openForms('documnets', patient_details)"
+                  [disabled]="enableButtons"
+                >
+                  Documents
+                </button>
+                <button
+                  pButton
+                  class="yeats-btn yeats-btn-primary ml-3 mb-3"
+                  [disabled]="enableButtons"
+                >
+                  Scan
+                </button>
+                <button
+                  pButton
+                  class="yeats-btn yeats-btn-primary ml-3 mb-3"
+                  (click)="openForms('copay', patient_details)"
+                  [disabled]="enableButtons"
+                >
+                  Co-Pay
+                </button>
+                <!-- <button
+                pButton
+                class="yeats-btn yeats-btn-primary ml-3 mb-3"
+                (click)="reset()"
+                [disabled]="enableButtons"
+              >
+                Back
+              </button> -->
+              </div>
+              <!-- </div> -->
+              <!-- <div class="form-group col-lg-3 col-sm-6 col-12"> -->
+              <!-- </div> -->
+            </div>
+            <!-- </form> -->
+            <!-- </div> -->
+
+            <!-- </div> -->
+          </div>
+        </div>
+        <!-- 
+  <div class="card border-0 box-shadow">
+
+
+    <div class="card-block pt-0 widget-body">
+
+        <div class="clearfix">
+          <ul class="nav nav-tabs custom top">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#duePatList" (click)='OnAppointmentTabSelection("Scheduled")'>Due Patient List</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#currentPatLists" (click)='OnAppointmentTabSelection("Arrived")'>Current Patient List</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#compApp" (click)='OnAppointmentTabSelection("Completed")'>Completed Appointments</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#noVisitCompApp" (click)='OnAppointmentTabSelection("Completed_NoVisit")'>No Visited Completed Appointments</a>
+            </li>
+
+          </ul>
+        </div>
+    </div>
+
+    <div class="tab-content top">
+
+      <div class="tab-pane active" id="duePatList">
+          <p> Due Patient lists</p>
+
+      </div>
+
+      <div class="tab-pane" id="currentPatLists">
+       <p> Current Patient lists</p>
+      </div>
+
+      <div class="tab-pane" id="compApp">
+       <p> Completed Patient Lists </p>
+      </div>
+
+      <div class="tab-pane" id="noVisitCompApp">
+        <p>Number visited Completed Appointments </p>
+      </div>
+
+    </div>
+
+  </div>
+  <div class=row >
+      <app-appointmentlist #objList (OnRowSelection)="OnRowSelected($event)">
+      </app-appointmentlist>
+  </div> -->
+
+        <div>
+          <p-tabView (onChange)="SelectedTab($event)">
+            <!-- <div *ngFor="let headerName of tabLabel"> -->
+            <p-tabPanel
+              *ngFor="let headerName of tabLabel; let i = index"
+              header="{{ headerName.name }}"
+              class="board-height"
+            >
+              <div class="row" *ngIf="i === 0">
+                <label class="ml-3" style="margin-top: 0.3rem;">Facility</label>
+                <p-dropdown
+                  class="dropdown ml-3"
+                  [options]="facilityList"
+                  placeholder="Select Facility"
+                  optionLabel="name"
+                  [showClear]="true"
+                  [(ngModel)]="selectedFacility"
+                  (onChange)="onFacilityChange(selectedFacility)"
+                >
+                </p-dropdown>
+              </div>
+              <div class="row" *ngIf="i === 1">
+                <div class="col-lg-8 col-sm-8 col-12"></div>
+                <button
+                  pButton
+                  class="yeats-btn yeats-btn-primary ml-3"
+                  (click)="markAppCompleted(patient_details)"
+                >
+                  Mark As Completed
+                </button>
+                <button
+                  pButton
+                  class="yeats-btn yeats-btn-primary ml-3"
+                  (click)="retuenApptToCheckIn(patient_details)"
+                >
+                  Return Patient To Check In
+                </button>
+              </div>
+              <div class="yeats-tables">
+                <p-table
+                  [columns]="cols"
+                  [value]="patient_documents_list"
+                  rowExpandMode="single"
+                  dataKey="appointmentstarttime"
+                >
+                  <ng-template pTemplate="header" let-columns>
+                    <tr>
+                      <th
+                        style="width: 3%;"
+                        *ngIf="patient_documents_list.length > 0"
+                      ></th>
+                      <th
+                        *ngFor="let col of columns; let i = index"
+                        [pSortableColumn]="col.field"
+                        pEditableColumn
+                        (click)="openFilter(i)"
+                      >
+                        <span *ngIf="headerIndex !== i">{{ col.header }}</span
+                        ><span *ngIf="headerIndex === i && !col.filter">{{
+                          col.header
+                        }}</span>
+                        <i
+                          class="fa fa-filter"
+                          *ngIf="headerIndex !== i && col.filter"
+                        ></i>
+                        <p-cellEditor *ngIf="col.filter">
+                          <ng-template pTemplate="input">
+                            <input
+                              pInputText
+                              type="text"
+                              placeholder="{{ col.header }}"
+                              (keyup)="
+                                filterTableData($event.target.value, col.field)
+                              "
+                              style="width:100%; height: 75%;"
+                            />
+                          </ng-template>
+                        </p-cellEditor>
+                      </th>
+                    </tr>
+                  </ng-template>
+                  <ng-template
+                    pTemplate="body"
+                    let-rowData
+                    let-expanded="expanded"
+                    let-columns="columns"
+                  >
+                    <tr
+                      [pSelectableRow]="rowData"
+                      (click)="onSelectedRow(rowData)"
+                    >
+                      <td *ngIf="patient_documents_list.length > 0">
+                        <a
+                          style="padding-left:10px"
+                          href="#"
+                          [pRowToggler]="rowData"
+                          (click)="!expanded 
+                          ? onExpand(rowData) : ''"
+                        >
+                          <i
+                            [ngClass]="
+                              expanded
+                                ? 'pi pi-chevron-down'
+                                : 'pi pi-chevron-right'
+                            "
+                          ></i>
+                        </a>
+                      </td>
+                      <td *ngFor="let col of columns">
+                        <span *ngIf="col.field === 'account_summary'"
+                          ><i
+                            class="fa fa-address-card-o"
+                            (click)="openForms('account_summary', rowData)"
+                            style="font-size: 18px;"
+                          ></i
+                        ></span>
+                        <span *ngIf="col.field === 'check_in'"
+                          ><i
+                            class="fa fa-level-down"
+                            (click)="checkInAppt(rowData)"
+                            style="font-size: 18px;"
+                          ></i
+                        ></span>
+                        <span *ngIf="col.field === 'charts'"
+                          ><i
+                            class="fa fa-window-maximize"
+                            (click)="viewCharts(rowData,true)"
+                            style="font-size: 18px;"
+                          ></i
+                        ></span>
+                        <span *ngIf="col.field === 'eligibility'"
+                          ><button
+                            pButton
+                            class="yeats-btn yeats-btn-primary"
+                            style="min-width: 2.7rem;padding: 0px !important"
+                            (click)="verifyEligibility(rowData)"
+                          >
+                            verify
+                          </button></span
+                        >
+                        <span *ngIf="col.field !== 'account_summary'">{{
+                          rowData[col.field]
+                        }}</span>
+                        <span pEditableColumn *ngIf="col.field === 'room_name'">
+                          <p-cellEditor>
+                            <ng-template pTemplate="input">
+                              <p-dropdown
+                                [options]="rooms"
+                                optionLabel="RoomName"
+                                placeholder="select Room"
+                                [(ngModel)]="selectedRoom"
+                                [style]="{ width: '100%' }"
+                                (onChange)="updateRoomAppt(rowData)"
+                              ></p-dropdown>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                              {{ rowData.roomName }}
+                            </ng-template>
+                          </p-cellEditor>
+                        </span>
+                      </td>
+                    </tr>
+                  </ng-template>
+                  <ng-template
+                    pTemplate="rowexpansion"
+                    let-rowData
+                    let-columns="columns"
+                  >
+                    <tr>
+                      <td [attr.colspan]="columns.length + 2">
+                          <app-patient-tabview [rowData]="selecteRow"></app-patient-tabview>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </p-tabPanel>
+          </p-tabView>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

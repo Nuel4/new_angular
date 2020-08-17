@@ -1,0 +1,42 @@
+<div class="patient-education">
+  <div *ngIf="toChart">
+    <app-widget-header [widgetData]="widgetData" (refreshWidget)="refreshData()"></app-widget-header>
+  </div>
+  <div class="gridster-item-content">
+    <div *ngIf="isLoader" class="row">
+      <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+    </div>
+    <div class="yeats-tables">
+      <p-table [columns] = "cols" [value]="patientEducationList">
+        <!-- (onLazyLoad)="paginate($event)"   [lazy]="true"-->
+        <!-- <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+                <col *ngFor="let col of columns" style="width:50px">
+            </colgroup>
+        </ng-template> -->
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <ng-container *ngFor="let col of columns">
+            <th class="a" data-toggle="tooltip" [title]="col.header">{{col.header}}</th>
+          </ng-container>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData>
+            <tr >
+                <td class="a" data-toggle="tooltip" [title]="rowData.DocumentTitle">{{rowData.DocumentTitle}}</td>
+                <td></td>
+                <td>{{rowData.DateEmailed | date: 'MM/dd/yyyy'}}</td>
+                <td></td>
+                <td>{{rowData.DatePrinted | date: 'MM/dd/yyyy'}}</td>
+                <td></td>
+                <td> <button pButton class="yeats-btn-secondary ui-button-secondary view"
+                    style="margin-left: 0em" (click)="openDoc(rowData)">View</button></td>
+              </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+  </div>
+  <p-paginator [rows]="rows" (onPageChange)="paginate($event)" [totalRecords]="totalRecords"></p-paginator>
+
+</div>

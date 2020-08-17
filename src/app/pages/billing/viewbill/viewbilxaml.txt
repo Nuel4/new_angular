@@ -1,0 +1,819 @@
+<sdk:ChildWindow x:Class="Socrates.Views.Billing.CPTDiagnosisAssociation"
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+          xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+           xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                  xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit"
+   
+                 xmlns:Microsoft_Cui_Controls="clr-namespace:Microsoft.Cui.Controls;assembly=Microsoft.Cui.Controls"
+                    xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices"
+                 	xmlns:telerikGrid="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView"
+                 xmlns:telerikInput="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input"
+                  xmlns:e="clr-namespace:Socrates.Web.DomainLogic"
+    xmlns:conv="clr-namespace:Socrates.Helpers"
+                 
+           Width="1020" Height="Auto"
+                 Title="Superbill details" MouseMove="ChildWindow_MouseMove" KeyDown="ChildWindow_KeyDown" Closing="ChildWindow_Closing">
+    <sdk:ChildWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Assets/System.Windows.Controls.Theming.TwilightBlue.xaml"/>
+                <ResourceDictionary Source="../../Assets/Styles.xaml"/>
+                <ResourceDictionary Source="../../Assets/generic.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </sdk:ChildWindow.Resources>
+    <telerik:RadBusyIndicator x:Name="CPTDABusyIndicator" IsBusy="False" >
+        <Grid x:Name="LayoutRoot" Margin="0" Height="Auto">
+            <telerik:RadBusyIndicator x:Name="RadBsyIndicator" IsBusy="False">
+                <Grid Margin="0" Height="Auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="26"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid HorizontalAlignment="Stretch" Grid.Row="0">
+                        <Grid x:Name="PracticeSeparator1" Height="25" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1">
+                            <Rectangle Height="25" VerticalAlignment="Top" RadiusX="5" RadiusY="20">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                        <GradientStop Color="#FF6595D4"/>
+                                        <GradientStop Color="#FF367799" Offset="0.553"/>
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </Grid>
+                        <TextBlock Text="Patient Details" FontSize="11" Foreground="White" VerticalAlignment="Center" Margin="5,0,0,0" />
+                    </Grid>
+                    <Grid Grid.Row="1" Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="26"/>
+                            <RowDefinition Height="26"/>
+                            <RowDefinition Height="26"/>
+                            <RowDefinition Height="26"/>
+                            <RowDefinition Height="26"/>
+                            <RowDefinition Height="26"/>
+                            <RowDefinition Height="26"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="10"/>
+
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="123"/>
+                            <ColumnDefinition Width="147"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <!--First Part-->
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Patient Chart" Margin="5" HorizontalAlignment="Right" />
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Patient Name" Margin="5" HorizontalAlignment="Right" />
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Billing No" Margin="5" HorizontalAlignment="Right" />
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Provider" Margin="5" HorizontalAlignment="Right" />
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Location" Margin="5" HorizontalAlignment="Right" />
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="Facility" Margin="5" HorizontalAlignment="Right" />
+
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblPatientChart" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblPatientName" />
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblBillingNo" />
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblProviderName" />
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" />
+                        <TextBlock Grid.Row="5" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblFacility" />
+                        <!--First Part end-->
+
+                        <!--Second Part-->
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="Referring Physician" Margin="5" HorizontalAlignment="Right" />
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="Created Date" Margin="5" HorizontalAlignment="Right" />
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="Service Date" Margin="5" HorizontalAlignment="Right" />
+                        <TextBlock Grid.Row="3" Grid.Column="2" Text="Hospital From" Margin="5" HorizontalAlignment="Right" />
+                        <TextBlock Grid.Row="4" Grid.Column="2" Text="Hospital To" Margin="5" HorizontalAlignment="Right" />
+                        <TextBlock Grid.Row="5" Grid.Column="2" Text="Co-Pay" Margin="5" HorizontalAlignment="Right" />
+
+                        <TextBlock Grid.Row="0" Grid.Column="3" Text="" Margin="5" HorizontalAlignment="Left" Name="lblReferringPhysician" />
+                        <TextBlock Grid.Row="1" Grid.Column="3" Text="" Margin="5" HorizontalAlignment="Left" Name="lblCreatedDate" />
+                        <TextBlock Grid.Row="2" Grid.Column="3" Text="" Margin="5" HorizontalAlignment="Left" Name="lblServiceDate" />
+                        <TextBlock Grid.Row="3" Grid.Column="3" Text="" Margin="5" HorizontalAlignment="Left" />
+                        <TextBlock Grid.Row="4" Grid.Column="3" Text="" Margin="5" HorizontalAlignment="Left" />
+                        <TextBlock Grid.Row="5" Grid.Column="3" Text="" Margin="5" HorizontalAlignment="Left" Name="lblCoPayAmount" />
+                        <!--Second Part end-->
+                        <TextBlock Text="Referral Start Date" Grid.Row="7" Grid.Column="0" Margin="5" HorizontalAlignment="Left" />
+                        <telerik:RadDatePicker x:Name="dpReferralStartDate" Grid.Row="7" Grid.Column="1" Width="100"  Margin="5,5,0,0" FontSize="9.333" Height="22" HorizontalAlignment="Left" />
+                        <TextBlock Text="Referral Expiration Date" Margin="5" Grid.Row="7" Grid.Column="2" HorizontalAlignment="Left" />
+                        <telerik:RadDatePicker x:Name="dpReferralExpiryDate" Width="100"  Grid.Row="7" Grid.Column="3" Margin="5,5,0,0" FontSize="9.333" Height="22" HorizontalAlignment="Left" />
+                        <StackPanel  x:Name="SpReferralDetails" Grid.Row="6" Grid.ColumnSpan="4" Margin="0,5,0,0" Orientation="Horizontal">
+                            <TextBlock Text="Allowable Visits" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,0,0,0"></TextBlock>
+                            <telerik:RadMaskedTextBox x:Name="tbAllowedVisits" MaskType="Numeric" Mask="d" Width="30" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                            <TextBlock Text="Used Visits" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,0,0,0"></TextBlock>
+                            <telerik:RadMaskedTextBox x:Name="tbVisitsUsed" MaskType="Numeric" Mask="d" Width="30" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                            <TextBlock x:Name="tbSelfPay" FontWeight="Bold" Text="" Margin="30,0,0,0" />
+                        </StackPanel>
+                        <telerik:RadTabControl BackgroundVisibility="Collapsed" HorizontalAlignment="Stretch" SelectedIndex="0" Grid.Row="0" Grid.Column="4" Grid.RowSpan="8" x:Name="RadTabControl1" Background="Transparent" telerik:StyleManager.Theme="Office_Black">
+                            <telerik:RadTabItem Header="Primary Insurance" x:Name="RadTabControlCF" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left">
+                                <Grid Height="Auto">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="10"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="330"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid HorizontalAlignment="Stretch" Grid.Row="0" Grid.ColumnSpan="2">
+                                        <Grid x:Name="PISeparator" Height="25" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1">
+                                            <Rectangle Height="25" VerticalAlignment="Top" RadiusX="5" RadiusY="20">
+                                                <Rectangle.Fill>
+                                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                                        <GradientStop Color="#FF6595D4"/>
+                                                        <GradientStop Color="#FF367799" Offset="0.553"/>
+                                                    </LinearGradientBrush>
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                        </Grid>
+                                        <TextBlock Text="Primary Insurance" FontSize="11" Foreground="White" VerticalAlignment="Center" Margin="5,0,0,0" />
+                                    </Grid>
+                                    <!--<TextBlock Grid.Row="0" Text="Primary Insurance" FontWeight="Bold" Margin="5" HorizontalAlignment="Right" />-->
+                                    <TextBlock Grid.Row="1"  Text="Insurance Code" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="2"  Text="Payer Id" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="3"  Text="Insurance Category" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="4"  Text="Company Name" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="5"  Text="Policy Number" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="6"  Text="Group Number" Margin="5" HorizontalAlignment="Right" />
+
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblPrimaryInsuranceCode" />
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblPrimaryInsurancePayerId" />
+                                    <TextBlock Grid.Row="3" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblPrimaryInsuranceCategory" />
+                                    <TextBlock Grid.Row="4" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblPrimaryInsuranceName" />
+                                    <TextBlock Grid.Row="5" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblPrimaryInsurancePolicyNumber" />
+                                    <TextBlock Grid.Row="6" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblPrimaryInsuranceGroupNumber" />
+                                </Grid>
+
+                            </telerik:RadTabItem>
+                            <telerik:RadTabItem Header="Secondary Insurance"   HorizontalContentAlignment="Stretch" HorizontalAlignment="Left">
+                                <Grid >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="10"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="330"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid HorizontalAlignment="Stretch" Grid.Row="0" Grid.ColumnSpan="2">
+                                        <Grid x:Name="SISeparator" Height="25" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1">
+                                            <Rectangle Height="25" VerticalAlignment="Top" RadiusX="5" RadiusY="20">
+                                                <Rectangle.Fill>
+                                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                                        <GradientStop Color="#FF6595D4"/>
+                                                        <GradientStop Color="#FF367799" Offset="0.553"/>
+                                                    </LinearGradientBrush>
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                        </Grid>
+                                        <TextBlock Text="Secondary Insurance" FontSize="11" Foreground="White" VerticalAlignment="Center" Margin="5,0,0,0" />
+                                    </Grid>
+                                    <!--<TextBlock Grid.Row="0" Text="Secondary Insurance" FontWeight="Bold" Margin="5" HorizontalAlignment="Right" />-->
+                                    <TextBlock Grid.Row="1"  Text="Insurance Code" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="2"  Text="Payer Id" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="3"  Text="Insurance Category" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="4"  Text="Company Name" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="5"  Text="Policy Number" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="6"  Text="Group Number" Margin="5" HorizontalAlignment="Right" />
+
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblSecondaryInsuranceCode" />
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblSecondaryInsurancePayerId" />
+                                    <TextBlock Grid.Row="3" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblSecondaryInsuranceCategory" />
+                                    <TextBlock Grid.Row="4" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblSecondaryInsuranceName" />
+                                    <TextBlock Grid.Row="5" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblSecondaryInsurancePolicyNumber" />
+                                    <TextBlock Grid.Row="6" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblSecondaryInsuranceGroupNumber" />
+
+                                </Grid>
+
+                            </telerik:RadTabItem>
+                            <telerik:RadTabItem Header="Tertiary Insurance" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left">
+                                <Grid >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="10"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="330"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid HorizontalAlignment="Stretch" Grid.Row="0" Grid.ColumnSpan="2">
+                                        <Grid x:Name="TISeparator" Height="25" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1">
+                                            <Rectangle Height="25" VerticalAlignment="Top" RadiusX="5" RadiusY="20">
+                                                <Rectangle.Fill>
+                                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                                        <GradientStop Color="#FF6595D4"/>
+                                                        <GradientStop Color="#FF367799" Offset="0.553"/>
+                                                    </LinearGradientBrush>
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                        </Grid>
+                                        <TextBlock Text="Tertiary Insurance" FontSize="11" Foreground="White" VerticalAlignment="Center" Margin="5,0,0,0" />
+                                    </Grid>
+                                    <!--<TextBlock Grid.Row="0" Text="Tertiary Insurance" FontWeight="Bold" Margin="5" HorizontalAlignment="Right" />-->
+                                    <TextBlock Grid.Row="1"  Text="Insurance Code" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="2"  Text="Payer Id" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="3"  Text="Insurance Category" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="4"  Text="Company Name" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="5"  Text="Policy Number" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="6"  Text="Group Number" Margin="5" HorizontalAlignment="Right" />
+
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblTertiaryInsuranceCode" />
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblTertiaryInsurancePayerId" />
+                                    <TextBlock Grid.Row="3" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblTertiaryInsuranceCategory" />
+                                    <TextBlock Grid.Row="4" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblTertiaryInsuranceName" />
+                                    <TextBlock Grid.Row="5" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblTertiaryInsurancePolicyNumber" />
+                                    <TextBlock Grid.Row="6" Grid.Column="1" Text="" Margin="5" HorizontalAlignment="Left" Name="lblTertiaryInsuranceGroupNumber" />
+                                </Grid>
+                            </telerik:RadTabItem>
+                        </telerik:RadTabControl>
+                        <Button Content="Re - Post Charges" Width="150"  Grid.Row="8" Grid.Column="4" x:Name="BtnPostCharges" Click="BtnPostCharges_Click" Visibility="Collapsed"></Button>
+
+                    </Grid>
+                    <telerik:RadTabControl Grid.Row="2" SelectedIndex="0" Height="Auto" BackgroundVisibility="Collapsed" HorizontalAlignment="Stretch" x:Name="RadTabControl2" Background="Transparent" telerik:StyleManager.Theme="Office_Black">
+                        <telerik:RadTabItem Header="Bill Header details" x:Name="rtiBillHeaderDetails" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left">
+
+                            <StackPanel Orientation="Vertical"  Width="1000" Height="320" >
+                                <Grid HorizontalAlignment="Stretch">
+                                    <Grid x:Name="PracticeSeparator3" Height="25" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Margin="1">
+                                        <Rectangle Height="25" VerticalAlignment="Top" RadiusX="5" RadiusY="20">
+                                            <Rectangle.Fill>
+                                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                                    <GradientStop Color="#FF6595D4"/>
+                                                    <GradientStop Color="#FF367799" Offset="0.553"/>
+                                                </LinearGradientBrush>
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                    </Grid>
+                                    <TextBlock Text="Bill Header details" FontSize="11" Foreground="White" VerticalAlignment="Center" Margin="5,0,0,0" />
+                                </Grid>
+
+                                <Grid Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="26"/>
+                                        <RowDefinition Height="15"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="140"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="140"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Bill Header Id" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Bill Patient" Margin="5" Visibility="Collapsed" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Billing Claim Status Code" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Copay Amount Paid $" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Co-Insurance Amount Paid $" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Deductible Amount Paid $" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="1" Grid.Column="4" Text="Total Payments Received $" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="1" Grid.Column="2" Text="Total Charges $" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="2" Grid.Column="2" Text="Total Due From Insurance $" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="3" Grid.Column="2" Text="Total Due From Patient $" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="2" Grid.Column="4" Text="Admit Date" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="3" Grid.Column="4" Text="Discharge Date" Margin="5" HorizontalAlignment="Right" />
+                                    <!--<TextBlock Grid.Row="3" Grid.Column="4" Text="Timely Filing Indicator" Margin="5" HorizontalAlignment="Right" />-->
+                                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Primary Insurance Details: " FontWeight="Bold" Margin="5" HorizontalAlignment="Right" />
+                                    <!--<TextBlock Grid.Row="5" Grid.Column="0" Text="PI Payment Received" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="5" Grid.Column="0" Text="Primary Insurance Payer Id" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="6" Grid.Column="0" Text="PI Amount Received" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="7" Grid.Column="0" Text="PI Payment Status" Margin="5" HorizontalAlignment="Right" />-->
+                                    <TextBlock Grid.Row="8" Grid.Column="0" Text="PI Provider Code" Margin="5" HorizontalAlignment="Right" />
+                                    <!--<TextBlock Grid.Row="8" Grid.Column="0" Text="PI Provider Id" Margin="5" Visibility="Collapsed" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="9" Grid.Column="0" Text="PI Provider Type" Margin="5" HorizontalAlignment="Right" />-->
+                                    <TextBlock Grid.Row="10" Grid.Column="0" Text="Primary Policy Number" Margin="5" HorizontalAlignment="Right" />
+                                    <!--<TextBlock Grid.Row="11" Grid.Column="0" Text="PI PCA Number" Margin="5" HorizontalAlignment="Right" />-->
+                                    <TextBlock Grid.Row="12" Grid.Column="0" Text="PI Effective Date From" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="13" Grid.Column="0" Text="PI Effective Date To" Margin="5" HorizontalAlignment="Right" />
+                                    <!--<TextBlock Grid.Row="13" Grid.Column="0" Text="PI Auto Bill" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="14" Grid.Column="0" Text="PI Insured Is Patient" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="15" Grid.Column="0" Text="PI Insured Is Guarantor" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="15" Grid.Column="0" Text="PI Guarantor Relationship Id" Margin="5" Visibility="Collapsed" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="15" Grid.Column="0" Text="PI Guarantor Id" Margin="5" Visibility="Collapsed" HorizontalAlignment="Right" />-->
+                                    <TextBlock Grid.Row="4" Grid.Column="2" Text="Secondary Insurance Details: " FontWeight="Bold" Margin="5" HorizontalAlignment="Right" />
+                                    <!--<TextBlock Grid.Row="5" Grid.Column="2" Text="SI Payment Received" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="5" Grid.Column="2" Text="Secondary Insurance Payer Id" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="6" Grid.Column="2" Text="SI Amount Received" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="7" Grid.Column="2" Text="SI Payment Status" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="8" Grid.Column="2" Text="SI Provider Id" Margin="5" Visibility="Collapsed" HorizontalAlignment="Right" />-->
+                                    <TextBlock Grid.Row="8" Grid.Column="2" Text="SI Provider Code" Margin="5" HorizontalAlignment="Right" />
+                                    <!--<TextBlock Grid.Row="9" Grid.Column="2" Text="SI Provider Type" Margin="5" HorizontalAlignment="Right" />-->
+                                    <TextBlock Grid.Row="10" Grid.Column="2" Text="Secondary Policy Number" Margin="5" HorizontalAlignment="Right" />
+                                    <!--<TextBlock Grid.Row="11" Grid.Column="2" Text="SI PCA Number" Margin="5" HorizontalAlignment="Right" />-->
+                                    <TextBlock Grid.Row="12" Grid.Column="2" Text="SI Effective Date From" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="13" Grid.Column="2" Text="SI Effective Date To" Margin="5" HorizontalAlignment="Right" />
+                                    <!--<TextBlock Grid.Row="13" Grid.Column="2" Text="SI Auto Bill" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="14" Grid.Column="2" Text="SI Insured Is Patient" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="15" Grid.Column="2" Text="SI Insured Is Guarantor" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="15" Grid.Column="2" Text="SI Guarantor Relationship Id" Visibility="Collapsed" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="15" Grid.Column="2" Text="SI Guarantor Id" Margin="5" Visibility="Collapsed" HorizontalAlignment="Right" />-->
+                                    <TextBlock Grid.Row="4" Grid.Column="4" Text="Tertiary Insurance Details: " FontWeight="Bold" Margin="5" HorizontalAlignment="Right" />
+                                    <!--<TextBlock Grid.Row="5" Grid.Column="4" Text="TI Payment Received" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="5" Grid.Column="4" Text="Tertiary Insurance Payer Id" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="6" Grid.Column="4" Text="TI Amount Received" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="7" Grid.Column="4" Text="TI Payment Status" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="8" Grid.Column="4" Text="TI Provider Id" Visibility="Collapsed" Margin="5" HorizontalAlignment="Right" />-->
+                                    <TextBlock Grid.Row="8" Grid.Column="4" Text="TI Provider Code" Margin="5" HorizontalAlignment="Right" />
+                                    <!--<TextBlock Grid.Row="9" Grid.Column="4" Text="TI Provider Type" Margin="5" HorizontalAlignment="Right" />-->
+                                    <TextBlock Grid.Row="10" Grid.Column="4" Text="Tertiary Policy Number" Margin="5" HorizontalAlignment="Right" />
+                                    <!--<TextBlock Grid.Row="11" Grid.Column="4" Text="TI PCA Number" Margin="5" HorizontalAlignment="Right" />-->
+                                    <TextBlock Grid.Row="12" Grid.Column="4" Text="TI Effective Date From" Margin="5" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="13" Grid.Column="4" Text="TI Effective Date To" Margin="5" HorizontalAlignment="Right" />
+                                    <!--<TextBlock Grid.Row="13" Grid.Column="4" Text="TI Auto Bill" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="14" Grid.Column="4" Text="TI Insured Is Patient" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="15" Grid.Column="4" Text="TI Insured Is Guarantor" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="15" Grid.Column="4" Text="TI Guarantor Relationship Id" Visibility="Collapsed" Margin="5" HorizontalAlignment="Right" />-->
+                                    <!--<TextBlock Grid.Row="15" Grid.Column="4" Text="TI Guarantor Id" Margin="5" Visibility="Collapsed" HorizontalAlignment="Right" />-->
+
+                                    <TextBlock x:Name="tbBillHeaderId" Grid.Row="0" Grid.Column="1"  Margin="5" HorizontalAlignment="Left" />
+                                    <TextBox x:Name="txtBillPatient" Grid.Row="1" Grid.Column="1" Width="120" Visibility="Collapsed" FontSize="9.333" Height="22"/>
+                                    <ComboBox x:Name="ddlBillingClaimStatusCode"  Grid.Row="0" Grid.Column="3" Width="120" FontSize="9.333" Height="22">
+                                    </ComboBox>
+                                    <!--<TextBox x:Name="txtBillingClaimStatusCode" Grid.Row="1" Grid.Column="1" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <telerik:RadMaskedTextBox x:Name="txtCopayAmountPaid" Grid.Row="1" Grid.Column="1" Width="120" MaskType="Numeric" Mask="f" FontSize="9.333" Height="22"/>
+                                    <telerik:RadMaskedTextBox x:Name="txtCoInsuranceAmountPaid" Grid.Row="2" Grid.Column="1" Width="120" MaskType="Numeric" Mask="f" FontSize="9.333" Height="22"/>
+                                    <telerik:RadMaskedTextBox x:Name="txtDeductibleAmountPaid" Grid.Row="3" Grid.Column="1" Width="120" MaskType="Numeric" Mask="f" FontSize="9.333" Height="22"/>
+                                    <telerik:RadMaskedTextBox x:Name="txtTotalPaymentsReceived" Grid.Row="1" MaskType="Numeric" IsEnabled="False" Mask="f" Grid.Column="5" Width="120" FontSize="9.333" Height="22"/>
+                                    <telerik:RadMaskedTextBox x:Name="txtTotalCharges" Grid.Row="1" Grid.Column="3" MaskType="Numeric" IsEnabled="False" Mask="f" Width="120" FontSize="9.333" Height="22"/>
+                                    <telerik:RadMaskedTextBox x:Name="txtTotalDueFromInsurance" Grid.Row="2" MaskType="Numeric" Mask="f" IsEnabled="False" Grid.Column="3" Width="120" FontSize="9.333" Height="22"/>
+                                    <telerik:RadMaskedTextBox x:Name="txtTotalDueFromPatient" Grid.Row="3" MaskType="Numeric" Mask="f" IsEnabled="False" Grid.Column="3" Width="120" FontSize="9.333" Height="22"/>
+                                    <telerik:RadDatePicker x:Name="dpAdmitDate" Width="120"  Grid.Row="2" Grid.Column="5"   Margin="0" FontSize="9.333" Height="22" HorizontalAlignment="Left" />
+                                    <!--KeyUp="DpFromDateR2_KeyUp" ParseDateTimeValue="DpFromDateR2_ParseDateTimeValue"  SelectedDate="{Binding consultation_created_date}"-->
+                                    <telerik:RadDatePicker x:Name="dpDischargeDate" Width="120" Grid.Row="3" Grid.Column="5"  Margin="0" FontSize="9.333" Height="22" HorizontalAlignment="Left" />
+                                    <!--KeyUp="DpFromDateR2_KeyUp" ParseDateTimeValue="DpFromDateR2_ParseDateTimeValue"  SelectedDate="{Binding consultation_created_date}"-->
+                                    <!--<TextBox x:Name="txtTimelyFilingIndicator" Grid.Row="3" Grid.Column="5" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <!--<ComboBox x:Name="ddlPIPaymentReceived" Grid.Row="5" Grid.Column="1" Width="120" FontSize="9.333" Height="22">
+                                </ComboBox>-->
+                                    <!--<TextBox x:Name="txtPrimaryInsurancePayerId" Grid.Row="5" Grid.Column="1" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <!--<telerik:RadMaskedTextBox x:Name="txtPIAmountReceived" Grid.Row="6" MaskType="Numeric" Mask="f" Grid.Column="1" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <!--<StackPanel  Grid.Row="14" Grid.Column="0" Grid.ColumnSpan="2" Width="Auto" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"  Height="22">
+                                    <CheckBox x:Name="chkPIAutoBill" Content="PI Auto Bill" Width="120" FontSize="9.333" Height="22"/>
+                                    <CheckBox x:Name="chkPIPaymentReceived" Content="PI Payment Received" Width="120" FontSize="9.333" Height="22"/>
+                                </StackPanel>-->
+                                    <!--<TextBox x:Name="txtPIPaymentReceived" Grid.Row="5" Grid.Column="1" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <!--<ComboBox x:Name="ddlPIPaymentStatus" Grid.Row="7" Grid.Column="1" Width="120" FontSize="9.333" Height="22">
+                                </ComboBox>-->
+                                    <!--<TextBox x:Name="txtPIPaymentStatus" Grid.Row="6" Grid.Column="1" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <TextBox x:Name="txtPIProviderCode" Grid.Row="8" Grid.Column="1" Width="120" FontSize="9.333" Height="22"/>
+                                    <!--<TextBox x:Name="txtPIProviderId" Grid.Row="8" Visibility="Collapsed" Grid.Column="1" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <!--<ComboBox x:Name="ddlPIProviderType" Grid.Row="9" Grid.Column="1" Width="120" FontSize="9.333" Height="22">
+                                </ComboBox>-->
+                                    <!--<TextBox x:Name="txtPIProviderType" Grid.Row="8" Grid.Column="1" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <TextBox x:Name="txtPrimaryPolicyNumber" Grid.Row="10" Grid.Column="1" Width="120" FontSize="9.333" Height="22"/>
+                                    <!--<TextBox x:Name="txtPIPCANumber" Grid.Row="11" Grid.Column="1" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <telerik:RadDatePicker x:Name="dpPIEffectiveDateFrom" Width="120"  Grid.Row="12" Grid.Column="1"   Margin="0" FontSize="9.333" Height="22" HorizontalAlignment="Center" />
+                                    <telerik:RadDatePicker x:Name="dpPIEffectiveDateTo" Width="120"  Grid.Row="13" Grid.Column="1"   Margin="0" FontSize="9.333" Height="22" HorizontalAlignment="Center" />
+                                    <!--<TextBox x:Name="txtPIAutoBill" Grid.Row="13" Grid.Column="1" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <StackPanel  Grid.Row="15" Grid.Column="0" Grid.ColumnSpan="2" Width="Auto" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"  Height="22">
+                                        <RadioButton x:Name="rbPIInsuredIsPatient" Content="PI Insured Is Patient" Margin="1"/>
+                                        <RadioButton x:Name="rbPIInsuredIsGuarantor" Content="PI Insured Is Guarantor" Margin="1"/>
+                                    </StackPanel>
+                                    <!--<TextBox x:Name="txtPIInsuredIsPatient" Grid.Row="14" Grid.Column="1" Width="120" FontSize="9.333" Height="22"/>
+                                <TextBox x:Name="txtPIInsuredIsGuarantor" Grid.Row="15" Grid.Column="1" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <!--<TextBox x:Name="txtPIGuarantorRelationshipId" Visibility="Collapsed" Grid.Row="15" Grid.Column="1" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <!--<TextBox x:Name="txtPIGuarantorId" Grid.Row="15" Visibility="Collapsed"  Grid.Column="1" Width="120" FontSize="9.333" Height="22"/>-->
+
+                                    <!--<ComboBox x:Name="ddlSIPaymentReceived" Grid.Row="5" Grid.Column="3" Width="120" FontSize="9.333" Height="22">
+                                </ComboBox>-->
+                                    <!--<TextBox x:Name="txtSecondaryInsurancePayerId" Grid.Row="5" Grid.Column="3" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <!--<telerik:RadMaskedTextBox x:Name="txtSIAmountReceived" Grid.Row="6" MaskType="Numeric" Mask="f" Grid.Column="3" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <!--<StackPanel  Grid.Row="14" Grid.Column="2" Grid.ColumnSpan="2" Width="Auto" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"  Height="22">
+                                    <CheckBox x:Name="chkSIAutoBill" Content="SI Auto Bill" Width="120" FontSize="9.333" Height="22"/>
+                                    <CheckBox x:Name="chkSIPaymentReceived" Content="SI Payment Received" Width="120" FontSize="9.333" Height="22"/>
+                                </StackPanel>-->
+                                    <!--<TextBox x:Name="txtSIPaymentReceived" Grid.Row="5" Grid.Column="3" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <!--<ComboBox x:Name="ddlSIPaymentStatus" Grid.Row="7" Grid.Column="3" Width="120" FontSize="9.333" Height="22">
+                                </ComboBox>-->
+                                    <!--<TextBox x:Name="txtSIPaymentStatus" Grid.Row="6" Grid.Column="3" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <!--<TextBox x:Name="txtSIProviderId" Grid.Row="8" Visibility="Collapsed" Grid.Column="3" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <TextBox x:Name="txtSIProviderCode" Grid.Row="8" Grid.Column="3" Width="120" FontSize="9.333" Height="22"/>
+                                    <!--<ComboBox x:Name="ddlSIProviderType" Grid.Row="9" Grid.Column="3" Width="120" FontSize="9.333" Height="22">
+                                </ComboBox>-->
+                                    <!--<TextBox x:Name="txtSIProviderType" Grid.Row="8" Grid.Column="3" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <TextBox x:Name="txtSecondaryPolicyNumber" Grid.Row="10" Grid.Column="3" Width="120" FontSize="9.333" Height="22"/>
+                                    <!--<TextBox x:Name="txtSIPCANumber" Grid.Row="11" Grid.Column="3" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <telerik:RadDatePicker x:Name="dpSIEffectiveDateFrom" Width="120"  Grid.Row="12" Grid.Column="3"   Margin="0" FontSize="9.333" Height="22" HorizontalAlignment="Center" />
+                                    <telerik:RadDatePicker x:Name="dpSIEffectiveDateTo" Width="120"  Grid.Row="13" Grid.Column="3"   Margin="0" FontSize="9.333" Height="22" HorizontalAlignment="Center" />
+                                    <!--<TextBox x:Name="txtSIAutoBill" Grid.Row="13" Grid.Column="3" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <StackPanel  Grid.Row="15" Grid.Column="2" Grid.ColumnSpan="2" Width="Auto" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Height="22">
+                                        <RadioButton x:Name="rbSIInsuredIsPatient" Content="SI Insured Is Patient" Margin="1"/>
+                                        <RadioButton x:Name="rbSIInsuredIsGuarantor" Content="SI Insured Is Guarantor" Margin="1"/>
+                                    </StackPanel>
+                                    <!--<TextBox x:Name="txtSIInsuredIsPatient" Grid.Row="14" Grid.Column="3" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <!--<TextBox x:Name="txtSIInsuredIsGuarantor" Grid.Row="15" Grid.Column="3" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <TextBox x:Name="txtSIGuarantorRelationshipId" Grid.Row="15" Visibility="Collapsed" Grid.Column="3" Width="120" FontSize="9.333" Height="22"/>
+                                    <TextBox x:Name="txtSIGuarantorId" Grid.Row="15" Visibility="Collapsed" Grid.Column="3" Width="120" FontSize="9.333" Height="22"/>
+
+                                    <!--<ComboBox x:Name="ddlTIPaymentReceived" Grid.Row="5" Grid.Column="5" Width="120" FontSize="9.333" Height="22">
+                                </ComboBox>-->
+                                    <!--<TextBox x:Name="txtTertiaryInsurancePayerId" Grid.Row="5" Grid.Column="5" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <!--<telerik:RadMaskedTextBox x:Name="txtTIAmountReceived" Grid.Row="6" MaskType="Numeric" Mask="f" Grid.Column="5" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <!--<StackPanel  Grid.Row="14" Grid.Column="4" Grid.ColumnSpan="2" Width="Auto" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Height="22">
+                                    <CheckBox x:Name="chkTIAutoBill" Content="TI Auto Bill" Width="120" FontSize="9.333" Height="22"/>
+                                    <CheckBox x:Name="chkTIPaymentReceived" Content="TI Payment Received" Width="120" FontSize="9.333" Height="22"/>
+                                </StackPanel>-->
+                                    <!--<TextBox x:Name="txtTIPaymentReceived" Grid.Row="5" Grid.Column="5" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <!--<ComboBox x:Name="ddlTIPaymentStatus" Grid.Row="7" Grid.Column="5" Width="120" FontSize="9.333" Height="22">
+                                </ComboBox>-->
+                                    <!--<TextBox x:Name="txtTIPaymentStatus" Grid.Row="6" Grid.Column="5" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <!--<TextBox x:Name="txtTIProviderId" Grid.Row="8" Visibility="Collapsed" Grid.Column="3" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <TextBox x:Name="txtTIProviderCode" Grid.Row="8" Grid.Column="5" Width="120" FontSize="9.333" Height="22"/>
+                                    <!--<ComboBox x:Name="ddlTIProviderType" Grid.Row="9" Grid.Column="5" Width="120" FontSize="9.333" Height="22">
+                                </ComboBox>-->
+                                    <!--<TextBox x:Name="txtTIProviderType" Grid.Row="8" Grid.Column="5" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <TextBox x:Name="txtTertiaryPolicyNumber" Grid.Row="10" Grid.Column="5" Width="120" FontSize="9.333" Height="22"/>
+                                    <!--<TextBox x:Name="txtTIPCANumber" Grid.Row="11" Grid.Column="5" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <telerik:RadDatePicker x:Name="dpTIEffectiveDateFrom" Width="120"  Grid.Row="12" Grid.Column="5"   Margin="0" FontSize="9.333" Height="22" HorizontalAlignment="Center" />
+                                    <telerik:RadDatePicker x:Name="dpTIEffectiveDateTo" Width="120"  Grid.Row="13" Grid.Column="5"   Margin="0" FontSize="9.333" Height="22" HorizontalAlignment="Center" />
+                                    <!--<TextBox x:Name="txtTIAutoBill" Grid.Row="13" Grid.Column="5" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <StackPanel  Grid.Row="15" Grid.Column="4" Grid.ColumnSpan="2" Width="Auto" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Height="22">
+                                        <RadioButton x:Name="rbTIInsuredIsPatient" Content="TI Insured Is Patient" Margin="1"/>
+                                        <RadioButton x:Name="rbTIInsuredIsGuarantor" Content="TI Insured Is Guarantor" Margin="1"/>
+                                    </StackPanel>
+                                    <!--<TextBox x:Name="txtTIInsuredIsPatient" Grid.Row="14" Grid.Column="5" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <!--<TextBox x:Name="txtTIInsuredIsGuarantor" Grid.Row="15" Grid.Column="5" Width="120" FontSize="9.333" Height="22"/>-->
+                                    <TextBox x:Name="txtTIGuarantorRelationshipId" Grid.Row="15" Visibility="Collapsed" Grid.Column="5" Width="120" FontSize="9.333" Height="22"/>
+                                    <TextBox x:Name="txtTIGuarantorId" Grid.Row="15" Visibility="Collapsed" Grid.Column="5" Width="120" FontSize="9.333" Height="22"/>
+
+                                </Grid>
+
+                                <!--<telerik:RadGridView x:Name="RadGvBillHeaderDetails" Width="1000"
+				FontSize="9.333" AutoGenerateColumns="False" 
+				
+                                     IsReadOnly="False" CanUserFreezeColumns="False"  Height="Auto" 
+                                                ShowGroupPanel="False" 
+                                                 ColumnWidth="*"
+                                                CanUserResizeColumns="True" ShowColumnFooters="False" HorizontalAlignment="Stretch" 
+                             VerticalAlignment="Stretch" CanUserReorderColumns="False">
+                                <telerik:RadGridView.Columns>
+                                    <telerik:GridViewComboBoxColumn Header="Id" Width="80"  IsFilterable="False" DataMemberBinding="{Binding bill_header_id}"></telerik:GridViewComboBoxColumn>
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding bill_patient}" Width="130" IsFilterable="False" IsVisible="False" Header="Bill Patient" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding billing_claim_status_code}" IsFilterable="False" Width="130" Header="Billing Claim Status Code" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding copay_amount_paid}" IsFilterable="False" DataFormatString="{}{0:c}" Width="130" Header="Copay Amount Paid" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding total_payments_received}" IsFilterable="False" DataFormatString="{}{0:c}" Width="130" Header="Total Payments Received" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding total_charges}" IsFilterable="False" DataFormatString="{}{0:c}" Width="130" Header="Total Charges" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding total_due_from_insurance}" IsFilterable="False" DataFormatString="{}{0:c}" Width="130" Header="Total Due From Insurance" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding total_due_from_patient}" IsFilterable="False" DataFormatString="{}{0:c}" Width="130" Header="Total Due From Patient"/>
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding admit_date}" IsFilterable="False" DataFormatString="{}{0:MM/dd/yyyy}" Width="100" Header="Admit Date" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding discharge_date}" IsFilterable="False" DataFormatString="{}{0:MM/dd/yyyy}" Width="100" Header="Discharge Date" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding timely_filing_indicator}" IsFilterable="False" Width="130" Header="Timely Filing Indicator" />
+
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding primary_insurance_payment_received}" IsFilterable="False" Width="130" Header="PI Payment Received" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding primary_insurance_payment_status}" IsFilterable="False" Width="130" Header="PI Payment Status" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding primary_insurance_provider_code}" IsFilterable="False" Width="130" Header="PI Provider Code" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding primary_insurance_provider_id}" IsFilterable="False" Width="130" IsVisible="False" Header="PI Provider Id" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding Primary_insurance_type}" IsFilterable="False" Width="130" Header="PI Provider Type" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding primary_policy_number}" IsFilterable="False" Width="130" Header="Primary Policy Number" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding primary_insurance_PCA_number}" IsFilterable="False" Width="130" Header="PI PCA Number" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding primary_insurance_effective_date_from}" DataFormatString="{}{0:MM/dd/yyyy}" IsFilterable="False" Width="130" Header="PI Effective Date From" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding primary_insurance_effective_date_to}" DataFormatString="{}{0:MM/dd/yyyy}" IsFilterable="False" Width="130" Header="PI Effective Date To" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding primary_insurance_auto_bill}" IsFilterable="False" Width="130" Header="PI Auto Bill" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding primary_insurance_insured_is_patient}" IsFilterable="False" Width="130" Header="PI Insured Is Patient" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding primary_insurance_insured_is_guarantor}" IsFilterable="False" Width="130" Header="PI Insured Is Guarantor" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding primary_insurance_guarantor_relationship_id}" IsFilterable="False" Width="130" IsVisible="False" Header="PI Guarantor Relationship Id" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding primary_insurance_patient_guarantor_id}" IsFilterable="False" Width="130" IsVisible="False" Header="PI Guarantor Id" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding primary_submitter_insurance_number}" IsFilterable="False" Width="140" Header="Primary Insurance Payer Id" />
+
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding secondary_insurance_payment_received}" IsFilterable="False" Width="130" Header="SI Payment Received" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding secondary_insurance_payment_status}" IsFilterable="False" Width="130" Header="SI Payment Status" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding secondary_insurance_provider_id}" IsFilterable="False" Width="130" IsVisible="False" Header="SI Provider Id" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding secondary_insurance_provider_code}" IsFilterable="False" Width="130" Header="SI Provider Code" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding secondary_insurance_type}" IsFilterable="False" Width="130" Header="SI Provider Type" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding secondary_policy_number}" IsFilterable="False" Width="130" Header="Secondary Policy Number" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding secondary_insurance_PCA_number}" IsFilterable="False" Width="130" Header="SI PCA Number" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding secondary_insurance_effective_date_from}" DataFormatString="{}{0:MM/dd/yyyy}" IsFilterable="False" Width="130" Header="SI Effective Date From" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding secondary_insurance_effective_date_to}" DataFormatString="{}{0:MM/dd/yyyy}" IsFilterable="False" Width="130" Header="SI Effective Date To" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding secondary_insurance_auto_bill}" Width="130" IsFilterable="False" Header="SI Auto Bill" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding secondary_insurance_insured_is_patient}" IsFilterable="False" Width="130" Header="SI Insured Is Patient" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding secondary_insurance_insured_is_guarantor}" IsFilterable="False" Width="130" Header="SI Insured Is Guarantor" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding secondary_insurance_guarantor_relationship_id}" IsFilterable="False" Width="130" IsVisible="False" Header="SI Guarantor Relationship Id" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding secondary_insurance_patient_guarantor_id}" IsFilterable="False" Width="130" IsVisible="False" Header="SI Guarantor Id" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding secondary_submitter_insurance_number}" IsFilterable="False" Width="140" Header="Secondary Insurance Payer Id" />
+
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding tertiary_insurance_payment_received}" IsFilterable="False" Width="130" Header="TI Payment Received" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding tertiary_insurance_payment_status}" IsFilterable="False" Width="130" Header="TI Payment Status" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding tertiary_insurance_provider_id}" IsFilterable="False" Width="130" IsVisible="False" Header="TI Provider Id" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding tertiary_insurance_provider_code}" IsFilterable="False" Width="130" Header="TI Provider Code" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding tertiary_insurance_type}" IsFilterable="False" Width="130" Header="TI Provider Type" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding tertiary_policy_number}" IsFilterable="False" Width="130" Header="Tertiary Policy Number" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding tertiary_insurance_PCA_number}" IsFilterable="False" Width="130" Header="TI PCA Number" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding tertiary_insurance_effective_date_from}" DataFormatString="{}{0:MM/dd/yyyy}" IsFilterable="False" Width="130" Header="TI Effective Date From" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding tertiary_insurance_effective_date_to}" DataFormatString="{}{0:MM/dd/yyyy}" IsFilterable="False" Width="130" Header="TI Effective Date To" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding tertiary_insurance_auto_bill}" IsFilterable="False" Width="130" Header="TI Auto Bill" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding tertiary_insurance_insured_is_patient}" IsFilterable="False" Width="130" Header="TI Insured Is Patient" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding tertiary_insurance_insured_is_guarantor}" IsFilterable="False" Width="130" Header="TI Insured Is Guarantor" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding tertiary_insurance_guarantor_relationship_id}" IsFilterable="False" Width="130" IsVisible="False" Header="TI Guarantor Relationship Id" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding tertiary_insurance_patient_guarantor_id}" IsFilterable="False" Width="130" IsVisible="False" Header="TI Guarantor Id" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding tertiary_submitter_insurance_number}" IsFilterable="False" Width="140" Header="Tertiary Insurance Payer Id" />
+
+                                </telerik:RadGridView.Columns>
+                            </telerik:RadGridView>-->
+                            </StackPanel>
+                        </telerik:RadTabItem>
+                        <telerik:RadTabItem Header="Transaction details" x:Name="rtiTransactionDetails" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Vertical">
+                                <Grid HorizontalAlignment="Stretch">
+                                    <Grid x:Name="PracticeSeparator2" Height="25" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1">
+                                        <Rectangle Height="25" VerticalAlignment="Top" RadiusX="5" RadiusY="20">
+                                            <Rectangle.Fill>
+                                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                                    <GradientStop Color="#FF6595D4"/>
+                                                    <GradientStop Color="#FF367799" Offset="0.553"/>
+                                                </LinearGradientBrush>
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                    </Grid>
+                                    <TextBlock Text="Transaction details" FontSize="11" Foreground="White" VerticalAlignment="Center" Margin="5,0,0,0" />
+                                </Grid>
+                                <!--<ScrollViewer x:Name="svCPTDA" VerticalScrollBarVisibility="Visible"  Width="1000"  Height="300" MaxHeight="500">-->
+                                <telerik:RadBusyIndicator x:Name="rbiCPTDiagnosis" IsBusy="False">
+                                    <Grid x:Name="LayoutRoot2" Margin="0" >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <StackPanel x:Name="spExpander" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" >
+                                            <telerik:RadExpander x:Name="radCPTDAExpander" ExpandDirection="Down" Visibility="Collapsed" FontSize="9.33" Margin="0,2,0,0" Width="Auto">
+                                                <telerik:RadExpander.Background>
+                                                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                                        <!--WhiteSmoke-->
+                                                        <!--White-->
+                                                        <GradientStop  Color="#FF9F4B4B" Offset="0.437"/>
+                                                        <GradientStop Color="#FF9F3838"/>
+                                                        <!--LightGray-->
+                                                        <GradientStop Color="#FF9E2424" Offset="0.992"/>
+                                                    </LinearGradientBrush>
+                                                </telerik:RadExpander.Background>
+                                                <telerik:RadExpander.Header>
+                                                    <sdk:Label Foreground="White" FontWeight="Bold" Content="Validation Errors"/>
+                                                </telerik:RadExpander.Header>
+                                                <StackPanel  Height="Auto"  Margin="1,1,1,1" x:Name="spErrors" Background="#dde1ea" Orientation="Vertical" />
+                                            </telerik:RadExpander>
+                                        </StackPanel>
+                                        <telerik:RadDataPager Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"
+                                      x:Name="RadDtPagerCPTDiagnosis"
+                                      PageSize="10"
+                                      Source="{Binding Items, ElementName=RadGvCPTDiagnosis}"
+                                      DisplayMode="All"
+                                      AutoEllipsisMode="Both"
+                                      NumericButtonCount="10"
+                                      IsTotalItemCountFixed="True"/>
+                                        <telerik:RadGridView x:Name="RadGvCPTDiagnosis"  IsReadOnly="True" RowDetailsVisibilityChanged="RadGvCPTDiagnosis_RowDetailsVisibilityChanged" CanUserFreezeColumns="False" Grid.Row="2" Width="1000" Height="267" MinHeight="267" telerik:StyleManager.Theme="Office_Blue"
+                            ShowGroupPanel="False" FontSize="9.33"
+                            AutoGenerateColumns="False" ColumnWidth="*"
+                            CanUserResizeColumns="False" ShowColumnFooters="False" HorizontalAlignment="Stretch"
+         VerticalAlignment="Stretch" CanUserReorderColumns="False">
+                                            <telerik:RadGridView.Columns>
+                                                <telerik:GridViewToggleRowDetailsColumn />
+                                                <telerik:GridViewDataColumn x:Name="cptCode" DataMemberBinding="{Binding cpt_code}" Header="CPT Code" Width="20*" />
+                                                <telerik:GridViewDataColumn x:Name="cptCodeDescription" DataMemberBinding="{Binding cpt_code_description}" Header="Description" Width="80*" />
+                                                <telerik:GridViewDataColumn x:Name="diagnosisPointers" DataMemberBinding="{Binding pointers}" Header="Pointers" Width="20*" />
+                                                <!--<telerik:GridViewColumn  Width="100" IsFilterable="False" >
+                                                <telerik:GridViewColumn.CellTemplate>
+                                                  <DataTemplate>
+                                                    <Button Content="Post Charges" Width="85"  x:Name="BtnPostCharges" Click="BtnPostCharges_Click"></Button>
+                                                  </DataTemplate>
+                                                </telerik:GridViewColumn.CellTemplate>
+                                              </telerik:GridViewColumn>-->
+                                            </telerik:RadGridView.Columns>
+                                            <telerik:RadGridView.RowDetailsTemplate>
+                                                <DataTemplate >
+
+                                                    <Grid Width="Auto" HorizontalAlignment="Stretch">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="auto"/>
+                                                            <RowDefinition Height="auto"/>
+                                                            <RowDefinition Height="auto"/>
+                                                            <RowDefinition Height="auto"/>
+                                                            <RowDefinition Height="auto"/>
+                                                            <RowDefinition Height="auto"/>
+                                                            <RowDefinition Height="auto"/>
+                                                            <RowDefinition Height="auto"/>
+                                                            <RowDefinition Height="auto"/>
+                                                            <RowDefinition Height="auto"/>
+                                                            <RowDefinition Height="auto"/>
+                                                            <RowDefinition Height="auto"/>
+                                                            <RowDefinition Height="auto"/>
+                                                            <RowDefinition Height="auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="auto"/>
+                                                            <RowDefinition Height="auto"/>
+                                                            <RowDefinition Height="10"/>
+                                                            <RowDefinition Height="auto"/>
+                                                            <RowDefinition Height="auto"/>
+                                                            <RowDefinition Height="auto"/>
+                                                        </Grid.RowDefinitions>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="26" />
+                                                            <ColumnDefinition Width="90" />
+                                                            <ColumnDefinition Width="100*" />
+                                                            <ColumnDefinition Width="26*" />
+                                                            <ColumnDefinition Width="26*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Orientation="Horizontal" Margin="5,5,5,5" Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="5">
+                                                            <TextBlock x:Name="LblA" Text="{Binding a}"     HorizontalAlignment="Center" FontWeight="Bold" Foreground="Blue"/>
+                                                            <CheckBox x:Name="ChkDc1" Checked="ChkDc_Checked" IsEnabled="False" Unchecked="ChkDc_Checked" Content="{Binding assessment_diagnosis_code1}" Tag="{Binding assessment_diagnosis_code1_id}" Visibility="{Binding assessment_diagnosis_code1_visibility}" IsChecked="{Binding assessment_diagnosis_code1_checked, Mode=TwoWay}"  HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDc1" Text="{Binding assessment_diagnosis_code_description1}" Visibility="{Binding assessment_diagnosis_code1_visibility}"  HorizontalAlignment="Right" />
+                                                            <TextBlock x:Name="LblDcTen1" Text="{Binding assessment_diagnosis_code_icd10_1}" Visibility="{Binding assessment_diagnosis_code1_visibility}"   HorizontalAlignment="Left" />
+                                                        </StackPanel>
+                                                        <StackPanel Orientation="Horizontal" Margin="5,5,5,5"  Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="5">
+                                                            <TextBlock x:Name="LblB" Text="{Binding b}"  HorizontalAlignment="Center" FontWeight="Bold" Foreground="Blue"/>
+                                                            <CheckBox x:Name="ChkDc2" Checked="ChkDc_Checked" IsEnabled="False" Unchecked="ChkDc_Checked" Content="{Binding assessment_diagnosis_code2}" Tag="{Binding assessment_diagnosis_code2_id}" Visibility="{Binding assessment_diagnosis_code2_visibility}" IsChecked="{Binding assessment_diagnosis_code2_checked, Mode=TwoWay}"  HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDc2" Text="{Binding assessment_diagnosis_code_description2}" Visibility="{Binding assessment_diagnosis_code2_visibility}"   HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDcTen2" Text="{Binding assessment_diagnosis_code_icd10_2}" Visibility="{Binding assessment_diagnosis_code2_visibility}" Margin="5"  HorizontalAlignment="Left" />
+                                                        </StackPanel>
+                                                        <StackPanel Orientation="Horizontal" Margin="5,5,5,5"  Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="5">
+                                                            <TextBlock x:Name="LblC" Text="{Binding c}"  HorizontalAlignment="Center" FontWeight="Bold" Foreground="Blue"/>
+                                                            <CheckBox x:Name="ChkDc3" Checked="ChkDc_Checked" IsEnabled="False" Unchecked="ChkDc_Checked" Content="{Binding assessment_diagnosis_code3}" Tag="{Binding assessment_diagnosis_code3_id}" Visibility="{Binding assessment_diagnosis_code3_visibility}" IsChecked="{Binding assessment_diagnosis_code3_checked, Mode=TwoWay}"  HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDc3" Text="{Binding assessment_diagnosis_code_description3}" Visibility="{Binding assessment_diagnosis_code3_visibility}"   HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDcTen3" Text="{Binding assessment_diagnosis_code_icd10_3}" Visibility="{Binding assessment_diagnosis_code3_visibility}" Margin="5" HorizontalAlignment="Left" />
+                                                        </StackPanel>
+                                                        <StackPanel Orientation="Horizontal" Margin="5,5,5,5"   Grid.Row="3" Grid.Column="0"  Grid.ColumnSpan="5">
+                                                            <TextBlock x:Name="LblD" Text="{Binding d}"   HorizontalAlignment="Center" FontWeight="Bold" Foreground="Blue"/>
+                                                            <CheckBox x:Name="ChkDc4" Checked="ChkDc_Checked" IsEnabled="False" Unchecked="ChkDc_Checked" Content="{Binding assessment_diagnosis_code4}" Tag="{Binding assessment_diagnosis_code4_id}" Visibility="{Binding assessment_diagnosis_code4_visibility}" IsChecked="{Binding assessment_diagnosis_code4_checked, Mode=TwoWay}"  HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDc4" Text="{Binding assessment_diagnosis_code_description4}" Visibility="{Binding assessment_diagnosis_code4_visibility}"  HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDcTen4" Text="{Binding assessment_diagnosis_code_icd10_4}" Visibility="{Binding assessment_diagnosis_code4_visibility}" Margin="5"  HorizontalAlignment="Left" />
+                                                        </StackPanel>
+                                                        <StackPanel Orientation="Horizontal" Margin="5,5,5,5"  Grid.Row="4" Grid.Column="0"  Grid.ColumnSpan="5">
+                                                            <TextBlock x:Name="LblE" Text="{Binding e}"  HorizontalAlignment="Center" FontWeight="Bold" Foreground="Blue"/>
+                                                            <CheckBox x:Name="ChkDc5" Checked="ChkDc_Checked" IsEnabled="False" Unchecked="ChkDc_Checked" Content="{Binding assessment_diagnosis_code5}" Tag="{Binding assessment_diagnosis_code5_id}" Visibility="{Binding assessment_diagnosis_code5_visibility}" IsChecked="{Binding assessment_diagnosis_code5_checked, Mode=TwoWay}"  HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDc5" Text="{Binding assessment_diagnosis_code_description5}" Visibility="{Binding assessment_diagnosis_code5_visibility}"   HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDcTen5" Text="{Binding assessment_diagnosis_code_icd10_5}" Visibility="{Binding assessment_diagnosis_code5_visibility}" Margin="5"  HorizontalAlignment="Left" />
+                                                        </StackPanel>
+                                                        <StackPanel Orientation="Horizontal" Margin="5,5,5,5" Grid.Row="5" Grid.Column="0"  Grid.ColumnSpan="5">
+                                                            <TextBlock x:Name="LblF" Text="{Binding f}"    HorizontalAlignment="Center" FontWeight="Bold" Foreground="Blue"/>
+                                                            <CheckBox x:Name="ChkDc6" Checked="ChkDc_Checked" IsEnabled="False" Unchecked="ChkDc_Checked" Content="{Binding assessment_diagnosis_code6}" Tag="{Binding assessment_diagnosis_code6_id}" Visibility="{Binding assessment_diagnosis_code6_visibility}" IsChecked="{Binding assessment_diagnosis_code6_checked, Mode=TwoWay}" HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDc6" Text="{Binding assessment_diagnosis_code_description6}" Visibility="{Binding assessment_diagnosis_code6_visibility}"   HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDcTen6" Text="{Binding assessment_diagnosis_code_icd10_6}" Visibility="{Binding assessment_diagnosis_code6_visibility}" Margin="5"  HorizontalAlignment="Left" />
+                                                        </StackPanel>
+                                                        <StackPanel Orientation="Horizontal" Margin="5,5,5,5" Grid.Row="6" Grid.Column="0"  Grid.ColumnSpan="5">
+                                                            <TextBlock x:Name="LblG" Text="{Binding g}"      HorizontalAlignment="Center" FontWeight="Bold" Foreground="Blue"/>
+                                                            <CheckBox x:Name="ChkDc7" Checked="ChkDc_Checked" IsEnabled="False" Unchecked="ChkDc_Checked" Content="{Binding assessment_diagnosis_code7}" Tag="{Binding assessment_diagnosis_code7_id}" Visibility="{Binding assessment_diagnosis_code7_visibility}" IsChecked="{Binding assessment_diagnosis_code7_checked, Mode=TwoWay}" HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDc7" Text="{Binding assessment_diagnosis_code_description7}" Visibility="{Binding assessment_diagnosis_code7_visibility}"   HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDcTen7" Text="{Binding assessment_diagnosis_code_icd10_7}" Visibility="{Binding assessment_diagnosis_code7_visibility}" Margin="5"  HorizontalAlignment="Left" />
+                                                        </StackPanel>
+                                                        <StackPanel Orientation="Horizontal" Margin="5,5,5,5"  Grid.Row="7" Grid.Column="0"  Grid.ColumnSpan="5">
+                                                            <TextBlock x:Name="LblH" Text="{Binding h}"   HorizontalAlignment="Center" FontWeight="Bold" Foreground="Blue"/>
+                                                            <CheckBox x:Name="ChkDc8" Checked="ChkDc_Checked" IsEnabled="False" Unchecked="ChkDc_Checked" Content="{Binding assessment_diagnosis_code8}" Tag="{Binding assessment_diagnosis_code8_id}" Visibility="{Binding assessment_diagnosis_code8_visibility}" IsChecked="{Binding assessment_diagnosis_code8_checked, Mode=TwoWay}"  HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDc8" Text="{Binding assessment_diagnosis_code_description8}" Visibility="{Binding assessment_diagnosis_code8_visibility}"   HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDcTen8" Text="{Binding assessment_diagnosis_code_icd10_8}" Visibility="{Binding assessment_diagnosis_code8_visibility}" Margin="5" HorizontalAlignment="Left" />
+                                                        </StackPanel>
+                                                        <StackPanel Orientation="Horizontal" Margin="5,5,5,5" Grid.Row="8" Grid.Column="0"  Grid.ColumnSpan="5">
+                                                            <TextBlock x:Name="LblI" Text="{Binding i}" HorizontalAlignment="Center" FontWeight="Bold" Foreground="Blue"/>
+                                                            <CheckBox x:Name="ChkDc9" Checked="ChkDc_Checked" IsEnabled="False" Unchecked="ChkDc_Checked" Content="{Binding assessment_diagnosis_code9}" Tag="{Binding assessment_diagnosis_code9_id}" Visibility="{Binding assessment_diagnosis_code9_visibility}" IsChecked="{Binding assessment_diagnosis_code9_checked, Mode=TwoWay}" HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDc9" Text="{Binding assessment_diagnosis_code_description9}" Visibility="{Binding assessment_diagnosis_code9_visibility}"   HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDcTen9" Text="{Binding assessment_diagnosis_code_icd10_9}" Visibility="{Binding assessment_diagnosis_code9_visibility}" Margin="5"  HorizontalAlignment="Left" />
+                                                        </StackPanel>
+                                                        <StackPanel Orientation="Horizontal" Margin="5,5,5,5" Grid.Row="9" Grid.Column="0"  Grid.ColumnSpan="5">
+                                                            <TextBlock x:Name="LblJ" Text="{Binding j}"    HorizontalAlignment="Center" FontWeight="Bold" Foreground="Blue"/>
+                                                            <CheckBox x:Name="ChkDc10" Checked="ChkDc_Checked" IsEnabled="False" Unchecked="ChkDc_Checked" Content="{Binding assessment_diagnosis_code10}" Tag="{Binding assessment_diagnosis_code10_id}" Visibility="{Binding assessment_diagnosis_code10_visibility}" IsChecked="{Binding assessment_diagnosis_code10_checked, Mode=TwoWay}" HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDc10" Text="{Binding assessment_diagnosis_code_description10}" Visibility="{Binding assessment_diagnosis_code10_visibility}"  HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDcTen10" Text="{Binding assessment_diagnosis_code_icd10_10}" Visibility="{Binding assessment_diagnosis_code10_visibility}" Margin="5"  HorizontalAlignment="Left" />
+                                                        </StackPanel>
+                                                        <StackPanel Orientation="Horizontal" Margin="5,5,5,5" Grid.Row="10" Grid.Column="0"  Grid.ColumnSpan="5">
+                                                            <TextBlock x:Name="LblK" Text="{Binding k}"    HorizontalAlignment="Center" FontWeight="Bold" Foreground="Blue"/>
+                                                            <CheckBox x:Name="ChkDc11" Checked="ChkDc_Checked" IsEnabled="False" Unchecked="ChkDc_Checked" Content="{Binding assessment_diagnosis_code11}" Tag="{Binding assessment_diagnosis_code11_id}" Visibility="{Binding assessment_diagnosis_code11_visibility}" IsChecked="{Binding assessment_diagnosis_code11_checked, Mode=TwoWay}"  HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDc11" Text="{Binding assessment_diagnosis_code_description11}" Visibility="{Binding assessment_diagnosis_code11_visibility}"  HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDcTen11" Text="{Binding assessment_diagnosis_code_icd10_11}" Visibility="{Binding assessment_diagnosis_code11_visibility}" Margin="5"  HorizontalAlignment="Left" />
+                                                        </StackPanel>
+                                                        <StackPanel Orientation="Horizontal" Margin="5,5,5,5" Grid.Row="11" Grid.Column="0"  Grid.ColumnSpan="5">
+                                                            <TextBlock x:Name="LblL" Text="{Binding l}"  HorizontalAlignment="Center" FontWeight="Bold" Foreground="Blue"/>
+                                                            <CheckBox x:Name="ChkDc12" Checked="ChkDc_Checked" IsEnabled="False" Unchecked="ChkDc_Checked" Content="{Binding assessment_diagnosis_code12}" Tag="{Binding assessment_diagnosis_code12_id}" Visibility="{Binding assessment_diagnosis_code12_visibility}" IsChecked="{Binding assessment_diagnosis_code12_checked, Mode=TwoWay}"  HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDc12" Text="{Binding assessment_diagnosis_code_description12}" Visibility="{Binding assessment_diagnosis_code12_visibility}"   HorizontalAlignment="Left" />
+                                                            <TextBlock x:Name="LblDcTen12" Text="{Binding assessment_diagnosis_code_icd10_12}" Visibility="{Binding assessment_diagnosis_code12_visibility}" Margin="5" HorizontalAlignment="Left" />
+                                                        </StackPanel>
+                                                        <!--<CheckBox x:Name="ChkDc1" Loaded="Control_Loaded" Checked="ChkDc_Checked" Content="{Binding assessment_diagnosis_code1}" Tag="{Binding assessment_diagnosis_code1_id}" Visibility="{Binding assessment_diagnosis_code1_visibility}" IsChecked="{Binding assessment_diagnosis_code1_checked, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" />
+                                                        <CheckBox x:Name="ChkDc2" Loaded="Control_Loaded" Checked="ChkDc_Checked" Content="{Binding assessment_diagnosis_code2}" Tag="{Binding assessment_diagnosis_code2_id}" Visibility="{Binding assessment_diagnosis_code2_visibility}" IsChecked="{Binding assessment_diagnosis_code2_checked, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" />
+                                                        <CheckBox x:Name="ChkDc3" Loaded="Control_Loaded" Checked="ChkDc_Checked" Content="{Binding assessment_diagnosis_code3}" Tag="{Binding assessment_diagnosis_code3_id}" Visibility="{Binding assessment_diagnosis_code3_visibility}" IsChecked="{Binding assessment_diagnosis_code3_checked, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" />
+                                                        <CheckBox x:Name="ChkDc4" Loaded="Control_Loaded" Checked="ChkDc_Checked" Content="{Binding assessment_diagnosis_code4}" Tag="{Binding assessment_diagnosis_code4_id}" Visibility="{Binding assessment_diagnosis_code4_visibility}" IsChecked="{Binding assessment_diagnosis_code4_checked, Mode=TwoWay}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" />
+                                                        <CheckBox x:Name="ChkDc5" Loaded="Control_Loaded" Checked="ChkDc_Checked" Content="{Binding assessment_diagnosis_code5}" Tag="{Binding assessment_diagnosis_code5_id}" Visibility="{Binding assessment_diagnosis_code5_visibility}" IsChecked="{Binding assessment_diagnosis_code5_checked, Mode=TwoWay}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" />
+                                                        <CheckBox x:Name="ChkDc6" Loaded="Control_Loaded" Checked="ChkDc_Checked" Content="{Binding assessment_diagnosis_code6}" Tag="{Binding assessment_diagnosis_code6_id}" Visibility="{Binding assessment_diagnosis_code6_visibility}" IsChecked="{Binding assessment_diagnosis_code6_checked, Mode=TwoWay}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" />
+                                                        <CheckBox x:Name="ChkDc7" Loaded="Control_Loaded" Checked="ChkDc_Checked" Content="{Binding assessment_diagnosis_code7}" Tag="{Binding assessment_diagnosis_code7_id}" Visibility="{Binding assessment_diagnosis_code7_visibility}" IsChecked="{Binding assessment_diagnosis_code7_checked, Mode=TwoWay}" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" />
+                                                        <CheckBox x:Name="ChkDc8" Loaded="Control_Loaded" Checked="ChkDc_Checked" Content="{Binding assessment_diagnosis_code8}" Tag="{Binding assessment_diagnosis_code8_id}" Visibility="{Binding assessment_diagnosis_code8_visibility}" IsChecked="{Binding assessment_diagnosis_code8_checked, Mode=TwoWay}" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" />
+
+                                                        <TextBlock x:Name="LblDc1" Loaded="Control_Loaded"  Text="{Binding assessment_diagnosis_code_description1}" Visibility="{Binding assessment_diagnosis_code1_visibility}" Margin="5" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" />
+                                                        <TextBlock x:Name="LblDc2" Loaded="Control_Loaded" Text="{Binding assessment_diagnosis_code_description2}" Visibility="{Binding assessment_diagnosis_code2_visibility}" Margin="5" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" />
+                                                        <TextBlock x:Name="LblDc3" Loaded="Control_Loaded" Text="{Binding assessment_diagnosis_code_description3}" Visibility="{Binding assessment_diagnosis_code3_visibility}" Margin="5" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" />
+                                                        <TextBlock x:Name="LblDc4" Loaded="Control_Loaded" Text="{Binding assessment_diagnosis_code_description4}" Visibility="{Binding assessment_diagnosis_code4_visibility}" Margin="5" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" />
+                                                        <TextBlock x:Name="LblDc5" Loaded="Control_Loaded" Text="{Binding assessment_diagnosis_code_description5}" Visibility="{Binding assessment_diagnosis_code5_visibility}" Margin="5" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" />
+                                                        <TextBlock x:Name="LblDc6" Loaded="Control_Loaded" Text="{Binding assessment_diagnosis_code_description6}" Visibility="{Binding assessment_diagnosis_code6_visibility}" Margin="5" Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" />
+                                                        <TextBlock x:Name="LblDc7" Loaded="Control_Loaded" Text="{Binding assessment_diagnosis_code_description7}" Visibility="{Binding assessment_diagnosis_code7_visibility}" Margin="5" Grid.Row="6" Grid.Column="2" HorizontalAlignment="Left" />
+                                                        <TextBlock x:Name="LblDc8" Loaded="Control_Loaded" Text="{Binding assessment_diagnosis_code_description8}" Visibility="{Binding assessment_diagnosis_code8_visibility}" Margin="5" Grid.Row="7" Grid.Column="2" HorizontalAlignment="Left" />-->
+
+                                                        <TextBlock Text="Modifiers" Loaded="Control_Loaded" Grid.Row="12" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" FontSize="9.333" FontWeight="Bold"/>
+                                                        <StackPanel Grid.Row="13" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left">
+                                                            <TextBlock Margin="5,8,1,5" Text="M1"/>
+                                                            <TextBox x:Name="TxtModifier1" Width="30" Loaded="Control_Loaded" Text="{Binding cpt_code_modifier1, Mode=TwoWay}" MaxLength="2" Margin="5" FontSize="9.333" Height="19"/>
+                                                            <TextBlock Margin="5,8,1,5" Text="M2"/>
+                                                            <TextBox x:Name="TxtModifier2" Width="30" Loaded="Control_Loaded" Text="{Binding cpt_code_modifier2, Mode=TwoWay}" MaxLength="2" Margin="5" FontSize="9.333" Height="19"/>
+                                                            <TextBlock Margin="5,8,1,5" Text="M3"/>
+                                                            <TextBox x:Name="TxtModifier3" Width="30" Loaded="Control_Loaded" Text="{Binding cpt_code_modifier3, Mode=TwoWay}" MaxLength="2" Margin="5" FontSize="9.333" Height="19"/>
+                                                            <TextBlock Margin="5,8,1,5" Text="M4"/>
+                                                            <TextBox x:Name="TxtModifier4" Width="30" Loaded="Control_Loaded" Text="{Binding cpt_code_modifier4, Mode=TwoWay}" MaxLength="2" Margin="5" FontSize="9.333" Height="19"/>
+                                                            <TextBlock Text="Units" Margin="5,8,1,5" />
+                                                            <TextBox x:Name="TxtUnit" Loaded="Control_Loaded" Width="30" Text="{Binding decimalunits, Mode=TwoWay}" MaxLength="2" Margin="5" FontSize="9.333" Height="19"/>
+                                                            <TextBlock Text="POS"  Margin="5,8,1,5" />
+                                                            <!--<TextBox x:Name="TxtPOS" Width="30" Text="{Binding posc, Mode=TwoWay}" MaxLength="2" Margin="5" FontSize="9.333" Height="19"/>-->
+                                                            <telerik:RadComboBox x:Name="DdlPOS" Height="22" Loaded="Control_Loaded"  VerticalAlignment="Center" Width="40" Margin="5,0,0,0" SelectedValue="{Binding posc, Mode=TwoWay}" HorizontalAlignment="Left" />
+                                                            <TextBlock Text="Date From"  Margin="5,8,1,5" />
+                                                            <telerik:RadDatePicker Loaded="Control_Loaded" x:Name="DpFromDateR2" Width="90" KeyUp="DpFromDateR2_KeyUp" ParseDateTimeValue="DpFromDateR2_ParseDateTimeValue"  SelectedDate="{Binding service_start_date, Mode=TwoWay}"  Margin="5" FontSize="9.333" Height="17" HorizontalAlignment="Left" />
+                                                            <!--SelectableDateEnd="{Binding current_date}"-->
+                                                            <TextBlock Text="Date To"  Margin="5,8,1,5" />
+                                                            <telerik:RadDatePicker Loaded="Control_Loaded" x:Name="DpToDateR2" Width="90" KeyUp="DpFromDateR2_KeyUp" ParseDateTimeValue="DpFromDateR2_ParseDateTimeValue" SelectedDate="{Binding service_end_date, Mode=TwoWay}"  Margin="5" FontSize="9.333" Height="17" HorizontalAlignment="Left" />
+                                                            <!--SelectableDateStart="{Binding service_start_date}" SelectableDateEnd="{Binding current_date}"-->
+                                                            <TextBlock Text="Authorization #"  Margin="5,8,1,5" />
+                                                            <TextBox Loaded="Control_Loaded" x:Name="TxtAuthorizationNumber" Width="130" Text="{Binding insurance_prior_authorization_number, Mode=TwoWay}" TextChanged="TxtAuthorizationNumber_TextChanged" MaxLength="30" Margin="5" FontSize="9.333" Height="19"/>
+
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Row="14" Grid.ColumnSpan="2" Grid.Column="1" HorizontalAlignment="Left" Orientation="Horizontal">
+                                                            <TextBlock Text="Unit Charge for Procedure " Margin="0,0,5,0" FontSize="9.333" />
+                                                            <TextBlock x:Name="txtProcedureUnitCharge" Width="100" Text="{Binding procedure_unit_charge, StringFormat=c}" FontSize="9.333" Margin="0,0,5,0"/>
+                                                            <CheckBox Loaded="Control_Loaded" x:Name="chkModifyUnitCharge" Content="Modify Unit Charge $" Checked="chkModifyUnitCharge_Checked" Unchecked="chkModifyUnitCharge_Checked" IsChecked="{Binding modify_unit_charge, Mode=TwoWay}" FontSize="9.333" Margin="0,0,5,0"/>
+                                                            <telerik:RadMaskedTextBox Loaded="Control_Loaded" x:Name="rmtModifiedProcedureUnitCharge" Width="100" Mask="f" MaskType="Numeric"  IsEnabled="False" Value="{Binding modified_procedure_unit_charge, Mode=TwoWay}" FontSize="9.333" Margin="0"/>
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Row="15" Grid.ColumnSpan="2" Grid.Column="1" HorizontalAlignment="Left" Orientation="Horizontal">
+                                                            <Button Loaded="Control_Loaded" x:Name="btnCopyCPT" FontSize="9.333" Content="Copy CPT" Click="btnCopyCPT_Click" Tag="{Binding cpt_code}" />
+                                                            <Button Loaded="Control_Loaded" x:Name="btnDeleteCPTCode" FontSize="9.333" Content="Delete CPT" Click="btnDeleteCPTCode_Click" Tag="{Binding cpt_code}" Visibility="{Binding is_cpt_deleted}" Margin="20,0,0,0" />
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Row="16" Grid.ColumnSpan="3" Grid.Column="2" HorizontalAlignment="Left" Orientation="Horizontal">
+                                                            <TextBlock Text="Notes " Margin="0,0,5,0" FontSize="9.333" />
+                                                            <TextBox x:Name="TxtBillerNotes" Width="500" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" VerticalAlignment="Top"
+                 TextWrapping="Wrap" HorizontalAlignment="Right" Text="{Binding billersNote, Mode=TwoWay}" MaxLength="4000" Margin="5" FontSize="9.333" Height="40"/>
+                                                        </StackPanel>
+                                                    </Grid>
+
+                                                </DataTemplate>
+                                            </telerik:RadGridView.RowDetailsTemplate>
+                                        </telerik:RadGridView>
+
+                                    </Grid>
+                                </telerik:RadBusyIndicator>
+                                <!--</ScrollViewer>-->
+
+                            </StackPanel>
+                        </telerik:RadTabItem>
+                    </telerik:RadTabControl>
+                    <!--INPUT CONTROLS-->
+
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5,0,1" >
+                        <Button x:Name="BtnSaveAndPrintHCFA" Content="Approve and Print HCFA/CMS 1500 Form" Width="220" FontSize="9.333" Margin="10,2,10,5" Height="23" Click="BtnSaveAndPrintHCFA_Click" />
+                        <Button x:Name="BtnRecalculate" Content="Recalculate Bill Charges" Width="150" FontSize="9.333" Margin="10,2,10,5" Height="23" Click="BtnRecalculate_Click" />
+                        <Button x:Name="OKButton" Content="Save" Click="OKButton_Click"  Width="75" Margin="0,2,0,5" FontSize="9.333" Height="23" />
+                        <Button x:Name="BtnApprove" Content="Save and Approve" Width="100" Margin="10,2,0,5" FontSize="9.333" Visibility="Collapsed" IsEnabled="False" />
+                        <Button x:Name="BtnApproveAndSubmitClaims" Content="Approve and Submit Claim" Width="155" Margin="10,2,0,5" FontSize="9.333" Click="BtnApproveAndSubmitClaims_Click" />
+                        <Button x:Name="CancelButton" Content="Close" Click="CancelButton_Click" Width="75" Height="23"  FontSize="9.333" Margin="10,2,10,5" />
+                    </StackPanel>
+                    <TextBlock Grid.Row="4" TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center" Text="CPT® copyright 2018 American Medical Association. All rights reserved." FontSize="8" FontStyle="Italic" />
+                    <sdk:ValidationSummary x:Name="ValSummary" Visibility="Collapsed" Grid.ColumnSpan="2" />
+
+                </Grid>
+            </telerik:RadBusyIndicator>
+        </Grid>
+    </telerik:RadBusyIndicator>
+</sdk:ChildWindow>

@@ -1,0 +1,18 @@
+.secondaryInsurance{
+    padding-bottom:7px;
+    .invalid-feedback{
+        color: red;
+    }
+    .csdatepicker{
+        .ui-datepicker{
+           left: -50% !important;
+           // height: 50%;
+       }
+      
+   }
+    .insuranceHead{
+        .yeats-form-group{
+            height:2rem !important;
+        }
+    }
+}

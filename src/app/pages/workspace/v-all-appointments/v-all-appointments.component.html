@@ -1,0 +1,91 @@
+<div class="appointment-schedule">
+  <div class="card border-0 box-shadow cardMargin">
+    <div class="card-header transparent border-0 text-muted">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group appointment-form-group ">
+              <label class="formLabel yeats-form-label">Facility<span class="required">*</span></label>
+              <p-dropdown [options]="facilityList" [(ngModel)]="selectedFacility" placeholder="Select Facility"
+                optionLabel="name" [showClear]="true" (onChange)="loadApptNUser(selectedFacility)">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group appointment-form-group ">
+              <label class="formLabel yeats-form-label">User<span class="required">*</span></label>
+              <p-dropdown [options]="usersList" [(ngModel)]="selectedUser" placeholder="Select User" [disabled]="user"
+                optionLabel="fullName" [showClear]="true" (onChange)="filterchanged()">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group appointment-form-group ">
+              <label class="formLabel yeats-form-label">Appointment Type<span class="required">*</span></label>
+              <p-dropdown [options]="apptTypeList" (onChange)="filterchanged()" [disabled]="appointment"
+                [(ngModel)]="selectedType" placeholder="Select Type" optionLabel="Description" [showClear]="true">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group appointment-form-group ">
+              <label class="formLabel yeats-form-label">Date</label>
+              <p-calendar class="yeats-form-control" (onSelect)="filterchanged()" [showIcon]="true" [disabled]="dateChange"
+                name="date" [(ngModel)]="selectedDate">
+              </p-calendar>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group appointment-form-group ">
+              <label class="formLabel yeats-form-label">&nbsp;</label>
+              <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2"
+                (click)="GetAllPatientAppointments()">Print</button>
+              <!-- <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="GetAllPatientAppointmentsPaged()">Refresh</button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card border-0 box-shadow cardMargin">
+    <div class="card-header transparent border-0 text-muted">
+      <div class="card-body">
+        <div id="printtable" class="yeats-tables">
+
+          <!-- <p-table *ngIf="!isLoader" dataKey="" [value]="appointmentList"> -->
+          <p-table *ngIf="!isLoader" dataKey="" [paginator]="true" [loading]="isLoader" [value]="appointmentList"
+            [rows]="PageSize" [totalRecords]="TotalRecords" [lazy]="true" (onLazyLoad)="paginate($event)">
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th>Name</th>
+                <th>Unique Number</th>
+                <th>DOB</th>
+                <th>Type</th>
+                <th>Start-Time</th>
+                <th>End-Time</th>
+                <th>Physician</th>
+                <th>Comments</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData>
+              <tr>
+                <td>{{rowData.PatientFirstName}}, {{rowData.PatientLastName}}</td>
+                <td>{{rowData.UniqueNumber}}</td>
+                <td>{{rowData.PatientDateOfBirth | date:'yyyy-MM-dd'}}</td>
+                <td>{{rowData.AppointmentType}}</td>
+                <td>{{rowData.StartTime | date:'hh:mm a'}}</td>
+                <td>{{rowData.EndTime | date:'hh:mm a'}}</td>
+                <td>{{rowData.PhysicianName}}</td>
+                <td>{{rowData.Comments}}</td>
+              </tr>
+            </ng-template>
+            <ng-template *ngIf="appointmentList.length==0">
+              <tr >NO Record Found</tr>
+            </ng-template>
+          </p-table>
+          <!-- <p class="text-center m-1" *ngIf="appointmentList.length<=0">NO Record Found</p> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

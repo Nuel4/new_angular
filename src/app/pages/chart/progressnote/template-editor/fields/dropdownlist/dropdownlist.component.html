@@ -1,0 +1,12 @@
+<div class="dropdownlist">
+  <div class="col-4">
+    <div class="form-group yeats-form-group " [formGroup]="group">
+      <label class="formLabel yeats-form-label">{{field.label?field.label:''}}</label>
+      <div class="ui-inputgroup">
+        <p-dropdown [options]="field.options" [name]="field.name" [formControlName]="field.name" [placeholder]="field.label" [(ngModel)]="field.value"
+          [optionLabel]="field.optionLabel" [showClear]="false">
+        </p-dropdown>
+      </div>
+    </div>
+  </div>
+</div>

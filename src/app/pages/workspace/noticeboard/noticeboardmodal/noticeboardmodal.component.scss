@@ -1,0 +1,121 @@
+.noticeBoardComponent{
+    .modal_content{
+        width:200%;
+    }
+    .card-header {
+        /* padding: 0rem 1.25rem; */
+        margin-bottom:0;
+        padding:0.6em;
+        background-color:white;
+    }
+    
+    
+    .ui-picklist .ui-picklist-buttons {
+        padding:2px;
+    }
+
+     .ui-listbox {
+        min-width: 14em !important;
+    }
+
+    .ui-button-icon-only .ui-button-text{
+        padding:0px !important;
+    }
+    
+    .ui-picklist .ui-picklist-list {
+        border: 1px solid #c8c8c8;
+        background-color: #ffffff;
+        color: #333333;
+        padding: 0;
+        width:11em;
+    }
+     .ui-picklist .ui-picklist-caption {
+    font-size: 12px;
+    }
+     .ui-picklist-target-controls  {
+         display: none !important;
+    }
+     .ui-picklist-source-controls{
+        display: none !important;
+    }
+    
+    //  body .ui-picklist-target-controls .ui-picklist-buttons .ng-star-inserted{
+    //     display: none !important;
+    // }
+    
+    .yeats-form-label{
+        margin:3px !important;
+    }
+    .yeats-form-group {
+        padding-bottom:0.5em;
+        margin: 0;
+        min-height: 0em;
+    }
+    // .cardStyle{
+    //      background-color: #f7f7f9;
+    //      padding-left:15px;
+    //      padding-right:15px;
+    // }
+    // }
+
+    .pagination {
+        padding: 20px 315px;
+    }
+
+    
+
+/* Tooltip text */
+.tooltip {
+    position: relative;
+    z-index:0;
+    display: inline-block;
+    opacity: 1;
+    word-wrap: normal;
+    .tooltiptext
+     {
+      visibility: hidden;
+      width: 180px;
+      background-color: aliceblue;
+      padding: 10px;
+    //   text-align: center;
+      border-radius: 6px;
+      position: absolute;
+      margin-left: 3px;
+      top: 9%;
+  }
+  }
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltip:hover {
+    .tooltiptext {
+    visibility: visible;
+  }
+  }
+
+  .text-area {
+    height: 264px;
+    overflow-y: auto;
+    background: #33d0ff14;
+    border-radius: 6px;
+    border: solid 1px #a6a6a6;
+    border-radius: 6px;
+    background: #ffffff;
+  }
+
+  .chat-view {
+    background: #33d0ff14;
+    border-radius: 6px;
+    margin: 6px -6px;
+  }
+
+  .patient-details {
+      padding: 0px 30px;
+  }
+  .csdatepicker{
+    .ui-datepicker{
+       left: -50% !important;
+   }}
+   .cssdatepicker{
+    .ui-datepicker{
+       left: -10% !important;
+   }}
+}

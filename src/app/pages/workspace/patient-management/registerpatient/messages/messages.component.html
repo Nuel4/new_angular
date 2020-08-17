@@ -1,0 +1,45 @@
+<div class="messagesModule">
+    <div class="yeats-tables">
+        <p-table [columns]="messageColumns" [value]="messageData"
+        [rows]="10"  [totalRecords]="totalRecords"  
+        [paginator]="true" (onLazyLoad)="Paginator($event)" [lazy]="true"
+        [alwaysShowPaginator]="true" [responsive]="true">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns">
+                        {{col.header}}
+                    </th>
+                    <th *ngIf="showaction">
+                        Action
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr>
+                    <td *ngFor="let col of columns">
+                        {{rowData[col.field]}}
+                    </td>
+                    <td>
+                        <button pButton class="yeats-btn yeats-btn-primary" (click)=" openbsmodal(rowData)">Edit</button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <div class="row mt-3">
+            <div class="col-6">
+                    <button pButton *ngIf="showprtandchrge" class="yeats-btn yeats-btn-primary mr-3" icon="fa fa-print" (click)="chargeSlips('PatientPrint')" label="print">Print</button>
+                    <button pButton *ngIf="showprtandchrge" class="yeats-btn yeats-btn-primary" icon="fa fa-file-text-o" (click)="chargeSlips('PatientChargeSlips')" label="Charge Slip">Charge
+                      Slip</button>
+                  </div>
+                  <div class="col-6">
+        <div class="col-12">
+            <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+                (click)="openNext()">Next</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" (click)="onCompleteSave()">Save</button>
+            <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+                (click)="onClose()">Close</button>
+        </div>
+    </div>
+    </div>
+</div>

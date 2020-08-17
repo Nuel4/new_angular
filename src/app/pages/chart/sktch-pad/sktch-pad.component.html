@@ -1,0 +1,45 @@
+<div class="sktchPad">
+  <div class="{{isIncreaseCard?'card border-0 box-shadow cardStyle':'card border-0 box-shadow'}}">
+    <div class="card-header transparent border-0 text-muted">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-3 col-md-3 col-sm-3">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Template Category</label>
+              <p-dropdown [options]="Categories" [(ngModel)]="selectedCategory" optionLabel="name" [showClear]="true"
+                (onChange)="loadTemplate()">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Choose Template</label>
+              <p-dropdown [options]="Templates" [(ngModel)]="selectedTemplate" optionLabel="name" [showClear]="true"
+                (onChange)="loadImg()">
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12">
+            <label class="formLabel yeats-form-label">Preview Image</label>
+            <div style="text-align: center">
+              <img src="{{selectedImg}}" alt="picture of Template Category">
+            </div>
+
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 mb-2 mt-1">
+            <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-1"
+              (click)="cancelsketchpad();fileupload.clear()" *ngIf="isCancelBtn">Cancel
+              Sketchpad</button>
+            <p-fileUpload #fileupload (onRemove)="alert('clear')" (onClear)="alert('clear')"
+              styleClass="yeats-btn yeats-btn-primary ml-1 pull-right" mode="basic" name="demo[]"
+              (onSelect)="OnFileSelected($event);fileupload.clear()" chooseLabel="Load Template From Local"></p-fileUpload>
+
+            <button pButton class="yeats-btn yeats-btn-primary pull-right" (click)="openModal()">Load Template</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

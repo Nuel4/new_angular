@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="27" height="29" viewBox="0 0 27 29">
+  <g id="Group_27938" data-name="Group 27938" transform="translate(-524 -83)">
+    <g id="Ellipse_26" data-name="Ellipse 26" transform="translate(525 85)" fill="#fff" stroke="#114886" stroke-width="2">
+      <circle cx="13" cy="13" r="13" stroke="none"/>
+      <circle cx="13" cy="13" r="12" fill="none"/>
+    </g>
+    <g id="Group_27934" data-name="Group 27934" transform="translate(-219 3)">
+      <circle id="Ellipse_22" data-name="Ellipse 22" cx="6" cy="6" r="6" transform="translate(743 80)" fill="#fff"/>
+      <g id="Group_27930" data-name="Group 27930" transform="translate(4 0)">
+        <g id="Group_27923" data-name="Group 27923" transform="translate(740 81)">
+          <path id="Path_35991" data-name="Path 35991" d="M17.732,14.855H14.855v2.877a.959.959,0,1,1-1.918,0V14.855H10.06a.959.959,0,1,1,0-1.918h2.877V10.06a.959.959,0,1,1,1.918,0v2.877h2.877a.959.959,0,1,1,0,1.918Z" transform="translate(-9.101 -9.101)" fill="#114886"/>
+        </g>
+      </g>
+    </g>
+    <text id="_" data-name="!" transform="translate(535 105)" fill="#114886" font-size="21" font-family="Nunito-Bold, Nunito" font-weight="700"><tspan x="0" y="0">!</tspan></text>
+  </g>
+</svg>

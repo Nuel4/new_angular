@@ -1,0 +1,544 @@
+<div *ngIf="openFormsModal" class="forms">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">Select Report</div>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <!-- (click)="openPdfPrint() -->
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 mb-3" (click)="openChargeSlipForm('WaitingroomprintSlip')">
+        Verification Form
+      </button>
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 mb-3" (click)="openChargeSlipForm('WaitingroomChargeSlip')">
+        Charge Slip Form
+      </button>
+    </div>
+  </div>
+</div>
+<div *ngIf="openDocumentModal" class="documents">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">Select Report</div>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 mb-3" (click)="openbsmodal('upload')">
+          <i class="fa fa-upload mr-2"></i>Upload Document
+      </button>
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 mb-3" (click)="openbsmodal('delete')">
+        Delete Document
+      </button>
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 mb-3" (click)="openbsmodal('edit')">
+          <i class="fa fa-pencil mr-2"></i>Edit Document Details
+      </button>
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 mb-3" (click)="openbsmodal('transfer')">
+        Transfer Document
+      </button>
+      <!-- <div class="row"> -->
+      <label class="ml-3">Document Name</label>
+      <input type="text" pInputText class="ml-3" placeholder="Enter Name" [(ngModel)]="filters.documentName" />
+      <!-- </div>
+            <div class="row"> -->
+      <label class="ml-3" style="margin-top: 0.3rem;">Category Name</label>
+      <p-dropdown
+        class="dropdown ml-3"
+        [options]="dmsCategories"
+        [(ngModel)]="filters.selectedCategory"
+        placeholder="Select Facility"
+        optionLabel="CategoryName"
+        [showClear]="true"
+        (onChange)="onFacilityChange()"
+      >
+      </p-dropdown>
+      <!-- </div> -->
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 mb-3" (click)="searchDocs()">
+        Search Document
+      </button>
+      <div class="yeats-tables">
+        <p-table [columns]="cols" [value]="documentsLists.Results">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th
+                *ngFor="let col of columns; let i = index"
+                [pSortableColumn]="col.field"
+                pEditableColumn
+                (click)="openFilter(i)"
+              >
+                <span *ngIf="headerIndex !== i">{{ col.header }}</span
+                ><span *ngIf="headerIndex === i && !col.filter">{{
+                  col.header
+                }}</span>
+                <i
+                  class="fa fa-filter"
+                  *ngIf="headerIndex !== i && col.filter"
+                ></i>
+                <p-cellEditor *ngIf="col.filter">
+                  <ng-template pTemplate="input">
+                    <input
+                      pInputText
+                      type="text"
+                      placeholder="{{ col.header }}"
+                      (keyup)="filterTableData($event.target.value, col.field)"
+                      style="width:100%; height: 75%;"
+                    />
+                  </ng-template>
+                </p-cellEditor>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr *ngFor="let rowData of documentsLists.Results" (click)="onSelectRow(rowData)">
+              <td >
+                  <i class="fa fa-sign"></i>
+                <!-- <span>{{ rowData[col.field] }}</span> -->
+              </td>
+              <td><i class="fa fa-search"></i></td>
+              <td>{{rowData.Name}}</td>
+              <td>
+                  <span *ngIf="rowData.SavedMethodIdentifier === 2">for Scanned file</span>
+                  <span *ngIf="rowData.SavedMethodIdentifier === 1">for Uploaded file</span>
+              </td>
+              <td>{{rowData.DateCreated | date: 'yyyy-MM-dd'}}</td>
+              <td>{{rowData.Documentdate | date: 'yyyy-MM-dd'}}</td>
+              <td>{{rowData.DmsCategoryName}}</td>
+              <td>
+                  <span *ngIf="rowData.ReviewedStatus === 2">Reviewed</span>
+                  <span *ngIf="rowData.ReviewedStatus === 1">For Review</span>
+              </td>
+              <td><i class="fa fa-search" *ngIf="rowData.NoOfEncounters >= 1"></i></td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <p-paginator [rows]="documentsLists.PageSize" [totalRecords]="documentsLists.TotalItems"
+                            (onPageChange)="paginate($event)"></p-paginator>
+    </div>
+    <div class="modal-footer pll-left">
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 mb-3" (click)="openbsmodal('review_scans')">
+          <i class="fa fa-search-plus mr-1" aria-hidden="true"></i>Review Scans
+      </button>
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 mb-3" (click)="openbsmodal('attach_file')">
+          <i class="fa fa-share mr-1" aria-hidden="true"></i>Attach File To Encounter
+      </button>
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 mb-3">
+        Print All Scans
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="openCopayModal" class="copay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">Add/Edit Co-Pay</div>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-3 col-sm-6 col-12 offset-lg-3">
+          <div class="col-12">
+            <label class="pull-right">Co-Pay $</label>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <input
+            type="text"
+            pInputText
+            class="form-control yeats-form-control u-mb"
+            [(ngModel)]="co_pay"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-sm-6 col-12 offset-lg-3">
+          <div class="col-12">
+            <label class="pull-right">Deductible $</label>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <input
+            type="text"
+            pInputText
+            class="form-control yeats-form-control u-mb"
+            [(ngModel)]="deductible"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-sm-6 col-12 offset-lg-3">
+          <div class="col-12">
+            <label class="pull-right">Co-Insurance $</label>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <input
+            type="text"
+            pInputText
+            class="form-control yeats-form-control u-mb"
+            [(ngModel)]="co_Insurance"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-sm-6 col-12 offset-lg-3">
+          <div class="col-12">
+            <label class="pull-right">Card/Check Number $</label>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <input
+            type="text"
+            pInputText
+            class="form-control yeats-form-control u-mb"
+            [(ngModel)]="check_number"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-sm-6 col-12 offset-lg-3">
+          <div class="col-12">
+            <label class="pull-right">Payment Method $</label>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <p-dropdown
+            class="u-mb"
+            [options]="paymentList"
+            placeholder="Select Payment"
+            optionLabel="paymentName"
+            [showClear]="true"
+            [(ngModel)]="selectedPayment"
+          >
+          </p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 mb-3" (click)="saveAndPrintCopay()">
+        Save & Print
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary ml-3 mb-3"
+        (click)="addCopay()"
+      >
+        Save
+      </button>
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 mb-3">
+        Self Pay Apt
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary ml-3 mb-3"
+        (click)="activeModal.dismiss('Cross click')"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="openAccountSummaryModal">
+  <div class="modal-header">
+    <div class="modal-title">Account Summary</div>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close" 
+      (click)="activeModal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="p-view">
+      <p style="margin-left:5px;">
+        Account Summary for {{ patientData.patientname }}
+      </p>
+    </div>
+    <div class="row" style="margin-top: 1rem;">
+      <div class="row u-margin">
+        <label>DOB: </label>
+        <span class="ml-3">{{
+          patientData.patientdateofbirth | date: "dd/MM/yyyy"
+        }}</span>
+      </div>
+      <div class="row u-margin">
+        <label>Acc No: </label>
+        <span class="ml-3">{{ patientData.uniqueNumber }}</span>
+      </div>
+      <div class="row u-margin">
+        <label>Primary Physician: </label>
+        <span class="ml-3">{{ patientData.username }}</span>
+      </div>
+      <div class="row u-margin" style="margin-top: -5px">
+        <!-- <label>DOB: </label> -->
+        <p-checkbox
+          label="In collections"
+          [(ngModel)]="account_summary.FlagAccountInCollections"
+        ></p-checkbox>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6 col-sm-6 col-12">
+        <label class="label-header">Insurance</label>
+        <div class="row u-ml">
+          <label>Primary:</label>
+          <span class="ml-3">{{ primary_insurance }}</span>
+        </div>
+        <div class="row u-ml">
+          <label>Seconday:</label>
+          <span class="ml-3">{{ secondary_insurance }}</span>
+        </div>
+        <div class="row u-ml">
+          <label>Tertiary:</label>
+          <span class="ml-3">{{ tertiary_insurance }}</span>
+        </div>
+      </div>
+      <div class="col-lg-6 col-sm-6 col-12">
+        <label class="label-header">History</label>
+        <div class="row u-ml">
+          <label>Last service date:</label>
+          <span class="ml-3">{{
+            account_summary.LastServiceDate | date: "dd/MM/yyyy"
+          }}</span>
+        </div>
+        <div class="row u-ml">
+          <label>Last charge date:</label>
+          <span class="ml-3">abcdef</span>
+        </div>
+        <div class="row u-ml">
+          <label>Last statement date:</label>
+          <span class="ml-3">{{
+            account_summary.LastStatementDate | date: "dd/MM/yyyy"
+          }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3" style="border:solid 1px; margin: 5px;">
+      <div class="col-lg-3 col-sm-3 col-12">
+        <label class="label-header">CHARGES</label>
+        <div class="row u-ml">
+          <label>To Date($):</label>
+          <span class="ml-3">{{ account_summary.TotalCharges }}</span>
+        </div>
+        <div class="row u-ml">
+          <label>Todays($):</label>
+          <span class="ml-3">abcdef</span>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-3 col-12">
+        <label class="label-header">BALANCES</label>
+        <div class="row u-ml">
+          <label>Insurance($):</label>
+          <span class="ml-3">{{ account_summary.InsuranceBalanceDue }}</span>
+        </div>
+        <div class="row u-ml">
+          <label>Patient($):</label>
+          <span class="ml-3">{{ account_summary.PatientBalanceDue }}</span>
+        </div>
+        <div class="row u-ml">
+          <label>Current($):</label>
+          <span class="ml-3">abcdef</span>
+        </div>
+        <div class="row u-ml">
+          <label>Previous($):</label>
+          <span class="ml-3">abcdef</span>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-3 col-12">
+        <label class="label-header">PAYMENTS</label>
+        <div class="row u-ml">
+          <label>Insurance($):</label>
+          <span class="ml-3">{{ account_summary.TotalInsurancePayments }}</span>
+        </div>
+        <div class="row u-ml">
+          <label>Patient($):</label>
+          <span class="ml-3">{{ account_summary.TotalPatientPayments }}</span>
+        </div>
+        <div class="row u-ml">
+          <label>Unapplied pt($):</label>
+          <span class="ml-3">abcdef</span>
+        </div>
+        <div class="row u-ml">
+          <label>Todays($):</label>
+          <span class="ml-3">abcdef</span>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-3 col-12">
+        <label class="label-header">ADJ/WRITE-OFFS</label>
+        <div class="row u-ml">
+          <label>Adjusments($):</label>
+          <span class="ml-3">{{ account_summary.TotalAdjustments }}</span>
+        </div>
+        <div class="row u-ml">
+          <label>Write-offs($):</label>
+          <span class="ml-3">{{ account_summary.TotalWriteOffAmount }}</span>
+        </div>
+        <div class="row u-ml">
+          <label>Todays($):</label>
+          <span class="ml-3">abcdef</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-lg-9 col-sm-9 col-12">
+        <table style="height: 67px;" width="800" class="ml-3">
+          <tbody>
+            <tr>
+              <td style="width: 96px;" class="label-header">
+                AGED BALANCES&nbsp;
+              </td>
+              <td style="width: 96px;">Days 0-to-30&nbsp;</td>
+              <td style="width: 98px;">31-to-60&nbsp;</td>
+              <td style="width: 98px;">61-to-90&nbsp;</td>
+              <td style="width: 99px;">91-to-120&nbsp;</td>
+              <td style="width: 100px;">121-to-150&nbsp;</td>
+              <td style="width: 101px;">150+&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="width: 96px;">Patient Balances($)&nbsp;</td>
+              <td style="width: 96px;">
+                {{ account_summary._0To30daysPatientBalance }}&nbsp;
+              </td>
+              <td style="width: 98px;">
+                {{ account_summary._31To60daysPatientBalance }}&nbsp;
+              </td>
+              <td style="width: 98px;">
+                {{ account_summary._61To90daysPatientBalance }}&nbsp;
+              </td>
+              <td style="width: 99px;">
+                {{ account_summary._91To120daysPatientBalance }}&nbsp;
+              </td>
+              <td style="width: 100px;">
+                {{ account_summary._121To150daysPatientBalance }}&nbsp;
+              </td>
+              <td style="width: 101px;">
+                {{ account_summary._150PlusDaysPatientBalance }}&nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 96px;">Insurance Balances($)&nbsp;</td>
+              <td style="width: 96px;">
+                {{ account_summary._0To30daysInsuranceBalance }}&nbsp;
+              </td>
+              <td style="width: 98px;">
+                {{ account_summary._31To60daysInsuranceBalance }}&nbsp;
+              </td>
+              <td style="width: 98px;">
+                {{ account_summary._61To90daysInsuranceBalance }}&nbsp;
+              </td>
+              <td style="width: 99px;">
+                {{ account_summary._91To120daysInsuranceBalance }}&nbsp;
+              </td>
+              <td style="width: 100px;">
+                {{ account_summary._121To150daysInsuranceBalance }}&nbsp;
+              </td>
+              <td style="width: 101px;">
+                {{ account_summary._150PlusDaysInsuranceBalance }}&nbsp;
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      pButton
+      class="yeats-btn yeats-btn-primary ml-3 mb-3"
+      (click)="openModal('Billers')"
+    >
+      Biller's Note
+    </button>
+    <button
+      pButton
+      class="yeats-btn yeats-btn-primary ml-3 mb-3"
+      (click)="openModal('Past_Statements')"
+    >
+      Past Statements
+    </button>
+    <button
+      pButton
+      class="yeats-btn yeats-btn-primary ml-3 mb-3"
+      (click)="activeModal.dismiss('Cross click')"
+    >
+      Close
+    </button>
+  </div>
+</div>
+
+<div *ngIf="openCancelApptModal">
+  <div class="modal-header">
+    <div class="modal-title">Cancel Appointment for {{ patient_name }}</div>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="cancel-appt">
+    <div class="modal-body">
+      <div class="row">
+        <label class="ml-3" style="margin-top: 0.3rem;"
+          >Reason for Cancelling</label
+        >
+        <p-dropdown
+          class="dropdown ml-3"
+          [options]="reasonsForCancel"
+          [(ngModel)]="recipient"
+          placeholder="Select Reason"
+          optionLabel="Description"
+          [showClear]="true"
+          [(ngModel)]="selectedReason"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary ml-3 mb-3"
+        (click)="cancelAppt()"
+      >
+        OK
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary ml-3 mb-3"
+        (click)="activeModal.dismiss('Cross click')"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
+

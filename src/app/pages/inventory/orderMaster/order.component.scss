@@ -1,0 +1,221 @@
+.primeNgOrder{
+    .formLabel{
+        font-size: 11px;
+        color: black
+    }
+    .ui-inputtext{
+        padding: .55em !important;
+    }
+    .activeOrders{
+        .headingSec{
+            position: relative;
+            margin: 25px 0 0 0;
+            .btn {
+                background-color: #1F70BA;
+                color: #C4C9E8;
+                border: none;
+                padding: 0.4rem 0.75rem;
+                font-size: 13px;
+                cursor: pointer;
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                margin-left:10px;
+            }
+            
+            .buttonSection{
+                text-align: right
+            }
+        }
+        .tableHead{
+            // color: #8992af;
+            font-size: 11px;
+            margin-bottom:4px;
+        }
+        .tableData {
+            // color: #8992af;
+            // font-weight: bold;
+            margin-bottom: 15px;
+            // padding: 0 15px 0 0;
+            font-weight: 600;
+            font-style: normal;
+            font-stretch: normal;
+            // line-height: 5px;
+            letter-spacing: normal;
+            text-align: left;
+            color: #8992af;
+        }
+        .cardSec{
+            position: relative;
+            margin: 0 1px 0px 0;
+        }
+    
+        .editSec{
+            position: relative;
+            font-size: 18px;
+            .editIcon{
+                z-index: 9999;
+                cursor: pointer;
+                position: absolute;
+                right: 0
+            }
+        }
+    
+    }
+    .orderHome{
+        .addBtn{
+            position: initial;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #114886;
+        }
+        .form-group{
+            margin-bottom: 0
+        }
+        .form-control{
+            padding: 0.4rem 0.75rem
+        }
+        .app.blue .form-group label {
+            margin-bottom: 0;
+        }
+        .btn {
+                background-color: #1F70BA;
+                color: #C4C9E8;
+                border: none;
+                padding: 0.4rem 0.75rem;
+                font-size: 13px;
+                margin-left: 15px;
+                cursor: pointer;
+            }
+            .searchBtn{
+                position: absolute;
+                bottom: 0;
+                // right: 1.25rem;
+            }
+    }
+    .searchBox:before{
+        content: "";
+    }
+    .ui-card-body {
+        padding: 1em;
+        background-color: #F8FBFF;
+    }
+    .primeNgTableOrder {
+        .tableRowHead {
+          height: 50px;
+        }
+        .tableRowBody {
+          height: 50px;
+        }
+       
+        .ui-table .ui-table-tbody > tr > td {
+          border: none;
+          // background-color: inherit;
+          border-top: none;
+          border-left: none;
+          border-right: none;
+          border-bottom: 5px solid #f5f6fa;
+          background-color: #fff;
+          font-size: 12px;
+          color: #8992af;
+          text-align: center;
+        }
+        .ui-table .ui-table-thead > tr > th,
+        .ui-table .ui-table-tfoot > tr > td {
+          // border:none;
+          border-top: none;
+          border-left: none;
+          border-right: none;
+          border-bottom: 5px solid #f5f6fa;
+          font-size: 14px;
+          font-weight: bolder;
+          color: #8992af;
+          text-align: center;
+          // background-color: inherit;
+        }
+        .ui-table .ui-paginator-bottom {
+          border-top: none;
+          border-left: none;
+          border-right: none;
+          background-color: #f5f6fa;
+          border-bottom: none;
+          text-align: right;
+        }
+        .ui-widget-header {
+            background: transparent;
+            background: linear-gradient(to bottom, #F8FBFF 0%, #F8FBFF 100%);
+        }
+        
+        .ui-paginator .ui-paginator-next,
+        .ui-paginator .ui-paginator-last,
+        .ui-paginator .ui-paginator-fist,
+        .ui-paginator .ui-paginator-prev
+       {
+          display: inline-block;
+          width: 36px;
+          height: 36px;
+          line-height: 1.5em;
+          zoom: 1;
+          margin-left: 0.063em;
+          margin-right: 0.063em;
+          text-decoration: none;
+          vertical-align: middle;
+          text-align: center;
+          position: relative;
+        }
+        .ui-paginator-page{
+          display: inline-block;
+          width: 36px;
+          height: 36px;
+          padding:7px;
+          margin-top:-7px;
+        }
+        .ui-paginator .ui-state-active  {
+          background: #3318ff;
+          color: #ffffff;
+          border: 1px solid #3318ff;
+          padding: 3px;
+          width:36px;
+          height:36px;
+          //margin-top:-7px;
+        }
+        .ui-paginator-first,
+        .ui-paginator .ui-paginator-prev,
+        .ui-paginator .ui-paginator-current {
+          display: inline-block;
+          width: 36px;
+          height: 36px;
+          line-height: 1.5em;
+          zoom: 1;
+          margin-left: 0.063em;
+          margin-right: 0.063em;
+          text-decoration: none;
+          vertical-align: middle;
+          text-align: center;
+          position: relative;
+        }
+        .breadcrumb {
+          padding: 0.75rem 1rem;
+          margin-bottom: 15px;
+          list-style: none;
+          background-color: #ebedf0;
+          border-radius: 0.25rem;
+          height: 38px;
+        }
+        .app.blue .breadcrumb {
+          padding: 6px;
+          padding-left: 15px;
+        }
+        .content .ui-button,
+        .ui-widget.ui-button,
+        .ui-button {
+          border: 1px solid #2399e5;
+          color: #ffffff;
+          background: #2399e5;
+          float: right;
+          right: 0;
+          transition: background-color 0.2s;
+        }
+      }
+    }

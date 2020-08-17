@@ -1,0 +1,218 @@
+<div class="noticeboard">
+  <div class="" *ngIf="toWorkSpace">
+    <app-widget-header [widgetData]="widgetData" (refreshWidget)="refreshData()"></app-widget-header>
+  </div>
+  <div class="gridster-item-content">
+    <div [class]="toWorkSpace?'widget-container':''">
+      <div class="container">
+        <!-- <div class="card border-0 box-shadow cardMargin" >
+          <div class="card-header transparent border-0 text-muted">
+            <div class="card-body"> -->
+              <div class="row">
+                <div class="col-lg-5 col-md-6 col-sm-6">
+                  <div class="form-group yeats-form-group">
+                    <p-dropdown [options]="Status" [(ngModel)]="SelectedStatus" optionLabel="statusname"
+                      [showClear]="true" placeholder="Select Status" (onChange)="StatusValue(SelectedStatus)">
+                    </p-dropdown>
+                  </div>
+                </div>
+                        <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                       Open modal
+                  </button> -->
+                        <!-- <button type="button" (click)="open(content,'Add')" class="yeats-btn yeats-btn-primary pull-right" pButton icon="fa fa-plus" label="Add"></button> -->
+                <div class="col-lg-7 col-md-6 col-sm-6">
+                  <!-- <button pButton style="padding-top: 2px;" class="yeats-btn yeats-btn-primary pull-right" (Click)="showDialog()"><i class="fa fa-plus"
+                    aria-hidden="true"></i> Add</button> -->
+                  <div class="row">
+                    <div class="col-8">
+                      <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" (click)="openbsmodal(true)">
+                        <img src="../../../../assets/images/Sent.svg"> Sent</button>
+                    </div>
+                    <div class="col-4">
+                      <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3"
+                        (click)="openbsmodal(false)"><i class="fa fa-plus" aria-hidden="true"></i> Add</button>
+                    </div>
+
+                  </div>
+                  <!-- add button modal -->
+                </div>
+              </div>
+            <!-- </div>
+          </div>
+        </div> -->
+        <!-- <div class="card border-0 box-shadow cardMargin" style="height: 100%">
+          <div class="card-header transparent border-0 text-muted" style="height: 100%">
+            <div class="card-body" style="height: 100%"> -->
+              <div class="row noticeTab" style="height: 100%">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                  <p-tabView (onChange)="SelectedTab($event)" [activeIndex]="tab_index">
+                    <!-- <p-tabPanel header="New">
+                      <p>we will add a table here and call the data inside the table from backend</p>
+                    </p-tabPanel> -->
+                    <!-- <div> -->
+                      <p-tabPanel header="Messages" class="board-height messagesPart">
+                        <div class="cardSec" *ngFor="let data of messages_list"
+                          (dblclick)="SelectedRecord(data); openbsmodal(false,data)"
+                          [ngClass]="{'unread': data.ReadStatus === 'Unread'}">
+                          <div class="row">
+                            <div class="col-2 pad-15">
+                                <i class="fa fa-user user" aria-hidden="true" style="cursor: pointer" data-toggele="tooltip" [title]=patient (mouseenter)="patientDetails(data)"></i>
+                                <!-- <img src="../../../../assets/images/Group 27916.svg" alt="user" /> -->
+                              <!-- <span class="tooltip">
+                              <i class="fa fa-user" aria-hidden="true" style="cursor: pointer" (mouseenter)="patientDetails(data)">
+                                <span class="tooltiptext" *ngIf="recipientList.length > 0 "><ul style="list-style:none">
+                                  <li *ngFor="let user of recipientList">{{user.Username}}</li>
+                                </ul></span>
+                              </i> -->
+                            <!-- </span> -->
+                            </div>
+                            <div class="col-4 pad-15">
+                              <p class="tableHead truncate"><b>{{data.Posting}}</b></p>
+                              <p class="tableHead">{{data.FirstName}} {{data.LastName}}</p>
+                            </div>
+                            <div class="col-4 pad-15">
+                              <p class="tableHead">{{data.displayDate}}</p>
+                            </div>
+                            <div class="col-2 pad-15">
+                              <p class="tableHead"><img src="../../../../assets/images/PatientCharts.svg" (click)="chartClick(data)" style="cursor: pointer;" title="View patient chart" alt="user" ></p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="paginator">
+                          <p-paginator [rows]="messages.PageSize" [totalRecords]="messages.TotalItems"
+                            (onPageChange)="paginate($event)"></p-paginator>
+                            <!-- *ngIf="messages_list.length > 0" -->
+                        </div>
+                      </p-tabPanel>
+                    <!-- </div> -->
+                    <p-tabPanel header="Scans for review (70)" class="scanForReview" (onChange)="SelectedTab($event)">
+                      <div class="yeats-tables notice">
+                        <p-table [columns]="cols" [value]="patient_documents" >
+                          <ng-template pTemplate="header" let-columns>
+                            <tr>
+                              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                {{col.header}}
+                                <!-- <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                                      ariaLabelDesc="Activate to sort in descending order"
+                                      ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon> -->
+                              </th>
+                              <th>Actions</th>
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="body" let-rowData let-columns="columns">
+                            <tr>
+                              <td class="a" style="font-size:9px !important;" *ngFor="let col of columns"
+                                (click)="onSelectRow(rowData)">
+                                <span>{{rowData[col.field]}}</span>
+                              </td>
+                              <td>
+                                  <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary"
+                                  style="margin-left: -14px;margin-top: 1px;" (click)="viewDoc(rowData)">View</button>
+                              </td>
+                            </tr>
+                          </ng-template>
+                        </p-table>
+                      </div>
+                      <div class="paginator">
+                      <p-paginator  [rows]="arrData.PageSize" 
+                      (onPageChange)="selectedPage($event)" [totalRecords]="arrData.TotalItems" ></p-paginator>
+                    </div>
+                    </p-tabPanel>
+                  </p-tabView>
+                </div>
+              </div>
+            <!-- </div> -->
+          <!-- </div> -->
+        <!-- </div> -->
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- <div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      Modal Header
+      <div class="modal-header">
+        <h4 class="modal-title">Modal Heading</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      Modal body
+      <div class="modal-body">
+        Modal body..
+      </div>
+
+      Modal footer
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div> -->
+
+<!-- <p-dialog header="{{heading}}" [(visible)]="display" [modal]="true" [responsive]="true" [style]="{width: '350px', minWidth: '200px'}" [minY]="70" 
+        [maximizable]="true" [baseZIndex]="10000">
+    <span>The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. 
+        His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. 
+        Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, 
+        kind and benevolent to those who give respect,
+        but given to ruthless violence whenever anything stands against the good of the family.</span>
+        <p-footer>
+            <button type="button" pButton icon="pi pi-check" (click)="display=false" label="Yes"></button>
+            <button type="button" pButton icon="pi pi-close" (click)="display=false" label="No" class="ui-button-secondary"></button>
+        </p-footer>
+</p-dialog> -->
+
+<!-- <ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{heading}} Message</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    hi this is the modal body
+   <div class="row">
+     <div class="col-6">
+       <div class="row">
+         <div class="col-12">
+          Patient Name:- <strong>{{patientdata.FullName}}</strong>
+         </div>
+         <div class="col-12">
+           assign to block
+         </div>
+       </div>
+     </div>
+     <div class="col-6">
+       Details tab
+     </div>
+   </div>
+  </div> 
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Save</button>
+  </div>
+</ng-template> -->
+
+
+<!-- <div role="document" class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{title}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ng-content></ng-content>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+      </div>
+    </div>
+  </div> -->
+<!-- <pre>{{closeResult}}</pre> -->
+<!-- <button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button> -->

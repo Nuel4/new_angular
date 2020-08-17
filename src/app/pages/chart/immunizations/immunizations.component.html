@@ -1,0 +1,38 @@
+<div class="immunization">
+<div *ngIf="toChart">
+  <app-widget-header [widgetData]="widgetData" (refreshWidget)="refreshData()"></app-widget-header>
+  </div>
+  <div class="gridster-item-content">
+    <!-- <button (click)="acquireImage()">Scan Document</button>
+    <div id="dwtcontrolContainer"></div> -->
+    <div *ngIf="isLoader" class="row">
+      <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+  </div>
+  <div class="yeats-tables">
+      <p-table [value]="immunizationlist" [scrollable]="true" >
+          <ng-template pTemplate="header" >
+              <tr>
+                  <th class="a" data-toggle="tooltip" title="Vaccine and Injection">Vaccine and Injection</th>
+                  <th>Status</th>
+                  <th>Due date</th>
+                  <th class="a" data-toggle="tooltip" title='Date given'>Date given</th>
+                  <th>Administer</th>
+                  <th>Edit</th>
+              </tr>
+              
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData>
+                <tr>
+                        <td class="a" data-toggle="tooltip" [title]='rowData.Vaccine'>{{rowData.Vaccine}}</td>
+                        <td class="a" data-toggle="tooltip" [title]='rowData.Status'>{{rowData.Status}}</td>
+                        <td class="a" data-toggle="tooltip" [title]='rowData.DueDate | date: "dd/MM/yyyy"'>{{rowData.DueDate | date: 'dd/MM/yyyy'}}</td>
+                        <td class="a" data-toggle="tooltip" [title]='rowData.DateCreated | date: "dd/MM/yyyy"'>{{rowData.DateCreated | date: 'dd/MM/yyyy'}}</td>
+                        <td><i class="fa fa-add" (click)="routeToEditImm(rowData.MrPatientImmmunizationId)" style="cursor: pointer;"></i></td>
+                        <td><img src="../../../../assets/images/Edit.svg" style="cursor: pointer;" alt="Edit" (click)="routeToEditImm(rowData.MrPatientImmmunizationId)"></td>
+                    </tr>
+          </ng-template>
+      </p-table>
+  </div>
+  <p-paginator [rows]="rows" (onPageChange)="paginate($event)" [totalRecords]="totalRecords"></p-paginator>
+</div>
+</div>

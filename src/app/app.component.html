@@ -1,0 +1,25 @@
+<!-- NG-ZORRO -->
+<!-- <a href="httrs://github.com/NG-ZORRO/ng-zorro-antd" target="_blank" style="display: flex;align-items: center;justify-content: center;height: 100%;width: 100%;">
+  <img height="300" src="https://img.alicdn.com/tfs/TB1NvvIwTtYBeNjy1XdXXXXyVXa-89-131.svg">
+</a> -->
+<ngx-loading-bar color="red"></ngx-loading-bar>
+<div class="app" [ngClass]="settings.theme.skin" [class.navbar-fixed]="settings.theme.navbarIsFixed"
+  [class.sidebar-fixed]="settings.theme.sidebarIsFixed" [class.horizontal-menu]="settings.theme.menu == 'horizontal'"
+  [class.compact]="settings.theme.menuType == 'compact'" [class.mini]="settings.theme.menuType == 'mini'"
+  [class.menu-hide]="!settings.theme.showMenu">
+  <div class="wrapper">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+<!-- <div *ngIf="status == 'OFFLINE'">
+  <h1>You're OFFLINE</h1>
+</div> -->
+<!-- <p-dialog *ngIf="status == 'OFFLINE'" modal="true" [(visible)]="display">
+    <p-header>
+        <i class="fa fa-exclamation" style="color: red" aria-hidden="true"></i> &nbsp; Connection lost
+    </p-header>
+  Internet connection lost. Please check your connection. -->
+  <!-- <p-footer *ngIf="show">
+  <button type="button" (click)="hideAlert()" pButton>reload</button>
+  </p-footer> -->
+<!-- </p-dialog> -->

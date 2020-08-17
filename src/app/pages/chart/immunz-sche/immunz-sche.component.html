@@ -1,0 +1,100 @@
+<div class="immunzSchedule">
+  <div class="card border-0 box-shadow">
+    <div class="card-header transparent border-0 text-muted">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-lg-3 col-md-3 col-sm-3">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Schedule Name</label>
+              <p-dropdown [options]="pmhCategories" [(ngModel)]="selectedCategory" (onChange)="loadVacinne()"
+                optionLabel="MrImmunizationScheduleHeader1" [showClear]="true" placeholder="Select Schedule Name">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="{{isenableBtn? 'col-12 col-lg-6 col-md-6 col-sm-12':'col-12 col-lg-6 col-md-6 col-sm-12 mt-4'}}">
+            <div class="form-group yeats-form-group mt-1 ">
+              <label class="formLabel yeats-form-label">&nbsp;</label>
+              <button pButton class="yeats-btn yeats-btn-primary mr-2" (click)="onAddSchdule()">Add Schedule</button>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <label class="formLabel yeats-form-label"><b>Vaccine Intervals:</b></label>
+            <div class="yeats-tables">
+              <p-table [rows]="10" [value]="VaccineList" selectionMode="single" [(selection)]="selectedVaccine"
+                dataKey="mr_immunization_type" [paginator]="true" [pageLinks]="3" [responsive]="true"
+                [rows]="VacPageSize" [totalRecords]="VacTotalRecords" [lazy]="true" (onLazyLoad)="paginateVac($event)">
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th>Vaccine</th>
+                    <th>interval</th>
+                    <th>Min</th>
+                    <th>Max</th>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                  <tr *ngIf="VaccineList.length<=0">
+                    <td>
+                      No Data Found
+                    </td>
+                  </tr>
+                  <tr [pSelectableRow]="rowData" *ngIf="VaccineList.length>0">
+                    <td>{{rowData.mr_immunization_type}}</td>
+                    <td>{{rowData.interval_type_name}}</td>
+                    <td>{{rowData.min_interval}}</td>
+                    <td>{{rowData.max_interval}}</td>
+                  </tr>
+                </ng-template>
+
+              </p-table>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <label class="formLabel yeats-form-label"><b>Immunizations:</b></label>
+            <div class="yeats-tables">
+              <p-table [value]="immunList" [paginator]="true" [pageLinks]="3" [responsive]="true" [rows]="ImmPageSize"
+                [totalRecords]="ImmTotalRecords" [lazy]="true" (onLazyLoad)="paginateImm($event)"
+                selectionMode="single">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Vaccine</th>
+                    <th>Date Given</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Administer</th>
+                    <th>Edit</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-imm>
+                  <tr>
+                    <td>{{imm.Vaccine}}</td>
+                    <td>{{imm.DateAdministered | date:'yyyy-MM-dd'}}</td>
+                    <td>{{imm.DueDate | date:'yyyy-MM-dd'}}</td>
+                    <td>{{imm.Status}}</td>
+                    <td>
+                      <i *ngIf="imm.Status==='Due'" class="pi pi-check"
+                        pTooltip="Create Consultation and Administer Immunization"
+                        (click)="routeToEditImm(imm.MrPatientImmmunizationId,true)"></i>
+                    </td>
+                    <td>
+                      <img src="../../../../assets/images/Edit.svg" style="cursor: pointer;" alt="Edit" pTooltip="Edit Immunization"
+                        (click)="routeToEditImm(imm.MrPatientImmmunizationId)">
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="modal fade" id="editImm" tabindex="-1" role="dialog" aria-labelledby="modal-large-label"
+  style="display: none;">
+  <div class="modal-dialog modal-lg" role="document">
+    <app-edit-immunz [PatientImmuniationID]="PatientImmuniationID"></app-edit-immunz>
+  </div>
+</div> -->

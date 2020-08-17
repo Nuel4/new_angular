@@ -1,0 +1,458 @@
+<!-- <p-growl [(value)]="msgs" [sticky]="sticky" [life]="2000"></p-growl> -->
+
+<div class="addBatchData" *ngIf="addBatchData">
+    <!-- <h5 class="heading">Batch Master</h5> -->
+    <form class="row">
+        <div class="form-group col-xl-12 col-sm-12 col-12 buttonSection">
+            <button class="btn" (click)="backToHome()"><i class="fa fa-tick"></i> Close</button>&nbsp;
+            <button class="btn addBtn" (click)="addNewBatches(BatchData)"><i class="fa fa-plus"></i> Add Batch</button>
+        </div>
+        <div class="form-group col-xl-2 col-sm-2 col-11">
+            <label for="itemName" class="formLabel">Item Name</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchItemData.InvItemMasterName" name="name" disabled>
+        </div>
+        <div class="form-group col-xl-1 col-sm-1 col-1">
+            <button class="btn searchBtn" data-toggle="modal" data-target="#myModal"><i class="fa searchBox"></i></button>
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="uom" class="formLabel">UOM</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchItemData.Uom" name="uom" disabled>
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="category" class="formLabel">Category</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchItemData.InvCategoryId" name="category" disabled>
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="tQnty" class="formLabel">Threshold Quantity</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchItemData.ThresholdQuantity" name="tQnty" disabled>
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="cQnty" class="formLabel">Current Quantity</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchItemData.CurrentQuantity" name="cQnty" disabled>
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <!-- <label for="isActive" class="formLabel">IsActive</label>
+            <input type="text" class="form-control" [(ngModel)]="itemData.currentQnty" name="cQnty" disabled> -->
+            <label class="custom-control custom-checkbox">
+                <input class="custom-control-input checkbox-primary" type="checkbox" [(ngModel)]="BatchItemData.IsActive"
+                    (change)="onChange($event)" [checked]="BatchItemData.IsActive" name="IsActive" disabled>
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Is Active</span>
+            </label>
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="code" class="formLabel">Item Code</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchItemData.ItemCode" name="code" disabled>
+        </div>
+        <!-- <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="expiryDate" class="formLabel">Expiry Date</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchData.expiryDate" name="expiryDate" disabled>
+        </div> -->
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="store" class="formLabel">Store</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchItemData.InvStoreId" name="store" disabled>
+        </div>
+    </form>
+    <br>
+    <hr>
+    <form class="row">
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="description" class="formLabel">Description</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchData.Description" name="description">
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="batch_No" class="formLabel">Batch No.</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchData.BatchNumber" name="batch_No">
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="lot_No" class="formLabel">Lot No.</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchData.LotNumber" name="lot_No">
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="qnty" class="formLabel">Current Quantity</label>
+            <input type="number" class="form-control" [(ngModel)]="BatchData.CurrentQuantity" name="qnty">
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="batchQnty" class="formLabel">Batch Quantity</label>
+            <input type="number" class="form-control" [(ngModel)]="BatchData.BatchQuantity" name="batchQnty">
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="agent" class="formLabel">Agent</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchData.Agent" name="agent">
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="expDate" class="formLabel mnfctDate">Expiry Date</label>
+            <p-calendar [(ngModel)]="ExpiryDate" [showIcon]="true" dateFormat="yy-mm-dd" name="expDate"></p-calendar>
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="mnfctDate" class="formLabel mnfctDate">Manuafactured Date</label>
+            <p-calendar [(ngModel)]="ManufacturedDate" [showIcon]="true" dateFormat="yy-mm-dd" name="mnfctDate"></p-calendar>
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="batch_code" class="formLabel">Manuafacturer Name</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchData.ManufacturerName" name="batch_code">
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="batch_code" class="formLabel">Batch Code.</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchData.BatchCode" name="batch_code">
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="comments" class="formLabel">Comments</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchData.Comments" name="comments">
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label class="custom-control custom-checkbox">
+                <input class="custom-control-input checkbox-primary" type="checkbox" [(ngModel)]="BatchData.IsActive"
+                    (change)="onChange($event)" [checked]="BatchData.IsActive" name="IsActive">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Is Active</span>
+            </label>
+        </div>
+    </form>
+    <br>
+    <div *ngIf="isLoader" class="row">
+        <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+    </div>
+    <div *ngIf="!addBatchData && !isLoader" class="primeNgTableBatches">
+        <p-table #dt [columns]="cols" [value]="BatchesBelongsToItems" selectionMode="single" [(selection)]="selectedBatch"
+            dataKey="BatchNumber" [paginator]="true" [rows]="5" (onRowSelect)="onBatchSelect($event)">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns">
+                        {{col.header}}
+                    </th>
+                    <th style="text-align: center;width: 2.3em">
+                        <i class="fa fa-check-circle"></i>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr [pSelectableRow]="rowData">
+                    <td *ngFor="let col of columns">
+                        <!-- {{rowData[col.field]}} -->
+                        <span class="{{col.field == 'ExpiryDate' ? checkExpiryDate(rowData[col.field]) ? 'expired' : '' :''}}">{{col.field
+                            == 'ManufacturedDate' || col.field == 'ExpiryDate' ? parseDate(rowData[col.field]) :
+                            rowData[col.field]}}</span>
+                    </td>
+                    <td>
+                        <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+
+<div class="addBatchData editBatch" *ngIf="editBatch">
+    <form class="row">
+        <div class="form-group col-xl-12 col-sm-12 col-12 buttonSection">
+            <button class="btn" (click)="backToHome()"><i class="fa fa-tick"></i> Close</button>&nbsp;
+            <button class="btn addBtn" (click)="updateBatch(BatchData)"><i class="fa fa-tick"></i> Update</button>
+        </div>
+        <div class="form-group col-xl-2 col-sm-2 col-11">
+            <label for="itemName" class="formLabel">Item Name</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchItemData.InvItemMasterName" name="name" disabled>
+        </div>
+        <div class="form-group col-xl-1 col-sm-1 col-1">
+            <button class="btn searchBtn" data-toggle="modal" data-target="#myModal"><i class="fa fa-search"></i></button>
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="uom" class="formLabel">UOM</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchItemData.Uom" name="uom" disabled>
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="category" class="formLabel">Category</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchItemData.InvCategoryId" name="category" disabled>
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="tQnty" class="formLabel">Threshold Quantity</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchItemData.ThresholdQuantity" name="tQnty" disabled>
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="cQnty" class="formLabel">Current Quantity</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchItemData.CurrentQuantity" name="cQnty" disabled>
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label class="custom-control custom-checkbox">
+                <input class="custom-control-input checkbox-primary" type="checkbox" [(ngModel)]="BatchItemData.IsActive"
+                    (change)="onChange($event)" [checked]="BatchItemData.IsActive" name="IsActive" disabled>
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Is Active</span>
+            </label>
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="code" class="formLabel">Item Code</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchItemData.ItemCode" name="code" disabled>
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="store" class="formLabel">Store</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchItemData.InvStoreId" name="store" disabled>
+        </div>
+    </form>
+    <br>
+    <hr>
+    <form class="row">
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="description" class="formLabel">Description</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchData.Description" name="description">
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="batch_No" class="formLabel">Batch No.</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchData.BatchNumber" name="batch_No">
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="lot_No" class="formLabel">Lot No.</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchData.LotNumber" name="lot_No">
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="qnty" class="formLabel">Current Quantity</label>
+            <input type="number" class="form-control" [(ngModel)]="BatchData.CurrentQuantity" name="qnty">
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="batchQnty" class="formLabel">Batch Quantity</label>
+            <input type="number" class="form-control" [(ngModel)]="BatchData.BatchQuantity" name="batchQnty">
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="agent" class="formLabel">Agent</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchData.Agent" name="agent">
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="expDate" class="formLabel mnfctDate">Expiry Date</label>
+            <p-calendar [(ngModel)]="ExpiryDate" [showIcon]="true" dateFormat="yy-mm-dd" name="expDate"></p-calendar>
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="mnfctDate" class="formLabel mnfctDate">Manuafactured Date</label>
+            <p-calendar [(ngModel)]="ManufacturedDate" [showIcon]="true" dateFormat="yy-mm-dd" name="mnfctDate"></p-calendar>
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="batch_mnf" class="formLabel">Manuafacturer Name</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchData.ManufacturerName" name="batch_manf">
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="batch_code" class="formLabel">Batch Code.</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchData.BatchCode" name="batch_code">
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="comments" class="formLabel">Comments</label>
+            <input type="text" class="form-control" [(ngModel)]="BatchData.Comments" name="comments">
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label class="custom-control custom-checkbox">
+                <input class="custom-control-input checkbox-primary" type="checkbox" [(ngModel)]="BatchData.IsActive"
+                    (change)="onChange($event)" [checked]="BatchData.IsActive" name="IsActive">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Is Active</span>
+            </label>
+        </div>
+    </form>
+    <br>
+    <div *ngIf="isLoader" class="row">
+            <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+        </div>
+    <div *ngIf="!isLoader" class="primeNgTableBatches">
+        <p-table #dt [columns]="cols" [value]="BatchesBelongsToItems" selectionMode="single" [(selection)]="selectedBatch"
+            dataKey="BatchNumber" [paginator]="true" [rows]="5" (onRowSelect)="onBatchSelect($event)">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns">
+                        {{col.header}}
+                    </th>
+                    <th style="text-align: center;width: 2.3em">
+                        <i class="fa fa-check-circle"></i>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr [pSelectableRow]="rowData">
+                    <td *ngFor="let col of columns">
+                        <span class="{{col.field == 'ExpiryDate' ? checkExpiryDate(rowData[col.field]) ? 'expired' : '' :''}}">{{col.field
+                            == 'ManufacturedDate' || col.field == 'ExpiryDate' ? parseDate(rowData[col.field]) :
+                            rowData[col.field]}}</span>
+                    </td>
+                    <td>
+                        <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+<br>
+
+<div class="primeNgTableBatches">
+    <!-- Table Data -->
+    <div *ngIf="isLoader" class="row">
+            <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+        </div>
+    <div *ngIf="!addBatchData && !editBatch && !isLoader">
+        <div class="row" style="margin-top:-25px;margin-bottom:15px">
+            <div style="text-align: left">
+                <input class="globalSearchBar" type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                    style="width:auto"><i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+            </div>
+            <div class="addCategory">
+                <p-button label="Add Batch" icon="fa fa-plus" iconPos="left" (click)="addBatch()"></p-button>
+            </div>
+        </div>
+        <p-table #dt [columns]="cols" [value]="invBatchesDatas" dataKey="name" [paginator]="true" [rows]="5">
+            <ng-template pTemplate="header" let-columns>
+                <tr class="tableRowHead">
+                    <th *ngFor="let col of columns">
+                        {{col.header}}
+                    </th>
+                    <th>Operations</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr class="tableRowBody" [pSelectableRow]="rowData">
+                    <td *ngFor="let col of columns">
+                        <!-- {{rowData[col.field]}} -->
+                        <span class="{{col.field == 'ExpiryDate' ? checkExpiryDate(rowData[col.field]) ? 'expired' : '' :''}}">{{col.field
+                            == 'ManufacturedDate' || col.field == 'ExpiryDate' ? parseDate(rowData[col.field]) :
+                            rowData[col.field]}}</span>
+                    </td>
+                    <td>
+                        <span><i class="fa fa-pencil-square-o" aria-hidden="true" (click)="editBatches(rowData.InvBatchMasterId)"></i></span>&nbsp;
+                        <!-- <span><i class="fa fa-trash-o" aria-hidden="true" (click)="deleteBatches(rowData)"></i></span>&nbsp; -->
+                        <span *ngIf="rowData.IsActive" (click)="changeStatus(rowData, false)"><i class="fa fa-check-square-o"></i></span>
+                        <span *ngIf="!rowData.IsActive" (click)="changeStatus(rowData, true)"><i class="fa fa-square-o"></i></span>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <!-- Search Item Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modal-large-label">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header state modal-primary">
+                    <h4 class="modal-title">Search Item</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form class="row">
+                        <div class="form-group col-xl-4 col-sm-4 col-12">
+                            <label for="name" class="formLabel">By Name</label>
+                            <input type="text" class="form-control" [(ngModel)]="searchItem.InvItemMasterName" name="name">
+                        </div>
+                        <div class="form-group col-xl-4 col-sm-4 col-12">
+                            <label for="code" class="formLabel">By Code</label>
+                            <input type="text" class="form-control" [(ngModel)]="searchItem.ItemCode" name="code">
+                        </div>
+                        <div class="form-group col-xl-4 col-sm-4 col-12">
+                            <label for="IsActive" class="formLabel">Is Active</label>
+                            <select class="form-control" id="exampleSelect2" [(ngModel)]="searchItem.IsActive" name="IsActive">
+                                <option value="true">Active</option>
+                                <option value="false">InActive</option>
+                            </select>
+                        </div>
+                    </form>
+                    <div *ngIf="isLoader" class="row">
+                        <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+                    </div>
+                    <span *ngIf="searchResults.length == 0 && isLoader" class="text-center">{{searchResultMsg}}</span>
+
+                    <p-table *ngIf="searchResults.length > 0 && !isLoader" #dt [columns]="searchCols" [value]="searchResults"
+                        selectionMode="single" [(selection)]="slectedSearchItems" dataKey="InvItemMasterName"
+                        [paginator]="true" [rows]="5" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th *ngFor="let col of columns">
+                                    {{col.header}}
+                                </th>
+                                <th style="text-align: center;width: 2.3em">
+                                    <i class="fa fa-check-circle"></i>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-columns="columns">
+                            <tr [pSelectableRow]="rowData">
+                                <td *ngFor="let col of columns">
+                                    {{rowData[col.field]}}
+                                </td>
+                                <td>
+                                    <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" (click)="findItems(searchItem)">Find</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Batch Modal -->
+    <div class="modal fade" id="editBatch" tabindex="-1" role="dialog" aria-labelledby="modal-large-label">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header state modal-primary">
+                    <h4 class="modal-title">Search Item</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form class="row">
+                        <div class="form-group col-xl-4 col-sm-4 col-12">
+                            <label for="name" class="formLabel">By Name</label>
+                            <input type="text" class="form-control" [(ngModel)]="searchItem.name" name="name">
+                        </div>
+                        <div class="form-group col-xl-4 col-sm-4 col-12">
+                            <label for="code" class="formLabel">By Code</label>
+                            <input type="text" class="form-control" [(ngModel)]="searchItem.code" name="code">
+                        </div>
+                        <div class="form-group col-xl-4 col-sm-4 col-12">
+                            <label for="cQnty" class="formLabel">Current Quantity</label>
+                            <input type="text" class="form-control" [(ngModel)]="searchItem.cQnty" name="cQnty">
+                        </div>
+                    </form>
+                    <div *ngIf="isLoader" class="row">
+                        <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+                    </div>
+                    <span *ngIf="!searchResults && !isLoader">No Data</span>
+                    <p-table *ngIf="!isLoader" #dt [columns]="searchCols" [value]="invItemDatas" [(selection)]="slectedItems"
+                        dataKey="name" [paginator]="true" [rows]="5">
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th *ngFor="let col of columns">
+                                    {{col.header}}
+                                </th>
+                                <th style="text-align: center;width: 2.3em">
+                                    <i class="fa fa-check-circle"></i>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-columns="columns">
+                            <tr [pSelectableRow]="rowData">
+                                <td *ngFor="let col of columns">
+                                    {{rowData[col.field]}}
+                                </td>
+                                <td>
+                                    <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" (click)="addNewBatches(batchesData)">Find</button>
+                </div>
+
+            </div>
+        </div>
+    </div>

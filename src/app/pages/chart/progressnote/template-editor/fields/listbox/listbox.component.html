@@ -1,0 +1,10 @@
+<div class="listbox">
+  <div class="col-4">
+    <div class="form-group yeats-form-group" [formGroup]="group">
+      <label class="formLabel yeats-form-label">{{field.label?field.label:''}}</label>
+      <div class="ui-inputgroup">
+        <p-listbox [options]="field.options"  multiple="multiple" checkbox="checkbox" [formControlName]="field.name" [listStyle]="{'max-height':'250px'}" [optionLabel]="field.optionLabel"></p-listbox>
+      </div>
+    </div>
+  </div>
+</div>

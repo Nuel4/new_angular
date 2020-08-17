@@ -1,0 +1,776 @@
+<div class="patient-statement">
+    <p-accordion>
+        <p-accordionTab header="Patient Statement">
+            <div class="row">
+                <div class="col-lg-3">
+                  <div class="form-group yeats-form-group ">
+                    <label for="" class="yeats-form-label">
+                      Patient Search
+                    </label>
+                    <p-checkbox
+                      name="Patient Bal"
+                      [(ngModel)]="patientBalanceDue"
+                      label="Patient Balance Due"
+                      binary="true"
+                    ></p-checkbox>
+                  </div>
+                </div>
+                <div class="col-lg-3">
+                  <div class="form-group yeats-form-group ">
+                    <label for="" class="yeats-form-label"> &nbsp; </label>
+                    <p-checkbox
+                      name="Insurance Bal"
+                      label="Insurance Balance Due"
+                      [(ngModel)]="insuranceBalanceDue"
+                      binary="true"
+                    ></p-checkbox>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group yeats-form-group ">
+                        <label for="" class="yeats-form-label"> &nbsp;</label>
+                        <p-checkbox
+                          name="Exclude Bal"
+                          binary="true"
+                          label="Exclude Patient with statements in last"
+                          [(ngModel)]="excludePatient"
+                        ></p-checkbox>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group yeats-form-group ">
+                        <label for="" class="yeats-form-label">days</label>
+                        <input
+                          id="input"
+                          type="number"
+                          size="10"
+                          [(ngModel)]="days"
+                          pInputText
+                          class="form-control yeats-form-control"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-2"></div>
+                  </div>
+                </div>
+                <div class="col-lg-3">
+                  <div class="form-group yeats-form-group ">
+                    <label for="" class="yeats-form-label"> &nbsp;</label>
+                    <p-checkbox
+                      name="Exclude Bal"
+                      binary="true"
+                      label="Is Collection"
+                      [(ngModel)]="isCollection"
+                    ></p-checkbox>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                  <div class="form-group yeats-form-group ">
+                    <label for="" class="yeats-form-label"> &nbsp;</label>
+                    <p-checkbox
+                      name="Exclude Bal"
+                      binary="true"
+                      label="Is Suspense"
+                      [(ngModel)]="isSuspense"
+                    ></p-checkbox>
+                    </div>
+                </div>
+                <div class="col-lg-6 mt-4">
+                  <button
+                    pButton
+                    class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2"
+                  >
+                    Clear
+                  </button>
+                  <button
+                    pButton
+                    class="yeats-btn yeats-btn-primary pull-right"
+                    (click)="getPatientStatements()"
+                  >
+                    Search
+                  </button>
+                </div>
+                <div class="col-lg-12">
+                  <div class="section-seperator">
+                    <span class="section-text">
+                      Additional Filter
+                      <!--Padding is optional-->
+                    </span>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <label class="formLabel yeats-form-label">Bill Created Dates</label>
+                  <div class="form-group yeats-form-group ">
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-group yeats-form-group ">
+                          <label class="formLabel yeats-form-label">From</label>
+                          <p-calendar
+                            class="yeats-form-control"
+                            [showIcon]="true"
+                            [(ngModel)]="billCreatedDate"
+                          >
+                          </p-calendar>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="form-group yeats-form-group ">
+                          <label class="formLabel yeats-form-label">To</label>
+                          <p-calendar
+                            class="yeats-form-control"
+                            [showIcon]="true"
+                            [(ngModel)]="billEndedDate"
+                          >
+                          </p-calendar>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3">
+                  <label class="formLabel yeats-form-label">Bill Status</label>
+            
+                  <div class="form-group yeats-form-group">
+                    <label class="formLabel yeats-form-label">&nbsp;</label>
+                    <p-dropdown
+                      [options]="Bill"
+                      [(ngModel)]="selectedBills"
+                      optionLabel="name"
+                      [showClear]="true"
+                    >
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <label class="formLabel yeats-form-label">Dates of service:</label>
+                  <div class="form-group yeats-form-group ">
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-group yeats-form-group ">
+                          <label class="formLabel yeats-form-label">From</label>
+                          <p-calendar
+                            class="yeats-form-control"
+                            [showIcon]="true"
+                            [(ngModel)]="serviceStartDate"
+                          >
+                          </p-calendar>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="form-group yeats-form-group ">
+                          <label class="formLabel yeats-form-label">To</label>
+                          <p-calendar
+                            class="yeats-form-control"
+                            [showIcon]="true"
+                            [(ngModel)]="serviceEndDate"
+                          >
+                          </p-calendar>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="col-lg-3"></div> -->
+                <div class="col-lg-4 ">
+                  <!-- <div class="form-group yeats-form-group "> -->
+                  <label class="formLabel yeats-form-label">A/R Types:</label>
+                  <div class="row">
+                    <div class="col-4">
+                      <button
+                        pButton
+                        class="yeats-btn yeats-btn-primary pull-right"
+                        (click)="getArTypes()"
+                      >
+                        Search
+                      </button>
+                    </div>
+                    <div class="col-4">
+                      <p-listbox
+                        [options]="selectedARTypes"
+                        [listStyle]="{ height: '100px' }"
+                        optionLabel="InsuranceCategoryName"
+                      ></p-listbox>
+                    </div>
+                  </div>
+                  <!-- </div> -->
+                </div>
+                <div class="col-lg-4">
+                  <!-- <div class="form-group yeats-form-group "> -->
+                  <label class="formLabel yeats-form-label">Insurance Providers:</label>
+                  <div class="row">
+                    <div class="col-4">
+                      <button
+                        pButton
+                        class="yeats-btn yeats-btn-primary pull-right"
+                        (click)="getInsuranceProvider()"
+                      >
+                        Search
+                      </button>
+                    </div>
+                    <div class="col-4">
+                      <p-listbox
+                        [options]="selectedInsuranceProvider"
+                        [listStyle]="{ height: '100px' }"
+                        optionLabel="InsuranceProviderName"
+                      ></p-listbox>
+                    </div>
+                  </div>
+            
+                  <!-- </div> -->
+                </div>
+                <div class="col-lg-4">
+                  <!-- <div class="form-group yeats-form-group "> -->
+                  <label class="formLabel yeats-form-label">Physicians:</label>
+                  <div class="row">
+                    <div class="col-4">
+                      <button
+                        pButton
+                        class="yeats-btn yeats-btn-primary pull-right"
+                        (click)="selectPhysicians()"
+                      >
+                        Search
+                      </button>
+                    </div>
+                    <div class="col-4">
+                      <p-listbox
+                        [options]="selectedPhysicians"
+                        [listStyle]="{ height: '100px' }"
+                        optionLabel="name"
+                      ></p-listbox>
+                    </div>
+                  </div>
+            
+                  <!-- </div> -->
+                </div>
+              </div>
+        </p-accordionTab>
+        
+    </p-accordion>
+    
+  
+  <div class="row mt-2">
+    <div class="col-lg-12">
+      <div class="form-group yeats-form-group ">
+        <button pButton class="yeats-btn yeats-btn-primary pull-right ml-1">
+          Generate Patient Statement for GEDI
+        </button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right ml-1">
+          Email Statement
+        </button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right ml-1">
+          Print Ledger
+        </button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right ml-1" (click)="openBillersNote('Payment')">
+          Add Billers' Note to all
+        </button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right ml-1" (click)="printStatement()">
+          Print Statements
+        </button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right">
+          Select all Patients
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row patstmt">
+    <div class="col-lg-12">
+      <div class="yeats-tables">
+        <p-table
+          [columns]="accounts"
+          [value]="patientAccDetails"
+          [paginator]="true"
+          [rows]="4"
+        >
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th></th>
+              <th *ngFor="let col of columns">
+                {{ col.header }}
+              </th>
+              <th>
+                Account Summary
+              </th>
+              <th>Note</th>
+              <th>Print</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr>
+              <td>
+                <p-checkbox
+                  name="groupname"
+                  value="val1"
+                  [(ngModel)]="selectedrows"
+                ></p-checkbox>
+              </td>
+              <td *ngFor="let col of columns">
+                {{ rowData[col.field] }}
+              </td>
+              <td>
+                <i
+                  class="fa fa-sticky-note"
+                  data-toggle="modal"
+                  data-target="#exampleModal"
+                  (click)="getPatientAccountSummary(rowData)"
+                ></i>
+              </td>
+              <td><i class="fa fa-plus-circle"></i></td>
+              <td><i class="fa fa-print"></i></td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+        style="max-height: 600px;"
+      >
+        <div class="modal-dialog" role="document" style="max-width: 1000px;">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Patient Account Summary
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="overflow-y: scroll">
+              <div class="row">
+                <div class="col-lg-3">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label"
+                          ><b>SSN</b></label
+                        >
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">{{
+                          patientDetail.Ssn
+                        }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label"
+                          ><b>DOB</b></label
+                        >
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">
+                          {{patientDetail.DateOfBirth | date: "dd-MM-yyyy"}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label"
+                          ><b>Cell Phone</b></label
+                        >
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">{{
+                          patientDetail.MobilePhone
+                        }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label"
+                          ><b>Unique Number</b></label
+                        >
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">{{
+                          patientDetail.UniqueNumber
+                        }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 rowSpacing">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label"
+                          ><b>Total Charges($)</b></label
+                        >
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">{{
+                          TotalCharges ? TotalCharges : 0
+                        }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 rowSpacing">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label"
+                          ><b>Total Patient Payments ($)</b></label
+                        >
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">{{
+                          TotalPatientPayments ? TotalPatientPayments : 0
+                        }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 rowSpacing">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label"
+                          ><b>Total Insurance Payments ($)</b></label
+                        >
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">{{
+                          TotalInsurancePayments ? TotalInsurancePayments :0
+                        }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 rowSpacing">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label"
+                          ><b>Total adjustments ($)</b></label
+                        >
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">{{
+                          TotalAdjustments ? TotalAdjustments : 0
+                        }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 rowSpacing">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label"
+                          ><b>Total write-offs($)</b></label
+                        >
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">{{
+                          TotalWriteOffAmount ? TotalWriteOffAmount :0
+                        }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <!-- <div class="col-lg-12" style="margin-top: -2em">
+                  <label class="formLabel yeats-form-label"><b>Insurance</b></label>
+                </div> -->
+                <div class="col-lg-3 rowSpacing">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label"
+                          ><b>Primary</b></label
+                        >
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">{{
+                          customFormattedInsurance[0]
+                            ? customFormattedInsurance[0].insurancename
+                            : ""
+                        }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 rowSpacing">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label"
+                          ><b>Secondary</b></label
+                        >
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">{{
+                          customFormattedInsurance[1]
+                            ? customFormattedInsurance[1].insurancename
+                            : ""
+                        }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 rowSpacing">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label"
+                          ><b>Tertiary</b></label
+                        >
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">{{
+                          customFormattedInsurance[2]
+                            ? customFormattedInsurance[2].insurancename
+                            : ""
+                        }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 rowSpacing">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label"
+                          ><b>Patient Balance Due($)</b></label
+                        >
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">{{
+                          PatientBalanceDue ?PatientBalanceDue :0
+                        }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 rowSpacing">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label"
+                          ><b>Insurance Balance Due($)</b></label
+                        >
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">{{
+                          InsuranceBalanceDue ? InsuranceBalanceDue :0
+                        }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 rowSpacing">
+                  <div class="form-group yeats-form-group ">
+                    <label class="formLabel yeats-form-label"
+                      ><b>Insurance Balance Due($)</b></label
+                    >
+                    <div class="row">
+                      <div class="form-group yeats-form-group ">
+                        <p-checkbox
+                          name="groupname"
+                          binary="true"
+                          disabled="true"
+                          label="In Collections"
+                          [(ngModel)]="FlagAccountInCollections"
+                        ></p-checkbox>
+
+                        <p-checkbox
+                          name="groupname"
+                          binary="true"
+                          disabled="true"
+                          label="In suspense"
+                          [(ngModel)]="FlagAccountInSuspense"
+                        ></p-checkbox>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 rowSpacing">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label"
+                          ><b>Unapplied Patient Payments($)</b></label
+                        >
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">{{
+                          Unapplied ? Unapplied : 0
+                        }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 rowSpacing">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label"
+                          ><b>Last Service Date</b></label
+                        >
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">{{
+                            LastServiceDate ? LastServiceDate :0
+                        }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 rowSpacing">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label"
+                          ><b>Last Statement Date</b></label
+                        >
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">{{
+                          LastStatementDate ? LastStatementDate : 0
+                        }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 rowSpacing">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label"
+                          ><b>Aging Buckets/Outstanding</b></label
+                        >
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label"></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 rowSpacing">
+                  <div class="form-group yeats-form-group ">
+                    <label class="formLabel yeats-form-label">&nbsp;</label>
+                    <button pButton class="yeats-btn yeats-btn-primary" >
+                      Biller's Notes
+                    </button>
+                  </div>
+                </div>
+                <div class="col-lg-3 rowSpacing"></div>
+                <div class="col-lg-12 rowSpacing">
+                  <div class="yeats-tables">
+                    <p-table  >
+                      <ng-template pTemplate="header" >
+                        <tr>
+                    <th></th>
+                    <th >Days 0-to-30&nbsp;</th>
+                    <th >31-to-60&nbsp;</th>
+                    <th >61-to-90&nbsp;</th>
+                    <th >91-to-120&nbsp;</th>
+                    <th >121-to-150&nbsp;</th>
+                    <th >150+&nbsp;</th>
+                        </tr>
+                      </ng-template>
+                      <ng-template
+                        pTemplate="body"
+                      
+                      >
+                        <tr>
+                          <td>Patient Balance($)</td>
+                          
+                          <td>
+                            {{_0To30daysPatientBalance ? _0To30daysPatientBalance :0}}
+                          </td>
+                          <td>{{_31To60daysPatientBalance ? _31To60daysPatientBalance : 0}}</td>
+                          <td>{{_61To90daysPatientBalance ? _61To90daysPatientBalance : 0}}</td>
+                          <td>{{_91To120daysPatientBalance ? _91To120daysPatientBalance :0}}</td>
+                          <td>{{_150PlusDaysPatientBalance ? _150PlusDaysPatientBalance :0}}</td>
+                        </tr>
+                        <tr>
+                          <td>Insurance Balance($)</td>
+                          <td>{{_0To30daysInsuranceBalance ? _0To30daysInsuranceBalance : 0}}</td>
+                          <td>{{_31To60daysInsuranceBalance ? _31To60daysInsuranceBalance : 0}}</td>
+                          <td>{{_61To90daysInsuranceBalance ? _61To90daysInsuranceBalance:0}}</td>
+                          <td>{{_91To120daysInsuranceBalance ? _91To120daysInsuranceBalance : 0}}</td>
+                          <td>{{_121To150daysInsuranceBalance ? _121To150daysInsuranceBalance : 0}}</td>
+                          <td>{{_150PlusDaysInsuranceBalance ? _150PlusDaysInsuranceBalance : 0}}</td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                pButton
+                class="yeats-btn yeats-btn-secondary ui-button-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

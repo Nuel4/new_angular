@@ -1,0 +1,84 @@
+<div class="patintAccountModal">
+  <!--Print Statement-->
+  <div *ngIf="printStatement">
+      <div class="modal-header">
+        <h4 class="modal-title">Print/Email Patient Statement Confirmation Window</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="ui-g-6"><p-radioButton name="group1" value="Option 1" label="Since Last Patient Date " [(ngModel)]="lastPatientaDate" ></p-radioButton></div>
+          <div class="ui-g-6"><p-radioButton name="group1" value="Option 2" label="All Outstanding Patinet Balances" [(ngModel)]="patientBalance"></p-radioButton></div>
+          <div class="ui-g-6"><p-radioButton name="group1" value="Option 3" label="By Date Range" [(ngModel)]="dataRange"></p-radioButton></div>
+          <div class="form-group yeats-form-group ">
+          <label for="" class="yeats-form-label"> </label> 
+          <p-checkbox [(ngModel)]="paymants" label="Show with Payments" >
+          </p-checkbox> 
+        </div>
+      </div>
+      <div class="col-12">
+        
+        <button
+          pButton
+          class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+          (click)="modal.close('Close click')"
+        >
+          No
+        </button>
+        <button
+          pButton
+          class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3"
+          (click)="displayReport()"
+        >
+         Yes
+        </button>
+      </div>
+    </div>
+  <!--Past Statement-->
+  <div *ngIf="pastStatement">
+      <div class="modal-header">
+        <h4 class="modal-title">Past Patient Statements</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="yeats-tables">
+          <p-table [columns]="cols" [value]="pastDetails" >
+              <ng-template pTemplate="header" let-columns>
+                  <tr>
+                      <th *ngFor="let col of columns">
+                          {{col.header}}
+                      </th>
+                      <th>Print</th>
+                      <th>Email</th>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                  <tr>
+                      <td *ngFor="let col of columns">
+                          {{rowData[col.field]}}
+                      </td>
+                      <td><i class="pi pi-print"></i></td>
+                      <td><i class="pi pi-envelope"></i></td>
+                  </tr>
+              </ng-template>
+          </p-table>
+          </div>
+          <p-paginator [rows]="rows" (onPageChange)="selectedPage($event)" [totalRecords]="totrec"></p-paginator>
+      </div>
+      
+    </div>
+</div>
+

@@ -1,0 +1,64 @@
+<div class="medication">
+<!-- <div *ngIf="toChart"> -->
+    <!-- <app-widget-header [widgetData]="widgetData"  (refreshWidget)="refreshData()" (getMedicationlist)="getMedication()" (compareMedicationList)="openMedicationList()"></app-widget-header> -->
+    <div class="header" *ngIf="toChart">
+        <header class='widget-header d-flex justify-content-between'>
+          <h5 class="mb-0 ml-1">
+            <span style="font-size:14px;font-weight:bold;">Medication</span>
+            <!-- My Posts -->
+          </h5>
+          <button pButton type="button" class="yeats-btn yeats-btn-secondary ui-button-secondary mt-1" (click)="getMedication()" style="margin-left:9rem;" >{{buttonValue}}</button>
+          <button pButton type="button" class="yeats-btn yeats-btn-secondary ui-button-secondary mt-1" (click)="compareMedicationList()" style="margin-left:0.5rem;">Compare</button>
+        <div class="gridster-item-content">
+          <i class="fa fa-refresh pull-right" style="padding:10px; cursor: pointer"(click)="refresh()" aria-hidden="true"></i>
+        </div>
+        </header>
+      </div>    
+<!-- </div> -->
+    <div class="gridster-item-content">
+    <div *ngIf="isLoader" class="row">
+        <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+    </div>
+    <div class="yeats-tables">
+        <p-table [columns]="" [scrollable]="true" [value]="patientMedicationList">
+            <ng-template pTemplate="header" >
+                <tr>
+                    <th >
+                    Start Date
+                    </th>
+                    <th>Drug details</th>
+                    <th>Stop date</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData>
+                <tr *ngIf="!(rowData.Drugname == '') || !(rowData.DrfStartdate == null) || !(rowData.DrfStopdate == null)">
+                    <td>
+                        {{rowData.DrfStartdate | date: 'dd/MM/yyyy'}}
+                    </td>
+                    <td>
+                            {{rowData.Drugname}}
+                    </td>
+                    <td>
+                            {{rowData.DrfStopdate | date: 'dd/MM/yyyy'}}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <p-paginator [rows]="rows" (onPageChange)="paginate($event)" [totalRecords]="totalRecords"></p-paginator>
+
+</div>
+</div>
+ <!-- <div class="modal fade" id="compareModal" tabindex="-1" role="dialog" aria-labelledby="compareModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:1000px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="letterModalLabel">patientname.document</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div> -->

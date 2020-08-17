@@ -1,0 +1,37 @@
+.profilePage{
+background-color: none;
+padding: 0px 12px;
+legend {
+  width: inherit;
+  font-size: 15px;
+}
+
+.required {
+  color: red
+}
+
+.photo {
+  .ui-button.ui-button-icon-only {
+    width: 1.357em !important;
+    height: 2em !important;
+  }
+}
+
+.ui-listbox{
+    width: 100%;
+}
+.imgCard{
+  bottom: 0;
+height: 100%;
+left: 0;
+object-fit: cover;
+object-position: top center;
+-ms-object-fit: cover;
+-ms-object-position: top center;
+background-size: cover !important;
+position: absolute;
+right: 0;
+top: 0;
+width: 50%;
+}
+}

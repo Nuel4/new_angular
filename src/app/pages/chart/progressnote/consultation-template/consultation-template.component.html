@@ -1,0 +1,97 @@
+<div class="progressnote">
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <h5 class="modal-title" id="progressNoteId" *ngIf="name === 'newAppointment'">Select Consultation Template</h5>
+      <h5 class="modal-title" id="progressNoteId" *ngIf="name === 'existingAppointment'">Scheduled Appointments</h5>
+      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" *ngIf="name === 'newAppointment'">
+      <div class="row" *ngIf="!appointmentChosen">
+        <div class="col-lg-12">
+          <label class="formLabel yeats-form-label"><b>Consultation Details:</b></label>
+        </div>
+        <div class="col-12 col-lg-4 col-md-3 col-sm-3">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Your Facility</label>
+            <p-dropdown [options]="GenericFacilityList" [(ngModel)]="selectedFacility" placeholder="Select Facility"
+              optionLabel="name" (onChange)="getPhysicianbyUserId()">
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4 col-md-3 col-sm-3">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Consultation Date</label>
+            <p-calendar class="yeats-form-control" [showIcon]="true" [(ngModel)]="consultationDate">
+            </p-calendar>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <label class="formLabel yeats-form-label"><b>Template Details:</b></label>
+        </div>
+        <div class="col-12 col-lg-4 col-md-3 col-sm-3">
+          <label class="formLabel yeats-form-label">Template Type</label>
+          <p-radioButton name="group2" value="Option 1" label="New Visit" [(ngModel)]="newVisit"
+            (click)="visitTypeSelect('New Visit')" inputId="preopt1" class="mr-3"></p-radioButton>
+          <p-radioButton name="group2" value="Option 2" label="Follow-up Visit" [(ngModel)]="followVisit"
+            (click)="visitTypeSelect('Follow-up Visit')" inputId="preopt2" class="ml-2"></p-radioButton>
+        </div>
+        <div class="col-12 col-lg-4 col-md-3 col-sm-3">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Template</label>
+            <p-dropdown [options]="filteredTemplate" [(ngModel)]="selectedTemplate" placeholder="Select Template"
+              optionLabel="GroupName" [showClear]="true" (onChange)="templateChanged('Template')">
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4 col-md-3 col-sm-3">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Preferred Template</label>
+            <p-dropdown [options]="preferredTemplateList" [(ngModel)]="selectedPreTemplate"
+              placeholder="Select Template" optionLabel="GroupName" [showClear]="true"
+              (onChange)="templateChanged('Preferred')">
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-12 col-lg-12 col-md-3 col-sm-3">
+          <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2 mb-2"
+            (click)="activeModal.dismiss('Cross click')">Cancel</button>
+          <button pButton class="yeats-btn yeats-btn-primary pull-right" (click)="loadClick()">Load</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-body" *ngIf="name === 'existingAppointment'">
+      <h6>Is this appointment for a previous appointment? If so please select</h6>
+      <div class="yeats-tables">
+        <p-table [columns]="cols" [value]="appointmentList" selectionMode="single" [(selection)]="selectedAppointment"
+          (onRowSelect)="onRowSelect($event)" dataKey="vin">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns">
+                {{col.header}}
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr [pSelectableRow]="rowData">
+              <td *ngFor="let col of columns">
+                {{ rowData[col.field] }}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <div class="col-12 col-lg-12 col-md-3 col-sm-3">
+        <button pButton class="yeats-btn yeats-btn-primary pull-right ml-2 mb-2"
+          (click)="activeModal.dismiss('Cross click')">Cancel</button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right" (click)="newAppointment()">No, New
+          Appointment</button>
+      </div>
+    </div>
+  </div>
+  </div>

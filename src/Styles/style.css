@@ -1,0 +1,6 @@
+﻿body, div, p { padding: 0px; margin: 0px; }
+body { font-family: Arial, Helvetica, sans-serif; color: #606060; background: #f5f5f5; font-size: 14px; line-height: 24px; }
+a img { border: none; }
+a img:hover { border: none; }
+ul { list-style: none; padding-left: 0px; margin: 0px; }
+body { padding-top: 15px; padding-bottom: 30px; }

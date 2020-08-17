@@ -1,0 +1,16 @@
+
+<div class="ordersHome">
+    <!-- <p-panel header="Lab" [toggleable]="true" [collapsed]=lab (onBeforeToggle)="toggle1($event)">
+    Content
+</p-panel> -->
+<!-- <p-panel header="Immunization, Vaccines and Injection" [toggleable]="true" [collapsed]=immunization (onBeforeToggle)="toggle2($event)">
+    Content
+</p-panel> -->
+<div class="card">
+        <div class="card-header">Lab</div>
+        <div class="card-body embed-responsive embed-responsive-16by9">
+            <iframe *ngIf="enableFrame" class="embed-responsive-item" [src]="labOrderStatus">
+            </iframe>
+        </div>
+    </div>
+</div>

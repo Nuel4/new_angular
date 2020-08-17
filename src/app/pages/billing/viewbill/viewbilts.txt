@@ -1,0 +1,2944 @@
+using Socrates.Helpers;
+using Socrates.UserControls;
+using Socrates.Views.Messages;
+using Socrates.Web.DataAccess;
+using Socrates.Web.DomainLogic;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Viewer;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ServiceModel.DomainServices.Client;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using Telerik.Windows.Controls;
+using Telerik.Windows.Controls.GridView;
+
+namespace Socrates.Views.Billing
+{
+    public partial class CPTDiagnosisAssociation : ChildWindow
+    {
+        private DomainContextLoadBatch loadCPTDiagnosisAssociation;
+        // charts code.
+        private int patientEncounterId;
+        private int encounterPhysicianId;
+        private int patientId;
+        private int superBill_id;
+        private decimal patientAmountRequired;
+        private bool isPatientSelfPay;
+        private bool isButonSaveClicked;
+        //private bool isButonSaveAndApproveClicked;
+        private bool isButonSaveApproveNotSubmitClaimClicked;
+        private bool isButonApproveAndSubmittedClicked;
+        private bool isButtonSaveAndPrintHCFAClicked;
+        private int processLoadedCount;
+        private IEnumerable<string> enumModifier;
+        private bool isBillSubmitted;
+        private Dictionary<int, string> dicToBeDeletedCPTICDAssociationIds = new Dictionary<int, string>();
+        private CPTDiagnosisAssociationDomainContext cptDiagnosisAssociationDomainContext = new CPTDiagnosisAssociationDomainContext();
+        private PostBillingDomainContext postBillingDomainContext = new PostBillingDomainContext();
+        private IList<mr_patient_encounter_cpt_diagnosis_association> past_cpt_diagnosis_association;
+        private IEnumerable<place_of_service> enumPOS;
+        private IList<CustomFormattedCPTDiagnosisAssociation> lstcurrent_custom_cpt_diagnosis_association;
+        private bill_header bh;
+        private StiSLViewerControl viewerControl;
+        private bool editCopayAmount = false;
+        private appointment appointmentObject;
+        private string priorAuthorizationNumber = string.Empty;
+        private string HCFAPrintInsuranceType = string.Empty;
+        private bool HCFAPrintOnlyFields = false;
+        bool isRejectedClaims = false;
+        bool isView = false;
+        public static int? defaultBillingTemplateGroupId;
+        private int? ccId, cptId, icdId, ccFFId, ppFFId, adFFId = null;
+        private CustomFormattedPatient patientObj;
+        private CustomFormattedAppointmentsToBePosted cfAppointment;
+        public CPTDiagnosisAssociation(CustomFormattedPostBillDetails superBill)
+        {
+            InitializeComponent();
+            ButtonDisable();
+            if (superBill.status == "Submitted")
+            {
+                isBillSubmitted = true;
+                BtnApproveAndSubmitClaims.IsEnabled = false;
+            }
+            superBill_id = superBill.bill_id;
+            encounterPhysicianId = superBill.physician_id;
+            patientId = superBill.patient_id;
+            patientEncounterId = superBill.mr_patient_encounter_id;
+            loadCPTDiagnosisAssociation = new DomainContextLoadBatch(DataLoadComplete);
+            BindBillerNotes(patientEncounterId);
+            //GetBillOptions();
+            //BindPatientAppointment(superBill.appointment_id);
+            GetModifiers();
+            LoadSuperBillDetails(superBill_id);
+            if (superBill.self_pay == null || superBill.self_pay.Value == false)
+            {
+                this.loadInsurance();
+                GetPatientInsuranceProvider();
+            }
+            else
+            {
+                GetPatientInsuranceProvider();
+                tbSelfPay.Text = "Self-Pay";
+                isPatientSelfPay = true;
+                //BtnApproveAndSubmitClaims.IsEnabled = false;
+                BtnApprove.IsEnabled = false;
+            }
+            patientAmountRequired = (superBill.copay_required == null ? 0 : superBill.copay_required.Value) + (superBill.co_insurance_required == null ? 0 : superBill.co_insurance_required.Value) + (superBill.deductible_required == null ? 0 : superBill.deductible_required.Value);
+            this.BindCurrentCPTADCodesAssociation();
+            this.BindPastCPTADCodesAssociation();
+            GetPlaceOfService();
+            BindDropDownLists();
+            BindBillHeader(superBill_id);
+            GetPatient(patientId);
+            BindPracticeDetails();
+            BindCurrentAppointment(superBill.appointment_id);
+            if (App.userAccessControlFeatures.Where(x => x.featureName == "Re-post charges").SingleOrDefault().canView)
+                BtnPostCharges.Visibility = System.Windows.Visibility.Visible;
+        }
+
+        public CPTDiagnosisAssociation(CustomFormattedPostBillDetails superBill, bool viewOnly)
+        {
+            isView = viewOnly;
+            InitializeComponent();
+            ButtonDisable();
+            superBill_id = superBill.bill_id;
+            encounterPhysicianId = superBill.physician_id;
+            patientId = superBill.patient_id;
+            patientEncounterId = superBill.mr_patient_encounter_id;
+            loadCPTDiagnosisAssociation = new DomainContextLoadBatch(DataLoadComplete);
+            BindBillerNotes(patientEncounterId);
+            //GetBillOptions();
+            //BindPatientAppointment(superBill.appointment_id);
+            LoadSuperBillDetails(superBill_id);
+            if (superBill.self_pay == null || superBill.self_pay.Value == false)
+            {
+                this.loadInsurance();
+                GetPatientInsuranceProvider();
+            }
+            else
+            {
+                GetPatientInsuranceProvider();
+                tbSelfPay.Text = "Self-Pay";
+                isPatientSelfPay = true;
+            }
+            patientAmountRequired = (superBill.copay_required == null ? 0 : superBill.copay_required.Value) + (superBill.co_insurance_required == null ? 0 : superBill.co_insurance_required.Value) + (superBill.deductible_required == null ? 0 : superBill.deductible_required.Value);
+            this.BindCurrentCPTADCodesAssociation();
+            this.BindPastCPTADCodesAssociation();
+            GetPlaceOfService();
+            BindDropDownLists();
+            BindBillHeader(superBill_id);
+            if (viewOnly)
+            {
+                tbAllowedVisits.IsEnabled = tbVisitsUsed.IsEnabled = txtCopayAmountPaid.IsEnabled = dpReferralStartDate.IsEnabled = dpReferralExpiryDate.IsEnabled =
+
+ txtCoInsuranceAmountPaid.IsEnabled = txtDeductibleAmountPaid.IsEnabled = txtTotalPaymentsReceived.IsEnabled = txtTotalCharges.IsEnabled = txtTotalDueFromInsurance.IsEnabled =
+
+ txtTotalDueFromPatient.IsEnabled = dpAdmitDate.IsEnabled = dpDischargeDate.IsEnabled = this.ddlBillingClaimStatusCode.IsEnabled =
+
+ txtPrimaryPolicyNumber.IsEnabled = dpPIEffectiveDateFrom.IsEnabled = dpPIEffectiveDateTo.IsEnabled = rbPIInsuredIsPatient.IsEnabled = rbPIInsuredIsGuarantor.IsEnabled =
+
+ txtSecondaryPolicyNumber.IsEnabled = dpSIEffectiveDateFrom.IsEnabled = dpSIEffectiveDateTo.IsEnabled = rbSIInsuredIsPatient.IsEnabled = rbSIInsuredIsGuarantor.IsEnabled =
+
+ txtTertiaryPolicyNumber.IsEnabled = dpTIEffectiveDateFrom.IsEnabled = dpTIEffectiveDateTo.IsEnabled = rbTIInsuredIsPatient.IsEnabled = rbTIInsuredIsGuarantor.IsEnabled = false;
+
+                OKButton.Visibility = System.Windows.Visibility.Collapsed;
+                BtnRecalculate.Visibility = System.Windows.Visibility.Collapsed;
+                BtnApprove.Visibility = System.Windows.Visibility.Collapsed;
+                BtnApproveAndSubmitClaims.Visibility = System.Windows.Visibility.Collapsed;
+                BtnSaveAndPrintHCFA.Visibility = System.Windows.Visibility.Collapsed;
+            }
+            GetPatient(patientId);
+            BindPracticeDetails();
+            BindCurrentAppointment(superBill.appointment_id);
+            if (App.userAccessControlFeatures.Where(x => x.featureName == "Re-post charges").SingleOrDefault().canView)
+                BtnPostCharges.Visibility = System.Windows.Visibility.Visible;
+        }
+
+        public CPTDiagnosisAssociation(int superBillId)
+        {
+            isRejectedClaims = true;
+            InitializeComponent();
+            this.CPTDABusyIndicator.IsBusy = true;
+            BtnRecalculate.Visibility = System.Windows.Visibility.Collapsed;
+            BtnApprove.Visibility = System.Windows.Visibility.Collapsed;
+            BtnApproveAndSubmitClaims.Visibility = System.Windows.Visibility.Collapsed;
+            BtnSaveAndPrintHCFA.Visibility = System.Windows.Visibility.Collapsed;
+
+            this.tbAllowedVisits.IsEnabled = false;
+            this.tbVisitsUsed.IsEnabled = false;
+            this.dpReferralExpiryDate.IsEnabled = this.dpReferralStartDate.IsEnabled = false;
+            this.dpAdmitDate.IsEnabled = this.dpDischargeDate.IsEnabled = false;
+            this.ddlBillingClaimStatusCode.IsEnabled = false;
+
+            ClaimDomainContext claimDomainContext = new ClaimDomainContext();
+            var query = from rejClaims in claimDomainContext.GetPostBillingDetailsByClaimIdQuery(superBillId)
+                        select rejClaims;
+            LoadOperation<CustomFormattedPostBillDetails> rejectedclaimsLoad = claimDomainContext.Load(query);
+            rejectedclaimsLoad.Completed += new EventHandler(rejectedclaimsLoad_Completed);
+            GetPatient(patientId);
+            BindPracticeDetails();
+
+        }
+
+        void BindBillerNotes(int encounterId)
+        {
+            if (postBillingDomainContext == null)
+                postBillingDomainContext = new PostBillingDomainContext();
+            var query = from bn in postBillingDomainContext.GetBillerNotesQuery(encounterId) select bn;
+            LoadOperation<billers_note> loadBNOp = postBillingDomainContext.Load(query);
+            loadBNOp.Completed += new EventHandler(loadBNOp_Completed);
+            loadCPTDiagnosisAssociation.Add(loadBNOp);
+        }
+
+        void loadBNOp_Completed(object sender, EventArgs e)
+        {
+            LoadOperation<billers_note> loadOp = (LoadOperation<billers_note>)sender;
+            if (!loadOp.HasError)
+            {
+                if (loadOp.Entities.Count() == 0) return;
+                //bnObject = loadOp.Entities.FirstOrDefault();
+            }
+            else
+            {
+                loadOp.MarkErrorAsHandled();
+                MessageBox.Show(loadOp.Error.Message);
+            }
+        }
+
+
+        void rejectedclaimsLoad_Completed(object sender, EventArgs e)
+        {
+            try
+            {
+                LoadOperation<CustomFormattedPostBillDetails> rejectedclaimsLoad = (LoadOperation<CustomFormattedPostBillDetails>)sender;
+                if (rejectedclaimsLoad.HasError)
+                {
+                    rejectedclaimsLoad.MarkErrorAsHandled();
+                }
+                if (rejectedclaimsLoad.Entities.Count() > 0)
+                {
+                    CustomFormattedPostBillDetails superBill = rejectedclaimsLoad.Entities.FirstOrDefault();
+                    if (superBill != null)
+                    {
+                        ButtonDisable();
+                        if (superBill.status == "Submitted")
+                        {
+                            isBillSubmitted = true;
+                            BtnApproveAndSubmitClaims.IsEnabled = false;
+                        }
+                        superBill_id = superBill.bill_id;
+                        encounterPhysicianId = superBill.physician_id;
+                        patientId = superBill.patient_id;
+                        patientEncounterId = superBill.mr_patient_encounter_id;
+                        loadCPTDiagnosisAssociation = new DomainContextLoadBatch(DataLoadComplete);
+                        BindBillerNotes(patientEncounterId);
+                        GetModifiers();
+                        LoadSuperBillDetails(superBill_id);
+                        if (superBill.self_pay == null || superBill.self_pay.Value == false)
+                        {
+                            this.loadInsurance();
+                            GetPatientInsuranceProvider();
+                        }
+                        else
+                        {
+                            GetPatientInsuranceProvider();
+                            tbSelfPay.Text = "Self-Pay";
+                            isPatientSelfPay = true;
+                            BtnApprove.IsEnabled = false;
+                        }
+                        patientAmountRequired = (superBill.copay_required == null ? 0 : superBill.copay_required.Value) + (superBill.co_insurance_required == null ? 0 : superBill.co_insurance_required.Value) + (superBill.deductible_required == null ? 0 : superBill.deductible_required.Value);
+                        this.BindCurrentCPTADCodesAssociation();
+                        this.BindPastCPTADCodesAssociation();
+                        GetPlaceOfService();
+                        BindDropDownLists();
+                        BindBillHeader(superBill_id);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void BindPatientAppointment(int appointmentId)
+        {
+            if (postBillingDomainContext == null)
+                postBillingDomainContext = new PostBillingDomainContext();
+            var query = from appt in postBillingDomainContext.UpdateReferralDatesToAppointmentQuery(appointmentId) select appt;
+            LoadOperation<appointment> loadApptOp = postBillingDomainContext.Load(query);
+            loadApptOp.Completed += new EventHandler(loadAppointmentOp_Completed);
+            loadCPTDiagnosisAssociation.Add(loadApptOp);
+        }
+
+        void loadAppointmentOp_Completed(object sender, EventArgs e)
+        {
+            LoadOperation<appointment> loadOp = (LoadOperation<appointment>)sender;
+            if (!loadOp.HasError)
+            {
+                if (loadOp.Entities.Count() == 0) return;
+                appointmentObject = loadOp.Entities.FirstOrDefault();
+                dpReferralStartDate.SelectedDate = appointmentObject.referral_start_date;
+                dpReferralExpiryDate.SelectedDate = appointmentObject.referral_expiry_date;
+                tbAllowedVisits.Value = appointmentObject.allowed_visits;
+                tbVisitsUsed.Value = appointmentObject.visits_used;
+            }
+            else
+            {
+                loadOp.MarkErrorAsHandled();
+                MessageBox.Show(loadOp.Error.Message);
+            }
+        }
+
+        private void GetModifiers()
+        {
+            ModifierDomainContext modifierDomainContext = new ModifierDomainContext();
+            InvokeOperation invokeMCOp = modifierDomainContext.GetModifierCodes();
+            invokeMCOp.Completed += new EventHandler(invokeMCOp_Completed);
+
+        }
+
+        private void GetBillOptions()
+        {
+            postBillingDomainContext = new PostBillingDomainContext();
+            var query = from bo in postBillingDomainContext.GetBillOptionsQuery()
+                        select bo;
+            LoadOperation<option> loadBOOp = postBillingDomainContext.Load(query);
+            loadBOOp.Completed += new EventHandler(loadBOOp_Completed);
+            loadCPTDiagnosisAssociation.Add(loadBOOp);
+        }
+
+        void loadBOOp_Completed(object sender, EventArgs e)
+        {
+            LoadOperation<option> loadOp = (LoadOperation<option>)sender;
+            if (!loadOp.HasError)
+            {
+                if (loadOp.Entities.Count() > 0)
+                    editCopayAmount = true;
+            }
+        }
+
+        void invokeMCOp_Completed(object sender, EventArgs e)
+        {
+            try
+            {
+                InvokeOperation invokeOp = (InvokeOperation)sender;
+                if (!invokeOp.HasError)
+                {
+                    if (invokeOp.Value != null)
+                        enumModifier = (IEnumerable<string>)invokeOp.Value;
+                }
+                else
+                {
+                    invokeOp.MarkErrorAsHandled();
+                    MessageBox.Show(invokeOp.Error.Message);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        void BindBillHeader(int superBillId)
+        {
+            var query = from a in postBillingDomainContext.GetBill_headerQuery().Where(q => q.super_bill_id == superBillId)
+                        select a;
+            LoadOperation<bill_header> loadBHOp = postBillingDomainContext.Load(query);
+            loadBHOp.Completed += new EventHandler(loadBHOp_Completed);
+            loadCPTDiagnosisAssociation.Add(loadBHOp);
+        }
+
+        void loadBHOp_Completed(object sender, EventArgs e)
+        {
+            LoadOperation<bill_header> loadOp = (LoadOperation<bill_header>)sender;
+            if (!loadOp.HasError)
+            {
+                if (loadOp.Entities.Count() > 0)
+                {
+                    bh = loadOp.Entities.FirstOrDefault();
+                    BindBHDataToControls(bh);
+                }
+            }
+        }
+
+        void GetPatientInsuranceProvider()
+        {
+            var query = from a in postBillingDomainContext.GetPatient_Insurance_ProviderQuery(patientId)
+                        select a;
+            LoadOperation<patient_insurance_provider> loadPIPOp = postBillingDomainContext.Load(query);
+            loadPIPOp.Completed += new EventHandler(loadPIPOp_Completed);
+            loadCPTDiagnosisAssociation.Add(loadPIPOp);
+        }
+        private List<patient_insurance_provider> lstPIP = new List<patient_insurance_provider>();
+        void loadPIPOp_Completed(object sender, EventArgs e)
+        {
+            LoadOperation<patient_insurance_provider> loadOp = (LoadOperation<patient_insurance_provider>)sender;
+            if (!loadOp.HasError)
+            {
+                if (loadOp.Entities.Count() > 0)
+                {
+                    lstPIP = loadOp.Entities.ToList();
+                    foreach (patient_insurance_provider pip in lstPIP)
+                    {
+                        if (pip.order == 1)
+                        {
+                            priorAuthorizationNumber = pip.prior_authorization_number;
+                            dpReferralExpiryDate.SelectedDate = pip.referral_expiry_date;
+                            dpReferralStartDate.SelectedDate = pip.referral_start_date;
+                            tbVisitsUsed.Value = pip.visits_used;
+                            tbAllowedVisits.Value = pip.allowed_visits;
+                        }
+                    }
+                }
+            }
+        }
+
+        void BindDropDownLists()
+        {
+            for (int i = 0; i <= HardcodedValues.BillingClaimStatusCodes.GetUpperBound(0); i++)
+            {
+                ComboBoxItem cbi = new ComboBoxItem();
+                cbi.Tag = HardcodedValues.BillingClaimStatusCodes.GetValue(i, 0);
+                cbi.Content = HardcodedValues.BillingClaimStatusCodes.GetValue(i, 1);
+                this.ddlBillingClaimStatusCode.Items.Add(cbi);
+            }
+            dpAdmitDate.SelectableDateEnd = DateTime.Now;
+            dpDischargeDate.SelectableDateEnd = DateTime.Now;
+        }
+
+        int GetBillingClaimStatusCodeValue(string billingClaimStatusCode)
+        {
+            for (int i = 0; i <= HardcodedValues.BillingClaimStatusCodes.GetUpperBound(0); i++)
+            {
+                if (billingClaimStatusCode.Trim() == HardcodedValues.BillingClaimStatusCodes.GetValue(i, 0).ToString())
+                    return i;
+            }
+            return -1;
+        }
+
+        void BindBHDataToControls(bill_header bh)
+        {
+            tbBillHeaderId.Text = bh.bill_header_id.ToString();
+            if (bh.billing_claim_status_code != null)
+                ddlBillingClaimStatusCode.SelectedIndex = GetBillingClaimStatusCodeValue(bh.billing_claim_status_code);
+            txtCopayAmountPaid.Value = bh.copay_amount_paid.ToString();
+            txtCoInsuranceAmountPaid.Value = bh.co_insurance_patient_amount_paid;
+            txtDeductibleAmountPaid.Value = bh.deductible_amount_paid;
+            if (bh.total_payments_received != null)
+                txtTotalPaymentsReceived.Value = bh.total_payments_received.ToString();
+            txtTotalCharges.Value = bh.total_charges.ToString();
+            txtTotalDueFromInsurance.Value = bh.total_due_from_insurance.ToString();
+            txtTotalDueFromPatient.Value = bh.total_due_from_patient.ToString();
+            if (bh.admit_date != null)
+                dpAdmitDate.SelectedDate = bh.admit_date;
+            if (bh.discharge_date != null)
+                dpDischargeDate.SelectedDate = bh.discharge_date;
+            if (!string.IsNullOrEmpty(bh.primary_policy_number))
+                txtPrimaryPolicyNumber.Text = bh.primary_policy_number;
+            if (bh.primary_insurance_effective_date_from != null)
+                dpPIEffectiveDateFrom.SelectedDate = bh.primary_insurance_effective_date_from;
+            if (bh.primary_insurance_effective_date_to != null)
+                dpPIEffectiveDateTo.SelectedDate = bh.primary_insurance_effective_date_to;
+            if (bh.primary_insurance_insured_is_patient != null)
+                rbPIInsuredIsPatient.IsChecked = bh.primary_insurance_insured_is_patient;
+            if (bh.primary_insurance_insured_is_guarantor != null)
+                rbPIInsuredIsGuarantor.IsChecked = bh.primary_insurance_insured_is_guarantor;
+            if (!string.IsNullOrEmpty(bh.secondary_policy_number))
+                txtSecondaryPolicyNumber.Text = bh.secondary_policy_number;
+            if (bh.secondary_insurance_effective_date_from != null)
+                dpSIEffectiveDateFrom.SelectedDate = bh.secondary_insurance_effective_date_from;
+            if (bh.secondary_insurance_effective_date_to != null)
+                dpSIEffectiveDateTo.SelectedDate = bh.secondary_insurance_effective_date_to;
+            if (bh.secondary_insurance_insured_is_patient != null)
+                rbSIInsuredIsPatient.IsChecked = bh.secondary_insurance_insured_is_patient;
+            if (bh.secondary_insurance_insured_is_guarantor != null)
+                rbSIInsuredIsGuarantor.IsChecked = bh.secondary_insurance_insured_is_guarantor;
+            if (!string.IsNullOrEmpty(bh.tertiary_policy_number))
+                txtTertiaryPolicyNumber.Text = bh.tertiary_policy_number;
+            if (bh.tertiary_insurance_effective_date_from != null)
+                dpTIEffectiveDateFrom.SelectedDate = bh.tertiary_insurance_effective_date_from;
+            if (bh.tertiary_insurance_effective_date_to != null)
+                dpTIEffectiveDateTo.SelectedDate = bh.tertiary_insurance_effective_date_to;
+            if (bh.tertiary_insurance_insured_is_patient != null)
+                rbTIInsuredIsPatient.IsChecked = bh.tertiary_insurance_insured_is_patient;
+            if (bh.tertiary_insurance_insured_is_guarantor != null)
+                rbTIInsuredIsGuarantor.IsChecked = bh.tertiary_insurance_insured_is_guarantor;
+        }
+
+        void AssignBHChangesToEntity()
+        {
+            foreach (patient_insurance_provider pip in lstPIP)
+            {
+                if (pip.order == 1)
+                {
+                    pip.policy_number = txtPrimaryPolicyNumber.Text.Trim();
+                    pip.effective_date_from = dpPIEffectiveDateFrom.SelectedDate;
+                    pip.expiration_date = dpPIEffectiveDateTo.SelectedDate;
+                    pip.insured_is_patient = rbPIInsuredIsPatient.IsChecked.Value;
+                    pip.insured_is_guarantor = rbPIInsuredIsGuarantor.IsChecked.Value;
+                    pip.prior_authorization_number = priorAuthorizationNumber;
+                    pip.referral_start_date = dpReferralStartDate.SelectedDate;
+                    pip.referral_expiry_date = dpReferralExpiryDate.SelectedDate;
+                    if (tbVisitsUsed.Value != null)
+                        pip.visits_used = Convert.ToInt32(tbVisitsUsed.Value);
+                    else
+                        pip.visits_used = null;
+                    if (tbAllowedVisits.Value != null)
+                        pip.allowed_visits = Convert.ToInt32(tbAllowedVisits.Value);
+                    else
+                        pip.allowed_visits = null;
+                }
+                else if (pip.order == 2)
+                {
+                    pip.policy_number = txtSecondaryPolicyNumber.Text.Trim();
+                    pip.effective_date_from = dpSIEffectiveDateFrom.SelectedDate;
+                    pip.expiration_date = dpSIEffectiveDateTo.SelectedDate;
+                    pip.insured_is_patient = rbSIInsuredIsPatient.IsChecked.Value;
+                    pip.insured_is_guarantor = rbSIInsuredIsGuarantor.IsChecked.Value;
+                }
+                else if (pip.order == 3)
+                {
+                    pip.policy_number = txtTertiaryPolicyNumber.Text.Trim();
+                    pip.effective_date_from = dpTIEffectiveDateFrom.SelectedDate;
+                    pip.expiration_date = dpTIEffectiveDateTo.SelectedDate;
+                    pip.insured_is_patient = rbTIInsuredIsPatient.IsChecked.Value;
+                    pip.insured_is_guarantor = rbTIInsuredIsGuarantor.IsChecked.Value;
+                }
+            }
+            if (ddlBillingClaimStatusCode.SelectedIndex != -1)
+                bh.billing_claim_status_code = ((ComboBoxItem)ddlBillingClaimStatusCode.SelectedItem).Tag.ToString();
+            else
+                bh.billing_claim_status_code = null;
+            if (txtCopayAmountPaid.Value != null)
+                bh.copay_amount_paid = decimal.Parse(txtCopayAmountPaid.Value.ToString());
+            else
+                bh.copay_amount_paid = 0;
+            if (txtCoInsuranceAmountPaid.Value != null)
+                bh.co_insurance_patient_amount_paid = decimal.Parse(txtCoInsuranceAmountPaid.Value.ToString());
+            else
+                bh.co_insurance_patient_amount_paid = null;
+            if (txtDeductibleAmountPaid.Value != null)
+                bh.deductible_amount_paid = decimal.Parse(txtDeductibleAmountPaid.Value.ToString());
+            else
+                bh.deductible_amount_paid = null;
+            if (txtTotalPaymentsReceived.Value != null)
+                bh.total_payments_received = decimal.Parse(txtTotalPaymentsReceived.Value.ToString());
+            else
+                bh.total_payments_received = null;
+            if (txtTotalCharges.Value != null)
+                bh.total_charges = decimal.Parse(txtTotalCharges.Value.ToString());
+            else
+                bh.total_charges = 0;
+            if (txtTotalDueFromInsurance.Value != null)
+                bh.total_due_from_insurance = decimal.Parse(txtTotalDueFromInsurance.Value.ToString());
+            else
+                bh.total_due_from_insurance = 0;
+            if (txtTotalDueFromPatient.Value != null)
+                bh.total_due_from_patient = decimal.Parse(txtTotalDueFromPatient.Value.ToString());
+            else
+                bh.total_due_from_patient = 0;
+            if (dpAdmitDate.SelectedDate != null)
+                bh.admit_date = dpAdmitDate.SelectedDate;
+            else
+                bh.admit_date = null;
+            if (dpDischargeDate.SelectedDate != null)
+                bh.discharge_date = dpDischargeDate.SelectedDate;
+            else
+                bh.discharge_date = null;
+            if (!string.IsNullOrEmpty(txtPrimaryPolicyNumber.Text.Trim()))
+                bh.primary_policy_number = txtPrimaryPolicyNumber.Text.Trim();
+            else
+                bh.primary_policy_number = null;
+            if (dpPIEffectiveDateFrom.SelectedDate != null)
+                bh.primary_insurance_effective_date_from = dpPIEffectiveDateFrom.SelectedDate;
+            else
+                bh.primary_insurance_effective_date_from = null;
+            if (dpPIEffectiveDateTo.SelectedDate != null)
+                bh.primary_insurance_effective_date_to = dpPIEffectiveDateTo.SelectedDate;
+            else
+                bh.primary_insurance_effective_date_to = null;
+            if (rbPIInsuredIsPatient.IsChecked != null)
+                bh.primary_insurance_insured_is_patient = rbPIInsuredIsPatient.IsChecked;
+            else
+                bh.primary_insurance_insured_is_patient = null;
+            if (rbPIInsuredIsGuarantor.IsChecked != null)
+                bh.primary_insurance_insured_is_guarantor = rbPIInsuredIsGuarantor.IsChecked;
+            else
+                bh.primary_insurance_insured_is_guarantor = null;
+            if (!string.IsNullOrEmpty(txtSecondaryPolicyNumber.Text.Trim()))
+                bh.secondary_policy_number = txtSecondaryPolicyNumber.Text.Trim();
+            else
+                bh.secondary_policy_number = null;
+            if (dpSIEffectiveDateFrom.SelectedDate != null)
+                bh.secondary_insurance_effective_date_from = dpSIEffectiveDateFrom.SelectedDate;
+            else
+                bh.secondary_insurance_effective_date_from = null;
+            if (dpSIEffectiveDateTo.SelectedDate != null)
+                bh.secondary_insurance_effective_date_to = dpSIEffectiveDateTo.SelectedDate;
+            else
+                bh.secondary_insurance_effective_date_to = null;
+            if (rbSIInsuredIsPatient.IsChecked != null)
+                bh.secondary_insurance_insured_is_patient = rbSIInsuredIsPatient.IsChecked;
+            else
+                bh.secondary_insurance_insured_is_patient = null;
+            if (rbSIInsuredIsGuarantor.IsChecked != null)
+                bh.secondary_insurance_insured_is_guarantor = rbSIInsuredIsGuarantor.IsChecked;
+            else
+                bh.secondary_insurance_insured_is_guarantor = null;
+            if (!string.IsNullOrEmpty(txtTertiaryPolicyNumber.Text.Trim()))
+                bh.tertiary_policy_number = txtTertiaryPolicyNumber.Text.Trim();
+            else
+                bh.tertiary_policy_number = null;
+            if (dpTIEffectiveDateFrom.SelectedDate != null)
+                bh.tertiary_insurance_effective_date_from = dpTIEffectiveDateFrom.SelectedDate;
+            else
+                bh.tertiary_insurance_effective_date_from = null;
+            if (dpTIEffectiveDateTo.SelectedDate != null)
+                bh.tertiary_insurance_effective_date_to = dpTIEffectiveDateTo.SelectedDate;
+            else
+                bh.tertiary_insurance_effective_date_to = null;
+            if (rbTIInsuredIsPatient.IsChecked != null)
+                bh.tertiary_insurance_insured_is_patient = rbTIInsuredIsPatient.IsChecked;
+            else
+                bh.tertiary_insurance_insured_is_patient = null;
+            if (rbTIInsuredIsGuarantor.IsChecked != null)
+                bh.tertiary_insurance_insured_is_guarantor = rbTIInsuredIsGuarantor.IsChecked;
+            else
+                bh.tertiary_insurance_insured_is_guarantor = null;
+        }
+
+        private void DataLoadComplete(DomainContextLoadBatch batch)
+        {
+            if (batch != null)
+            {
+                if (batch.FailedOperationCount > 0)
+                {
+                    MessageBox.Show("Load operation failed");
+                }
+                else
+                {
+                    processLoadedCount += 1;
+                }
+            }
+            else
+            {
+            }
+            if (processLoadedCount > 1)
+            {
+                ButtonEnable();
+            }
+        }
+
+        void ButtonEnable()
+        {
+            isButonSaveClicked = false;
+            //isButonSaveAndApproveClicked = false;
+            isButonSaveApproveNotSubmitClaimClicked = false;
+            isButonApproveAndSubmittedClicked = false;
+            isButtonSaveAndPrintHCFAClicked = false;
+            OKButton.IsEnabled = true;
+            if (!isBillSubmitted)
+                BtnApproveAndSubmitClaims.IsEnabled = true;
+            BtnRecalculate.IsEnabled = true;
+            BtnSaveAndPrintHCFA.IsEnabled = true;
+            this.CPTDABusyIndicator.IsBusy = false;
+            if (!editCopayAmount)
+            {
+                txtCopayAmountPaid.IsEnabled = false;
+                txtCoInsuranceAmountPaid.IsEnabled = false;
+                txtDeductibleAmountPaid.IsEnabled = false;
+            }
+            else
+            {
+                txtCopayAmountPaid.IsEnabled = true;
+                txtCoInsuranceAmountPaid.IsEnabled = true;
+                txtDeductibleAmountPaid.IsEnabled = true;
+            }
+        }
+
+        void ButtonDisable()
+        {
+            OKButton.IsEnabled = false;
+            BtnApproveAndSubmitClaims.IsEnabled = false;
+            BtnRecalculate.IsEnabled = false;
+            BtnSaveAndPrintHCFA.IsEnabled = false;
+            this.CPTDABusyIndicator.IsBusy = true;
+            if (!editCopayAmount)
+            {
+                txtCopayAmountPaid.IsEnabled = false;
+                txtCoInsuranceAmountPaid.IsEnabled = false;
+                txtDeductibleAmountPaid.IsEnabled = false;
+            }
+            else
+            {
+                txtCopayAmountPaid.IsEnabled = true;
+                txtCoInsuranceAmountPaid.IsEnabled = true;
+                txtDeductibleAmountPaid.IsEnabled = true;
+            }
+        }
+
+        private void GetPlaceOfService()
+        {
+            var query = from x in cptDiagnosisAssociationDomainContext.GetPOSByAllFacilityQuery() select x;
+            LoadOperation<place_of_service> loadOp = cptDiagnosisAssociationDomainContext.Load(query);
+            loadOp.Completed += new EventHandler(loadPOSOp_Completed);
+            loadCPTDiagnosisAssociation.Add(loadOp);
+        }
+
+        void loadPOSOp_Completed(object sender, EventArgs e)
+        {
+            LoadOperation<place_of_service> loadOp = (LoadOperation<place_of_service>)sender;
+            if (loadOp.HasError)
+            {
+                loadOp.MarkErrorAsHandled();
+            }
+            else
+            {
+                enumPOS = loadOp.Entities;
+            }
+        }
+
+        private void LoadSuperBillDetails(int superBillId)
+        {
+            PostBillingDomainContext postBillingDomainContext = new PostBillingDomainContext();
+            var query = from a in postBillingDomainContext.GetSuperBillDataQuery(superBillId)
+                        select a;
+            LoadOperation<CustomFormattedSuperBillData> loadOp = postBillingDomainContext.Load(query);
+            loadOp.Completed += new EventHandler(loadOp_Completed);
+            loadCPTDiagnosisAssociation.Add(loadOp);
+        }
+
+        void loadOp_Completed(object sender, EventArgs e)
+        {
+            LoadOperation<CustomFormattedSuperBillData> loadOp = (LoadOperation<CustomFormattedSuperBillData>)sender;
+            if (!loadOp.HasError)
+            {
+                if (loadOp.Entities.Count() > 0)
+                {
+                    CustomFormattedSuperBillData superBillObj = (CustomFormattedSuperBillData)loadOp.Entities.FirstOrDefault();
+                    lblPatientChart.Text = superBillObj.chart_number;
+                    lblPatientName.Text = superBillObj.patient_name;
+                    lblBillingNo.Text = superBillObj.bill_id.ToString();
+                    lblProviderName.Text = superBillObj.physician;
+                    lblFacility.Text = superBillObj.facility;
+                    lblReferringPhysician.Text = superBillObj.referring_physician_name;
+                    lblServiceDate.Text = superBillObj.service_date.ToString("MM/dd/yyyy");
+                    lblCreatedDate.Text = superBillObj.date_created.ToString("MM/dd/yyyy");
+                    lblCoPayAmount.Text = superBillObj.copay.ToString("c");
+                }
+            }
+        }
+
+        private void loadInsurance()
+        {
+            if (postBillingDomainContext == null)
+                postBillingDomainContext = new PostBillingDomainContext();
+            var query = from insurance in postBillingDomainContext.GetCustomFormattedInsuranceQuery(patientId, superBill_id)
+                        select insurance;
+            LoadOperation<CustomFormattedInsurance> loadInsuranceOp = postBillingDomainContext.Load(query);
+            loadInsuranceOp.Completed += new EventHandler(loadInsuranceOp_Completed);
+            loadCPTDiagnosisAssociation.Add(loadInsuranceOp);
+        }
+
+        void loadInsuranceOp_Completed(object sender, EventArgs e)
+        {
+            LoadOperation<CustomFormattedInsurance> loadOp = (LoadOperation<CustomFormattedInsurance>)sender;
+            if (!loadOp.HasError)
+            {
+                if (loadOp.Entities.Count() > 0)
+                {
+                    foreach (CustomFormattedInsurance insuranceObj in loadOp.Entities)
+                    {
+                        if (insuranceObj.order.Equals(1))
+                        {
+                            lblPrimaryInsuranceCode.Text = insuranceObj.insurance_provider_code;
+                            lblPrimaryInsurancePayerId.Text = insuranceObj.insurance_provider_payer_id;
+                            lblPrimaryInsuranceCategory.Text = insuranceObj.insurance_provider_category;
+                            lblPrimaryInsuranceName.Text = insuranceObj.insurance_name;
+                            lblPrimaryInsuranceGroupNumber.Text = insuranceObj.group_number;
+                            lblPrimaryInsurancePolicyNumber.Text = insuranceObj.insurance_policy_number;
+                        }
+                        if (insuranceObj.order.Equals(2))
+                        {
+                            lblSecondaryInsuranceCode.Text = insuranceObj.insurance_provider_code;
+                            lblSecondaryInsurancePayerId.Text = insuranceObj.insurance_provider_payer_id;
+                            lblSecondaryInsuranceCategory.Text = insuranceObj.insurance_provider_category;
+                            lblSecondaryInsuranceName.Text = insuranceObj.insurance_name;
+                            lblSecondaryInsuranceGroupNumber.Text = insuranceObj.group_number;
+                            lblSecondaryInsurancePolicyNumber.Text = insuranceObj.insurance_policy_number;
+                        }
+                        if (insuranceObj.order.Equals(3))
+                        {
+                            lblTertiaryInsuranceCode.Text = insuranceObj.insurance_provider_code;
+                            lblTertiaryInsurancePayerId.Text = insuranceObj.insurance_provider_payer_id;
+                            lblTertiaryInsuranceCategory.Text = insuranceObj.insurance_provider_category;
+                            lblTertiaryInsuranceName.Text = insuranceObj.insurance_name;
+                            lblTertiaryInsuranceGroupNumber.Text = insuranceObj.group_number;
+                            lblTertiaryInsurancePolicyNumber.Text = insuranceObj.insurance_policy_number;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void BindCurrentCPTADCodesAssociation()
+        {
+            InvokeOperation invokeOp = cptDiagnosisAssociationDomainContext.GetBillingCPTDiagnosisAssociation(patientEncounterId);
+            invokeOp.Completed += new EventHandler(bcptdaLoad_Completed);
+        }
+
+        void bcptdaLoad_Completed(object sender, EventArgs e)
+        {
+            try
+            {
+                this.RadGvCPTDiagnosis.ItemsSource = null;
+                InvokeOperation invokeOp = (InvokeOperation)sender;
+                if (!invokeOp.HasError)
+                {
+                    processLoadedCount += 1;
+                    if (invokeOp.Value != null)
+                    {
+                        IEnumerable<CustomFormattedCPTDiagnosisAssociation> lst = (IEnumerable<CustomFormattedCPTDiagnosisAssociation>)invokeOp.Value;
+                        RadGvCPTDiagnosis.ItemsSource = lst;
+                        lstcurrent_custom_cpt_diagnosis_association = lst.ToList();
+                    }
+                    else
+                        RadGvCPTDiagnosis.ItemsSource = null;
+                }
+                else
+                {
+                    invokeOp.MarkErrorAsHandled();
+                    MessageBox.Show(invokeOp.Error.Message);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            if (processLoadedCount > 1)
+            {
+                ButtonEnable();
+            }
+        }
+
+        private void BindPastCPTADCodesAssociation()
+        {
+            var query = from x in cptDiagnosisAssociationDomainContext.GetMr_patient_encounter_cpt_diagnosis_associationQuery().Where(x => x.mr_patient_encounter_id == patientEncounterId) select x;
+            LoadOperation<mr_patient_encounter_cpt_diagnosis_association> loadOp = cptDiagnosisAssociationDomainContext.Load(query);
+            loadOp.Completed += new EventHandler(loadPastOp_Completed);
+            loadCPTDiagnosisAssociation.Add(loadOp);
+        }
+
+        void loadPastOp_Completed(object sender, EventArgs e)
+        {
+            LoadOperation<mr_patient_encounter_cpt_diagnosis_association> loadOp = (LoadOperation<mr_patient_encounter_cpt_diagnosis_association>)sender;
+            if (loadOp.HasError)
+            {
+                loadOp.MarkErrorAsHandled();
+            }
+            else
+            {
+                past_cpt_diagnosis_association = loadOp.Entities.ToList();
+            }
+        }
+
+        void UpdateChanges()
+        {
+            try
+            {
+                //BillRecalculate();
+                AssignBHChangesToEntity();
+                UpdateCurrentCPTADCodesAssociation();
+                //if (appointmentObject != null)
+                //{
+                //    if (tbAllowedVisits.Value != null)
+                //        appointmentObject.allowed_visits = Convert.ToInt32(tbAllowedVisits.Value);
+                //    else
+                //        appointmentObject.allowed_visits = null;
+                //    if (tbVisitsUsed.Value != null)
+                //        appointmentObject.visits_used = Convert.ToInt32(tbVisitsUsed.Value);
+                //    else
+                //        appointmentObject.visits_used = null;
+                //    appointmentObject.referral_start_date = dpReferralStartDate.SelectedDate;
+                //    appointmentObject.referral_expiry_date = dpReferralExpiryDate.SelectedDate;
+                //}
+                if (postBillingDomainContext.HasChanges)
+                {
+                    System.ServiceModel.DomainServices.Client.SubmitOperation bhOP = postBillingDomainContext.SubmitChanges();
+                    bhOP.Completed += new EventHandler(bhOP_Completed);
+                }
+                else
+                {
+                    if (cptDiagnosisAssociationDomainContext.HasChanges)
+                    {
+                        System.ServiceModel.DomainServices.Client.SubmitOperation op = cptDiagnosisAssociationDomainContext.SubmitChanges();
+                        op.Completed += new EventHandler(op_Completed);
+                    }
+                    else
+                    {
+                        if (isButonSaveClicked)
+                        {
+                            SuccessWindow successWindow = new SuccessWindow("CPT Diagnosis association updated successfully.");
+                            successWindow.ShowDialog();
+                            this.DialogResult = true;
+                        }
+                        else if (isButonApproveAndSubmittedClicked || isButonSaveApproveNotSubmitClaimClicked)
+                        {
+                            if (superBill_id != 0)
+                            {
+                                PostBillingDomainContext pbdc = new PostBillingDomainContext();
+
+                                int[] selectedBills = new int[1];
+                                selectedBills[0] = superBill_id;
+                                if (isButonApproveAndSubmittedClicked)
+                                {
+                                    if (!isPatientSelfPay)
+                                        CPTDABusyIndicator.BusyContent = "Sending claim to GatewayEDI...";
+                                    InvokeOperation postToBillingInvokeOp = pbdc.GetClaimsFile(selectedBills, App.global_user.user_id, App.global_core_practice_details_id, false, false, (int)HardcodedValues.BillTo.Primary);
+                                    postToBillingInvokeOp.Completed += new EventHandler(postToBillingInvokeOp_Completed);
+                                }
+                                else
+                                {
+                                    InvokeOperation postToBillingInvokeOp = pbdc.SaveAndSubmitBills(selectedBills, App.global_user.user_id, App.global_core_practice_details_id, false);
+                                    postToBillingInvokeOp.Completed += new EventHandler(postToBillingInvokeOp_Completed);
+                                }
+                            }
+                            else
+                            {
+                                Messages.SuccessWindow successMessage = new Messages.SuccessWindow("Bill can not be submitted.");
+                                successMessage.ShowDialog();
+                            }
+                        }
+                        if (isButtonSaveAndPrintHCFAClicked)
+                        {
+                            ButtonEnable();
+                            //printing HCFA form using 'superBill_id'
+                            LoadReport(superBill_id);
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                ButtonEnable();
+            }
+        }
+
+        private void BtnPostCharges_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                int groupId = 0;
+                if (((CustomFormattedCPTDiagnosisAssociation[])RadGvCPTDiagnosis.ItemsSource)[0].templateGroupId != null)
+                    groupId = ((CustomFormattedCPTDiagnosisAssociation[])RadGvCPTDiagnosis.ItemsSource)[0].templateGroupId.Value;
+                PostCharges postCharges = new PostCharges(cfAppointment, groupId, ccId.Value, cptId.Value, icdId.Value, ccFFId.Value, ppFFId.Value, adFFId.Value) { isRePostToBilling = true };//defaultBillingTemplateGroupId.Value
+                postCharges.Unloaded += new RoutedEventHandler(postCharges_Unloaded);
+                postCharges.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+
+            }
+        }
+
+        private void BindCurrentAppointment(int appointmentId)
+        {
+
+            var query = from appt in postBillingDomainContext.GetCFAppointmentDetailsQuery(appointmentId) select appt;
+            LoadOperation<CustomFormattedAppointmentsToBePosted> loadPCOp = postBillingDomainContext.Load(query);
+            //loadPCOp.Completed += new EventHandler(loadPCOp_Completed);
+
+
+            loadPCOp.Completed += (sender, e) =>
+            {
+                var loadOpCompleted = (LoadOperation<CustomFormattedAppointmentsToBePosted>)sender;
+                if (loadOpCompleted.HasError)
+                {
+                    loadOpCompleted.MarkErrorAsHandled();
+                    InformationWindow iw = new InformationWindow(loadOpCompleted.Error.Message);
+                    iw.Show();
+                }
+                else
+                {
+                    if (loadOpCompleted.Entities.Count() == 0) return;
+                    cfAppointment = loadOpCompleted.Entities.FirstOrDefault();
+                }
+            };
+        }
+
+
+        void postCharges_Unloaded(object sender, RoutedEventArgs e)
+        {
+
+            try
+            {
+                BindPastCPTADCodesAssociation();
+                BindCurrentCPTADCodesAssociation();
+                BindBillerNotes(patientEncounterId);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+        private void IsTemplateHasICDCPTWidgets(CustomFormattedAppointmentsToBePosted cfatbp)
+        {
+            try
+            {
+                TemplateDomainContext templateDomainContext = new TemplateDomainContext();
+                //var query = templateDomainContext.LoadTemplateQuery().Where(q => q.mr_template_id == cfatbp.templateGroupId.Value);
+                //LoadOperation<mr_template> loadTemplateOp = templateDomainContext.Load(query);
+                var query = from t in templateDomainContext.GetEncounterTemplateGroupSectionsQuery(cfatbp.encounterId.Value) select t;
+                LoadOperation<mr_template_section> loadTOp = templateDomainContext.Load(query);
+                loadTOp.Completed += (sender, e) =>
+                {
+                    LoadOperation<mr_template_section> loadOpCompleted = (LoadOperation<mr_template_section>)sender;
+                    if (defaultBillingTemplateGroupId == null)
+                        defaultBillingTemplateGroupId = cfatbp.templateGroupId.Value;
+
+                    if (loadOpCompleted.HasError)
+                    {
+                        loadOpCompleted.MarkErrorAsHandled();
+                        MessageBox.Show(loadOpCompleted.Error.Message);
+                    }
+                    else
+                    {
+                        if (loadOpCompleted.Entities.Count() == 0)
+                            return;
+                        int? tsCCId = null;
+                        int? tsCPTId = null;
+                        int? tsICDId = null;
+                        int? ccFFId = null;
+                        int? ppFFId = null;
+                        int? adFFId = null;
+                        if (IsTemplateHasBillingSections(loadOpCompleted.Entities, false, out tsCCId, out tsCPTId, out tsICDId, out ccFFId, out ppFFId, out adFFId))
+                        {
+                            PostCharges postCharges = new PostCharges(cfatbp, (int)defaultBillingTemplateGroupId, tsCCId.Value, tsCPTId.Value, tsICDId.Value, ccFFId.Value, ppFFId.Value, adFFId.Value);//defaultBillingTemplateGroupId.Value
+                            postCharges.Unloaded += new RoutedEventHandler(postCharges_Unloaded);
+                            postCharges.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                            postCharges.Show();
+                        }
+                        else
+                        {
+                            ConfirmationWindow confirmationWindow = new ConfirmationWindow();
+                            confirmationWindow.Header = "Add Template Section Confirmation";
+                            TextBlock textBlock = (TextBlock)confirmationWindow.FindName("TxtDeleteRecord");
+                            if (textBlock != null)
+                                textBlock.Text = "In order to Post Charges, the selected appointment's Template must have atleast one chief complaint Section, one CPT Widget Section and one ICD Widget Section. Do you wish to add them?";
+                            confirmationWindow.Show();
+                            confirmationWindow.Closed += (cwSender, cwE) =>
+                            {
+                                if (confirmationWindow.DialogResult.Equals(false))
+                                    return;
+                                InvokeOperation invokeOp = new TemplateDomainContext().AddOrGetBillingSections(cfatbp.encounterId.Value, App.global_user.user_id);
+                                invokeOp.Completed += (inkOpSender, inkOpEvent) =>
+                                {
+                                    InvokeOperation invokeOpCompleted = (InvokeOperation)inkOpSender;
+                                    if (invokeOpCompleted.HasError)
+                                    {
+                                        invokeOpCompleted.MarkErrorAsHandled();
+                                        MessageBox.Show(invokeOpCompleted.Error.Message);
+                                    }
+                                    else
+                                    {
+                                        IDictionary<string, int?> values = (IDictionary<string, int?>)invokeOpCompleted.Value;
+                                        values.TryGetValue("ChiefComplaint", out tsCCId);
+                                        values.TryGetValue("CPTWidget", out tsCPTId);
+                                        values.TryGetValue("ICD9Widget", out tsICDId);
+                                        values.TryGetValue("PPFFId", out ppFFId);
+                                        values.TryGetValue("ADFFId", out adFFId);
+                                        if (tsCCId != null && tsCPTId != null && tsICDId != null && ccFFId != null && ppFFId != null && adFFId != null)
+                                        {
+                                            PostCharges postCharges = new PostCharges(cfatbp, (int)defaultBillingTemplateGroupId, tsCCId.Value, tsCPTId.Value, tsICDId.Value, ccFFId.Value, ppFFId.Value, adFFId.Value);//defaultBillingTemplateGroupId.Value
+                                            postCharges.Unloaded += new RoutedEventHandler(postCharges_Unloaded);
+                                            postCharges.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                                            postCharges.Show();
+                                        }
+                                        else
+                                        {
+                                            string message = string.Empty;
+                                            if (tsCCId == null)
+                                                message = " one chief complaint section";
+                                            if (tsCPTId == null)
+                                                message = message + (string.IsNullOrEmpty(message) ? " one Section with CPT Widget" : ", one Section with CPT Widget");
+                                            if (tsICDId == null)
+                                                message = message + (string.IsNullOrEmpty(message) ? " one ICD9 Widget under Assesment Diagnosis section" : " and one ICD9 Widget under Assesment Diagnosis section");
+
+                                            InformationWindow iw = new InformationWindow("Please create the following Template Section(s) using Template Builder, " + message + ".");
+                                            iw.Show();
+                                        }
+                                    }
+                                };
+                            };
+                        }
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void BindPracticeDetails()
+        {
+            PracticeDomainContext practiceDomainContext = new PracticeDomainContext();
+            var query = from prac in practiceDomainContext.GetPracticesQuery() select prac;
+            LoadOperation<Socrates.Web.DataAccess.Practice> loadPracOp = practiceDomainContext.Load(query);
+            loadPracOp.Completed += new EventHandler(loadPracOp_Completed);
+
+        }
+
+        void loadPracOp_Completed(object sender, EventArgs e)
+        {
+            Button BtnPatinetDirectPostCharge = new Button();
+            BtnPatinetDirectPostCharge.IsEnabled = true;
+            LoadOperation<Socrates.Web.DataAccess.Practice> loadPracOpCompleted = (LoadOperation<Socrates.Web.DataAccess.Practice>)sender;
+            if (loadPracOpCompleted.HasError)
+            {
+                loadPracOpCompleted.MarkErrorAsHandled();
+                MessageBox.Show(loadPracOpCompleted.Error.Message);
+            }
+            else
+            {
+                if (loadPracOpCompleted.Entities.Count() > 0)
+                {
+                    defaultBillingTemplateGroupId = loadPracOpCompleted.Entities.FirstOrDefault().post_charges_default_billing_template_group_id;
+                    if (defaultBillingTemplateGroupId == null)
+
+
+                    { BtnPatinetDirectPostCharge.IsEnabled = true; return; }
+                    TemplateDomainContext templateDomainContext = new TemplateDomainContext();
+                    var query = from t in templateDomainContext.GetTemplateGroupSectionsQuery(defaultBillingTemplateGroupId.Value) select t;
+                    LoadOperation<mr_template_section> loadTOp = templateDomainContext.Load(query);
+                    loadTOp.Completed += (tsSender, tsEvent) =>
+                    {
+                        try
+                        {
+                            LoadOperation<mr_template_section> loadOpCompleted = (LoadOperation<mr_template_section>)tsSender;
+                            if (loadOpCompleted.HasError)
+                            {
+                                loadOpCompleted.MarkErrorAsHandled();
+                                MessageBox.Show(loadOpCompleted.Error.Message);
+                            }
+                            else
+                            {
+                                if (!IsTemplateHasBillingSections(loadOpCompleted.Entities, false, out ccId, out cptId, out icdId, out ccFFId, out ppFFId, out adFFId))
+                                    defaultBillingTemplateGroupId = null;
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            InformationWindow iw = new InformationWindow("Please select a template, which has at least one chief complaint section, one CPT Widget and one ICD9 Widget under Assesment Diagnosis section.");
+                            iw.Show();
+                        }
+                    };
+                }
+
+            }
+        }
+
+        private bool IsTemplateHasBillingSections(IEnumerable<mr_template_section> enumMrTemplateSection, bool showMessage, out int? ccId, out int? cptId, out int? icdId, out int? ccFFId, out int? ppFFId, out int? adFFId)
+        {
+            ccId = null; cptId = null; icdId = null; ccFFId = null; ppFFId = null; adFFId = null;
+            try
+            {
+                foreach (mr_template_section ts in enumMrTemplateSection)
+                {
+                    if (ccId != null && cptId != null && icdId != null)
+                        break;
+                    foreach (mr_form_field ff in ts.mr_form_field)
+                    {
+                        if (ccId == null)
+                        {
+                            if (ts.section_identifier.identifier == HardcodedValues.SectionIdentifierChiefComplaint)
+                            {
+                                if (ff.field_type == HardcodedValues.FormFieldTypeSmallTbx || ff.field_type == HardcodedValues.FormFieldTypeTbx || ff.field_type == HardcodedValues.FormFieldTypeMultilineTbx || ff.field_type == HardcodedValues.FormFieldTypeDDL)
+                                {
+                                    ccId = ts.mr_template_section_id;
+                                    ccFFId = ff.mr_form_field_id;
+                                }
+                                continue;
+                            }
+                        }
+                        if (cptId == null)
+                        {
+                            if (ff.widget_type == HardcodedValues.WidgetTypeCPT4)
+                            {
+                                cptId = ts.mr_template_section_id;
+                                ppFFId = ff.mr_form_field_id;
+                                continue;
+                            }
+                        }
+                        if (icdId == null)
+                        {
+                            if (ts.section_identifier.identifier == HardcodedValues.SectionIdentifierAssessmentDiagnosis && ts.parent_section_id == null)
+                                if (ff.widget_type == HardcodedValues.WidgetTypeICD9)
+                                {
+                                    icdId = ts.mr_template_section_id;
+                                    adFFId = ff.mr_form_field_id;
+                                }
+                        }
+                    }
+
+                }
+                if (ccId == null | cptId == null | icdId == null)
+                {
+                    if (showMessage)
+                    {
+                        string message = string.Empty;
+                        if (ccId == null)
+                            message = " at least one chief complaint section";
+                        if (cptId == null)
+                            message = message + (string.IsNullOrEmpty(message) ? " one CPT Widget" : ", one CPT Widget");
+                        if (icdId == null)
+                            message = message + (string.IsNullOrEmpty(message) ? " one ICD9 Widget under Assesment Diagnosis section" : " and one ICD9 Widget under Assesment Diagnosis section");
+
+                        InformationWindow iw = new InformationWindow("Please select a template, which has" + message + ".");
+                        iw.Show();
+                    }
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                InformationWindow iw = new InformationWindow("Please select a template, which has at least one chief complaint section, one CPT Widget and one ICD9 Widget under Assesment Diagnosis section.");
+                iw.Show();
+                return false;
+            }
+        }
+        private void OKButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (IsCPTDAValid())
+            {
+                try
+                {
+                    ButtonDisable();
+                    CPTDABusyIndicator.BusyContent = "Updating superbill...";
+                    isButonSaveClicked = true;
+                    isButonApproveAndSubmittedClicked = false;
+                    //isButonSaveAndApproveClicked = false;
+                    isButtonSaveAndPrintHCFAClicked = false;
+                    UpdateChanges();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    ButtonEnable();
+                }
+            }
+            else
+            {
+                radCPTDAExpander.Visibility = System.Windows.Visibility.Visible;
+                radCPTDAExpander.IsExpanded = true;
+            }
+        }
+
+        void bhOP_Completed(object sender, EventArgs e)
+        {
+            try
+            {
+                System.ServiceModel.DomainServices.Client.SubmitOperation bhOP = (SubmitOperation)sender;
+
+                if (bhOP.HasError)
+                {
+                    InformationWindow informationWindow = new InformationWindow("Error in saving bill header details.");
+                    informationWindow.ShowDialog();
+                    ButtonEnable();
+                }
+                else
+                {
+                    if (cptDiagnosisAssociationDomainContext.HasChanges)
+                    {
+                        System.ServiceModel.DomainServices.Client.SubmitOperation op = cptDiagnosisAssociationDomainContext.SubmitChanges();
+                        op.Completed += new EventHandler(op_Completed);
+                    }
+                    else
+                    {
+                        if (isButonSaveClicked)
+                        {
+                            SuccessWindow successWindow = new SuccessWindow("CPT Diagnosis association updated successfully.");
+                            successWindow.ShowDialog();
+                            this.DialogResult = true;
+                        }
+                        else if (isButonApproveAndSubmittedClicked || isButonSaveApproveNotSubmitClaimClicked)
+                        {
+                            if (superBill_id != 0)
+                            {
+                                PostBillingDomainContext pbdc = new PostBillingDomainContext();
+
+                                int[] selectedBills = new int[1];
+                                selectedBills[0] = superBill_id;
+                                if (!isButonSaveApproveNotSubmitClaimClicked)
+                                {
+                                    if (!isPatientSelfPay)
+                                        CPTDABusyIndicator.BusyContent = "Sending claim to GatewayEDI...";
+                                    InvokeOperation postToBillingInvokeOp = pbdc.GetClaimsFile(selectedBills, App.global_user.user_id, App.global_core_practice_details_id, false, false, (int)HardcodedValues.BillTo.Primary);
+                                    postToBillingInvokeOp.Completed += new EventHandler(postToBillingInvokeOp_Completed);
+                                }
+                                else
+                                {
+                                    InvokeOperation postToBillingInvokeOp = pbdc.SaveAndSubmitBills(selectedBills, App.global_user.user_id, App.global_core_practice_details_id, false);
+                                    postToBillingInvokeOp.Completed += new EventHandler(postToBillingInvokeOp_Completed);
+                                }
+
+                            }
+                            else
+                            {
+                                Messages.SuccessWindow successMessage = new Messages.SuccessWindow("Bill can not be submitted.");
+                                successMessage.ShowDialog();
+                                ButtonEnable();
+                            }
+                        }
+                        if (isButtonSaveAndPrintHCFAClicked)
+                        {
+                            ButtonEnable();
+                            //printing HCFA form using 'superBill_id'
+                            LoadReport(superBill_id);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                ButtonEnable();
+            }
+        }
+
+        void op_Completed(object sender, EventArgs e)
+        {
+            try
+            {
+                System.ServiceModel.DomainServices.Client.SubmitOperation op = (SubmitOperation)sender;
+
+                if (op.HasError)
+                {
+                    AddSPChildren(" Bill details cannot be updated.", 0);
+                    radCPTDAExpander.Visibility = System.Windows.Visibility.Visible;
+                    radCPTDAExpander.IsExpanded = true;
+                    op.MarkErrorAsHandled();
+                    this.OKButton.IsEnabled = true;
+                    InformationWindow informationWindow = new InformationWindow(op.Error.Message);
+                    informationWindow.ShowDialog();
+                    ButtonEnable();
+                }
+                else
+                {
+                    InvokeOperation invokeOp = postBillingDomainContext.UpdatePostBilling(patientEncounterId, superBill_id, App.global_user.user_id);
+                    invokeOp.Completed += new EventHandler(updateSuperbill_Completed);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        void updateSuperbill_Completed(object sender, EventArgs e)
+        {
+            try
+            {
+                InvokeOperation invokeOp = (InvokeOperation)sender;
+                if (!invokeOp.HasError)
+                {
+                    if (invokeOp.Value != null && invokeOp.Value.ToString() == "Success")
+                    {
+                        if (isButonSaveClicked)
+                        {
+                            SuccessWindow successWindow = new SuccessWindow("CPT Diagnosis association updated successfully.");
+                            successWindow.ShowDialog();
+                            this.DialogResult = true;
+                        }
+                        else if (isButonApproveAndSubmittedClicked || isButonSaveApproveNotSubmitClaimClicked)
+                        {
+                            if (superBill_id != 0)
+                            {
+                                PostBillingDomainContext pbdc = new PostBillingDomainContext();
+
+                                int[] selectedBills = new int[1];
+                                selectedBills[0] = superBill_id;
+                                if (!isButonSaveApproveNotSubmitClaimClicked)
+                                {
+                                    if (!isPatientSelfPay)
+                                        CPTDABusyIndicator.BusyContent = "Sending claim to GatewayEDI...";
+                                    InvokeOperation postToBillingInvokeOp = pbdc.GetClaimsFile(selectedBills, App.global_user.user_id, App.global_core_practice_details_id, false, false, (int)HardcodedValues.BillTo.Primary);
+                                    postToBillingInvokeOp.Completed += new EventHandler(postToBillingInvokeOp_Completed);
+                                }
+                                else
+                                {
+                                    InvokeOperation postToBillingInvokeOp = pbdc.SaveAndSubmitBills(selectedBills, App.global_user.user_id, App.global_core_practice_details_id, false);
+                                    postToBillingInvokeOp.Completed += new EventHandler(postToBillingInvokeOp_Completed);
+                                }
+                            }
+                            else
+                            {
+                                Messages.SuccessWindow successMessage = new Messages.SuccessWindow("Bill can not be submitted.");
+                                successMessage.ShowDialog();
+                            }
+                        }
+                        if (isButtonSaveAndPrintHCFAClicked)
+                        {
+                            ButtonEnable();
+                            //printing HCFA form using 'superBill_id'
+                            LoadReport(superBill_id);
+                        }
+                    }
+                    else
+                        MessageBox.Show(invokeOp.Value.ToString());
+                }
+                else
+                {
+                    invokeOp.MarkErrorAsHandled();
+                    MessageBox.Show(invokeOp.Error.Message);
+                    ButtonEnable();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                ButtonEnable();
+            }
+        }
+
+        private void btnDeleteCPTCode_Click(object sender, RoutedEventArgs e)
+        {
+            CustomFormattedCPTDiagnosisAssociation cfcptda = (CustomFormattedCPTDiagnosisAssociation)((Button)sender).DataContext;
+            if (cfcptda.cpt_diagnosis_association_id != null && cfcptda.cpt_diagnosis_association_id > 0)
+                dicToBeDeletedCPTICDAssociationIds.Add(cfcptda.cpt_diagnosis_association_id.Value, cfcptda.cpt_code);
+            lstcurrent_custom_cpt_diagnosis_association.Remove(cfcptda);
+            RadGvCPTDiagnosis.ItemsSource = lstcurrent_custom_cpt_diagnosis_association;
+            RadGvCPTDiagnosis.Rebind();
+        }
+
+        bool IsCPTDAValid()
+        {
+            spErrors.Children.Clear();
+            string errorMessage = string.Empty;
+            try
+            {
+                Dictionary<string, int> dicCheckCPTICDCodesAssociation = new Dictionary<string, int>();
+                Dictionary<string, int> dicCPTICDCodesAssociatedMultipelTimes = new Dictionary<string, int>();
+                foreach (CustomFormattedCPTDiagnosisAssociation cfcptda in lstcurrent_custom_cpt_diagnosis_association)
+                {
+                    bool hasCPTHeader = false;
+                    if (!cfcptda.assessment_diagnosis_code1_checked && !cfcptda.assessment_diagnosis_code2_checked && !cfcptda.assessment_diagnosis_code3_checked && !cfcptda.assessment_diagnosis_code4_checked && !cfcptda.assessment_diagnosis_code5_checked && !cfcptda.assessment_diagnosis_code6_checked && !cfcptda.assessment_diagnosis_code7_checked && !cfcptda.assessment_diagnosis_code8_checked)
+                    {
+                        AddSPChildren(cfcptda.cpt_code + " : ", 0);
+                        hasCPTHeader = true;
+                        AddSPChildren("Please select at least one diagnosis code.", 15);
+                    }
+
+                    if (cfcptda.cpt_code_modifier1 != null && cfcptda.cpt_code_modifier1.ToString().Trim().Length > 0)
+                    {
+                        if (Array.IndexOf(enumModifier.ToArray(), cfcptda.cpt_code_modifier1.ToString()) == -1)
+                        {
+                            if (!hasCPTHeader)
+                            {
+                                AddSPChildren(cfcptda.cpt_code + " : ", 0);
+                                hasCPTHeader = true;
+                            }
+                            AddSPChildren("'" + cfcptda.cpt_code_modifier1.ToString() + "' is not a valid Modifier. Please enter a valid modifier.", 15);
+                        }
+                    }
+
+                    if (cfcptda.cpt_code_modifier2 != null && cfcptda.cpt_code_modifier2.ToString().Trim().Length > 0)
+                    {
+                        if (Array.IndexOf(enumModifier.ToArray(), cfcptda.cpt_code_modifier2.ToString()) == -1)
+                        {
+                            if (!hasCPTHeader)
+                            {
+                                AddSPChildren(cfcptda.cpt_code + " : ", 0);
+                                hasCPTHeader = true;
+                            }
+                            AddSPChildren("'" + cfcptda.cpt_code_modifier2.ToString() + "' is not a valid Modifier. Please enter a valid modifier.", 15);
+                        }
+                    }
+
+                    if (cfcptda.cpt_code_modifier3 != null && cfcptda.cpt_code_modifier3.ToString().Trim().Length > 0)
+                    {
+                        if (Array.IndexOf(enumModifier.ToArray(), cfcptda.cpt_code_modifier3.ToString()) == -1)
+                        {
+                            if (!hasCPTHeader)
+                            {
+                                AddSPChildren(cfcptda.cpt_code + " : ", 0);
+                                hasCPTHeader = true;
+                            }
+                            AddSPChildren("'" + cfcptda.cpt_code_modifier3.ToString() + "' is not a valid Modifier. Please enter a valid modifier.", 15);
+                        }
+                    }
+
+                    if (cfcptda.cpt_code_modifier4 != null && cfcptda.cpt_code_modifier4.ToString().Trim().Length > 0)
+                    {
+                        if (Array.IndexOf(enumModifier.ToArray(), cfcptda.cpt_code_modifier4.ToString()) == -1)
+                        {
+                            if (!hasCPTHeader)
+                            {
+                                AddSPChildren(cfcptda.cpt_code + " : ", 0);
+                                hasCPTHeader = true;
+                            }
+                            AddSPChildren("'" + cfcptda.cpt_code_modifier4.ToString() + "' is not a valid Modifier. Please enter a valid modifier.", 15);
+                        }
+                    }
+
+                    if (cfcptda.service_start_date != null && cfcptda.service_end_date != null)
+                    {
+                        if (cfcptda.service_start_date.Value > cfcptda.service_end_date.Value)
+                        {
+                            if (!hasCPTHeader)
+                            {
+                                AddSPChildren(cfcptda.cpt_code + " : ", 0);
+                                hasCPTHeader = true;
+                            }
+                            AddSPChildren("From date cannot be greater than To date.", 15);
+                        }
+                    }
+
+                    if (cfcptda.decimalunits.ToString().Trim().Length == 0)
+                    {
+                        if (!hasCPTHeader)
+                        {
+                            AddSPChildren(cfcptda.cpt_code + " : ", 0);
+                            hasCPTHeader = true;
+                        }
+                        AddSPChildren("Please enter units.", 15);
+                    }
+
+                    if (cfcptda.posc.ToString().Trim().Length == 0)
+                    {
+                        if (!hasCPTHeader)
+                        {
+                            AddSPChildren(cfcptda.cpt_code + " : ", 0);
+                            hasCPTHeader = true;
+                        }
+                        AddSPChildren("Please enter Place of Service.", 15);
+                    }
+                    else
+                    {
+
+                        if (enumPOS.Where(q => q.code == Convert.ToInt32(cfcptda.posc)).FirstOrDefault() == null)
+                        {
+                            if (!hasCPTHeader)
+                                AddSPChildren(cfcptda.cpt_code + " : ", 0);
+                            AddSPChildren("Please enter valid Place of Service code.", 15);
+                        }
+                    }
+
+                    if (cfcptda.modify_unit_charge && cfcptda.modified_procedure_unit_charge.ToString().Length == 0)
+                    {
+                        if (!hasCPTHeader)
+                            AddSPChildren(cfcptda.cpt_code + " : ", 0);
+                        AddSPChildren("Please enter modify unit charge.", 15);
+                    }
+
+                    if (isButonApproveAndSubmittedClicked)
+                    {
+                        if (!isPatientSelfPay)
+                        {
+                            if ((cfcptda.modify_unit_charge && (cfcptda.modified_procedure_unit_charge == null ? 0 : cfcptda.modified_procedure_unit_charge) == 0) || (!cfcptda.modify_unit_charge && (cfcptda.procedure_unit_charge == null ? 0 : cfcptda.procedure_unit_charge) == 0))
+                            {
+                                if (!hasCPTHeader)
+                                    AddSPChildren(cfcptda.cpt_code + " : ", 0);
+                                AddSPChildren("Unit charge must be greater than '$0.00'.", 15);
+                            }
+                        }
+                    }
+                    //if (cfcptda.assessment_diagnosis_code1_visibility == "Visible" && cfcptda.assessment_diagnosis_code1_checked)
+                    //{
+                    //    if (dicCheckCPTICDCodesAssociation.Where(q => q.Key == cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code1_id.Value && q.Value == cfcptda.assessment_diagnosis_code1_id).ToList().Count() > 0)
+                    //    {
+                    //        if (!dicCPTICDCodesAssociatedMultipelTimes.Keys.Contains(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code1_id.Value))
+                    //        {
+                    //            if (!hasCPTHeader)
+                    //            {
+                    //                AddSPChildren(cfcptda.cpt_code + " : ", 0);
+                    //                hasCPTHeader = true;
+                    //            }
+                    //            AddSPChildren("Diagnosis code '" + cfcptda.assessment_diagnosis_code1 + "' can not be associated more than once.", 15);
+                    //            dicCPTICDCodesAssociatedMultipelTimes.Add(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code1_id.Value, cfcptda.assessment_diagnosis_code1_id.Value);
+                    //        }
+                    //    }
+                    //}
+                    //if (cfcptda.assessment_diagnosis_code2_visibility == "Visible" && cfcptda.assessment_diagnosis_code2_checked)
+                    //{
+                    //    if (dicCheckCPTICDCodesAssociation.Where(q => q.Key == cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code2_id.Value && q.Value == cfcptda.assessment_diagnosis_code2_id).ToList().Count() > 0)
+                    //    {
+                    //        if (!dicCPTICDCodesAssociatedMultipelTimes.Keys.Contains(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code2_id.Value))
+                    //        {
+                    //            if (!hasCPTHeader)
+                    //            {
+                    //                AddSPChildren(cfcptda.cpt_code + " : ", 0);
+                    //                hasCPTHeader = true;
+                    //            }
+                    //            AddSPChildren("Diagnosis code '" + cfcptda.assessment_diagnosis_code2 + "' can not be associated more than once.", 15);
+                    //            dicCPTICDCodesAssociatedMultipelTimes.Add(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code2_id.Value, cfcptda.assessment_diagnosis_code2_id.Value);
+                    //        }
+                    //    }
+                    //}
+                    //if (cfcptda.assessment_diagnosis_code3_visibility == "Visible" && cfcptda.assessment_diagnosis_code3_checked)
+                    //{
+                    //    if (dicCheckCPTICDCodesAssociation.Where(q => q.Key == cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code3_id.Value && q.Value == cfcptda.assessment_diagnosis_code3_id).ToList().Count() > 0)
+                    //    {
+                    //        if (!dicCPTICDCodesAssociatedMultipelTimes.Keys.Contains(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code3_id.Value))
+                    //        {
+                    //            if (!hasCPTHeader)
+                    //            {
+                    //                AddSPChildren(cfcptda.cpt_code + " : ", 0);
+                    //                hasCPTHeader = true;
+                    //            }
+                    //            AddSPChildren("Diagnosis code '" + cfcptda.assessment_diagnosis_code3 + "' can not be associated more than once.", 15);
+                    //            dicCPTICDCodesAssociatedMultipelTimes.Add(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code3_id.Value, cfcptda.assessment_diagnosis_code3_id.Value);
+                    //        }
+                    //    }
+                    //}
+                    //if (cfcptda.assessment_diagnosis_code4_visibility == "Visible" && cfcptda.assessment_diagnosis_code4_checked)
+                    //{
+                    //    if (dicCheckCPTICDCodesAssociation.Where(q => q.Key == cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code4_id.Value && q.Value == cfcptda.assessment_diagnosis_code4_id).ToList().Count() > 0)
+                    //    {
+                    //        if (!dicCPTICDCodesAssociatedMultipelTimes.Keys.Contains(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code4_id.Value))
+                    //        {
+                    //            if (!hasCPTHeader)
+                    //            {
+                    //                AddSPChildren(cfcptda.cpt_code + " : ", 0);
+                    //                hasCPTHeader = true;
+                    //            }
+                    //            AddSPChildren("Diagnosis code '" + cfcptda.assessment_diagnosis_code4 + "' can not be associated more than once.", 15);
+                    //            dicCPTICDCodesAssociatedMultipelTimes.Add(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code4_id.Value, cfcptda.assessment_diagnosis_code4_id.Value);
+                    //        }
+                    //    }
+                    //}
+                    //if (cfcptda.assessment_diagnosis_code5_visibility == "Visible" && cfcptda.assessment_diagnosis_code5_checked)
+                    //{
+                    //    if (dicCheckCPTICDCodesAssociation.Where(q => q.Key == cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code5_id.Value && q.Value == cfcptda.assessment_diagnosis_code5_id).ToList().Count() > 0)
+                    //    {
+                    //        if (!dicCPTICDCodesAssociatedMultipelTimes.Keys.Contains(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code5_id.Value))
+                    //        {
+                    //            if (!hasCPTHeader)
+                    //            {
+                    //                AddSPChildren(cfcptda.cpt_code + " : ", 0);
+                    //                hasCPTHeader = true;
+                    //            }
+                    //            AddSPChildren("Diagnosis code '" + cfcptda.assessment_diagnosis_code5 + "' can not be associated more than once.", 15);
+                    //            dicCPTICDCodesAssociatedMultipelTimes.Add(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code5_id.Value, cfcptda.assessment_diagnosis_code5_id.Value);
+                    //        }
+                    //    }
+                    //}
+                    //if (cfcptda.assessment_diagnosis_code6_visibility == "Visible" && cfcptda.assessment_diagnosis_code6_checked)
+                    //{
+                    //    if (dicCheckCPTICDCodesAssociation.Where(q => q.Key == cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code6_id.Value && q.Value == cfcptda.assessment_diagnosis_code6_id).ToList().Count() > 0)
+                    //    {
+                    //        if (!dicCPTICDCodesAssociatedMultipelTimes.Keys.Contains(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code6_id.Value))
+                    //        {
+                    //            if (!hasCPTHeader)
+                    //            {
+                    //                AddSPChildren(cfcptda.cpt_code + " : ", 0);
+                    //                hasCPTHeader = true;
+                    //            }
+                    //            AddSPChildren("Diagnosis code '" + cfcptda.assessment_diagnosis_code6 + "' can not be associated more than once.", 15);
+                    //            dicCPTICDCodesAssociatedMultipelTimes.Add(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code6_id.Value, cfcptda.assessment_diagnosis_code6_id.Value);
+                    //        }
+                    //    }
+                    //}
+                    //if (cfcptda.assessment_diagnosis_code7_visibility == "Visible" && cfcptda.assessment_diagnosis_code7_checked)
+                    //{
+                    //    if (dicCheckCPTICDCodesAssociation.Where(q => q.Key == cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code7_id.Value && q.Value == cfcptda.assessment_diagnosis_code7_id).ToList().Count() > 0)
+                    //    {
+                    //        if (!dicCPTICDCodesAssociatedMultipelTimes.Keys.Contains(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code7_id.Value))
+                    //        {
+                    //            if (!hasCPTHeader)
+                    //            {
+                    //                AddSPChildren(cfcptda.cpt_code + " : ", 0);
+                    //                hasCPTHeader = true;
+                    //            }
+                    //            AddSPChildren("Diagnosis code '" + cfcptda.assessment_diagnosis_code7 + "' can not be associated more than once.", 15);
+                    //            dicCPTICDCodesAssociatedMultipelTimes.Add(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code7_id.Value, cfcptda.assessment_diagnosis_code7_id.Value);
+                    //        }
+                    //    }
+                    //}
+                    //if (cfcptda.assessment_diagnosis_code8_visibility == "Visible" && cfcptda.assessment_diagnosis_code8_checked)
+                    //{
+                    //    if (dicCheckCPTICDCodesAssociation.Where(q => q.Key == cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code8_id.Value && q.Value == cfcptda.assessment_diagnosis_code8_id).ToList().Count() > 0)
+                    //    {
+                    //        if (!dicCPTICDCodesAssociatedMultipelTimes.Keys.Contains(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code8_id.Value))
+                    //        {
+                    //            if (!hasCPTHeader)
+                    //            {
+                    //                AddSPChildren(cfcptda.cpt_code + " : ", 0);
+                    //                hasCPTHeader = true;
+                    //            }
+                    //            AddSPChildren("Diagnosis code '" + cfcptda.assessment_diagnosis_code8 + "' can not be associated more than once.", 15);
+                    //            dicCPTICDCodesAssociatedMultipelTimes.Add(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code8_id.Value, cfcptda.assessment_diagnosis_code8_id.Value);
+                    //        }
+                    //    }
+                    //}
+                    if (cfcptda.assessment_diagnosis_code1_checked && cfcptda.assessment_diagnosis_code1_id != null) if (!dicCheckCPTICDCodesAssociation.Keys.Contains(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code1_id.Value)) dicCheckCPTICDCodesAssociation.Add(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code1_id.Value, cfcptda.assessment_diagnosis_code1_id.Value);
+                    if (cfcptda.assessment_diagnosis_code2_checked && cfcptda.assessment_diagnosis_code2_id != null) if (!dicCheckCPTICDCodesAssociation.Keys.Contains(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code2_id.Value)) dicCheckCPTICDCodesAssociation.Add(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code2_id.Value, cfcptda.assessment_diagnosis_code2_id.Value);
+                    if (cfcptda.assessment_diagnosis_code3_checked && cfcptda.assessment_diagnosis_code3_id != null) if (!dicCheckCPTICDCodesAssociation.Keys.Contains(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code3_id.Value)) dicCheckCPTICDCodesAssociation.Add(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code3_id.Value, cfcptda.assessment_diagnosis_code3_id.Value);
+                    if (cfcptda.assessment_diagnosis_code4_checked && cfcptda.assessment_diagnosis_code4_id != null) if (!dicCheckCPTICDCodesAssociation.Keys.Contains(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code4_id.Value)) dicCheckCPTICDCodesAssociation.Add(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code4_id.Value, cfcptda.assessment_diagnosis_code4_id.Value);
+                    if (cfcptda.assessment_diagnosis_code5_checked && cfcptda.assessment_diagnosis_code5_id != null) if (!dicCheckCPTICDCodesAssociation.Keys.Contains(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code5_id.Value)) dicCheckCPTICDCodesAssociation.Add(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code5_id.Value, cfcptda.assessment_diagnosis_code5_id.Value);
+                    if (cfcptda.assessment_diagnosis_code6_checked && cfcptda.assessment_diagnosis_code6_id != null) if (!dicCheckCPTICDCodesAssociation.Keys.Contains(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code6_id.Value)) dicCheckCPTICDCodesAssociation.Add(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code6_id.Value, cfcptda.assessment_diagnosis_code6_id.Value);
+                    if (cfcptda.assessment_diagnosis_code7_checked && cfcptda.assessment_diagnosis_code7_id != null) if (!dicCheckCPTICDCodesAssociation.Keys.Contains(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code7_id.Value)) dicCheckCPTICDCodesAssociation.Add(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code7_id.Value, cfcptda.assessment_diagnosis_code7_id.Value);
+                    if (cfcptda.assessment_diagnosis_code8_checked && cfcptda.assessment_diagnosis_code8_id != null) if (!dicCheckCPTICDCodesAssociation.Keys.Contains(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code8_id.Value)) dicCheckCPTICDCodesAssociation.Add(cfcptda.cpt_code + "," + cfcptda.assessment_diagnosis_code8_id.Value, cfcptda.assessment_diagnosis_code8_id.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                spErrors.Children.Clear();
+                AddSPChildren("Please select one or more diagnosis codes, units, place of service for cpt code.", 0);
+            }
+            if (dpAdmitDate.SelectedDate != null && dpDischargeDate.SelectedDate != null)
+                if (dpAdmitDate.SelectedDate > dpDischargeDate.SelectedDate)
+                {
+                    InformationWindow iw = new InformationWindow("Admit date cannot be greater than Discharge date.");
+                    iw.Show();
+                    return false;
+                }
+            if (dpReferralStartDate.SelectedDate != null && dpReferralExpiryDate.SelectedDate != null)
+                if (dpReferralStartDate.SelectedDate > dpReferralExpiryDate.SelectedDate)
+                {
+                    InformationWindow iw = new InformationWindow("Referral start date cannot be greater than Referral Expiration date.");
+                    iw.Show();
+                    return false;
+                }
+            if (spErrors.Children.Count() == 0)
+                return true;
+            else
+                return false;
+        }
+
+        void AddSPChildren(string errorMessage, int margin)
+        {
+            TextBlock tb = new TextBlock();
+            tb.Text = errorMessage;
+            if (margin > 0)
+                tb.Margin = new Thickness(margin, 0, 0, 0);
+            tb.Width = tb.ActualWidth + 10;
+            tb.Height = tb.ActualHeight + 10;
+            tb.Foreground = new SolidColorBrush(Colors.Red);
+            spErrors.Children.Add(tb);
+        }
+
+        void UpdateCurrentCPTADCodesAssociation()
+        {
+            try
+            {
+                mr_patient_encounter_cpt_diagnosis_association mpecptda = null;
+                foreach (CustomFormattedCPTDiagnosisAssociation cfcptda in lstcurrent_custom_cpt_diagnosis_association)
+                {
+                    int dc_id = 1;
+                    mr_patient_encounter_cpt_diagnosis_association pastcfcptda = past_cpt_diagnosis_association.Where(q => q.mr_patient_encounter_cpt_diagnosis_association_id == cfcptda.cpt_diagnosis_association_id).FirstOrDefault();
+                    if (pastcfcptda == null)
+                        mpecptda = new mr_patient_encounter_cpt_diagnosis_association();
+                    else
+                        mpecptda = pastcfcptda;
+                    mpecptda.patient_id = patientId;
+                    mpecptda.mr_patient_encounter_id = patientEncounterId;
+                    mpecptda.physician_id = encounterPhysicianId;
+                    mpecptda.cpt_code = cfcptda.cpt_code;
+                    if (cfcptda.assessment_diagnosis_code1_checked)
+                    {
+                        if (cfcptda.assessment_diagnosis_code1_id != null)
+                        {
+                            mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code1.ToString());
+                            dc_id = 2;
+                        }
+                    }
+
+                    if (cfcptda.assessment_diagnosis_code2_checked)
+                    {
+                        if (cfcptda.assessment_diagnosis_code2 != null)
+                        {
+                            if (dc_id == 1)
+                            {
+                                mpecptda.diagnosis2_code = (cfcptda.assessment_diagnosis_code2.ToString());
+                                dc_id = 2;
+                            }
+                            else
+                            {
+                                mpecptda.diagnosis3_code = (cfcptda.assessment_diagnosis_code2.ToString());
+                                dc_id = 3;
+                            }
+                        }
+                    }
+
+                    if (cfcptda.assessment_diagnosis_code3_checked)
+                    {
+                        if (cfcptda.assessment_diagnosis_code3 != null)
+                        {
+                            switch (dc_id)
+                            {
+                                case 1:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code3.ToString());
+                                    dc_id = 2;
+                                    break;
+                                case 2:
+                                    mpecptda.diagnosis2_code = (cfcptda.assessment_diagnosis_code3.ToString());
+                                    dc_id = 3;
+                                    break;
+                                case 3:
+                                    mpecptda.diagnosis3_code = (cfcptda.assessment_diagnosis_code3.ToString());
+                                    dc_id = 4;
+                                    break;
+                            }
+                        }
+                    }
+
+                    if (cfcptda.assessment_diagnosis_code4_checked)
+                    {
+                        if (cfcptda.assessment_diagnosis_code4 != null)
+                        {
+                            switch (dc_id)
+                            {
+                                case 1:
+                                    mpecptda.diagnosis1_code = cfcptda.assessment_diagnosis_code4.ToString();
+                                    dc_id = 2;
+                                    break;
+                                case 2:
+                                    mpecptda.diagnosis2_code = cfcptda.assessment_diagnosis_code4.ToString();
+                                    dc_id = 3;
+                                    break;
+                                case 3:
+                                    mpecptda.diagnosis3_code = cfcptda.assessment_diagnosis_code4.ToString();
+                                    dc_id = 4;
+                                    break;
+                                case 4:
+                                    mpecptda.diagnosis4_code = cfcptda.assessment_diagnosis_code4.ToString();
+                                    dc_id = 5;
+                                    break;
+                            }
+                        }
+                    }
+
+                    if (cfcptda.assessment_diagnosis_code5_checked)
+                    {
+                        if (cfcptda.assessment_diagnosis_code5 != null)
+                        {
+                            switch (dc_id)
+                            {
+                                case 1:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code5.ToString());
+                                    dc_id = 2;
+                                    break;
+                                case 2:
+                                    mpecptda.diagnosis2_code = (cfcptda.assessment_diagnosis_code5.ToString());
+                                    dc_id = 3;
+                                    break;
+                                case 3:
+                                    mpecptda.diagnosis3_code = (cfcptda.assessment_diagnosis_code5.ToString());
+                                    dc_id = 4;
+                                    break;
+                                case 4:
+                                    mpecptda.diagnosis4_code = (cfcptda.assessment_diagnosis_code5.ToString());
+                                    dc_id = 5;
+                                    break;
+                                case 5:
+                                    mpecptda.diagnosis5_code = (cfcptda.assessment_diagnosis_code5.ToString());
+                                    dc_id = 6;
+                                    break;
+                            }
+                        }
+                    }
+
+                    if (cfcptda.assessment_diagnosis_code6_checked)
+                    {
+                        if (cfcptda.assessment_diagnosis_code6 != null)
+                        {
+                            switch (dc_id)
+                            {
+                                case 1:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code6.ToString());
+                                    dc_id = 2;
+                                    break;
+                                case 2:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code6.ToString());
+                                    dc_id = 3;
+                                    break;
+                                case 3:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code6.ToString());
+                                    dc_id = 4;
+                                    break;
+                                case 4:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code6.ToString());
+                                    dc_id = 5;
+                                    break;
+                                case 5:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code6.ToString());
+                                    dc_id = 6;
+                                    break;
+                                case 6:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code6.ToString());
+                                    dc_id = 7;
+                                    break;
+                            }
+                        }
+                    }
+
+                    if (cfcptda.assessment_diagnosis_code7_checked)
+                    {
+                        if (cfcptda.assessment_diagnosis_code7_id != null)
+                        {
+                            switch (dc_id)
+                            {
+                                case 1:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code7.ToString());
+                                    dc_id = 2;
+                                    break;
+                                case 2:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code7.ToString());
+                                    dc_id = 3;
+                                    break;
+                                case 3:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code7.ToString());
+                                    dc_id = 4;
+                                    break;
+                                case 4:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code7.ToString());
+                                    dc_id = 5;
+                                    break;
+                                case 5:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code7.ToString());
+                                    dc_id = 6;
+                                    break;
+                                case 6:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code7.ToString());
+                                    dc_id = 7;
+                                    break;
+                                case 7:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code7.ToString());
+                                    dc_id = 8;
+                                    break;
+                            }
+                        }
+                    }
+
+                    if (cfcptda.assessment_diagnosis_code8_checked)
+                    {
+                        if (cfcptda.assessment_diagnosis_code8_id != null)
+                        {
+                            switch (dc_id)
+                            {
+                                case 1:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code8.ToString());
+                                    dc_id = 2;
+                                    break;
+                                case 2:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code8.ToString());
+                                    dc_id = 3;
+                                    break;
+                                case 3:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code8.ToString());
+                                    dc_id = 4;
+                                    break;
+                                case 4:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code8.ToString());
+                                    dc_id = 5;
+                                    break;
+                                case 5:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code8.ToString());
+                                    dc_id = 6;
+                                    break;
+                                case 6:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code8.ToString());
+                                    dc_id = 7;
+                                    break;
+                                case 7:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code8.ToString());
+                                    dc_id = 8;
+                                    break;
+                                case 8:
+                                    mpecptda.diagnosis1_code = (cfcptda.assessment_diagnosis_code8.ToString());
+                                    dc_id = 9;
+                                    break;
+                            }
+                        }
+                    }
+
+                    switch (dc_id)
+                    {
+                        case 2:
+                            mpecptda.diagnosis2_code = null;
+                            mpecptda.diagnosis3_code = null;
+                            mpecptda.diagnosis4_code = null;
+                            mpecptda.diagnosis5_code = null;
+                            mpecptda.diagnosis6_code = null;
+                            mpecptda.diagnosis7_code = null;
+                            mpecptda.diagnosis8_code = null;
+                            break;
+                        case 3:
+                            mpecptda.diagnosis3_code = null;
+                            mpecptda.diagnosis4_code = null;
+                            mpecptda.diagnosis5_code = null;
+                            mpecptda.diagnosis6_code = null;
+                            mpecptda.diagnosis7_code = null;
+                            mpecptda.diagnosis8_code = null;
+                            break;
+                        case 4:
+                            mpecptda.diagnosis4_code = null;
+                            mpecptda.diagnosis5_code = null;
+                            mpecptda.diagnosis6_code = null;
+                            mpecptda.diagnosis7_code = null;
+                            mpecptda.diagnosis8_code = null;
+                            break;
+                        case 5:
+                            mpecptda.diagnosis5_code = null;
+                            mpecptda.diagnosis6_code = null;
+                            mpecptda.diagnosis7_code = null;
+                            mpecptda.diagnosis8_code = null;
+                            break;
+                        case 6:
+                            mpecptda.diagnosis6_code = null;
+                            mpecptda.diagnosis7_code = null;
+                            mpecptda.diagnosis8_code = null;
+                            break;
+                        case 7:
+                            mpecptda.diagnosis7_code = null;
+                            mpecptda.diagnosis8_code = null;
+                            break;
+                        case 8:
+                            mpecptda.diagnosis8_code = null;
+                            break;
+                    }
+                    mpecptda.modifier1 = cfcptda.cpt_code_modifier1 == null ? null : cfcptda.cpt_code_modifier1.ToString().Trim();
+                    mpecptda.modifier2 = cfcptda.cpt_code_modifier2 == null ? null : cfcptda.cpt_code_modifier2.ToString().Trim(); ;
+                    mpecptda.modifier3 = cfcptda.cpt_code_modifier3 == null ? null : cfcptda.cpt_code_modifier3.ToString().Trim(); ;
+                    mpecptda.modifier4 = cfcptda.cpt_code_modifier4 == null ? null : cfcptda.cpt_code_modifier4.ToString().Trim(); ;
+                    mpecptda.units = Convert.ToDecimal(cfcptda.decimalunits);// == null ? null : decimal.Parse(cfcptda.pastUnits.ToString());
+                    mpecptda.place_of_service_code = Convert.ToInt32(cfcptda.posc);// == null ? cfcptda.posc : int.Parse(cfcptda.pastPOSC.ToString());
+                    mpecptda.insurance_prior_authorization_number = cfcptda.insurance_prior_authorization_number == null ? null : cfcptda.insurance_prior_authorization_number.ToString().Trim();
+                    mpecptda.service_start_date = cfcptda.service_start_date;
+                    mpecptda.service_end_date = cfcptda.service_end_date;
+                    mpecptda.modify_unit_charge = cfcptda.modify_unit_charge;
+                    mpecptda.rvu_value = cfcptda.rvu_value;
+                    if (cfcptda.modify_unit_charge)
+                        mpecptda.procedure_unit_charge = cfcptda.modified_procedure_unit_charge;
+                    else
+                        mpecptda.procedure_unit_charge = cfcptda.procedure_unit_charge;
+                    mpecptda.date_last_updated = DateTime.Now;
+                    mpecptda.last_updated_by_user_id = App.global_user.user_id;
+                    if (pastcfcptda == null)
+                    {
+                        mpecptda.date_created = DateTime.Now;
+                        mpecptda.created_by_user_id = App.global_user.user_id;
+                        cptDiagnosisAssociationDomainContext.mr_patient_encounter_cpt_diagnosis_associations.Add(mpecptda);
+                        AddBillerNotes(cfcptda.billersNote, mpecptda.patient_id, true, postBillingDomainContext.mr_patient_encounter_cpt_diagnosis_associations.LastOrDefault());
+                    }
+                    else
+                    {
+                        if (cfcptda.billersNoteId == null || cfcptda.billersNoteId == 0)
+                            AddBillerNotes(cfcptda.billersNote, mpecptda.patient_id, true, postBillingDomainContext.mr_patient_encounter_cpt_diagnosis_associations.LastOrDefault());
+                        else
+                            UpdateBillerNotes(cfcptda.billersNote, cfcptda.billersNoteId.Value);
+                    }
+
+                }
+                foreach (mr_patient_encounter_cpt_diagnosis_association mrpecptda in past_cpt_diagnosis_association)
+                {
+                    if (dicToBeDeletedCPTICDAssociationIds.Where(q => q.Key == mrpecptda.mr_patient_encounter_cpt_diagnosis_association_id).ToList().Count() > 0)
+                    {
+                        CustomFormattedCPTDiagnosisAssociation cf = lstcurrent_custom_cpt_diagnosis_association.Where(q => q.cpt_diagnosis_association_id == mrpecptda.mr_patient_encounter_cpt_diagnosis_association_id).FirstOrDefault();
+                        if (cf != null)
+                        {
+                            if (cf.billersNoteId != null && cf.billersNoteId != 0)
+                                RemoveBillersNote(cf.billersNoteId.Value);
+                        }
+                        cptDiagnosisAssociationDomainContext.mr_patient_encounter_cpt_diagnosis_associations.Remove(mrpecptda);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                InformationWindow iw = new InformationWindow(ex.Message);
+                iw.Show();
+            }
+
+        }
+
+        void UpdateBillerNotes(string note, int bnId)
+        {
+            billers_note billers_noteObj = postBillingDomainContext.billers_notes.Where(x => x.billers_note_id == bnId).FirstOrDefault();
+            if (billers_noteObj != null)
+            {
+                billers_noteObj.note = note;
+                billers_noteObj.update_history = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") + " : " + App.global_user.last_name.ToString() + " " + App.global_user.first_name.ToString();
+                billers_noteObj.last_updated_by_user_id = App.global_user.user_id;
+                billers_noteObj.date_last_updated = DateTime.Now;
+                billers_noteObj.created_by_user_id = App.global_user.user_id;
+                billers_noteObj.date_created = DateTime.Now;
+            }
+            else
+            {
+                AddBillerNotes(note, patientId, true, postBillingDomainContext.mr_patient_encounter_cpt_diagnosis_associations.LastOrDefault());
+            }
+        }
+
+        void RemoveBillersNote(int bnId)
+        {
+            billers_note billers_noteObj = postBillingDomainContext.billers_notes.Where(x => x.billers_note_id == bnId).FirstOrDefault();
+            if (billers_noteObj != null)
+                postBillingDomainContext.billers_notes.Remove(billers_noteObj);
+        }
+
+        void AddBillerNotes(string note, int patientId, bool showOnPatientStatement, mr_patient_encounter_cpt_diagnosis_association mpecptda)
+        {
+            billers_note billers_noteObj = new billers_note();
+            billers_noteObj.note = note;
+            billers_noteObj.patient_id = patientId;
+            billers_noteObj.mr_patient_encounter_cpt_diagnosis_association = mpecptda;
+            billers_noteObj.flag_show_on_patient_statement = showOnPatientStatement;
+            billers_noteObj.update_history = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") + " : " + App.global_user.last_name.ToString() + " " + App.global_user.first_name.ToString();
+            billers_noteObj.last_updated_by_user_id = App.global_user.user_id;
+            billers_noteObj.date_last_updated = DateTime.Now;
+            billers_noteObj.created_by_user_id = App.global_user.user_id;
+            billers_noteObj.date_created = DateTime.Now;
+            postBillingDomainContext.billers_notes.Add(billers_noteObj);
+        }
+
+        void DeletePastCPTADCodesAssociation()
+        {
+            foreach (mr_patient_encounter_cpt_diagnosis_association cptda in past_cpt_diagnosis_association)
+            {
+                cptDiagnosisAssociationDomainContext.mr_patient_encounter_cpt_diagnosis_associations.Remove(cptda);
+            }
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = false;
+        }
+
+        private void ChildWindow_MouseMove(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void ChildWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void DpFromDateR2_KeyUp(object sender, KeyEventArgs e)
+        {
+
+            try
+            {
+
+                RadDatePicker dpDatePicker = (RadDatePicker)sender;
+                int DateLength = dpDatePicker.CurrentDateTimeText.Trim().Length;
+
+                if (dpDatePicker.CurrentDateTimeText.Trim().Contains("/") == false)
+                {
+                    switch (DateLength)
+                    {
+                        case 8:
+                            this.Focus();
+                            dpDatePicker.Focus();
+                            break;
+                    }
+
+                }
+                else
+                {
+                    switch (DateLength)
+                    {
+                        case 10:
+                            this.Focus();
+                            dpDatePicker.Focus();
+                            break;
+                    }
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void DpFromDateR2_ParseDateTimeValue(object sender, ParseDateTimeEventArgs args)
+        {
+            if (!args.IsParsingSuccessful) //ie: Can't parse the date the user has entered
+            {
+                DateTime time;
+
+                if (CommonMethods.TryParseNumberAsDate(args.TextToParse, out time))
+                {
+                    args.Result = time;
+
+                    args.IsParsingSuccessful = true;
+                }
+                else
+                {
+                    RadDatePicker dpDatePicker = (RadDatePicker)sender;
+                    dpDatePicker.CurrentDateTimeText = null;
+                    dpDatePicker.DateTimeText = "";
+                    dpDatePicker.DateTimeWatermarkContent = "";
+                }
+            }
+        }
+
+        private void btnCopyCPT_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)sender;
+            if (btn.Tag != null)
+            {
+                CustomFormattedCPTDiagnosisAssociation cfcptda = (CustomFormattedCPTDiagnosisAssociation)btn.DataContext;//lstcurrent_custom_cpt_diagnosis_association.Where(q => q.cpt_code == btn.Tag).FirstOrDefault();
+                //if ((cfcptda.assessment_diagnosis_code1_visibility == "Collapsed" || cfcptda.assessment_diagnosis_code1_checked) & (cfcptda.assessment_diagnosis_code2_visibility == "Collapsed" || cfcptda.assessment_diagnosis_code2_checked) & (cfcptda.assessment_diagnosis_code3_visibility == "Collapsed" || cfcptda.assessment_diagnosis_code3_checked) & (cfcptda.assessment_diagnosis_code4_visibility == "Collapsed" || cfcptda.assessment_diagnosis_code4_checked) & (cfcptda.assessment_diagnosis_code5_visibility == "Collapsed" || cfcptda.assessment_diagnosis_code5_checked) & (cfcptda.assessment_diagnosis_code6_visibility == "Collapsed" || cfcptda.assessment_diagnosis_code6_checked) & (cfcptda.assessment_diagnosis_code7_visibility == "Collapsed" || cfcptda.assessment_diagnosis_code7_checked) & (cfcptda.assessment_diagnosis_code8_visibility == "Collapsed" || cfcptda.assessment_diagnosis_code8_checked))
+                //{
+                //    InformationWindow iw = new InformationWindow("Can not copy CPT code. Because there is no ICD code unchecked.");
+                //    iw.Show();
+                //    return;
+                //}
+                CustomFormattedCPTDiagnosisAssociation newcfcptda = new CustomFormattedCPTDiagnosisAssociation();
+                newcfcptda.cpt_code = cfcptda.cpt_code;
+                newcfcptda.cpt_diagnosis_association_id = 0;
+                newcfcptda.cpt_code_description = cfcptda.cpt_code_description;
+                newcfcptda.current_date = cfcptda.current_date;
+                newcfcptda.assessment_diagnosis_code1_id = cfcptda.assessment_diagnosis_code1_id;
+                newcfcptda.assessment_diagnosis_code2_id = cfcptda.assessment_diagnosis_code2_id;
+                newcfcptda.assessment_diagnosis_code3_id = cfcptda.assessment_diagnosis_code3_id;
+                newcfcptda.assessment_diagnosis_code4_id = cfcptda.assessment_diagnosis_code4_id;
+                newcfcptda.assessment_diagnosis_code5_id = cfcptda.assessment_diagnosis_code5_id;
+                newcfcptda.assessment_diagnosis_code6_id = cfcptda.assessment_diagnosis_code6_id;
+                newcfcptda.assessment_diagnosis_code7_id = cfcptda.assessment_diagnosis_code7_id;
+                newcfcptda.assessment_diagnosis_code8_id = cfcptda.assessment_diagnosis_code8_id;
+                newcfcptda.assessment_diagnosis_code1 = cfcptda.assessment_diagnosis_code1;
+                newcfcptda.assessment_diagnosis_code2 = cfcptda.assessment_diagnosis_code2;
+                newcfcptda.assessment_diagnosis_code3 = cfcptda.assessment_diagnosis_code3;
+                newcfcptda.assessment_diagnosis_code4 = cfcptda.assessment_diagnosis_code4;
+                newcfcptda.assessment_diagnosis_code5 = cfcptda.assessment_diagnosis_code5;
+                newcfcptda.assessment_diagnosis_code6 = cfcptda.assessment_diagnosis_code6;
+                newcfcptda.assessment_diagnosis_code7 = cfcptda.assessment_diagnosis_code7;
+                newcfcptda.assessment_diagnosis_code8 = cfcptda.assessment_diagnosis_code8;
+                if (cfcptda.assessment_diagnosis_code1_visibility == "Collapsed") //cfcptda.assessment_diagnosis_code1_checked || 
+                {
+                    newcfcptda.assessment_diagnosis_code1_checked = false;
+                    newcfcptda.assessment_diagnosis_code1_visibility = "Collapsed";
+                }
+                else
+                {
+                    newcfcptda.assessment_diagnosis_code1_checked = false; //cfcptda.assessment_diagnosis_code1_checked;
+                    newcfcptda.assessment_diagnosis_code1_visibility = cfcptda.assessment_diagnosis_code1_visibility;
+                }
+                if (cfcptda.assessment_diagnosis_code2_visibility == "Collapsed") //cfcptda.assessment_diagnosis_code2_checked || 
+                {
+                    newcfcptda.assessment_diagnosis_code2_checked = false;
+                    newcfcptda.assessment_diagnosis_code2_visibility = "Collapsed";
+                }
+                else
+                {
+                    newcfcptda.assessment_diagnosis_code2_checked = false; //cfcptda.assessment_diagnosis_code2_checked;
+                    newcfcptda.assessment_diagnosis_code2_visibility = cfcptda.assessment_diagnosis_code2_visibility;
+                }
+                if (cfcptda.assessment_diagnosis_code3_visibility == "Collapsed") //cfcptda.assessment_diagnosis_code3_checked || 
+                {
+                    newcfcptda.assessment_diagnosis_code3_checked = false;
+                    newcfcptda.assessment_diagnosis_code3_visibility = "Collapsed";
+                }
+                else
+                {
+                    newcfcptda.assessment_diagnosis_code3_checked = false; //cfcptda.assessment_diagnosis_code3_checked;
+                    newcfcptda.assessment_diagnosis_code3_visibility = cfcptda.assessment_diagnosis_code3_visibility;
+                }
+                if (cfcptda.assessment_diagnosis_code4_visibility == "Collapsed") //cfcptda.assessment_diagnosis_code4_checked || 
+                {
+                    newcfcptda.assessment_diagnosis_code4_checked = false;
+                    newcfcptda.assessment_diagnosis_code4_visibility = "Collapsed";
+                }
+                else
+                {
+                    newcfcptda.assessment_diagnosis_code4_checked = false; //cfcptda.assessment_diagnosis_code4_checked;
+                    newcfcptda.assessment_diagnosis_code4_visibility = cfcptda.assessment_diagnosis_code4_visibility;
+                }
+                if (cfcptda.assessment_diagnosis_code5_visibility == "Collapsed") //cfcptda.assessment_diagnosis_code5_checked || 
+                {
+                    newcfcptda.assessment_diagnosis_code5_checked = false;
+                    newcfcptda.assessment_diagnosis_code5_visibility = "Collapsed";
+                }
+                else
+                {
+                    newcfcptda.assessment_diagnosis_code5_checked = false; //cfcptda.assessment_diagnosis_code5_checked;
+                    newcfcptda.assessment_diagnosis_code5_visibility = cfcptda.assessment_diagnosis_code5_visibility;
+                }
+                if (cfcptda.assessment_diagnosis_code6_visibility == "Collapsed") //cfcptda.assessment_diagnosis_code6_checked || 
+                {
+                    newcfcptda.assessment_diagnosis_code6_checked = false;
+                    newcfcptda.assessment_diagnosis_code6_visibility = "Collapsed";
+                }
+                else
+                {
+                    newcfcptda.assessment_diagnosis_code6_checked = false; //cfcptda.assessment_diagnosis_code6_checked;
+                    newcfcptda.assessment_diagnosis_code6_visibility = cfcptda.assessment_diagnosis_code6_visibility;
+                }
+                if (cfcptda.assessment_diagnosis_code7_visibility == "Collapsed") //cfcptda.assessment_diagnosis_code7_checked || 
+                {
+                    newcfcptda.assessment_diagnosis_code7_checked = false;
+                    newcfcptda.assessment_diagnosis_code7_visibility = "Collapsed";
+                }
+                else
+                {
+                    newcfcptda.assessment_diagnosis_code7_checked = false; //cfcptda.assessment_diagnosis_code7_checked;
+                    newcfcptda.assessment_diagnosis_code7_visibility = cfcptda.assessment_diagnosis_code7_visibility;
+                }
+                if (cfcptda.assessment_diagnosis_code8_visibility == "Collapsed") //cfcptda.assessment_diagnosis_code8_checked || 
+                {
+                    newcfcptda.assessment_diagnosis_code8_checked = false;
+                    newcfcptda.assessment_diagnosis_code8_visibility = "Collapsed";
+                }
+                else
+                {
+                    newcfcptda.assessment_diagnosis_code8_checked = false; //cfcptda.assessment_diagnosis_code8_checked;
+                    newcfcptda.assessment_diagnosis_code8_visibility = cfcptda.assessment_diagnosis_code8_visibility;
+                }
+                newcfcptda.assessment_diagnosis_code_description1 = cfcptda.assessment_diagnosis_code_description1;
+                newcfcptda.assessment_diagnosis_code_description2 = cfcptda.assessment_diagnosis_code_description2;
+                newcfcptda.assessment_diagnosis_code_description3 = cfcptda.assessment_diagnosis_code_description3;
+                newcfcptda.assessment_diagnosis_code_description4 = cfcptda.assessment_diagnosis_code_description4;
+                newcfcptda.assessment_diagnosis_code_description5 = cfcptda.assessment_diagnosis_code_description5;
+                newcfcptda.assessment_diagnosis_code_description6 = cfcptda.assessment_diagnosis_code_description6;
+                newcfcptda.assessment_diagnosis_code_description7 = cfcptda.assessment_diagnosis_code_description7;
+                newcfcptda.assessment_diagnosis_code_description8 = cfcptda.assessment_diagnosis_code_description8;
+                newcfcptda.cpt_code_modifier1 = cfcptda.cpt_code_modifier1;
+                newcfcptda.cpt_code_modifier2 = cfcptda.cpt_code_modifier2;
+                newcfcptda.cpt_code_modifier3 = cfcptda.cpt_code_modifier3;
+                newcfcptda.cpt_code_modifier4 = cfcptda.cpt_code_modifier4;
+                newcfcptda.decimalunits = cfcptda.decimalunits;
+                newcfcptda.units = cfcptda.units;
+                newcfcptda.posc = cfcptda.posc;
+                newcfcptda.pastUnits = cfcptda.pastUnits;
+                newcfcptda.pastPOSC = cfcptda.pastPOSC;
+                newcfcptda.service_start_date = cfcptda.service_start_date;
+                newcfcptda.service_end_date = cfcptda.service_end_date;
+                newcfcptda.insurance_prior_authorization_number = cfcptda.insurance_prior_authorization_number;
+                newcfcptda.modify_unit_charge = cfcptda.modify_unit_charge;
+                newcfcptda.procedure_unit_charge = cfcptda.procedure_unit_charge;
+                newcfcptda.modified_procedure_unit_charge = cfcptda.modified_procedure_unit_charge;
+                newcfcptda.rvu_value = cfcptda.rvu_value;
+                lstcurrent_custom_cpt_diagnosis_association.Add(newcfcptda);
+                //lstcurrent_custom_cpt_diagnosis_association.OrderBy(q => q.cpt_code);
+                RadGvCPTDiagnosis.ItemsSource = lstcurrent_custom_cpt_diagnosis_association;
+                RadGvCPTDiagnosis.Rebind();
+            }
+        }
+
+        private void chkModifyUnitCharge_Checked(object sender, RoutedEventArgs e)
+        {
+            CheckBox chk = (CheckBox)sender;
+            if (chk.IsChecked.Value)
+            {
+                chk.Parent.FindChildByType<RadMaskedTextBox>().IsEnabled = true;
+                chk.Parent.FindChildByType<RadMaskedTextBox>().Focus();
+            }
+            else
+            {
+                chk.Parent.FindChildByType<RadMaskedTextBox>().IsEnabled = false;
+                chk.Parent.FindChildByType<RadMaskedTextBox>().Value = null;
+            }
+        }
+
+        private void DpToDateR2_SelectionChanged(object sender, Telerik.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            try
+            {
+                RadDatePicker rdp = (RadDatePicker)sender;
+                CustomFormattedCPTDiagnosisAssociation cfcptda = rdp.ParentOfType<GridViewRow>().DataContext as CustomFormattedCPTDiagnosisAssociation;
+                if (rdp.Name == "DpFromDateR2")
+                {
+                    if (cfcptda.service_start_date > cfcptda.service_end_date)
+                    {
+                        cfcptda.service_start_date = cfcptda.service_end_date;
+                        InformationWindow iw = new InformationWindow("Service start date can not be future than Service end date.");
+                        iw.Show();
+                    }
+                }
+                else if (rdp.Name == "DpToDateR2")
+                {
+                    if (cfcptda.service_start_date > cfcptda.service_end_date)
+                    {
+                        cfcptda.service_end_date = cfcptda.service_start_date;
+                        InformationWindow iw = new InformationWindow("Service end date can not be past than Service start date.");
+                        iw.Show();
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void dpAdmitDate_SelectionChanged(object sender, Telerik.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (dpDischargeDate.SelectedDate != null)
+            {
+                if (dpAdmitDate.SelectedDate > dpDischargeDate.SelectedDate)
+                {
+                    dpAdmitDate.SelectedDate = dpDischargeDate.SelectedDate;
+                    InformationWindow iw = new InformationWindow("Admit date can not be future than Discharge date.");
+                    iw.Show();
+                }
+            }
+        }
+
+        private void dpDischargeDate_SelectionChanged(object sender, Telerik.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (dpAdmitDate.SelectedDate != null)
+            {
+                if (dpAdmitDate.SelectedDate > dpDischargeDate.SelectedDate)
+                {
+                    dpAdmitDate.SelectedDate = dpDischargeDate.SelectedDate;
+                    InformationWindow iw = new InformationWindow("Discharge date can not be past than Admit date.");
+                    iw.Show();
+                }
+            }
+        }
+
+        private void ChildWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Application.Current.RootVisual.SetValue(Control.IsEnabledProperty, true);
+        }
+
+        private void BtnRecalculate_Click(object sender, RoutedEventArgs e)
+        {
+            BillRecalculate();
+        }
+
+        void BillRecalculate()
+        {
+            decimal totalCharges = 0;
+            decimal totalDueFromInsurance = 0;
+            decimal totalDueFromPatient = 0;
+            decimal patientAmountPaid = 0;
+            decimal totalPayments = 0;
+
+            foreach (CustomFormattedCPTDiagnosisAssociation cfcptda in lstcurrent_custom_cpt_diagnosis_association)
+            {
+                if (cfcptda.modify_unit_charge)
+                    totalCharges += cfcptda.modified_procedure_unit_charge == null ? 0 : cfcptda.modified_procedure_unit_charge.Value;
+                else
+                    totalCharges += cfcptda.procedure_unit_charge == null ? 0 : cfcptda.procedure_unit_charge.Value;
+            }
+
+            if (isPatientSelfPay)
+                patientAmountRequired = totalCharges;
+            patientAmountPaid = (txtCopayAmountPaid.Value == null ? 0 : Convert.ToDecimal(txtCopayAmountPaid.Value)) + (txtCoInsuranceAmountPaid.Value == null ? 0 : Convert.ToDecimal(txtCoInsuranceAmountPaid.Value)) + (txtDeductibleAmountPaid.Value == null ? 0 : Convert.ToDecimal(txtDeductibleAmountPaid.Value));
+            totalDueFromInsurance = totalCharges - patientAmountRequired;
+            totalDueFromPatient = patientAmountRequired - patientAmountPaid;
+            txtTotalCharges.Value = totalCharges;
+            txtTotalDueFromInsurance.Value = totalDueFromInsurance < 0 ? 0 : totalDueFromInsurance;
+            txtTotalDueFromPatient.Value = totalDueFromPatient < 0 ? 0 : totalDueFromPatient;
+            txtTotalPaymentsReceived.Value = totalCharges - (totalDueFromInsurance + totalDueFromPatient);
+        }
+
+        private void BtnApproveAndSubmitClaims_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                isButonApproveAndSubmittedClicked = true;
+                if (IsCPTDAValid()) // && IsBHValid()
+                {
+                    ButtonDisable();
+                    CPTDABusyIndicator.BusyContent = "Updating superbill...";
+                    isButonSaveClicked = false;
+                    //isButonSaveAndApproveClicked = false;
+                    isButtonSaveAndPrintHCFAClicked = false;
+                    UpdateChanges();
+                    //this.DialogResult = true;
+                }
+                else
+                {
+                    radCPTDAExpander.Visibility = System.Windows.Visibility.Visible;
+                    radCPTDAExpander.IsExpanded = true;
+                    isButonApproveAndSubmittedClicked = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        void postToBillingInvokeOp_Completed(object sender, EventArgs e)
+        {
+            try
+            {
+                InvokeOperation ecInvokeOp = (InvokeOperation)sender;
+                if (ecInvokeOp.HasError)
+                {
+                    ecInvokeOp.MarkErrorAsHandled();
+                    if (ecInvokeOp.Error.Message.Contains("Invoke operation 'GetClaimsFile' failed."))
+                    {
+                        InformationWindow errorMsg = new InformationWindow(ecInvokeOp.Error.Message.Replace("Invoke operation 'GetClaimsFile' failed. ", string.Empty));
+                        errorMsg.Show();
+                    }
+                    else
+                    {
+                        InformationWindow errorMsg = new InformationWindow(ecInvokeOp.Error.Message);
+                        errorMsg.Show();
+                    }
+                    ButtonEnable();
+                }
+                else
+                {
+                    if (ecInvokeOp.Value.ToString().Length > 0)
+                    {
+                        if (ecInvokeOp.Value.ToString() == "The claims has been sent to GatewayEDI successfully." || ecInvokeOp.Value.ToString() == "Bill(s) has been posted successfully.")
+                            this.DialogResult = true;
+                        else
+                            ButtonEnable();
+                        string message = ecInvokeOp.Value.ToString().Replace("|", "\n");
+                        InformationWindow infoWin = new InformationWindow(message);
+                        infoWin.Show();
+                    }
+                    else
+                    {
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void BtnSaveAndPrintHCFA_Click(object sender, RoutedEventArgs e)
+        {
+            if (IsCPTDAValid())
+            {
+                try
+                {
+                    HCFAPrintConfirmationWindow hcfaPrintConfirmationWindow = new HCFAPrintConfirmationWindow();
+                    hcfaPrintConfirmationWindow.Show();
+                    hcfaPrintConfirmationWindow.Closed += (hcfaSender, hcfaE) =>
+                    {
+                        try
+                        {
+                            if (((HCFAPrintConfirmationWindow)hcfaSender).DialogResult.Equals(true))
+                            {
+                                if (((HCFAPrintConfirmationWindow)hcfaSender).RbnPrintFields.IsChecked.Value)
+                                    HCFAPrintOnlyFields = true;
+                                else
+                                    HCFAPrintOnlyFields = false;
+                                if (((HCFAPrintConfirmationWindow)hcfaSender).RbnAll.IsChecked.Value)
+                                {
+                                    if (lstPIP.Count() == 0)
+                                    //if (bh != null && bh.primary_insurance_provider_id == null && bh.secondary_insurance_provider_id == null && bh.tertiary_insurance_provider_id == null)
+                                    {
+                                        MessageWindow mw = new MessageWindow("Please update primary/secondary/tertiary insurence information.");
+                                        mw.Show();
+                                        return;
+                                    }
+                                    HCFAPrintInsuranceType = "All";
+                                }
+                                else if (((HCFAPrintConfirmationWindow)hcfaSender).RbnTertiaryInsurance.IsChecked.Value)
+                                {
+                                    if (lstPIP.Count() == 0 || lstPIP.Where(q => q.order == 3).Count() == 0)
+                                    //if (bh != null && bh.tertiary_insurance_provider_id == null)
+                                    {
+                                        MessageWindow mw = new MessageWindow("Please update tertiary insurence information.");
+                                        mw.Show();
+                                        return;
+                                    }
+                                    HCFAPrintInsuranceType = "TertiaryInsurance";
+                                }
+                                else if (((HCFAPrintConfirmationWindow)hcfaSender).RbnSecondaryInsurance.IsChecked.Value)
+                                {
+                                    if (lstPIP.Count() == 0 || lstPIP.Where(q => q.order == 2).Count() == 0)
+                                    //if (bh != null && bh.secondary_insurance_provider_id == null)
+                                    {
+                                        MessageWindow mw = new MessageWindow("Please update secondary insurence information.");
+                                        mw.Show();
+                                        return;
+                                    }
+                                    HCFAPrintInsuranceType = "SecondaryInsurance";
+                                }
+                                else
+                                {
+                                    if (lstPIP.Count() == 0 || lstPIP.Where(q => q.order == 1).Count() == 0)
+                                    //if (bh != null && bh.primary_insurance_provider_id == null)
+                                    {
+                                        MessageWindow mw = new MessageWindow("Please update primary insurence information.");
+                                        mw.Show();
+                                        return;
+                                    }
+                                    HCFAPrintInsuranceType = "PrimaryInsurance";
+                                }
+                                if (((HCFAPrintConfirmationWindow)hcfaSender).RbnSaveAndPrint.IsChecked.Value)
+                                {
+                                    if (lstcurrent_custom_cpt_diagnosis_association.Where(q => ((q.procedure_unit_charge == null || q.procedure_unit_charge == 0) && !q.modify_unit_charge) || (q.modify_unit_charge && (q.modified_procedure_unit_charge == null || q.modified_procedure_unit_charge.Value == 0))).Count() > 0)
+                                    {
+                                        SuccessWindow sw = new SuccessWindow("The bill has '$0.00' amount chargable.");
+                                        sw.Show();
+                                    }
+                                    //isButtonSaveAndPrintHCFAClicked = true;
+                                    isButonApproveAndSubmittedClicked = false;
+                                    isButonSaveClicked = true;
+                                    //isButonSaveAndApproveClicked = false;
+                                    isButonSaveApproveNotSubmitClaimClicked = false;
+                                }
+                                else if (((HCFAPrintConfirmationWindow)hcfaSender).RbnApproveSubmitClaimAndPrint.IsChecked.Value)
+                                {
+                                    if (lstcurrent_custom_cpt_diagnosis_association.Where(q => ((q.procedure_unit_charge == null || q.procedure_unit_charge == 0) && !q.modify_unit_charge) || (q.modify_unit_charge && (q.modified_procedure_unit_charge == null || q.modified_procedure_unit_charge.Value == 0))).Count() > 0)
+                                    {
+                                        InformationWindow iw = new InformationWindow("The bill can not be submitted as it has '$0.00' amount chargable.");
+                                        iw.Show();
+                                        return;
+                                    }
+                                    //isButtonSaveAndPrintHCFAClicked = true;
+                                    isButonApproveAndSubmittedClicked = true;
+                                    isButonSaveClicked = false;
+                                    //isButonSaveAndApproveClicked = false;
+                                    isButonSaveApproveNotSubmitClaimClicked = false;
+                                }
+                                else if (((HCFAPrintConfirmationWindow)hcfaSender).RbnApproveDoNotSubmitClaimPrint.IsChecked.Value)
+                                {
+                                    if (lstcurrent_custom_cpt_diagnosis_association.Where(q => ((q.procedure_unit_charge == null || q.procedure_unit_charge == 0) && !q.modify_unit_charge) || (q.modify_unit_charge && (q.modified_procedure_unit_charge == null || q.modified_procedure_unit_charge.Value == 0))).Count() > 0)
+                                    {
+                                        InformationWindow iw = new InformationWindow("The bill can not be submitted as it has '$0.00' amount chargable.");
+                                        iw.Show();
+                                        return;
+                                    }
+                                    //isButtonSaveAndPrintHCFAClicked = true;
+                                    isButonApproveAndSubmittedClicked = false;
+                                    isButonSaveClicked = false;
+                                    //isButonSaveAndApproveClicked = false;
+                                    isButonSaveApproveNotSubmitClaimClicked = true;
+                                }
+                                ButtonDisable();
+                                isButtonSaveAndPrintHCFAClicked = true;
+                                UpdateChanges();
+
+                                //LoadReport(superBill_id);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                            ButtonEnable();
+                        }
+                    };
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    ButtonEnable();
+                }
+            }
+            else
+            {
+                radCPTDAExpander.Visibility = System.Windows.Visibility.Visible;
+                radCPTDAExpander.IsExpanded = true;
+            }
+        }
+
+
+
+        private void TxtAuthorizationNumber_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            if (tb != null)
+                priorAuthorizationNumber = tb.Text;
+        }
+
+        private void ChkDc_Checked(object sender, RoutedEventArgs e)
+        {
+            CheckBox cb = (CheckBox)sender;
+            System.Collections.Generic.Dictionary<int, string> icdCheckedItems = new System.Collections.Generic.Dictionary<int, string>();
+            CustomFormattedCPTDiagnosisAssociation cfcptda = cb.DataContext as CustomFormattedCPTDiagnosisAssociation;
+            int icdSelectedCount = 0;
+            if (cfcptda.assessment_diagnosis_code1_checked)
+            {
+                icdSelectedCount += 1;
+                icdCheckedItems.Add(1, "ChkDc1");
+            }
+            if (cfcptda.assessment_diagnosis_code2_checked)
+            {
+                icdSelectedCount += 1;
+                icdCheckedItems.Add(2, "ChkDc2");
+            }
+            if (cfcptda.assessment_diagnosis_code3_checked)
+            {
+                icdSelectedCount += 1;
+                icdCheckedItems.Add(3, "ChkDc3");
+            }
+            if (cfcptda.assessment_diagnosis_code4_checked)
+            {
+                icdSelectedCount += 1;
+                icdCheckedItems.Add(4, "ChkDc4");
+            }
+            if (cfcptda.assessment_diagnosis_code5_checked)
+            {
+                icdSelectedCount += 1;
+                icdCheckedItems.Add(5, "ChkDc5");
+            }
+            if (cfcptda.assessment_diagnosis_code6_checked)
+            {
+                icdSelectedCount += 1;
+                icdCheckedItems.Add(6, "ChkDc6");
+            }
+            if (cfcptda.assessment_diagnosis_code7_checked)
+            {
+                icdSelectedCount += 1;
+                icdCheckedItems.Add(7, "ChkDc7");
+            }
+            if (cfcptda.assessment_diagnosis_code8_checked)
+            {
+                icdSelectedCount += 1;
+                icdCheckedItems.Add(8, "ChkDc8");
+            }
+            if (icdSelectedCount > 3 && !icdCheckedItems.Values.Contains(cb.Name))
+            {
+                cb.IsChecked = false;
+                InformationWindow iw = new InformationWindow("ONLY up to 4 ICD codes can be checked for each CPT Code.");
+                iw.Show();
+            }
+        }
+
+        private void RadGvCPTDiagnosis_RowDetailsVisibilityChanged(object sender, GridViewRowDetailsEventArgs e)
+        {
+            if (e.DetailsElement == null) return;
+            Telerik.Windows.Controls.RadComboBox rcb = e.DetailsElement.ChildrenOfType<RadComboBox>().FirstOrDefault();
+            int? selectedPOS = null;
+            if (((CustomFormattedCPTDiagnosisAssociation)e.DetailsElement.DataContext).posc != null)
+                selectedPOS = ((CustomFormattedCPTDiagnosisAssociation)e.DetailsElement.DataContext).posc.Value;
+            if (rcb.Items.Count() == 0)
+            {
+                rcb.ItemsSource = enumPOS;
+                rcb.DisplayMemberPath = "code";
+                rcb.SelectedValuePath = "code";
+            }
+            rcb.SelectedValue = selectedPOS;
+
+            if (isRejectedClaims)
+            {
+                foreach (CheckBox chk in e.DetailsElement.ChildrenOfType<CheckBox>())
+                {
+                    chk.IsEnabled = false;
+                }
+
+                foreach (TextBox tb in e.DetailsElement.ChildrenOfType<TextBox>())
+                {
+                    tb.IsEnabled = false;
+                }
+                foreach (RadComboBox ddl in e.DetailsElement.ChildrenOfType<RadComboBox>())
+                {
+                    ddl.IsEnabled = false;
+                }
+
+                foreach (RadDatePicker dp in e.DetailsElement.ChildrenOfType<RadDatePicker>())
+                {
+                    dp.IsEnabled = false;
+                }
+
+                foreach (RadMaskedTextBox btn in e.DetailsElement.ChildrenOfType<RadMaskedTextBox>())
+                {
+                    btn.IsEnabled = false;
+                }
+                foreach (Button btn in e.DetailsElement.ChildrenOfType<Button>())
+                {
+                    btn.IsEnabled = false;
+                }
+            }
+        }
+
+        #region Load HCFA Report
+        private void LoadReport(int superbillId)
+        {
+            isButtonSaveAndPrintHCFAClicked = false;
+            ChildWindow cw = new ChildWindow();
+            cw.VerticalAlignment = VerticalAlignment.Stretch;
+            cw.HorizontalAlignment = HorizontalAlignment.Center;
+            cw.Title = "Health Insurance Claim Report";
+            cw.Style = App.Current.Resources["ChildWindowStyle"] as Style;
+            cw.Margin = new Thickness(10);
+
+            if (superbillId > 0)
+            {
+                viewerControl = new StiSLViewerControl();
+                viewerControl.progress = new StiProgressInformation();
+                viewerControl.progress.Start("Loading Report", "Please wait...", false);
+
+                Uri address = new Uri(Application.Current.Host.Source, "../Reports/ReportService.svc");
+                ReportService.ReportServiceClient service = new ReportService.ReportServiceClient("BasicHttpBinding_IReportService", address.AbsoluteUri);
+
+                Dictionary<string, object> parameters = new Dictionary<string, object>();
+                parameters.Add("ID", superbillId);
+                string loadReportName = string.Empty;
+                if (HCFAPrintOnlyFields)
+                {
+                    if (HCFAPrintInsuranceType == "PrimaryInsurance")
+                        loadReportName = "HCFA1500_PrimaryFields.mrt";
+                    else if (HCFAPrintInsuranceType == "SecondaryInsurance")
+                        loadReportName = "HCFA1500_SecondaryFields.mrt";
+                    else if (HCFAPrintInsuranceType == "TertiaryInsurance")
+                        loadReportName = "HCFA1500_TertiaryFields.mrt";
+                    else
+                        loadReportName = "HCFA1500_AllFields.mrt";
+                }
+                else
+                {
+                    if (HCFAPrintInsuranceType == "PrimaryInsurance")
+                        loadReportName = "HCFA1500_Primary.mrt";
+                    else if (HCFAPrintInsuranceType == "SecondaryInsurance")
+                        loadReportName = "HCFA1500_Secondary.mrt";
+                    else if (HCFAPrintInsuranceType == "TertiaryInsurance")
+                        loadReportName = "HCFA1500_Tertiary.mrt";
+                    else
+                        loadReportName = "HCFA1500_All.mrt";
+                }
+                service.LoadReportWithParamsCompleted += new EventHandler<ReportService.LoadReportWithParamsCompletedEventArgs>(service_LoadEncounterReportCompleted);
+                //service.LoadReportWithParamsAsync("HCFA1500.mrt", App.global_PracticeId, App.global_physicianID, parameters);
+                service.LoadReportWithParamsAsync(loadReportName, App.global_PracticeId, App.global_physicianID, parameters);
+
+                cw.Content = viewerControl;
+            }
+            else
+            {
+                cw.Title = "Error Loading Health Insurance Claim Report";
+                TextBlock textBlock = new TextBlock();
+                textBlock.Text = "No superbill id was supplied";
+                cw.Content = textBlock;
+            }
+
+            cw.Show();
+        }
+
+        private void service_LoadEncounterReportCompleted(object sender, ReportService.LoadReportWithParamsCompletedEventArgs e)
+        {
+            viewerControl.progress.Start("Loading Report", "Please wait...", false);
+
+            try
+            {
+                viewerControl.ApplyRenderedReport(e.Result);
+            }
+            catch (Exception ex)
+            {
+                MessageWindow mw;
+
+                if (e.Error != null)
+                    mw = new MessageWindow("Error Loading Report", e.Error.Message);
+                else if (e.Result.Substring(0, 6) == "Error:")
+                    mw = new MessageWindow("Error Loading Report", e.Result);
+                else
+                    mw = new MessageWindow("Error Loading Report", "An error occurred while trying to load the report");
+            }
+
+            //if (e.Error == null && e.Result != null && e.Result.Length > 2 && e.Result.Substring(0, 6) != "Error:")
+            //{
+            //    viewerControl.ApplyRenderedReport(e.Result);
+            //}
+            //else
+            //{
+            //    MessageWindow mw;
+
+            //    if (e.Error != null)
+            //        mw = new MessageWindow("Error Loading Report", e.Error.Message);
+            //    else if (e.Result.Substring(0, 6) == "Error:")
+            //        mw = new MessageWindow("Error Loading Report", e.Result);
+            //    else
+            //        mw = new MessageWindow("Error Loading Report", "An error occurred while trying to load the report");
+            //}
+
+            viewerControl.progress.Close();
+            viewerControl.progress = null;
+        }
+        #endregion // Load HCFA Report
+
+        private void Control_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (this.isView)
+            {
+                if (sender.GetType().Equals(typeof(TextBox)))
+                {
+                    TextBox txt = (TextBox)sender;
+                    txt.IsEnabled = false;
+                }
+                else if (sender.GetType().Equals(typeof(RadMaskedTextBox)))
+                {
+                    RadMaskedTextBox txt = (RadMaskedTextBox)sender;
+                    txt.IsEnabled = false;
+                }
+                else if (sender.GetType().Equals(typeof(RadDatePicker)))
+                {
+                    RadDatePicker rdp = (RadDatePicker)sender;
+                    rdp.IsEnabled = false;
+                }
+                else if (sender.GetType().Equals(typeof(CheckBox)))
+                {
+                    CheckBox chk = (CheckBox)sender;
+                    chk.IsEnabled = false;
+                }
+                else if (sender.GetType().Equals(typeof(Button)))
+                {
+                    Button btn = (Button)sender;
+                    btn.IsEnabled = false;
+                }
+                else if (sender.GetType().Equals(typeof(RadComboBox)))
+                {
+                    RadComboBox ddl = (RadComboBox)sender;
+                    ddl.IsEnabled = false;
+                }
+            }
+
+        }
+
+        private void GetPatient(int patId)
+        {
+
+            Retry.Do(() =>
+           {
+               PatientDomainContext patientDomainContext = new PatientDomainContext();
+
+               var query = from p in patientDomainContext.GetCustomFormattedPatientsSearchQuery()
+                           where p.patientId == patId
+                           //orderby p.last_name, p.first_name
+                           select p;
+               LoadOperation<CustomFormattedPatient> loadPatientOp = patientDomainContext.Load(query);
+               loadPatientOp.Completed += (sndr, evnt) =>
+               {
+                   LoadOperation<CustomFormattedPatient> loadOp = (LoadOperation<CustomFormattedPatient>)sndr;
+                   if (loadOp.HasError)
+                   {
+                       loadOp.MarkErrorAsHandled();
+                       MessageBox.Show(loadOp.Error.Message);
+                   }
+                   else
+                   {
+                       if (loadOp.Entities.Count() > 0)
+                       {
+
+                           var patientList = loadOp.Entities.OrderBy(p => p.last_name).ThenBy(p => p.first_name);
+                           //var results = patientList.OrderBy(p => p.last_name).ThenBy(p => p.first_name);
+
+                           patientObj = patientList.FirstOrDefault();
+                       }
+
+                       //if (loadOp.Entities.Count() > 0)
+                       //    patientObj = loadOp.Entities.FirstOrDefault();
+                   }
+               };
+
+           }, new TimeSpan(0, 0, 10));
+
+        }
+    }
+}

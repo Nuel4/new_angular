@@ -1,0 +1,58 @@
+.payments {
+  padding: 12px;
+  .line {
+    border-right: 1px solid grey;
+    height: 167px;
+    margin-bottom: 10px;
+  }
+  .star {
+    color: red;
+  }
+  .rowStyle{
+    .yeats-form-group{
+      min-height:0px;
+    }
+  }
+  .ui-tabview {
+    padding-top:0px;
+  }
+  p-radiobutton .ui-radiobutton .ui-radiobutton-box {
+    width: 16px;
+    height: 16px;
+    margin-top:7px;
+  }
+  .yeats-form-group{
+    padding-bottom: 0px;
+  }
+  .ui-tabview .ui-tabview-panels .ui-tabview-panel {
+    max-height: 288px;
+    overflow-y: auto !important;
+    overflow-x: hidden;
+  }
+  .ui-tabview .ui-tabview-panels {
+    background-color: #ffffff;
+    padding-top: 0em;
+    padding-left:0.5em;
+    padding-right:0em;
+    border: 1px solid #c8c8c8;
+    color: #333333;
+}
+.labelsstyle{
+  .yeats-form-label{
+     margin-top: 3px !important;
+}
+.card{
+  height:237px !important;
+}
+}
+
+.reSize{
+  .yeats-form-group{
+    min-height: 3rem !important;
+  }
+}
+.Expandtablestyle{
+  margin-left:3.5rem;
+}
+
+}

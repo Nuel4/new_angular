@@ -1,0 +1,26 @@
+.codesAndFees {
+  .a{
+    cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .tableDescription {
+    margin-top: 0rem;
+    margin-bottom: 1rem;
+    .tableDescriptionPoints {
+      font-size: 0.75rem;
+      margin-top: 0.1rem;
+      margin-bottom: 0.1rem;
+    }
+  }
+  .modalButton{
+    margin-top: -1em;
+  }
+  
+  .yeats-tables{
+    padding:1rem;
+  }
+  .ui-paginator {
+    margin-top: -17px;
+  }
+}

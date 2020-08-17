@@ -1,0 +1,47 @@
+<div class="modal-header">
+  <h4 class="modal-title">Edit Alert</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">Action Code</label>
+        <p-dropdown placeholder="Select Action Code" [options]="actionCodeList" [(ngModel)]="actionCode" (onChange)="acChange(actionCode)" optionLabel="label" [showClear]="true">
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">Assign to</label>
+        <p-dropdown  [options]="AssignToData" optionLabel="physicianName" [showClear]="true" [(ngModel)]="assignTo" placeholder="Select Assign to" (onChange)="atChange(assignTo)" [disabled]="inProgress" [listStyle]="{'max-height':'150px'}" >
+        </p-dropdown>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="form-group yeats-form-group textarea">
+        <label class="formLabel yeats-form-label">Action Description</label>
+        <textarea pInputTextarea rows="4" cols="50" autoResize="autoResize" [(ngModel)]="actionDescription"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12" >
+      <label class="formLabel yeats-form-label">History</label>
+    </div>
+    <div class="col-lg-12" style="color: blue">
+      <label class="formLabel yeats-form-label" color="blue">{{action}} by {{firstname}},{{lastname}} on {{time | date:'d MMM y HH:mm:ss'}}</label>
+      <label class="formLabel yeats-form-label">{{description}}</label>
+    </div>
+    <div class="col-lg-12">
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+        <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right" (click)="modal.close('Close click')">Cancel</button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="saveAlert();modal.close('Close click')">Save</button>
+</div>

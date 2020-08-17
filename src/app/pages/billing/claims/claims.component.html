@@ -1,0 +1,18 @@
+<div class="claimBills">
+  <p-tabView [activeIndex]="index" (onChange)="handleChange($event)">
+    <p-tabPanel header="Electronic Claims Submissions">
+      <app-electronic-claims [emptyArr]="emptyArr"></app-electronic-claims>
+    </p-tabPanel>
+    <p-tabPanel header="Rejected Claims">
+      <app-rejected-claims [emptyArr]="emptyArr"></app-rejected-claims>
+    </p-tabPanel>
+    <p-tabPanel header="Remittance Advice">
+      <app-remittance-advice [emptyArr]="emptyArr"></app-remittance-advice>
+    </p-tabPanel>
+    <p-tabPanel header="Approve Remittance Advice">
+      <app-approve-remittance-advice
+        *ngIf="indexValue === 3"
+      ></app-approve-remittance-advice>
+    </p-tabPanel>
+  </p-tabView>
+</div>

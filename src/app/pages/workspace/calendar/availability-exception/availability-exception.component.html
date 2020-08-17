@@ -1,0 +1,355 @@
+<div class="modal-body">
+  <div class="availability">
+    <div class="row">
+      <div class="col-lg-3 col-md-3 col-sm-3 col-3">
+        <div class="form-group yeats-form-group">
+          <label for="" class="yeats-form-label">User<span  class="required">*</span> </label>
+          <p-dropdown [options]="userDetail" optionLabel="fullName" [(ngModel)]="selectedUser" placeholder="Select a User"
+           (onChange)="userSelection($event)"></p-dropdown>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-3">
+        <div class="form-group yeats-form-group">
+          <label for="" class="yeats-form-label">Date from </label>
+          <p-calendar class="yeats-form-control" [(ngModel)]="dateFrom" [showIcon]="true"></p-calendar>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-3">
+        <div class="form-group yeats-form-group">
+          <label for="" class="yeats-form-label">Date to <span *ngIf="requiredDate" class="required">*</span></label>
+          <p-calendar class="yeats-form-control" [(ngModel)]="dateTo" [showIcon]="true"></p-calendar>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-3">
+        <div class="form-group yeats-form-group">
+          <label for="" class="yeats-form-label"> &nbsp;</label>
+          <p-checkbox [(ngModel)]="allDay" binary="true" label="All day"></p-checkbox>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-3">
+        <div class="form-group yeats-form-group">
+          <label for="" class="yeats-form-label">Type <span class="required">*</span></label>
+
+          <p-dropdown [options]="availbilityException" [(ngModel)]="selectedType" placeholder="Select a Type">
+            <ng-template let-item pTemplate="selectedItem">
+              <i class="fa fa-square" aria-hidden="true" [ngStyle]="{'color': item.styleClass}"></i>
+              <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
+            </ng-template>
+            <ng-template let-type pTemplate="item">
+              <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                <i class="fa fa-square" aria-hidden="true" [ngStyle]="{'color': type.styleClass}"></i>
+                <div style="font-size:14px;float:right;margin-top:4px">{{type.label}}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-3 col-sm-3 col-3">
+        <div class="form-group yeats-form-group">
+          <label for="" class="yeats-form-label">Start</label>
+          <p-calendar [(ngModel)]="startTime" [showIcon]="true" [timeOnly]="true"></p-calendar>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-3">
+        <div class="form-group yeats-form-group">
+          <label for="" class="yeats-form-label">End</label>
+          <p-calendar [(ngModel)]="endTime" [showIcon]="true" [timeOnly]="true"></p-calendar>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-3" *ngIf="checkEndDate">
+        <div class="form-group yeats-form-group">
+          <label for="" class="yeats-form-label"> &nbsp;</label>
+          <p-checkbox [(ngModel)]="noEndDate" label="No End Date"></p-checkbox>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+        <div class="form-group yeats-form-group">
+          <label for="" class="yeats-form-label">Reason</label>
+          <textarea [(ngModel)]="reason" [cols]="40" [rows]="3" autoResize="true"></textarea>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+        <label for="" class="yeats-form-label mr-1">Recurrence</label>
+        <!-- <p-radioButton class="rad" name="PatternType" label="item.recuring" *ngFor="let item of originalForUser"  [(ngModel)]="item.RecurringDetails.PatternType" value="0" (onClick)="noneChange()" inputId="opt1">
+        </p-radioButton> -->
+        <p-radioButton class="rad" name="PatternType" label="None" [(ngModel)]="patternType" value="0"
+          (onClick)="noneChange()" inputId="opt1">
+        </p-radioButton>
+        <p-radioButton class="rad" name="PatternType" value="1" label="Daily" [(ngModel)]="patternType" inputId="opt2"
+          (onClick)="dailyChange()">
+        </p-radioButton>
+        <p-radioButton class="rad" name="PatternType" value="2" label="Weekly" [(ngModel)]="patternType" inputId="opt3"
+          (onClick)="weeklyChange()">
+        </p-radioButton>
+        <p-radioButton class="rad" name="PatternType" value="3" label="Monthly" [(ngModel)]="patternType" inputId="opt4"
+          (onClick)="monthlyChange()">
+        </p-radioButton>
+        <p-radioButton class="rad" name="PatternType" value="4" label="Yearly" [(ngModel)]="patternType" inputId="opt5"
+          (onClick)="yearlyChange()">
+        </p-radioButton>
+      </div>
+      <div class="col-lg-6"></div>
+      <div class="col-lg-6" style="margin-top: -2em" *ngIf="yearly">
+        <div class="row">
+          <div class="col-3">
+            <p-radioButton class="rad" name="everyyear" value=0 label="Every" [(ngModel)]="everyYearly"
+              (onClick)="everyYearlyChange()">
+            </p-radioButton>
+          </div>
+          <div class="col-3">
+            <!-- <label for="" class="yeats-form-label">&nbsp;</label> -->
+            <p-dropdown [options]="year" optionLabel="name" [(ngModel)]="yearlyMonth"></p-dropdown>
+          </div>
+          <div class="col-3">
+            <!-- <label for="" class="yeats-form-label">Of Every</label> -->
+            
+            <input type="number" placeholder="Enter days" [(ngModel)]="yearlyDaysEvery"
+              class="form-control yeats-form-control" />
+          </div>
+        </div>
+        <div class="row mt-1">
+          <div class="col-3">
+            <p-radioButton class="rad" name="everyyear" value=1 label="The" [(ngModel)]="everyYearly">
+            </p-radioButton>
+          </div>
+          <div class="col-2" style="max-width: 22.666667% !important">
+            <!-- <label for="" class="yeats-form-label">&nbsp;</label> -->
+            <p-dropdown [options]="number" optionLabel="name" [(ngModel)]="theNumberweeks"></p-dropdown>
+          </div>
+          <div class="col-3">
+            <!-- <label for="" class="yeats-form-label">of</label> -->
+            <!-- <div class="row">
+              <div class="col"> -->
+                <p-dropdown [options]="weekDays" optionLabel="name" [(ngModel)]="theweeksDays"></p-dropdown>
+<!--            
+          </div>
+          </div> -->
+          </div>
+        <div class="col-1" style="margin-left: -1.5rem !important">
+        <span style="font-size: 10px">of</span>
+    </div>
+     <div class="col-3">
+            <!-- <label for="" class="yeats-form-label">&nbsp;</label> -->
+            <p-dropdown [options]="year" optionLabel="name" [(ngModel)]="theYears"></p-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6" *ngIf="monthly" style="margin-top: -2em">
+        <div class="row">
+          <div class="col-3">
+
+            <p-radioButton class="rad" name="monthEvery" value=0 label="Day" [(ngModel)]="monthlyRadioDays">
+            </p-radioButton>
+
+
+          </div>
+          <div class="col-3">
+            <!-- <div class="row">
+              <div class="col"> -->
+                  <input type="number" placeholder="Enter days" [(ngModel)]="monthlyDay"
+                  class="form-control yeats-form-control"  />
+              <!-- </div>
+              <div class="col"> -->
+                
+              <!-- </div> -->
+            <!-- </div> -->
+          </div>
+          <div class="col-1" style="margin-left: -1.5rem !important">
+              <span style="font-size: 10px">every</span>
+          </div>
+          <div class="col-3">
+            <!-- <label for="" class="yeats-form-label">month(s)</label> -->
+            <input type="number" placeholder="Enter days" [(ngModel)]="months"
+              class="form-control yeats-form-control" />
+
+          </div>
+          <div class="col-1" style="margin-left: -1.5rem !important">
+            <span style="font-size: 10px">month(s)</span>
+          </div>
+        </div>
+        <div class="row mt-1">
+          <div class="col-3">
+            <p-radioButton class="rad" name="monthEvery" label="The" value=1 [(ngModel)]="monthlyRadioDays">
+            </p-radioButton>
+          </div>
+          <div class="col-2" style="max-width: 22.666667% !important;margin-left: -1.5rem !important">
+            <!-- <label for="" class="yeats-form-label">&nbsp;</label> -->
+            <p-dropdown [options]="number" optionLabel="name" [(ngModel)]="monthlyNumber"></p-dropdown>
+          </div>
+          <div class="col-3" style="margin-left: -1.5rem !important">
+            <!-- <label for="" class="yeats-form-label">Every</label> -->
+            <p-dropdown [options]="weekDays" optionLabel="name" [(ngModel)]="monthlyWeeks"></p-dropdown>
+          </div>
+          <div class="col-1" style="margin-left: -1.5rem !important">
+            <span style="font-size: 10px">Every</span>
+          </div>
+          <div class="col-2">
+            <!-- <label for="" class="yeats-form-label">month(s)</label> -->
+            <input type="number" placeholder="Enter days" [(ngModel)]="theMonthDays" style="width:4vw"
+              class="form-control yeats-form-control" />
+          </div>
+          <div class="col-1" style="margin-left: -0.5rem !important">
+            <span style="font-size: 10px">month(s)</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6" *ngIf="daily" style="margin-top: -2em">
+        <div class="row">
+          <div class="col-3" >
+            <p-radioButton class="rad" name="dailyButton" value=0 label="Every" [(ngModel)]="dailyButton">
+            </p-radioButton>
+          </div>
+          <div class="col-4">
+            <!-- <label for="" class="yeats-form-label">days(s)</label> -->
+            <input type="number" placeholder="Enter days" [(ngModel)]="everyDaily"
+              class="form-control yeats-form-control" />
+          </div>
+          <div class="col-2" style="margin-left: -1.5rem !important">
+            <span style="font-size: 10px">days(s)</span>
+          </div>
+          <div class="col-12">
+          <p-radioButton class="rad" name="dailyButton" value=1 label="Every Weekday" [(ngModel)]="dailyButton">
+          </p-radioButton>
+        </div>
+        </div>
+      </div>
+      <div class="col-lg-6" *ngIf="weekly" style="margin-top: -2em">
+        <label for="" class="yeats-form-label">Recur every</label>
+        <input type="number" placeholder="Enter days" [(ngModel)]="weeks" class="form-control yeats-form-control"
+           />weeks(s) on:
+        <div class="row">
+
+          <div class="col-6">
+
+
+            <label for="" class="yeats-form-label"> &nbsp;</label>
+            <p-checkbox [(ngModel)]="selectedDay" value="2" label="Monday" name="days" inputId="2" (onChange)="dayChange(selectedDay)">
+            </p-checkbox>
+
+            <label for="" class="yeats-form-label"> &nbsp;</label>
+            <p-checkbox [(ngModel)]="selectedDay" value="4" label="Tuesday" name="days" inputId="4" (onChange)="dayChange(selectedDay)">
+            </p-checkbox>
+
+            <label for="" class="yeats-form-label"> &nbsp;</label>
+            <p-checkbox [(ngModel)]="selectedDay" value="8" label="Wednesday" name="days" inputId="8" (onChange)="dayChange(selectedDay)">
+            </p-checkbox>
+
+            <label for="" class="yeats-form-label"> &nbsp;</label>
+            <p-checkbox [(ngModel)]="selectedDay" value="16" label="Thursday" name="days" inputId="16"  (onChange)="dayChange(selectedDay)">
+            </p-checkbox>
+
+
+          </div>
+          <div class="col-6">
+
+            <label for="" class="yeats-form-label"> &nbsp;</label>
+            <p-checkbox [(ngModel)]="selectedDay" value="32" label="Friday" name="days" inputId="32" (onChange)="dayChange(selectedDay)">
+            </p-checkbox>
+
+            <label for="" class="yeats-form-label"> &nbsp;</label>
+            <p-checkbox [(ngModel)]="selectedDay" value="64" label="Saturday" name="days" inputId="64" (onChange)="dayChange(selectedDay)">
+            </p-checkbox>
+
+            <label for="" class="yeats-form-label"> &nbsp;</label>
+            <p-checkbox [(ngModel)]="selectedDay" value="1" label="Sunday" name="days" inputId="1"  (onChange)="dayChange(selectedDay)">
+            </p-checkbox>
+
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="text-align: right; padding-bottom: 10px;margin-top: 4px">
+      <button pButton class="yeats-btn yeats-btn-primary" (click)="addUserAvailability()" *ngIf="save"
+        style="margin-right: 5px;">Save</button>
+      <button pButton class="yeats-btn yeats-btn-primary" (click)="updateRecurringDetails()" *ngIf="update"
+        style="margin-right: 5px;">Update</button>
+      <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary" (click)="clearButton()"
+        style="margin-right: 5px;">Clear</button>
+      <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary" (click)="modal.dismiss()">Close</button>
+    </div>
+    <div class="yeats-tables">
+        <div class="row mt-2 ml-2">
+            <!-- <label for="" class="yeats-form-label">&nbsp;</label> -->
+            <p-selectButton *ngIf="availbilityException1.length > 0" class="selectButton" 
+              [options]="availbilityException1" [(ngModel)]="selectedModes" (onChange)="colorFilter()" multiple=true>
+              <ng-template let-item>
+                <div style="padding: .5em 1em">
+                  <img style="vertical-align: middle; margin-right: .5em; display: none"
+                    src="https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+                    height="20px" />
+                  <span><i class="fa fa-square" aria-hidden="true" [ngStyle]="{ 'color': item.styles }"></i></span>
+
+                </div>
+              </ng-template>
+            </p-selectButton>
+            <!-- <div class="form-group yeats-form-group "> -->
+              <div style="margin-left: 2px;">
+            <p-checkbox  name="groupname" value="val1" label="Include Past Exceptions" [(ngModel)]="selectedValues" (onChange)="getExperienceForUsers('include')"></p-checkbox>
+            </div>
+            <!-- <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary" (click)="getExperienceForUsers('include')"
+            style="margin-right: 5px;margin-left: .5rem;">Include past exceptions</button>
+      -->
+      <div style="margin-left: 4px;">
+      <p-checkbox  name="filter" value="filter" [(ngModel)]="selectedValues" (onChange)="onFilter()"></p-checkbox>
+      </div>
+            <!-- <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary" (click)="onFilter()"
+              style="margin-right: 5px;">Filter by date</button> -->
+              <div class="col-lg-3 col-md-2 col-sm-2 col-2">
+                  <p style="font-size: 10px">From:</p>
+                <div class="form-group yeats-form-group ">
+                    <!-- <label for="" class="yeats-form-label"> From</label> -->
+                    <p-calendar class="yeats-form-control" [(ngModel)]="filterFromDate" [showIcon]="true" [disabled]="filterDate" (onSelect)="filterByDate()">
+                    </p-calendar>
+                </div>
+             
+            </div>
+            
+            <div class="col-lg-3 col-md-12 col-sm-12 col-12">
+              <!-- <div class="row"> -->
+                <!-- <div class="col-1"> -->
+                <!-- </div> -->
+                <!-- <div class="col-lg-3" style="margin-left: -2em"> -->
+                    <p style="font-size: 10px">To:</p>
+                    <div class="form-group yeats-form-group">
+                        <!-- <label for="" class="yeats-form-label"> To</label> -->
+                  <p-calendar class="yeats-form-control" [(ngModel)]="filterEndDate" [disabled]="filterDate" [showIcon]="true" (onSelect)="filterByDate()"></p-calendar>
+                  </div>
+                <!-- </div> -->
+              <!-- </div> -->
+               
+            </div>
+          </div>
+      <p-table #dt [columns]="cols" [value]="experienceForUser" [scrollable]="true" scrollHeight="200px"
+        [resizableColumns]="true" selectionMode="single" dataKey="ExceptionId" [(selection)]="selectedException"
+        (onRowSelect)="onRowSelect($event)">
+        <!-- <ng-template pTemplate="caption">
+         
+        </ng-template> -->
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th></th>
+            <th *ngFor="let col of columns" pResizableColumn>
+              {{col.header}}
+            </th>
+            <th>Delete</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <td><i class="fa fa-square" aria-hidden="true" [ngStyle]="{'color':rowData.Colour}"></i></td>
+            <td *ngFor="let col of columns" class="ui-resizable-column">
+              {{rowData[col.field]}}
+            </td>
+            <td>
+              <img src="../../../../assets/images/Delete.svg" style="cursor: pointer;" alt="Delete" (click)="deleteUserAvailability(rowData)">
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

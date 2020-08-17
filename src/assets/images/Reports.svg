@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="23.751" height="32.243" viewBox="0 0 23.751 32.243">
+  <g id="Reports" transform="translate(-16.374 -409.963)">
+    <path id="Path_35871" data-name="Path 35871" d="M40.045,9.9H24.306A3.508,3.508,0,0,0,20.8,13.367v24.27a3.516,3.516,0,0,0,3.506,3.506H40.045a3.516,3.516,0,0,0,3.506-3.506V13.367A3.483,3.483,0,0,0,40.045,9.9ZM41.72,37.676a1.646,1.646,0,0,1-1.636,1.636H24.306a1.646,1.646,0,0,1-1.636-1.636V13.367a1.646,1.646,0,0,1,1.636-1.636H40.045a1.646,1.646,0,0,1,1.636,1.636V37.676Z" transform="translate(-3.926 400.563)" fill="#fff" stroke="#fff" stroke-width="1"/>
+    <path id="Path_35872" data-name="Path 35872" d="M38.569,24.187a.9.9,0,0,1-.9.9H35.88v1.794a.9.9,0,1,1-1.792,0V25.084H32.3a.9.9,0,0,1,0-1.794h1.792V21.5a.9.9,0,1,1,1.792,0v1.794h1.792A.928.928,0,0,1,38.569,24.187Z" transform="translate(-9.563 393.923)" fill="#fff"/>
+    <rect id="Rectangle_2564" data-name="Rectangle 2564" width="9" height="2" rx="1" transform="translate(25 428)" fill="#fff"/>
+    <rect id="Rectangle_2623" data-name="Rectangle 2623" width="2" height="2" rx="1" transform="translate(22 428)" fill="#fff"/>
+    <rect id="Rectangle_2565" data-name="Rectangle 2565" width="9" height="2" rx="1" transform="translate(25 433)" fill="#fff"/>
+    <rect id="Rectangle_2624" data-name="Rectangle 2624" width="2" height="2" rx="1" transform="translate(22 433)" fill="#fff"/>
+  </g>
+</svg>

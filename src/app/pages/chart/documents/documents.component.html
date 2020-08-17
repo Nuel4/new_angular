@@ -1,0 +1,199 @@
+<div class="document">
+  <div class="card border-0 box-shadow">
+    <div class="card-header transparent border-0 text-muted">
+      <div class="row">
+
+        <div class="col-lg-3 col-md-3">
+          <div class=" form-group yeats-form-group">
+            <label for="" class="yeats-form-label">Document Name</label>
+            <input type="text" pInputText class=" form-control yeats-form-control" [(ngModel)]="filters.documentName" (keyup)="inputText(filters.documentName)"
+
+              placeholder="Document Name">
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-3">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Category</label>
+            <p-dropdown [options]="dmsCategoryList" [(ngModel)]="filters.selectedCategory"
+              placeholder="Select a Category" optionLabel="CategoryName" [showClear]="true"></p-dropdown>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-3">
+          <div class="row">
+            <div class="col">
+                <div class="form-group yeats-form-group ">
+                    <label for="" class="yeats-form-label">&nbsp;</label>
+                    <button pButton class="yeats-btn yeats-btn-primary" (click)="getDocumentList(); DocTab.reset()">Search
+                      Document</button>
+                  </div>
+            </div>
+            <div class="col">
+                <div class="form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">&nbsp;</label>
+                    <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-left" style="margin-left: -1.5em" (click)="onCancel()">Cancel</button>
+                  </div>
+            </div>
+          </div>
+          
+        </div>
+      
+
+
+        <div class="col-lg-12 col-md-12 col-sm-6">
+          <div class="form-group yeats-form-group ">
+            <label for="" class="yeats-form-label">&nbsp;</label>
+            <button pButton class="yeats-btn yeats-btn-primary mr-2 pull-right"
+              (click)="openbsmodal('upload',selectRow)"><i class="fa fa-upload mr-2"></i>Upload Document</button>
+            <button pButton class="yeats-btn yeats-btn-primary mr-2 pull-right" (click)="openbsmodal('edit',selectRow)"
+              [disabled]="!selectRow"><i class="fa fa-pencil mr-2"></i>Edit Document</button>
+            <button pButton class="yeats-btn yeats-btn-primary mr-2 pull-right" (click)="openbsmodal('transfer',selectRow)"
+              [disabled]="!selectRow">Transfer Document</button>
+            <button pButton class="yeats-btn yeats-btn-danger mr-2 pull-right" (click)="openbsmodal('delete',selectRow)"
+              [disabled]="!selectRow">Delete Document</button>
+          </div>
+
+          <div class="col-lg-12 col-md-12 sm-12">
+            <div *ngIf="isLoader" class="row">
+              <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+            </div>
+                    <div class="table-responsive" *ngIf="!isLoader">
+                <div class="yeats-tables">
+              <p-table [value]="documentList.Results" #DocTab [rows]="documentList.PageSize"  [totalRecords]="documentList.TotalItems" [paginator]="true"
+              [lazy]="true" (onLazyLoad)="paginate($event)"
+                  [pageLinks]="3" [responsive]="true" selectionMode="single" [(selection)]="selectRow"
+                (onRowSelect)="onRowSelect($event)" dataKey="DateCreated">
+                <ng-template pTemplate="colgroup" let-columns>
+                  <colgroup>
+                      <col *ngFor="let col of cols" [style.width]="col.width">
+                  </colgroup>
+              </ng-template>
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th *ngFor="let col of cols" pResizableColumn>
+                      {{col.header}}
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData>
+                  <tr [pSelectableRow]="rowData" (click)="onSelectRow(rowData)">
+
+                    <td>
+                      <!-- <i class="fa fa-search" *ngIf="((rowData.Extension==='.png')||(rowData.Extension==='.jpg')||(rowData.Extension==='.jpeg')||(rowData.Extension==='.tiff'))&&(rowData.SavedMethodIdentifier === 1)" (click)="openbsmodal('signature',rowData)">
+                      </i> -->
+                      <button pButton class="ui-button-secondary" icon="pi pi-plus" label="Add Signature"
+                      [disabled]="!(((rowData.Extension==='.png')||(rowData.Extension==='.jpg')||(rowData.Extension==='.jpeg')||(rowData.Extension==='.tiff'))&&(rowData.SavedMethodIdentifier === 1))" (click)="openbsmodal('signature',rowData)"></button>
+                      <!-- <button pButton type="button"  label="Add Signature" class="ui-button-secondary"></button> -->
+                      <!-- <p-button pButton type="button" label="Add Signature" class="ui-button-secondary"></p-button> -->
+                        <!-- <img class='image' src="../../../../assets/icons/noun_signature_1934316.svg" *ngIf="((rowData.Extension==='.png')||(rowData.Extension==='.jpg')||(rowData.Extension==='.jpeg')||(rowData.Extension==='.tiff'))&&((rowData.SavedMethodIdentifier === 1)||(rowData.SavedMethodIdentifier === 4))" (click)="openbsmodal('signature',rowData)"> -->
+                        <!-- <p *ngIf="!Signature" (click)="openbsmodal('signature',rowData)">&nbsp;&nbsp;&nbsp;&nbsp;</p> -->
+                      <!-- <i class="fa fa-map-signs" (click)="openbsmodal('signature',rowData)"></i> -->
+                    </td>
+                    <!-- onDownload(rowData,view) -->
+                    <td pEditableColumn><i class="fa fa-search" (click)="openbsmodal('view',rowData)"></i></td>
+                    <td pEditableColumn style="word-break: break-all;">{{rowData.Name}}</td>
+                    <td pEditableColumn>
+                      <span *ngIf="rowData.SavedMethodIdentifier === 2">Scanned file</span>
+                      <span *ngIf="rowData.SavedMethodIdentifier === 1">Uploaded file</span>
+                      <span *ngIf="rowData.SavedMethodIdentifier === 3">Sketch Pad file</span>
+                      <span *ngIf="rowData.SavedMethodIdentifier === 4">Uploaded file</span>
+                    </td>
+                    <td pEditableColumn>{{rowData.DateCreated | date: 'yyyy-MM-dd'}}</td>
+                    <td pEditableColumn>{{rowData.Documentdate | date: 'yyyy-MM-dd'}}</td>
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <p-dropdown placeholder="Select a Category" [options]="dmsCategoryList" [(ngModel)]="rowData.DmsCategoryName" optionLabel="CategoryName" (onChange)="updateCat(rowData,DocTab)"[style]="{'width':'100%'}"></p-dropdown>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.DmsCategoryName}}
+                            </ng-template>
+                        </p-cellEditor>
+
+                        <!-- <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <p-dropdown [options]="dmsCategoryList" [(ngModel)]="rowData.DmsCategoryName"
+                                placeholder="Select a Category"  (onChange)="updateCat(rowData,DocTab)" optionLabel="CategoryName"></p-dropdown>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                  {{rowData.DmsCategoryName}}
+                              </ng-template>
+                          </p-cellEditor> -->
+                      </td>
+                    <td pEditableColumn>
+                      <span *ngIf="rowData.ReviewedStatus === 2">Reviewed</span>
+                      <span *ngIf="rowData.ReviewedStatus === 1">For Review</span>
+                    </td>
+                    <td pEditableColumn><i class="fa fa-search" *ngIf="rowData.EncounterId" (click)="openbsmodal('fileEncounter',rowData)"></i></td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+            </div>
+          </div>
+
+          <div class="col-lg-12 col-md-12 sm-12">
+            <div class="form-group yeats-form-group ">
+              <label class="yeats-form-label">&nbsp;</label>
+              <button pButton class="yeats-btn yeats-btn-primary mr-2" (click)="openbsmodal('review_scans',selectRow)"><i
+                  class="fa fa-search-plus mr-1" aria-hidden="true"></i>Review Scans</button>
+              <button pButton class="yeats-btn yeats-btn-primary mr-2" [disabled]="!selectRow" (click)="openbsmodal('attach_file',selectRow)"><i
+                  class="fa fa-share mr-1" aria-hidden="true"></i>Attach File To Encounter</button>
+              <button pButton class="yeats-btn yeats-btn-primary"><i class="fa fa-print mr-1"
+                  aria-hidden="true"></i>Print
+                All Scans</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="reviewScansModal" tabindex="-1" role="dialog" aria-labelledby="reviewScansModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:1000px">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="letterModalLabel">patientname.document</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12 col-sm-12">
+              <div class="form-group yeats-form-group ">
+                <button pButton class="yeats-btn yeats-btn-primary mr-2" disabled><i class="fa fa-chevron-down mr-1"
+                    aria-hidden="true"></i>Mark As Reviewed</button>
+                <button pButton class="yeats-btn yeats-btn-primary mr-2" disabled>Edit Scan Details</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+      <ng-template #view let-modal>
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+            <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <!-- <div *ngIf="!(viewDocument.Extension === '.pdf')">
+                  <img class='image' [src]="pdfSrc" width="100%" height="100%">
+              </div> -->
+              <div style="height:500px" *ngIf="!(viewDocument.Extension === '.pdf')">
+                  <!-- <pdf-viewer [src]="pdfSrc"
+                      [render-text]="true"
+                      style="display: block;">
+                  </pdf-viewer> -->
+          </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">Save</button>
+          </div>
+        </ng-template>

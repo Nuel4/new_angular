@@ -1,0 +1,192 @@
+<div class="vital">
+<div class="card border-0 box-shadow">
+  <div class="card-header transparent border-0 text-muted">
+    <div class="row">
+
+      <div class="{{isenableFourCol? 'col-lg-3 col-md-3 col-sm-3 col-3':'col-lg-6 col-md-6 col-6'}}" style="padding-right:0px;">
+        <div class="form-group yeats-form-group">
+          <label for="" class="yeats-form-label ">Weight</label>
+          <input (input)="calculateBmi()" type="number"  class=" form-control yeats-form-control w-33 d-inline inputBox" placeholder="0" [(ngModel)]="weight1">&nbsp;
+          
+          <ng-container *ngIf="selectedLbsOz">lbs&nbsp;
+            <input type="number" (input)="calculateBmi()"  class=" form-control yeats-form-control w-33 d-inline inputBox" placeholder="0" [(ngModel)]="weight2">&nbsp; oz &nbsp;</ng-container>
+         
+          <p-dropdown class="dropDown a" [options]="weightUnit" (onChange)="calculateBmi(selectedWeightUnit)" [(ngModel)]="selectedWeightUnit" optionLabel="name"></p-dropdown>
+          <!-- <input type="text" class=" form-control yeats-form-control w-33 d-inline border-left-0" placeholder="0"> -->
+          <!-- <input type="text" class=" form-control yeats-form-control w-33 d-inline border-left-0" placeholder="dropdown"> -->
+        </div>
+      </div>
+
+      <div class="{{isenableFourCol? 'col-lg-3 col-md-3 col-sm-3 col-3':'col-lg-6 col-md-6 col-6'}}" style="padding:0px">
+        <div class="form-group yeats-form-group">
+          <label for="" class="yeats-form-label">Height</label>
+          <input (change)="calculateBmi()" type="number" class=" form-control yeats-form-control w-33 d-inline inputBox" placeholder="0" [(ngModel)]="height1">&nbsp;
+          <ng-container *ngIf="selectedFeet">ft &nbsp;<input (change)="calculateBmi()" type="number" class=" form-control yeats-form-control w-33 d-inline inputBox" placeholder="0" [(ngModel)]="height2">&nbsp; in &nbsp;</ng-container>
+          <p-dropdown class="dropDown a" (onChange)="calculateBmi(selectedHeightUnit)"  [options]="heightUnit" [(ngModel)]="selectedHeightUnit" optionLabel="name"></p-dropdown>
+          <!-- <input type="text" class=" form-control yeats-form-control w-33 d-inline border-left-0" placeholder="dropdown"> -->
+        </div>
+      </div>
+    <!-- </div> -->
+    <!-- <div class="row"> -->
+      <div class="{{isenableFourCol? 'col-lg-3 col-md-3 col-sm-3 col-3':'col-lg-3 col-md-3 col-3'}}">
+        <div class="form-group yeats-form-group">
+          <label for="" class="yeats-form-label">BMI</label>
+          <input type="number" class="form-control yeats-form-control" [(ngModel)]="bmi" disabled>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-3 col-sm-3 col-3">
+        <div class="form-group yeats-form-group">
+          <label for="" class="yeats-form-label">BMI Status </label>
+          <p-dropdown [options]="bmiStatus" optionLabel="name" [(ngModel)]="selectedBmiStatus" disabled></p-dropdown>
+        </div>
+      </div>
+<!--       
+      <div class="{{isenableFourCol? 'col-lg-3 col-md-3 col-sm-3 col-3':'col-lg-7 col-md-7 col-7'}}">
+          <div class="form-group yeats-form-group">
+            <label class="formLabel yeats-form-label" for="heart_rate">Heart Rate(HR)</label>
+            <input type="text" class="form-control yeats-form-control w-50 d-inline mr-3" [(ngModel)]="heartRate" placeholder="(beats per minute)" />
+            <p-checkbox class="yeats-form-control" label="Irregular Heart Rate"
+              [(ngModel)]="irregularHT" binary="true"></p-checkbox>
+          </div>
+        </div> -->
+        <div class="{{isenableFourCol? 'col-lg-3 col-md-3 col-sm-3 col-3':'col-lg-3 col-md-3 col-3'}}">
+          <div class="form-group yeats-form-group">
+            <label class="formLabel yeats-form-label" for="heart_rate">Heart Rate(HR)</label>
+            <input type="text" class="form-control yeats-form-control d-inline " (input)="calculateBmi()" [(ngModel)]="heartRate" placeholder="(beats per minute)" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-3 mt-4">
+            <div class="form-group yeats-form-group">
+                <label for="" class="yeats-form-label"> </label>
+                <p-checkbox class="yeats-form-control" label="Irregular Heart Rate"
+                [(ngModel)]="irregularHT" (ngModelChange)="calculateBmi()" binary="true"></p-checkbox>
+            </div>
+        </div>
+
+      <div class="{{isenableFourCol? 'col-lg-3 col-md-3 col-sm-3 col-3':'col-lg-5 col-md-5 col-5 mt-4'}}">
+        <div class="form-group yeats-form-group">
+          <label class="formLabel yeats-form-label" for="circumference">Head Circumference</label>
+          <input class=" form-control yeats-form-control d-inline w-50 head mr-2" type="text" [(ngModel)]="headCircumference" (input)="calculateBmi()" />
+          <p-dropdown [options]="circumferenceUnit" class="head a" optionLabel="name" [(ngModel)]="selectedCircumUnit"></p-dropdown>
+        </div>
+      </div>
+
+      <!-- <div class="col-lg-3 col-md-6">
+        <div class="form-group yeats-form-group">
+          <label for="" class="yeats-form-label">Height</label>
+          <input type="text" class=" form-control yeats-form-control w-50 d-inline " placeholder="">
+          <input type="text" class=" form-control yeats-form-control w-50 d-inline border-left-0" placeholder="dropdown">
+        </div>
+      </div> -->
+
+     
+
+      <div class="{{isenableFourCol? 'col-lg-3 col-md-3 col-sm-3 col-3':'col-lg-4 col-md-4 col-4'}}">
+        <div class=" form-group yeats-form-group"> <label for="" class="yeats-form-label">Blood Pressure(BP)</label>
+          <div class="d-flex justify-content-between">
+            <input type="text" class=" form-control yeats-form-control d-inline w-50" [(ngModel)]="systolic" placeholder="(systolic)" (input)="calculateBmi()">
+            <span class="d-inline px-3">/</span>
+            <input type="text" class=" form-control yeats-form-control d-inline w-50"[(ngModel)]="diastolic" placeholder="(diastolic)" (input)="calculateBmi()">
+          </div>
+        </div>
+      </div>
+
+   <div class="{{isenableFourCol? 'col-lg-3 col-md-3 col-sm-3 col-3':'col-lg-3 col-md-3 col-3'}}">
+        <div class="form-group yeats-form-group">
+          <label for="" class="yeats-form-label">Respiration Rate</label>
+          <input type="text" class=" form-control yeats-form-control d-inline " [(ngModel)]="respirationRate" placeholder="(breaths per minute)" (input)="calculateBmi()">
+          <!-- <input type="text" class=" form-control yeats-form-control w-50 d-inline border-left-0" placeholder="dropdown"> -->
+        </div>
+      </div>
+
+      <div class="{{isenableFourCol? 'col-lg-3 col-md-3 col-sm-3 col-3':'col-lg-3 col-md-3 col-3'}}">
+        <div class="form-group yeats-form-group">
+          <label class="formLabel yeats-form-label" for="temperature">Temperature</label>
+          <input class=" form-control yeats-form-control d-inline" type="text" [(ngModel)]="temperature" placeholder="Fahrenheit (F)" (input)="calculateBmi()"/>
+        </div>
+      </div>
+
+      <div class="{{isenableFourCol? 'col-lg-3 col-md-3 col-sm-3 col-3':'col-lg-4 col-md-4 col-4'}}">
+        <div class="form-group yeats-form-group">
+          <label class="formLabel yeats-form-label" for="method">Method</label>
+          <p-dropdown class="yeats-form-control" [options]="method" [(ngModel)]="selectedMethod" optionLabel="name" (ngModelChange)="calculateBmi()"
+             [autoWidth]="false"></p-dropdown>
+        </div>
+      </div>
+
+      <div class="{{isenableFourCol? 'col-lg-3 col-md-3 col-sm-3 col-3':'col-lg-4 col-md-4 col-4'}}">
+        <div class="form-group yeats-form-group">
+          <label class="formLabel yeats-form-label" for="comment">Comment</label>
+          <textarea autoResize="autoResize" class="yeats-form-control" style="width:100%" pInputTextarea [(ngModel)]="comment" type="text" (input)="calculateBmi()"></textarea>
+        </div>
+      </div>
+
+      <div class="col-lg-12 col-md-12 col-sm-12" >
+        <div class="form-group yeats-form-group">
+          <button pButton class="yeats-btn yeats-btn-primary pull-right" (click)="clearAddMeasures()">Clear</button>
+          <!-- <button (click)="onAdditionalMeasure()" pButton class="yeats-btn yeats-btn-primary pull-right mr-3">Additional -->
+            <!-- Measure</button> -->
+        </div>
+      </div>
+
+      <!-- <div class="col-lg-12">
+        <div class="col-lg-6 col-md-6">
+          <div class="form-group yeats-form-group ">
+            <label for="" class="yeats-form-label"> </label>
+            <input type="text" class="form-control yeats-form-control w-25 d-inline mr-2" placeholder="Measure *">
+            <input type="text" class="form-control yeats-form-control w-25 d-inline mr-2" placeholder="Value *">
+            <input type="text" class="form-control yeats-form-control w-25 d-inline mr-2" placeholder="Unit *">
+          </div>
+        </div>
+        
+      </div> -->
+      <div class="col-lg-12">
+        <!-- <div class="col-lg-6"> -->
+          <div class="row">
+        <div class="col-lg-1 ml-4">
+            <label for="" class="yeats-form-label">Measure</label>
+            </div>
+        <div class="col-lg-1 ml-5">
+            <label for="" class="yeats-form-label">Value</label>
+            </div>
+        <div class="col-lg-1 ml-5">
+            <label for="" class="yeats-form-label">Unit</label>
+            </div>
+          </div>
+</div>
+        <!-- </div> -->
+      <div class="col-lg-12" *ngFor="let cnt of addMeasure; let i = index">
+        <div class="col-lg-6">
+          <div class="form-group ">
+              <!-- <label for="" class="yeats-form-label" *ngIf="i == 0">Measure</label> -->
+            <input type="text" class="form-control yeats-form-control w-25 d-inline mr-2" [(ngModel)]="measure[cnt]" (input)="calculateBmi()">
+            <!-- <label for="" class="yeats-form-label" *ngIf="i == 0">Value</label> -->
+            
+            <input type="text" class="form-control yeats-form-control w-25 d-inline mr-2" [(ngModel)]="value[cnt]" (input)="calculateBmi()">
+            <!-- <label for="" class="yeats-form-label" *ngIf="i == 0">Unit</label> -->
+            
+            <input type="text" class="form-control yeats-form-control w-25 d-inline mr-2" [(ngModel)]="unit[cnt]" (input)="calculateBmi()">
+            <i *ngIf = "cnt == '1'" style="font-size: 15px; color: #116fbf; cursor: pointer;" class="fa fa-plus" (click)="onAdditionalMeasure()"></i>
+            <i class="fa fa-times" style="cursor: pointer" (click)="onRemove(i)" *ngIf = "cnt != '1'"></i>
+            <!-- <button (click)="onRemove(i)" *ngIf = "cnt != '1'" pButton class="yeats-btn yeats-btn-danger ui-button-danger"> <i class="fa fa-times" (click)="onRemove(i)" *ngIf = "cnt != '1'"></i> </button> -->
+          </div>
+
+        </div>
+        
+          
+      
+      </div>
+
+
+      <div class="col-lg-12 col-md-12 col-sm-12 mb-1">
+        <div class="form-group yeats-form-group">
+          <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right" (click)="pageCancel()" *ngIf="isenableCancelBtn">Cancel</button>
+          <button pButton class="yeats-btn yeats-btn-primary pull-right mr-3" (click)="addVitals()" *ngIf="isenableCancelBtn">OK</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>

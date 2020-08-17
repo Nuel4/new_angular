@@ -1,0 +1,72 @@
+<div class="patient- m-2">
+  <label for="" class="yeats-form-label">Search Criteria(comma seperated list)</label>
+  <div class="row">
+    <div class="{{isenableControls? 'col-lg-3 col-3':'col-lg-4 col-4'}}">
+      <label for="" class="yeats-form-label">Language</label>
+      <p-dropdown [options]="language" optionLabel="label" [(ngModel)]="selectedLanguage" (onChange)="onFormDataChange()">Reasons</p-dropdown>
+    </div>
+    <div class="{{isenableControls? 'col-lg-3 col-3':'col-lg-4 col-4'}}">
+      <label for="" class="yeats-form-label">Medical Conditions/Problems</label>
+      <input type="text" [(ngModel)]="medical" pInputText class="form-control yeats-form-control" (input)="onFormDataChange()" />
+    </div>
+    <div class="{{isenableControls? 'col-lg-3 col-3':'col-lg-4 col-4'}}">
+      <label for="" class="yeats-form-label">Medications</label>
+      <input type="text" [(ngModel)]="medications" pInputText class="form-control yeats-form-control" (input)="onFormDataChange()"/>
+    </div>
+    <div class="col-3">
+      <label for="" class="yeats-form-label">Lab Tests</label>
+      <input type="text" [(ngModel)]="labtest" pInputText class="form-control yeats-form-control" (input)="onFormDataChange()"/>
+    </div>
+    <div class="col-3">
+      <label for="" class="yeats-form-label">Procedures</label>
+      <input type="text" [(ngModel)]="procdures" pInputText class="form-control yeats-form-control" (input)="onFormDataChange()"/>
+    </div>
+    <div class="col-3">
+      <label for="" class="yeats-form-label">Topic</label>
+      <input type="text" [(ngModel)]="topic" pInputText class="form-control yeats-form-control" (input)="onFormDataChange()"/>
+    </div>
+    <div class="col-3">
+      <label for="" class="yeats-form-label">Related Products</label>
+      <input type="text" [(ngModel)]="relatedproduct" pInputText class="form-control yeats-form-control" (input)="onFormDataChange()"/>
+    </div>
+    <div class="col-12">
+      <label for="" class="yeats-form-label">&nbsp;</label>
+      <button pButton class="yeats-btn yeats-btn-primary ml-2 pull-right" (click)="openPrevious()">
+        View Previous
+      </button>
+      <button pButton class="yeats-btn yeats-btn-primary pull-right" (click)="SearchPatientEducationResources()">
+        Search
+      </button>
+    </div>
+    <div class="col-12">
+      <div class="yeats-tables">
+        <p-table>
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="a" data-toggle="tooltip" title="Document">Document</th>
+              <th class="a" data-toggle="tooltip" title="Email">Email</th>
+              <th class="a" data-toggle="tooltip" title="Date Email sent">Date Email sent</th>
+              <th class="a" data-toggle="tooltip" title="Print">Print</th>
+              <th class="a" data-toggle="tooltip" title="Date printed">Date printed</th>
+              <th class="a" data-toggle="tooltip" title="Patient portal">Patient portal</th>
+              <th class="a" data-toggle="tooltip" title="Action">Action</th>
+            </tr>
+            <tr *ngFor="let item of patientEducationList">
+              <td>{{item.DocumentTitle}}</td>
+              <td></td>
+              <td>{{item.DateEmailed | date: 'MM/dd/yyyy'}}</td>
+              <td></td>
+              <td>{{item.DatePrinted | date: 'MM/dd/yyyy'}}</td>
+              <td></td>
+              <td> <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary"
+                  style="margin-left: -10px">View</button></td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body">
+
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</div>

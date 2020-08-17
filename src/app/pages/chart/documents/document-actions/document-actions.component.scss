@@ -1,0 +1,29 @@
+
+.document-actions{
+.modelStyle  > .modal-dialog{ 
+    margin-top: 15% ;
+    max-width: 30%;
+
+}
+}
+.responsive {
+    width: 100%;
+    height: auto;
+    overflow: scroll;
+  }
+.m-img-upload-btn{
+    position: absolute;
+    padding: 0;
+    width: calc(100% - 30px);
+    height: 38px;
+    opacity: 0;
+}
+.file-upload-btn {
+    width: auto;
+    padding: 0 0.75rem !important;
+    min-width: 4rem;
+    max-height: 1.5rem;
+    line-height: 1.375rem;
+    font-size: 12px;
+    border-radius: 2px;
+  }

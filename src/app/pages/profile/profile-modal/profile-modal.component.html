@@ -1,0 +1,275 @@
+<div class="profile-modal">
+  <div *ngIf="viewModal">
+    <div class="modal-header">
+      <h4 class="modal-title">Change PIN</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <label for="" class="yeats-form-label">PIN</label>
+      <input type="password" pInputText class="form-control yeats-form-control" [(ngModel)]="pinNumber" />
+    </div>
+    <div class="col-12">
+      <button
+        pButton
+        class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+        style="margin-bottom:3em "
+        (click)="modal.close('Close click')"
+      >
+        Cancel
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary pull-right ml-3"
+        style="margin-bottom:3em " 
+        (click)="changePin()"
+      >
+        Save
+      </button>
+    </div>
+  </div>
+  <div *ngIf="password">
+    <div class="modal-header">
+      <h4 class="modal-title">Change Password</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <label for="" class="yeats-form-label">User name</label
+      ><span class="required">*</span>
+      <input type="text" pInputText class="form-control yeats-form-control" [(ngModel)]="userName"/>
+      <label for="" class="yeats-form-label">New Password</label
+      ><span class="required">*</span>
+      <input type="password" pInputText class="form-control yeats-form-control" [(ngModel)]="newPassWord" />
+      <label for="" class="yeats-form-label">Confirm Password</label
+      ><span class="required">*</span>
+      <input type="password" pInputText class="form-control yeats-form-control" [(ngModel)]="confirmPassword" />
+    </div>
+    <div class="col-12">
+      <button
+        pButton
+        class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+        style="margin-bottom:3em "
+        (click)="modal.close('Close click')"
+      >
+        Cancel
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary pull-right ml-3"
+        style="margin-bottom:3em " (click)="changePassword(newPassWord,confirmPassword)"
+      >
+        Save
+      </button>
+    </div>
+  </div>
+  <div *ngIf="userInfo">
+    <div class="modal-header">
+      <h4 class="modal-title">Edit User Info</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-4">
+          <label for="" class="yeats-form-label">License</label>
+          <input
+            type="text"
+            pInputText
+            class="form-control yeats-form-control" [(ngModel)]="license"
+          />
+        </div>
+        <div class="col-lg-4">
+          <label for="" class="yeats-form-label">License State</label>
+          <input
+            type="text"
+            pInputText
+            class="form-control yeats-form-control" [(ngModel)]="licenseState"
+          />
+        </div>
+        <div class="col-lg-4">
+          <label for="" class="yeats-form-label"
+            >NPI<span class="required">*</span></label
+          >
+          <input
+            type="text"
+            pInputText
+            class="form-control yeats-form-control" [(ngModel)]="npi"
+          />
+        </div>
+        <div class="col-lg-4">
+          <label for="" class="yeats-form-label"
+            >Physical Tax Identifier<span class="required">*</span></label
+          >
+          <input
+            type="text"
+            pInputText
+            class="form-control yeats-form-control" [(ngModel)]="physicalTaxIden"
+          />
+        </div>
+        <div class="col-lg-4">
+          <label for="" class="yeats-form-label"
+            >Drug Enforcement Administration No:</label
+          >
+          <input
+            type="text"
+            pInputText
+            class="form-control yeats-form-control" [(ngModel)]="drugEnforcementAdmin"
+          />
+        </div>
+        <div class="col-lg-4">
+          <label for="" class="yeats-form-label"
+            >Unique Physical Identification No.</label
+          >
+          <input
+            type="text"
+            pInputText
+            class="form-control yeats-form-control" [(ngModel)]="uniquePhysician"
+          />
+        </div>
+        <div class="col-lg-4">
+          <label for="" class="yeats-form-label"
+            >Physician Provider Code(xlink)</label
+          >
+          <input
+            type="text"
+            pInputText
+            class="form-control yeats-form-control" [(ngModel)]="physicianProviderCode"
+          />
+        </div>
+        <div class="col-lg-4">
+          <label for="" class="yeats-form-label">&nbsp;</label>
+          <p-checkbox
+            class="yeats-form-control"
+            label="Medicare Participant" [(ngModel)]="medicare" binary="true"
+          ></p-checkbox>
+        </div>
+        <div class="col-lg-4">
+          <label for="" class="yeats-form-label">Taxonomy Code</label>
+          <input
+            type="text"
+            pInputText
+            class="form-control yeats-form-control" [(ngModel)]="taxanomyCode"
+          />
+        </div>
+        <div class="col-lg-6">
+          <div class="row">
+            <div class="col-lg-3">
+                <label for="" class="yeats-form-label">Signature</label>
+                <button pButton class="yeats-btn yeats-btn-primary mr-1">
+                    <label> Locate Signature
+                        <input type="file" style="display:none" name="fileupload"  id="fileupload" accept=".png" (change)="uploadImage($event)"/></label>
+                 
+                </button>
+                <!-- <button pButton class="yeats-btn yeats-btn-primary mt-1">
+                  Remove Signature
+                </button> -->
+            </div>
+            <div class="col-lg-3">
+              <img   width="89.997" height="90" [src]="imgURL" style="border-radius: 0%;"/>
+            </div>
+          </div>
+         
+        </div>
+        <div class="col-lg-4">
+          <div class="form-group yeats-form-group ">
+            <label for="appointmentDuration" class="formLabel yeats-form-label"
+              >Appointment Duration</label
+            >
+            <p-dropdown
+              [options]="appointmentDuration"
+              optionLabel="label"
+              [showClear]="true"
+              [(ngModel)]="selectedDuration"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <button
+        pButton
+        class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+        style="margin-bottom:3em "
+        (click)="modal.close('Close click')"
+      >
+        Cancel
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary pull-right ml-3"
+        style="margin-bottom:3em " (click)="editUserInfo()"
+      >
+        Finish
+      </button>
+    </div>
+  </div>
+  <div *ngIf="userSchedule">
+    <div class="modal-header">
+      <h4 class="modal-title">User Weekly Schedule</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-userschedule></app-userschedule>
+  </div>
+  </div>
+  <div *ngIf="preferredIcd">
+    <div class="modal-header">
+      <h4 *ngIf="icdTitle" class="modal-title">Preferred Diagnosis Codes</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-add-problems [preferredIcd]="true" ></app-add-problems>
+  </div>
+  </div>
+  <div *ngIf="preferredCpt">
+    <div class="modal-header">
+      <h4 class="modal-title">Preferred CPT Codes</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-select-cpt-code [preferredCpt]="true"></app-select-cpt-code>
+     
+  </div>
+  </div>
+</div>

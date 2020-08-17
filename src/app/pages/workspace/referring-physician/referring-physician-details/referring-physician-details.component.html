@@ -1,0 +1,175 @@
+<div class="referringPhysicianDetails">
+    <div class="card border-0 box-shadow cardMargin">
+      <div class="card-header transparent border-0 text-muted">
+        <div class="card-body">
+            <div *ngIf="isLoader" class="row">
+                <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+            </div>
+          <div class="row" *ngIf="!isLoader">
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group">
+                <label for="ReferringPhysicianFirstName" class="yeats-form-label">First Name
+                </label>
+                <input type="text" class="form-control yeats-form-control" placeholder="Enter name"
+                  [(ngModel)]="setReferringPhysician.ReferringPhysicianFirstName" name="ReferringPhysicianFirstName"
+                  id="ReferringPhysicianFirstName" />
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group">
+                <label for="Lastname" class="yeats-form-label">Last Name <span class="required">*</span></label>
+                <input type="text" class="form-control yeats-form-control" placeholder="Enter name"
+                  [(ngModel)]="setReferringPhysician.ReferringPhysicianLastName" name="ReferringPhysicianLastName"
+                  id="Lastname" required/>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group">
+                <label for="add1" class="yeats-form-label">Address Line 1 <span class="required">*</span></label>
+                <input type="text" class="form-control yeats-form-control" placeholder="Enter Address"
+                  [(ngModel)]="setReferringPhysician.AddressLine1" name="AddressLine1" id="add1" />
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group">
+                <label for="add2" class="yeats-form-label">Address Line 2 </label>
+                <input type="text" class="form-control yeats-form-control" placeholder="Enter Address"
+                  [(ngModel)]="setReferringPhysician.AddressLine2" name="AddressLine2" id="add2" />
+              </div>
+            </div>
+  
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group">
+                <label for="city" class="yeats-form-label">City <span class="required">*</span></label>
+                <input type="text" class="form-control yeats-form-control" placeholder="Enter city"
+                  [(ngModel)]="setReferringPhysician.City" name="City" id="city" />
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12 ">
+              <div class="form-group yeats-form-group">
+                <label class="formLabel yeats-form-label">State</label>
+                <p-dropdown [options]="stateList" placeholder="Select a State" optionLabel='value' [showClear]="true"
+                  name="StateCode" id="state" [(ngModel)]="formstate"></p-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group">
+                <label for="ZipCode" class="yeats-form-label">Zip Code</label>
+                <!-- <input type="text"  pInputText maxlength="5" pattern="[0-9]" class="form-control yeats-form-control" name="ZipCode" id="ZipCode"
+                  [(ngModel)]="setReferringPhysician.ZipCode" /> -->
+                  <p-inputMask mask="99999" [(ngModel)]="setReferringPhysician.ZipCode" name="PrimaryZipPlus4"
+                        class="mpl-0" [maxlength]=5  placeholder="Enter ZipCode"></p-inputMask>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group">
+                <label for="ZipPlus4" class="yeats-form-label">Zip code 4 </label>
+                <!-- <input type="text"  pInputText maxlength="4" pattern="[0-9]" class="form-control yeats-form-control" name="ZipPlus4"
+                  [(ngModel)]="setReferringPhysician.ZipPlus4" id="ZipPlus4" /> -->
+                  <p-inputMask mask="9999" [(ngModel)]="setReferringPhysician.ZipPlus4" name="PrimaryZipPlus4"
+                        class="mpl-0" [maxlength]=4 placeholder="Enter ZipCode4"></p-inputMask>
+              </div>
+            </div>
+  
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group">
+                <label for="MainPhone" class="yeats-form-label">Primary Number
+                </label>
+                <!-- <input type="text"  pInputText maxlength="10" pattern="[0-9]" class="form-control yeats-form-control" [(ngModel)]="setReferringPhysician.MainPhone"
+                  name="MainPhone" id="MainPhone" /> -->
+                  <p-inputMask mask="(999) 999-9999" [(ngModel)]="setReferringPhysician.MainPhone" 
+                    placeholder="Enter Primary Number" name="HomePhone" required></p-inputMask>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group">
+                <label for="MobilePhone" class="yeats-form-label">Mobile Phone
+                </label>
+                <!-- <input type="text"  pInputText maxlength="10" pattern="[0-9]" class="form-control yeats-form-control"
+                  [(ngModel)]="setReferringPhysician.MobilePhone" name="MobilePhone" id="MobilePhone" />                   -->
+                  <p-inputMask mask="(999) 999-9999" [(ngModel)]="setReferringPhysician.MobilePhone" 
+                    placeholder="Enter Primary Number" name="HomePhone" required></p-inputMask>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group">
+                <label for="AltPhone" class="yeats-form-label">Alternate Phone
+                </label>
+                <!-- <input type="text"  pInputText maxlength="10" pattern="[0-9]" class="form-control yeats-form-control" [(ngModel)]="setReferringPhysician.AltPhone"
+                  name="AltPhone" id="AltPhone" />                   -->
+                  <p-inputMask mask="(999) 999-9999" [(ngModel)]="setReferringPhysician.AltPhone" 
+                    placeholder="Enter Primary Number" name="HomePhone" required></p-inputMask>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group">
+                <label for="Fax" class="yeats-form-label">Fax </label>
+                <!-- <input type="text"  pInputText maxlength="10" pattern="[0-9]" class="form-control yeats-form-control" name="Fax"
+                  [(ngModel)]="setReferringPhysician.Fax" id="Fax" /> -->
+                  <p-inputMask mask="(999) 999-9999" [(ngModel)]="setReferringPhysician.Fax" 
+                    placeholder="Enter Primary Number" name="HomePhone" required></p-inputMask>
+              </div>
+            </div>
+  
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group">
+                <label for="Email" class="yeats-form-label">E-mail </label>
+                <input type="text" class="form-control yeats-form-control" placeholder="Enter E-mail ID"
+                  [(ngModel)]="setReferringPhysician.Email" name="Email" id="Email" />
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group">
+                <label for="Website" class="yeats-form-label">Website </label>
+                <input type="text" class="form-control yeats-form-control" placeholder="Enter website" name="Website"
+                  [(ngModel)]="setReferringPhysician.Website" id="Website" />
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group">
+                <label for="RelatedOrganizationId" class="formLabel yeats-form-label">Related Organization<span class="required">*</span></label>
+                <p-dropdown [options]="relOrg" placeholder="Select Related Organization"
+                  optionLabel="RelatedOrganizationName" [showClear]="true"
+                  [(ngModel)]="setReferringPhysician.RelatedOrganization" name="RelatedOrganizationId"
+                  id="RelatedOrganizationId"></p-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group">
+                <label for="NationalProviderIdentifier" class="yeats-form-label">NPI Number
+                </label>
+                <input type="text"  pInputText maxlength="14" pattern="[0-9]" class="form-control yeats-form-control" name="NationalProviderIdentifier"
+                  [(ngModel)]="setReferringPhysician.NationalProviderIdentifier" id="NationalProviderIdentifier" />
+              </div>
+            </div>
+  
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group">
+                <label for="SpecialtyDetails" class="formLabel yeats-form-label">Speciality Details</label>
+                <textarea class="form-control yeats-form-control" pInputTextarea autoResize="autoResize"
+                  placeholder="Enter Speciality Details here ..." [(ngModel)]="setReferringPhysician.SpecialtyDetails"
+                  name="SpecialtyDetails" id="SpecialtyDetails"></textarea>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group">
+                <label for="IsActive" class="formLabel yeats-form-label">&nbsp;</label>
+                <p-checkbox label="Active" class="formLabel" [(ngModel)]="setReferringPhysician.IsActive" binary="true"
+                  id="IsActive"></p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="!isLoader">
+            <div class="col-lg-12 col-sm-12 col-12 ">
+              <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3 mb-3"
+                (click)="onClose()">
+                Cancel
+              </button>
+              <button pButton class="yeats-btn yeats-btn-primary pull-right mb-3" (click)="onSave()">
+                Save</button>&nbsp;
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,40 @@
+<div class="tilePicker">
+  <div class="modal-header">
+    <h4 class="modal-title">Chart tile picker</h4>
+    <button class="close" type="button" aria-label="Close" (click)="modal.dismiss()"><span aria-hidden="hidden">&times;</span></button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-sm-6 col-6">
+          <div class=" form-group yeats-form-group">
+            <label for="" class="yeats-form-label">Preferred chart tiles</label>
+            <!-- <p-listbox [options]="tileList" (onChange)="listChange($event)" [(ngModel)]="selectedTiles" optionLabel="name" multiple="true" checkbox="true" showToggleAll="false" ></p-listbox> -->
+            <p-pickList [showSourceControls]="false" [showTargetControls]="false" (onMoveToTarget)="listChange($event)" (onMoveAllToTarget)="listChange($event)" [source]="tileList" [target]="selectedTiles" sourceHeader="Avaliable tiles" [sourceStyle]="{height: '200px', width:'175px'}"
+            [targetStyle]="{height: '200px', width:'175px'}" targetHeader="Selected Tiles" [responsive]="true" dragdrop="true">
+              <ng-template pTemplate="item" let-tile>
+{{tile.name}}
+              </ng-template>
+            </p-pickList>
+          </div>
+          </div>
+          <div class="tiles col-xl-6 col-lg-6 col-sm-6 col-6">
+    <ng-container *ngFor="let tile of selectedTiles">
+      <div class="col-xl-4 col-lg-4 col-sm-4 col-4" id={{tile.conId}}>
+          <!-- (drop)="drop($event)" 
+          (dragover)="allowDrop($event)" -->
+      <div id={{tile.dragId}} >{{tile.name}}</div>
+      <!-- draggable="true" 
+      (dragstart)="drag($event)"  -->
+      </div>
+      </ng-container>
+      </div>
+      </div>
+  <div class="col-12">
+      <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3" style="margin-bottom:3em " (click)="modal.close('Close click')">
+        Cancel
+      </button>
+      <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" style="margin-bottom:3em " (click)="saveTiles()">
+        Save
+      </button>
+    </div>
+</div>

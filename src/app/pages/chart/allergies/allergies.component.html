@@ -1,0 +1,42 @@
+<div class="allergies">
+    <div *ngIf="isenableControls">
+        <app-add-allergy (refreshData)="refreshData()" [PEValueObj]="PEValueObj"></app-add-allergy>
+    </div>
+    <div *ngIf="toChart">
+        <app-widget-header [widgetData]="widgetData" (refreshWidget)="refreshData()"></app-widget-header>
+    </div>
+    <div class="gridster-item-content">
+        <div *ngIf="isLoader" class="row">
+            <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+        </div>
+        <div class="yeats-tables">
+            <p-table [columns]="cols" [scrollable]="true" [value]="allergylist">
+                <!-- <ng-template pTemplate="colgroup" let-columns>
+                    <colgroup>
+                        <col *ngFor="let col of columns" style="width:120px">
+                    </colgroup>
+                </ng-template> -->
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <ng-container *ngFor="let col of columns">
+                            <th class="a" data-toggle="tooltip" [title]="col.header">{{col.header}}</th>
+                        </ng-container>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData>
+                    <tr>
+                        <td class="a" data-toggle="tooltip" [title]="rowData.Description">{{rowData.Description}}</td>
+                        <td class="a" data-toggle="tooltip" [title]="rowData.Reaction">{{rowData.Reaction}}</td>
+                        <td class="a" data-toggle="tooltip" [title]="rowData.Status">{{rowData.Status}}</td>
+                        <td><img src="../../../../assets/images/Edit.svg" style="cursor: pointer;" alt="Edit"(click)="editmodal(rowData)"></td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-paginator *ngIf="isenableControls" [rows]="rows" (onPageChange)="paginate($event)"
+        [totalRecords]="totalRecords"></p-paginator>
+      <p-paginator *ngIf="!isenableControls" styleClass="paginator" [rows]="rows" (onPageChange)="paginate($event)"
+        [totalRecords]="totalRecords"></p-paginator>
+    </div>
+</div>

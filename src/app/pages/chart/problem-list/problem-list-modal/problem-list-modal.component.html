@@ -1,0 +1,60 @@
+<div *ngIf='modalType == "edit"'>
+  <div class="modal-header">
+    <h4 class="modal-title">Edit problem</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row ">
+      <!-- <div class="form-group yeats-form-group "> -->
+        <div class="col-4">
+          <label class="formLabel yeats-form-label">Template</label></div>
+        <div class="col-8">{{problemDetails.CodeDescription}}</div>
+      <!-- </div> -->
+    </div>
+    <div class="row mt-3">
+      <!-- <div class="form-group yeats-form-group "> -->
+        <div class="col-4">
+          <label class="formLabel yeats-form-label">Status</label></div>
+        <div class="col-4">
+          <p-dropdown [options]="options" [(ngModel)]="selectedCategory" optionLabel='value'>
+          </p-dropdown>
+        </div>
+      <!-- </div> -->
+    </div>
+      <div class="row mt-3">
+        <!-- <div class="form-group yeats-form-group "> -->
+          <div class="col-4">
+            <label class="formLabel yeats-form-label">Date Diagnosed</label></div>
+          <div class="col-4">
+            <p-calendar [(ngModel)]='problemDetails.DateDiagnosed'
+              [showIcon]="true">
+            </p-calendar>
+          </div>
+        <!-- </div> -->
+      </div>
+    </div>
+    <div class="col-12">
+      <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3"
+        (click)="saveProblem()">Save</button>
+      <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+        (click)="modal.close('Close click')">Cancel</button>
+    </div>
+  </div>
+  <div *ngIf='modalType == "delete"'>
+    <div class="modal-header">
+      <h4 class="modal-title">Delete</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Are you sure you want to delete this item?
+    </div>
+    <div class="col-12">
+      <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3" (click)="deleteProblem()">Delete</button>
+      <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+        (click)="modal.close('Close click')">Cancel</button>
+    </div>
+  </div>

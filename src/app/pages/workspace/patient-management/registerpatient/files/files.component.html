@@ -1,0 +1,85 @@
+<div class="filesModule">
+  <div class="row">
+    <div class="col-12">
+      
+      <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" (click)="openbsmodal()">Add
+        Files</button>
+      <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+      <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" (click)="ScanFiles()">Scan</button>
+    </div>
+  </div>
+  <div class="row">
+      <div class="col-lg-3 col-md-3">
+          <div class=" form-group yeats-form-group">
+            <label for="" class="yeats-form-label">Document Name</label>
+            <input type="text" pInputText class=" form-control yeats-form-control" [(ngModel)]="filters.documentName"
+              placeholder="Document Name">
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-3">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Category</label>
+              <p-dropdown [options]="dmsCategoryList" [(ngModel)]="filters.selectedCategory"
+                placeholder="Select a Category" optionLabel="CategoryName" [showClear]="true"></p-dropdown>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3">                           
+              <div class="form-group yeats-form-group ">
+                <label for="" class="yeats-form-label">&nbsp;</label>
+                <button pButton class="yeats-btn yeats-btn-primary" (click)="getDocumentList()">Search Document</button>                          
+            </div>
+            </div>
+  </div>
+  <div class="yeats-tables">
+      <p-table [value]="documentList.Results" #DocTab [rows]="documentList.PageSize" [lazy]="true"
+      (onLazyLoad)="paginate($event)" [totalRecords]="documentList.TotalItems" [paginator]="true"
+      [pageLinks]="3" [responsive]="true" selectionMode="single" [(selection)]="selectRow"
+      (onRowSelect)="onRowSelect($event)" dataKey="DateCreated">
+      <ng-template pTemplate="header">
+        <tr>
+          <th *ngFor="let col of cols">
+            {{col.header}}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData>
+          <tr>
+              <td >
+                  <i class="fa fa-sign"></i>
+                
+              </td>
+              <td><i class="fa fa-search"(click)="opendocmodal('view',rowData)"></i></td>
+              <td>{{rowData.Name}}</td>
+              <td>
+                  <span *ngIf="rowData.SavedMethodIdentifier === 2">for Scanned file</span>
+                  <span *ngIf="rowData.SavedMethodIdentifier === 1">for Uploaded file</span>
+              </td>
+              <td>{{rowData.DateCreated | date: 'yyyy-MM-dd'}}</td>
+              <td>{{rowData.Documentdate | date: 'yyyy-MM-dd'}}</td>
+              <td>{{rowData.DmsCategoryName}}</td>
+              <td>
+                  <span *ngIf="rowData.ReviewedStatus === 2">Reviewed</span>
+                  <span *ngIf="rowData.ReviewedStatus === 1">For Review</span>
+              </td>
+              <td><i class="fa fa-search" *ngIf="rowData.NoOfEncounters >= 1"></i></td>
+            </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  
+  <div class="row mt-3">
+      <div class="col-6">
+          <button pButton *ngIf="showprtandchrge" class="yeats-btn yeats-btn-primary mr-3" icon="fa fa-print" (click)="chargeSlips('PatientPrint')" label="print">Print</button>
+          <button pButton *ngIf="showprtandchrge" class="yeats-btn yeats-btn-primary" (click)="chargeSlips('PatientChargeSlips')" icon="fa fa-file-text-o" label="Charge Slip">Charge
+            Slip</button>
+        </div>
+        <div class="col-6">
+    <div class="col-12">
+      <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+        (click)="openNext()">Next</button>
+      <!-- <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" (click)="onCompleteSave()">Save</button> -->
+      <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3" (click)="onClose()">Close</button>
+    </div>
+  </div>
+  </div>
+</div>

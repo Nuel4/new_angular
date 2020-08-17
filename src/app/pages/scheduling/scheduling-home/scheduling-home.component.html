@@ -1,0 +1,56 @@
+<div class="appointment-schedule">
+    <!-- <div class="" *ngIf="toWorkSpace">
+      <app-widget-header [widgetData]="widgetData" (refreshWidget)="refreshData()"></app-widget-header>
+    </div> -->
+    <div class="gridster-item-content">
+      <!-- <div [class]="toWorkSpace?'widget-container':''"> -->
+        <!-- <div class="ui-g-12 ui-md-4 p-0 mb-2 height-28">
+        <p-calendar [(ngModel)]="myDate" dateFormat="dd/mm/yy" (onSelect)="onBlurMethod($event)" [showIcon]="true">
+        </p-calendar>
+      </div> -->
+        <div class="card border-0 box-shadow cardMargin">
+          <div class="card-header transparent border-0 text-muted">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group yeats-form-group ">
+                    <!-- <input type="hidden" class="form-control" id="datepickerinput" placeholder="yyyy-mm-dd" name="dp"
+                      [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker"> -->
+                    <label class="formLabel yeats-form-label">Facility<span class="required">*</span></label>
+                    <p-dropdown [options]="facilityList" [(ngModel)]="selectedFacility" placeholder="Select Facility"
+                      optionLabel="name" [showClear]="true" (onChange)="getUsers()">
+                    </p-dropdown>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card border-0 box-shadow cardMargin">
+          <div class="card-header transparent border-0 text-muted">
+            <div class="card-body calendarTable">
+              <div id="calendar"></div>
+            </div>
+          </div>
+        </div>
+      <!-- </div> -->
+    </div>
+  </div>
+  
+  <!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:1100px">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add/Edit Appointment</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <app-add-appointment ></app-add-appointment>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  

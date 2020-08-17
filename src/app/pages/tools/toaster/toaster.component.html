@@ -1,0 +1,162 @@
+<h2>Angular Toaster</h2>
+<p class="text-muted">Built with <a href="https://github.com/scttcper/ngx-toastr" target="_blank" class="font-weight-bold transition">ngx-toastr</a>.</p>
+  
+<div class="row justify-content-center">            
+  <div class="col">
+    <div class="card">
+      <div class="card-block">
+        <div class="row">
+          <div class="col-md-5">
+            <div class="form-group">
+              <label for="toastTitle">Title</label>
+              <input [(ngModel)]="title" type="text" class="form-control" id="toastTitle" placeholder="Toast title">
+            </div>
+            <div class="form-group">
+              <label for="toastMessage">Message</label>
+              <textarea [(ngModel)]="message" rows="3" class="form-control" id="toastMessage" placeholder="Toast message"></textarea>
+            </div>
+
+            <div class="form-group">
+                <div class="custom-controls-stacked">                    
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" [(ngModel)]="options.enableHtml" class="custom-control-input checkbox-main">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Enable Html</span>
+                    </label>
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" [(ngModel)]="options.tapToDismiss" class="custom-control-input checkbox-main">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Tap to dismiss</span>
+                    </label>
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" [(ngModel)]="options.closeButton" class="custom-control-input checkbox-main">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Close button</span>
+                    </label>
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" [(ngModel)]="options.preventDuplicates" class="custom-control-input checkbox-main">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Prevent duplicates</span>
+                    </label>
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" [(ngModel)]="options.newestOnTop" class="custom-control-input checkbox-main">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">New toasts on top</span>
+                    </label>
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" [(ngModel)]="options.progressBar" class="custom-control-input checkbox-main">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Progress bar</span>
+                    </label>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="toastTimeout">Timeout</label>
+              <input [(ngModel)]="options.timeOut" type="text" class="form-control" id="toastTimeout" aria-describedby="toastTimeoutHelp">
+              <small id="toastTimeoutHelp" class="form-text text-muted">0 never expires</small>
+            </div>
+            <div class="form-group">
+              <label for="maxNumberToasts">Maximum Toasts</label>
+              <input [(ngModel)]="toastrService.toastrConfig.maxOpened" type="text" class="form-control" id="maxNumberToasts" aria-describedby="maxNumberToastsHelp">
+              <small id="maxNumberToastsHelp" class="form-text text-muted">0 is no limit</small>
+            </div>
+            <div class="form-group">
+              <label for="toastExtendedTimeout">Extended Timeout</label>
+              <input type="text" [(ngModel)]="toastrService.toastrConfig.extendedTimeOut" class="form-control" id="toastExtendedTimeout">
+            </div>
+            <label class="custom-control custom-checkbox">
+                <input type="checkbox" [(ngModel)]="toastrService.toastrConfig.autoDismiss" class="custom-control-input checkbox-main">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Auto dismiss on max</span>
+            </label>
+          </div>
+          <div class="col-md-3">
+            <fieldset class="form-group">
+              <label>Toast type</label>
+              <div class="custom-controls-stacked">
+                  <label class="custom-control custom-radio">
+                      <input type="radio" name="typeRadios" [(ngModel)]="type" value="success" class="custom-control-input radio-success">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">Success</span>
+                  </label>
+                  <label class="custom-control custom-radio">
+                      <input type="radio" name="typeRadios" [(ngModel)]="type" value="info" class="custom-control-input radio-info">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">Info</span>
+                  </label>
+                  <label class="custom-control custom-radio">
+                      <input type="radio" name="typeRadios" [(ngModel)]="type" value="warning" class="custom-control-input radio-warning">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">Warning</span>
+                  </label>
+                  <label class="custom-control custom-radio">
+                      <input type="radio" name="typeRadios" [(ngModel)]="type" value="error" class="custom-control-input radio-danger">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">Error</span>
+                  </label>
+              </div>
+            </fieldset>
+            <fieldset class="form-group">
+              <label>Toast position</label>
+                <div class="custom-controls-stacked">
+                    <label class="custom-control custom-radio">
+                        <input type="radio" name="positionRadio" [(ngModel)]="options.positionClass" value="toast-top-right" class="custom-control-input radio-main">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Top Right</span>
+                    </label>
+                    <label class="custom-control custom-radio">
+                        <input type="radio" name="positionRadio" [(ngModel)]="options.positionClass" value="toast-bottom-right" class="custom-control-input radio-main">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Bottom Right</span>
+                    </label>
+                    <label class="custom-control custom-radio">
+                        <input type="radio" name="positionRadio" [(ngModel)]="options.positionClass" value="toast-bottom-left" class="custom-control-input radio-main">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Bottom Left</span>
+                    </label>
+                    <label class="custom-control custom-radio">
+                        <input type="radio" name="positionRadio" [(ngModel)]="options.positionClass" value="toast-top-left" class="custom-control-input radio-main">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Top Left</span>
+                    </label>
+                    <label class="custom-control custom-radio">
+                        <input type="radio" name="positionRadio" [(ngModel)]="options.positionClass" value="toast-top-full-width" class="custom-control-input radio-main">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Top Full Width</span>
+                    </label>
+                    <label class="custom-control custom-radio">
+                        <input type="radio" name="positionRadio" [(ngModel)]="options.positionClass" value="toast-bottom-full-width" class="custom-control-input radio-main">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Top Bottom Width</span>
+                    </label>
+                    <label class="custom-control custom-radio">
+                        <input type="radio" name="positionRadio" [(ngModel)]="options.positionClass" value="toast-top-center" class="custom-control-input radio-main">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Top Center</span>
+                    </label>
+                    <label class="custom-control custom-radio">
+                        <input type="radio" name="positionRadio" [(ngModel)]="options.positionClass" value="toast-bottom-center" class="custom-control-input radio-main">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Bottom Center</span>
+                    </label>
+                </div>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col text-center">
+            <p class="mb-0 mt-1">Toast Controls:</p>
+            <button (click)="openToast()" type="button" role="button" class="btn btn-primary">Open Toast</button>
+            <button (click)="clearLastToast()" type="button" role="button" class="btn btn-secondary">Clear Last Toast</button>
+            <button (click)="clearToasts()" type="button" role="button" class="btn btn-secondary">Clear All Toasts</button>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+

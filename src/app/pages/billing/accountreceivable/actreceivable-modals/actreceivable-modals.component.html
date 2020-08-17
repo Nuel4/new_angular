@@ -1,0 +1,214 @@
+<div class="alertModal" *ngIf="opensAlertModal">
+  <div class="modal-header">
+    <h4 class="modal-title">A/R Worklist Alert</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-12">
+        <p>Set up a reminder/alert for this A/R Worklist. The alert will be visible in the Workspace on and after the
+          scheduled date.</p>
+      </div>
+      <div class="col-lg-3">
+        <label for="" class="yeats-form-label">Alert Assigned To:</label>
+      </div>
+      <div class="col-lg-9">
+        <p-listbox [options]="activeUsers" [(ngModel)]="selectedUser" optionLabel="fullName"
+          [listStyle]="{'max-height':'100px'}"></p-listbox>
+      </div>
+      <div class="col-lg-3">
+        <label for="" class="yeats-form-label">Alert Scheduled Date:</label>
+      </div>
+      <div class="col-lg-4">
+        <div class="form-group yeats-form-group mt-2">
+          <p-calendar [(ngModel)]="paymentDate" [showIcon]="true"></p-calendar>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-3">
+        <label for="" class="yeats-form-label">Description/Comments:</label>
+      </div>
+      <div class="col-lg-9">
+        <textarea rows="5" cols="30" pInputTextarea [(ngModel)]="alertMessage"></textarea>
+      </div>
+      <div class="col-lg-12">
+        <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2"
+          (click)="CloseModal()">
+          Cancel
+        </button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right" (click)="savingAlert()">
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="actionModal" *ngIf="openActionModal">
+  <div class="modal-header">
+    <h4 class="modal-title">Act on Outstanding Bill</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-12">
+        <p-checkbox class="yeats-form-control" value="send claim" label="Send Claim to Insurance for this bill"
+          [(ngModel)]="firstCheckboxValue"></p-checkbox>
+      </div>
+      <div class="col-lg-12">
+        <p-checkbox class="yeats-form-control" value="patient email" label="Email Patient Statement for this bill"
+          [(ngModel)]="secondCheckboxValue"></p-checkbox>
+      </div>
+      <div class="col-lg-12">
+        <p-checkbox class="yeats-form-control" value="print patient" label="Print Patient Statement for this bill"
+          [(ngModel)]="ThirdCheckboxValue"></p-checkbox>
+      </div>
+      <div class="col-lg-12 mt-2">
+        <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2"
+          (click)="CloseModal()">
+          Cancel
+        </button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right" (click)="saveAction()">
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="ViewBillModal" *ngIf="openViewBillModal">
+  <div class="modal-header">
+    <h4 class="modal-title">Rebill Insurance Company</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="card border-0 box-shadow cardMargin">
+      <div class="card-header transparent border-0 text-muted">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-3 col-md-3 col-3">
+              Patient Details:<span style="font-size:13px;"> {{ PatientData.LastName }}
+                {{ PatientData.FirstName }}</span>
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+              Unique No:{{PatientData.UniqueNumber}}
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+              DOB:{{PatientData.DateOfBirth | date:'dd/MM/yyyy'}}
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+              Cell Phone:{{PatientData.HomePhone}}
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+              Acc.Bal.Due:{{actBalDue}}
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+              Pat.Bal.Due:{{patActSummary.PatientBalanceDue}}
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+              Ins.Bal.Due:{{patActSummary.InsuranceBalanceDue}}
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+              Unallocated Payments:{{unAllocatedPayments}}
+            </div>
+            <div class="col-lg-4 col-md-4 col-4">
+              Primary Insurance:{{insuranceInfo?insuranceInfo[0]?insuranceInfo[0].insurancename:'':''}} (AR
+              Type:{{insuranceInfo?insuranceInfo[0]?insuranceInfo[0].insuranceprovidercode:'':''}})
+            </div>
+            <div class="col-lg-4 col-md-4 col-4">
+              Secondary Insurance:{{insuranceInfo?insuranceInfo[1]?insuranceInfo[1].insurancename:'':''}} (AR
+              Type:{{insuranceInfo?insuranceInfo[1]?insuranceInfo[1].insuranceprovidercode:'':''}})
+            </div>
+            <div class="col-lg-4 col-md-4 col-4">
+              Tertiary Insurance:{{insuranceInfo?insuranceInfo[2]?insuranceInfo[2].insurancename:'':''}} (AR
+              Type:{{insuranceInfo?insuranceInfo[1]?insuranceInfo[1].insuranceprovidercode:'':''}})
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-12">
+        <div class="yeats-tables">
+          <p-table [columns]="col" [value]="BillsData" dataKey="BillHeaderId">
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th></th>
+                <th *ngFor="let col of columns">{{ col.header }}</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+              <tr>
+                <td>
+                  <a href="#" [pRowToggler]="rowData">
+                    <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+                      (click)="onRowSelect(rowData)"></i>
+                  </a>
+                </td>
+                <td class="nowrap" data-toggle="tooltip" [title]='rowData[col.field]' *ngFor="let col of columns">
+                  {{ rowData[col.field] }}
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+              <tr>
+                <td [attr.colspan]="columns.length + 1">
+                  <div class="yeats-tables Expandtablestyle">
+                    <p-table [columns]="ExpandTable" [value]="ExpandBillsData">
+                      <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th class="nowrap" data-toggle="tooltip" [title]='col.header' *ngFor="let col of columns">
+                  {{col.header}}
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr>
+                <td pEditableColumn *ngFor="let col of columns">
+                  <span>{{rowData[col.field]}}</span>
+                  <span *ngIf="col.field === 'bill_date'">
+                    <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <p-dropdown [options]="rebuildTo" optionLabel="name" [(ngModel)]="rowData.RebillToValue" [style]="{'width':'100%'}"></p-dropdown>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{rowData.RebillToValue}}
+                    </ng-template>
+                </p-cellEditor>
+              </span>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        </td>
+        </tr>
+
+        </ng-template>
+
+
+        </p-table>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12 mt-2 mb-2">
+      <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2" (click)="CloseModal()">
+        Cancel
+      </button>
+      <button pButton class="yeats-btn yeats-btn-primary pull-right"(click)="resubmittoclaims()">
+        Re-Submit to Claims
+      </button>
+    </div>
+  </div>
+</div>
+</div>

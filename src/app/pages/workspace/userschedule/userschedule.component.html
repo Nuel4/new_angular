@@ -1,0 +1,128 @@
+<div class="userschedulemail">
+  <div class="card border-0 box-shadow cardMargin">
+    <div class="card-header transparent border-0 text-muted">
+      <div class="card-body">
+        <form #userschedule="ngForm" (ngSubmit)="saveUserSchedule()">
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+              <div class="form-group yeats-form-group">
+                <label class="formLabel yeats-form-label" for="facility">Select Facility</label>
+                <div class="ui-fluid">
+                  <p-autoComplete class="yeats-form-control" [(ngModel)]="facilitySelected"
+                    [suggestions]="selectedFacilityList" (onSelect)="SelectFacility($event)"
+                    (completeMethod)="LoadFacility(facilitySelected)" field="FacilityName"
+                    [dropdown]="true" minlength="3" placeholder="Enter Facility Name" [minLength]="3" name="facility"
+                    required #selectedFacility="ngModel"></p-autoComplete>
+                  <div
+                    *ngIf="(!selectedFacility.valid) && (selectedFacility.dirty || selectedFacility.touched) && selectedFacility.errors.required"
+                    class="invalid-feedback">
+                    Facility Name is required.
+                  </div>
+                  <div
+                    *ngIf="(!selectedFacility.valid) && (selectedFacility.dirty || selectedFacility.touched) && selectedFacility.errors.minlength"
+                    class="invalid-feedback">
+                    Facility name must be atleast 3 characters long
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-12" style="overflow:visible;">
+              <label class="formLabel yeats-form-label">Select User</label>
+              <p-dropdown class="form-group yeats-form-group" [options]="usersList" optionLabel="fullName"
+                [(ngModel)]="selectedUser" name="selectedUser" placeholder="Select User List"
+                [disabled]="Phy" (onChange)="PhySelect()" required #userProviderId="ngModel"></p-dropdown>
+              <!-- <div
+                *ngIf="(!userProviderId.valid) && (userProviderId.dirty || userProviderId.touched) && userProviderId.errors.required"
+                class="invalid-feedback">
+                User selection is required
+              </div> -->
+            </div>
+            <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-12" style="overflow:visible;">
+              <label class="formLabel yeats-form-label">Select Week</label>
+              <p-dropdown [options]="Weeknumber" optionLabel="label" [(ngModel)]="weekSelected" name="weekSelected" [disabled]="Week"
+                #selectedWeek="ngModel" placeholder="Select Week"
+                (onChange)="Selectedweekchange($event)">
+              </p-dropdown>
+              <!-- <div
+                *ngIf="(!selectedWeek.valid) && (selectedWeek.dirty || selectedWeek.touched) && selectedWeek.errors.required"
+                class="invalid-feedback">
+                Please select the Week
+              </div> -->
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="card border-0 box-shadow cardMargin">
+    <div class="card-header transparent border-0 text-muted">
+      <div class="card-body">
+        <p-dialog header="Error" [(visible)]="display" [modal]="true" [responsive]="true"
+          [style]="{width: '350px', minWidth: '200px'}" [minY]="70" [maximizable]="false" [baseZIndex]="10000">
+          {{Dialogvalue}}
+          <p-footer class="yeats-btn yeats-btn-primary">
+            <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" (click)="display=false">Yes</button>
+            <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+              (click)="display=false">No</button>
+          </p-footer>
+        </p-dialog>
+        <div class="row">
+          <div class="col-12 table-responsive" style="overflow:visible;">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Day</th>
+                  <th>From </th>
+                  <th>To</th>
+                  <th>Lunch From</th>
+                  <th>Lunch To</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let schedule of usrsch">
+                  <td>
+                    <div>
+                      <p-checkbox class="yeats-form-control" name="Sun" [(ngModel)]="schedule.active"
+                        [disabled]="disablecheckbox" binary="true">
+                      </p-checkbox>
+                    </div>
+                  </td>
+                  <td>{{schedule.DayOfWeek}}</td>
+                  <td>
+                    <p-calendar class="yeats-form-control" [disabled]="!schedule.active" [readonlyInput]="true"
+                      appendTo="body" placeholder="08:00 AM" name="sunFrom" [(ngModel)]="schedule.StartTime"
+                      [timeOnly]="true" [hourFormat]="12" [showIcon]="true">
+                    </p-calendar>
+                  </td>
+                  <td>
+                    <p-calendar class="yeats-form-control" [disabled]="!schedule.active" [readonlyInput]="true"
+                      appendTo="body" name="sunTo" [(ngModel)]="schedule.EndTime" [timeOnly]="true"
+                      placeholder="05:00 PM" [hourFormat]="12" [showIcon]="true"> </p-calendar>
+                  </td>
+                  <td>
+                    <p-calendar class="yeats-form-control" [disabled]="!schedule.active" name="sunLunchFrom"
+                      [readonlyInput]="true" appendTo="body" [(ngModel)]="schedule.LunchBreakStartTime"
+                      [timeOnly]="true" placeholder="12:30 PM" [hourFormat]="12" [showIcon]="true"></p-calendar>
+                  </td>
+                  <td>
+                    <p-calendar class="yeats-form-control" [disabled]="!schedule.active" name="sunLunchTo"
+                      [(ngModel)]="schedule.LunchBreakEndTime" [readonlyInput]="true" appendTo="body" [timeOnly]="true"
+                      placeholder="01:30 PM" [hourFormat]="12" [showIcon]="true"></p-calendar>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-12" *ngIf="!isLoader">
+            <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3" type="submit" label="Save"
+              (click)="saveUserSchedule()" [disabled]="!userschedule.valid"></button>
+            <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3" 
+              (click)="onCancel()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

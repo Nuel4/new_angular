@@ -1,0 +1,22 @@
+.addAllergy{
+    padding: 0px 12px;
+    .allergySeparation{
+        text-align:center;
+        margin-top:2rem;
+    }
+    .close{
+        color:#fff;
+    }
+    .modal-header{
+        background-color: #1F70BA;
+        color:#fff;
+        font-size:14px
+    }
+    .modal-title {
+        padding:5px;
+        font-size:16px;
+    }
+    .modal-body{
+        padding:1rem;
+    }
+}

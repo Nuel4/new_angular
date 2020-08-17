@@ -1,0 +1,296 @@
+<div class="addCPT">
+  <div *ngIf="ModalDisplay && cptcode">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Add/Edit CPT Code</h5>
+      <!-- <h5 class="modal-title" id="exampleModalLabel">Maintain Relative Value Unit for CPT</h5> -->
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="addCPT">
+        <div class="row">
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="cptCode" class="formLabel yeats-form-label">CPT Code <span class="required">*</span></label>
+              <input type="text" [(ngModel)]="billingSetupCPT" [disabled]="cptCode" class="form-control yeats-form-control" id="cptCode"
+                name="cptCode" placeholder="Enter CPT Code" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="drugCode" class="formLabel yeats-form-label">National Drug Code</label>
+              <input type="text" [(ngModel)]="drugCode" class="form-control yeats-form-control" id="drugCode"
+                name="drugCode" placeholder="Enter National Drug Code" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="cptCategory" class="formLabel yeats-form-label">CPT Category <span
+                  class="required">*</span></label>
+              <p-dropdown [options]="cptCategoryList" [(ngModel)]="selectedCategory" placeholder="Select Category"
+                optionLabel="CategoryName" [showClear]="true">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="ndcDescription" class="formLabel yeats-form-label">NDC Description</label>
+              <input type="text" [(ngModel)]="billingSetupNdcDescription" class="form-control yeats-form-control"
+                id="ndcDescription" name="ndcDescription" placeholder="Enter NDC Description" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="shortDescription" class="formLabel yeats-form-label">Short Descripton</label>
+              <input type="text" [(ngModel)]="billingSetupshortDescription" class="form-control yeats-form-control"
+                id="shortDescription" name="shortDescription" placeholder="Enter Short Descripton" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="unitPrice" class="formLabel yeats-form-label">NDC Unit Price</label>
+              <input type="number" [(ngModel)]="ndcUnitPrice" class="form-control yeats-form-control" id="unitPrice"
+                name="unitPrice" placeholder="0.00"  min="0"  step="0.01" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="description" class="formLabel yeats-form-label">Description</label>
+              <input type="text" [(ngModel)]="description" class="form-control yeats-form-control" id="description"
+                name="description" placeholder="Enter Description" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="ndcunitMeasure" class="formLabel yeats-form-label">NDC Unit Measurement</label>
+              <p-dropdown [options]="ndcunitMeasure" [(ngModel)]="selectedNdcUnitMeasure" placeholder="Select NDC Unit"
+                optionLabel="label" [showClear]="true">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="defaultUnit" class="formLabel yeats-form-label">Default Unit</label>
+              <input type="text" [(ngModel)]="billingSetupDefaultUnit" class="form-control yeats-form-control"
+                id="defaultUnit" name="defaultUnit" placeholder="Enter Default Unit" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="codeIdQuaifier" class="formLabel yeats-form-label">Code ID Qualifier</label>
+              <input type="text" [(ngModel)]="codeIDQualifier" class="form-control yeats-form-control"
+                id="codeIdQuaifier" name="codeIdQuaifier" placeholder="Enter Code ID Qualifier" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="transactionType" class="formLabel yeats-form-label">Transaction Type <span
+                  class="required">*</span></label>
+              <p-dropdown [options]="transactionType" [(ngModel)]="selectedTransaction"
+                placeholder="Select Transaction Type" optionLabel="value" [showClear]="true">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group">
+              <label class="formLabel yeats-form-label">Status</label>
+              <p-checkbox class="yeats-form-control" [(ngModel)]="active" label="Active" binary="true"></p-checkbox>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="professionalCost" class="formLabel yeats-form-label">Professional Cost</label>
+              <input type="number" [(ngModel)]="billingSetupprofessionalCost" class="form-control yeats-form-control"
+                id="professionalCost" name="professionalCost" placeholder="0.00"  min="0"  step="0.01"/>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="technicalCost" class="formLabel yeats-form-label">Technical Cost</label>
+              <input type="number" [(ngModel)]="technicalCost" class="form-control yeats-form-control"
+                id="technicalCost" name="technicalCost" placeholder="0.00" min="0"  step="0.01" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="purchasedCost" class="formLabel yeats-form-label">Purchased Cost</label>
+              <input type="number" [(ngModel)]="purchasedCost" class="form-control yeats-form-control"
+                id="purchasedCost" name="purchasedCost" placeholder="0.00" min="0"  step="0.01"/>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="otherCost" class="formLabel yeats-form-label">Other Cost</label>
+              <input type="number" [(ngModel)]="otherCost" class="form-control yeats-form-control" id="otherCost"
+                name="otherCost" placeholder="0.00" min="0"  step="0.01" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="otherCostDescription" class="formLabel yeats-form-label">Other Cost Description</label>
+              <input type="text" [(ngModel)]="costDescription" class="form-control yeats-form-control"
+                id="otherCostDescription" name="otherCostDescription" placeholder="Enter Other Cost Description" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="coPayAmount" class="formLabel yeats-form-label">CoPay Amount</label>
+              <input type="number" [(ngModel)]="coPayAmount" class="form-control yeats-form-control" id="coPayAmount"
+                name="coPayAmount" placeholder="0.00" min="0"  step="0.01"/>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="cptCode" class="formLabel yeats-form-label">Write Off Amount</label>
+              <input type="text" [(ngModel)]="writeOff" class="form-control yeats-form-control" id="cptCode"
+                name="cptCode" placeholder="0.00" min="0"  step="0.01"/>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="pos" class="formLabel yeats-form-label">Default POS</label>
+              <p-dropdown [options]="placeofServices" [(ngModel)]="selectedPOS" placeholder="Select POS"
+                optionLabel="Name" [showClear]="true">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="typeofService" class="formLabel yeats-form-label">Type of Service</label>
+              <p-dropdown [options]="tosList" [(ngModel)]="selectedTOS" placeholder="Select Service"
+                optionLabel="Description" [showClear]="true">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group yeats-form-group ">
+                  <label for="cptCode" class="formLabel yeats-form-label">M1</label>
+                  <input type="text" [(ngModel)]="m1" class="form-control yeats-form-control" id="m1" name="m1"
+                    placeholder="Enter M1" />
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group yeats-form-group ">
+                  <label for="cptCode" class="formLabel yeats-form-label">M2</label>
+                  <input type="text" [(ngModel)]="m2" class="form-control yeats-form-control" id="m2" name="m2"
+                    placeholder="Enter M2" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group yeats-form-group ">
+                  <label for="cptCode" class="formLabel yeats-form-label">M3</label>
+                  <input type="text" [(ngModel)]="m3" class="form-control yeats-form-control" id="m3" name="m3"
+                    placeholder="Enter M3" />
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group yeats-form-group ">
+                  <label for="cptCode" class="formLabel yeats-form-label">M4</label>
+                  <input type="text" [(ngModel)]="m4" class="form-control yeats-form-control" id="m4" name="m4"
+                    placeholder="Enter M4" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="followupDays" class="formLabel yeats-form-label">Followup Days</label>
+              <input type="number" [(ngModel)]="followUpDays" class="form-control yeats-form-control" id="followupDays"
+                name="followupDays" placeholder="Enter Followup Days" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="averageTime" class="formLabel yeats-form-label">Average Time Duration</label>
+              <p-dropdown [options]="averageTimeDuration" [(ngModel)]="selectedAverage" placeholder="Select
+                     Time Duration" optionLabel="value" [showClear]="true">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="col-6">
+            <div>
+              <p-checkbox class="yeats-form-control" [(ngModel)]="labProcedure"
+                label="Lab Procedure Requires_CLIA_number" binary="true"></p-checkbox>
+            </div>
+            <div>
+              <p-checkbox class="yeats-form-control" [(ngModel)]="notUsedClaims" label="Not Used for Claims"
+                binary="false">
+              </p-checkbox>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <button pButton class="yeats-btn yeats-btn-danger ui-button-danger pull-right ml-3"
+              data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" *ngIf="save"
+              (click)="saveAddCPTCode('addCPT')">Save</button>
+              <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" *ngIf="update"
+              (click)="UpdateCptCode()">Update</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div *ngIf="ModalDisplay && editRUV">
+    <div class="modal-header">
+      <!-- <h5 class="modal-title" id="exampleModalLabel" *ngIf="Headdisplay">Add/Edit CPT Code</h5> -->
+      <h5 class="modal-title" id="exampleModalLabel">Maintain Relative Value Unit for CPT</h5>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div>
+      <div class="modal-body">
+          <h6>CPT Code:{{billingSetupCPT}} </h6>
+      <div class="col-12">
+        <div class="yeats-tables">
+          <p-table [columns]="cols" [value]="customFormattedRuv" editMode="row">
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns">
+                  {{col.header}}
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr>
+                <td>
+                  {{rowData.rvuPaymentMethodName}}
+                </td>
+                <td pEditableColumn [pEditableColumn]="rowData" pEditableColumnField="rvu">
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input pInputText type="number" min="0"  step="0.01" [(ngModel)]="rowData.rvu" required>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{rowData.rvu}}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <button pButton class="yeats-btn yeats-btn-danger ui-button-danger pull-right ml-3"
+            data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
+          <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" (click)="saveCPTRvu()" *ngIf="rvuSave">Save</button>
+          <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" (click)="UpdateCptRvu()" *ngIf="rvuUpdate">Update</button>
+        </div>
+      </div>
+    </div>
+   
+  </div>
+</div>
+</div>

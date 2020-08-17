@@ -1,0 +1,131 @@
+<div class="remittanceAdvice">
+  <div class="row">
+    <div class="col-lg-3 col-sm-6 col-12 ">
+      <label class="formLabel yeats-form-label">Billing Date Range:</label>
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">From</label>
+        <p-calendar class="yeats-form-control" [(ngModel)]="remittanceBillingRangeFrom" [showIcon]="true"
+          monthNavigator="true" yearNavigator="true" yearRange="1900:2030">
+        </p-calendar>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12 ">
+      <label class="formLabel yeats-form-label">&nbsp;</label>
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">Untill</label>
+        <p-calendar class="yeats-form-control" [(ngModel)]="remittanceBillingRangeTo" [showIcon]="true"
+          monthNavigator="true" yearNavigator="true" yearRange="1900:2030">
+        </p-calendar>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <label class="formLabel yeats-form-label">&nbsp;</label>
+      <div class="form-group yeats-form-group ">
+        <label for="remittancePhysician" class="formLabel yeats-form-label">Physician</label>
+        <p-dropdown [options]="physicianLists" [(ngModel)]="remittanceSelectedPhysician" placeholder="Select Physician"
+          optionLabel="physicianName" [showClear]="true">
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <label class="formLabel yeats-form-label">&nbsp;</label>
+      <div class="form-group yeats-form-group ">
+        <label for="ChequeReference" class="formLabel yeats-form-label">Cheque/Reference Number</label>
+        <input type="text" [(ngModel)]="remittanceChequeReference" class="form-control yeats-form-control"
+          id="ChequeReference" name="ChequeReference" placeholder="Enter Cheque/Reference Number" />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="remittanceInsuranceProvider" class="formLabel yeats-form-label">Insurance Provider</label>
+        <p-dropdown [options]="insuranceProvidersList" [(ngModel)]="remittanceInsuranceProvider"
+          placeholder="Select Insurance Provider" optionLabel="InsuranceProviderName" [showClear]="true">
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="electronicPhysician" class="formLabel yeats-form-label">Insurance Filter</label>
+        <p-dropdown [options]="insuranceFilterType" [(ngModel)]="insuranceType"
+          placeholder="Select Insurance Filter" optionLabel="InsuranceFilterName" [showClear]="true">
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="electronicPhysician" class="formLabel yeats-form-label">Remittance Filter</label>
+        <p-dropdown [options]="remittanceFilterType" [(ngModel)]="remittanceFilter"
+          placeholder="Select Remittance Filter" optionLabel="RemittanceFilterName" [showClear]="true">
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="patientName" class="formLabel yeats-form-label">Patient Name</label>
+        <input type="text" value="{{authStore.PatientDetail?authStore.PatientDetail.LastName:''}}" class="form-control yeats-form-control" id="patientName"
+          name="patientName" placeholder="Patient Name" readonly />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="patientSSN" class="formLabel yeats-form-label">SSN</label>
+        <input type="text" value="{{authStore.PatientDetail?authStore.PatientDetail.Ssn:''}}" class="form-control yeats-form-control" id="patientSSN"
+          name="patientSSN" placeholder="SSN" readonly />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="dateOfBirth" class="formLabel yeats-form-label">Date of Birth</label>
+        <input type="text" value="{{authStore.PatientDetail? (authStore.PatientDetail.DateOfBirth | date: 'dd-MM-yyyy'):''}}" class="form-control yeats-form-control"
+          id="dateOfBirth" name="dateOfBirth" placeholder="Date of birth" readonly />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="uniqueNumber" class="formLabel yeats-form-label">Unique Number</label>
+        <input type="text" value="{{authStore.PatientDetail?authStore.PatientDetail.UniqueNumber:''}}" class="form-control yeats-form-control"
+          id="uniqueNumber" name="uniqueNumber" placeholder="Unique Number" readonly />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="cellPhone" class="formLabel yeats-form-label">Cell Phone</label>
+        <input type="text" value="{{authStore.PatientDetail?authStore.PatientDetail.HomePhone:''}}" class="form-control yeats-form-control"
+          id="cellPhone" name="cellPhone" placeholder="Cell Phone" readonly />
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3" (click)="downloadRemittance()">Download Remittance Advice</button>
+      <button pButton class="yeats-btn yeats-btn-danger ui-button-danger pull-right ml-3 mb-3" (click)="clearRemittanceAdvice()" >Clear</button>
+      <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3" (click)="getRemittanceAdvice(0)">Retrieve Remittance Advice</button>
+    </div>
+  </div>
+  <div class="yeats-tables">
+    <p-table [columns]="cols" [value]="remittanceAdvice" >
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns">
+            {{col.header}}
+          </th>
+          <th>View</th>
+          <th>Auto Post</th>
+          <th>Comments</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+          <td *ngFor="let col of columns">
+            {{rowData[col.field]}}
+          </td>
+          <td><i class="pi pi-search" (click)="viewRemittanceAdvice(rowData)"></i></td>
+          <td><i class="pi pi-arrow-right" (click)="autoPost(rowData)"></i></td>
+          <td><i class="pi pi-list" *ngIf="rowData.Status == 'Error'" (click)="getComments(rowData)"></i><i class="pi pi-list" style="color: darkgrey" *ngIf="rowData.Status == 'Pending'"></i></td>
+          <!-- <td></td> -->
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <p-paginator [rows]="rows" (onPageChange)="selectedPage($event)" [totalRecords]="totrec"></p-paginator>
+</div>

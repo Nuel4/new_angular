@@ -1,0 +1,37 @@
+.actReceivableAlert > .modal-dialog{ 
+    margin-top: 5%;
+    max-width: 40%;
+  
+  }
+
+  .actReceivableAction > .modal-dialog{
+    margin-top: 10%;
+    max-width: 30%;
+  }
+
+  .ViewBillModal > .modal-dialog{
+    margin-top: 5%;
+    max-width: 80%;
+  }
+  
+  .alertModal{
+  .ui-listbox .ui-listbox-list-wrapper{
+    border:1px solid rgba(0, 0, 0, 0.15);
+  }
+  .yeats-form-group{
+    min-height:0px;
+  }
+
+}
+.ViewBillModal{
+  .modal-body{
+    padding:5px;
+}
+.nowrap{
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+}
+}
+ 
+

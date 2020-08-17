@@ -1,0 +1,213 @@
+<nav class="navbar  app-header" *ngIf='nav.visible' [class.fixed-top]="settings.theme.navbarIsFixed"
+    [class.logo-visible]="showInfoContent">
+    <div class="d-flex flex-column w-100">
+        <!-- <div id="info-content" class="panel-collapse collapse">
+            <a class="close" data-toggle="collapse" href="#info-content" (click)="showInfoContent = !showInfoContent" [class.show]="showInfoContent">
+                <span aria-hidden="true">&times;</span>
+            </a>
+            <div class="row align-items-center">
+                <div class="col-md-5">
+                    <div class="d-flex justify-content-center align-items-center pt-md-0 pt-3 info">
+                         <img src="assets/img/users/default-user.jpg" class="rounded-circle user-img"> 
+                        <img [src]="userPhoto" class="rounded-circle user-img">
+                        <div class="d-flex flex-column pl-3">
+                            <h5 class="mb-0">{{logedInUser}} <i class="fa fa-check-circle fs-13 text-success ml-2"></i></h5>
+                            <span>Project menecer</span>
+                            <div class="pt-3">
+                                <button class="btn btn-success">Profile</button> 
+                                <button class="btn btn-gray">Edit</button> 
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="row py-4">                        
+                        <div class="col-lg-7 col-sm-8 col-12 left-border">
+                            <div class="info w-280p mx-auto text-center">
+                                <form>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control form-control-sm" placeholder="Recipients">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control form-control-sm" placeholder="Subject">
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea class="form-control form-control-sm" placeholder="Message" rows="3"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-sm btn-gray"><i class="fa fa-paper-plane mr-2"></i>Send</button>
+                                </form>
+                            </div>                           
+                        </div>
+                        <div class="col-lg-5 col-sm-4 left-border hidden-xs-down">
+                            <div class="info w-100p mx-auto">
+                                <div class="custom-controls-stacked">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" checked>
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Notifications</span>
+                                    </label>
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" checked>
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Tasks</span>
+                                    </label>
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Events</span>
+                                    </label>
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" checked>
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Downloads</span>
+                                    </label>
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" checked>
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Messages</span>
+                                    </label>
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" >
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Updates</span>
+                                    </label>
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" checked>
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Settings</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <div class="d-flex justify-content-start align-items-center top-navbar">
+            <span class="navbar-text menu-icon transition u-mr-6" [ngClass]="{'open': settings.theme.showMenu}"
+                (click)="settings.theme.showMenu = !settings.theme.showMenu">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </span>
+            <a class="logo" routerLink="/" (click)="closeSubMenus()">
+                <!--span class="start">Yeats Clinical</span-->
+                <!-- <span class="ng">YC</span> -->
+                <img src="../../../../assets/images/Yeats_Clinical_Logo_small_01.jpg" class="yeats_logo">
+            </a>
+            <span
+                class="patientName" *ngIf="AuthStore.PatientDetail !== null"><b>{{AuthStore.PatientDetail.FirstName ? AuthStore.PatientDetail.FirstName : " " }}</b>&nbsp;<b>{{ AuthStore.PatientDetail.LastName ?  AuthStore.PatientDetail.LastName :" "}}</b></span>
+
+
+            <!-- <div class="ml-2 mr-2 hidden-xs-down">
+                 <a id="info-content-icon" data-toggle="collapse" href="#info-content" (click)="showInfoContent = !showInfoContent" class="d-flex" [class.show]="showInfoContent">
+                    <div [@showInfo]="showInfoContent" class="triangle"></div>
+                </a>
+            </div> -->
+
+            <form class="app-search hidden-sm-down top-rigth-icons ml-auto">
+                <i class="fa fa-search" (click)="searchingModules()"></i>
+                <input type="text" placeholder="Type to search..." class="form-control" (change)="inputChanages($event.target.value)">
+                <!-- <p-autoComplete class="form-control" [(ngModel)]="SelectedDetails"  placeholder="Type to search..."
+                [suggestions]="SelectedDetailsList" (completeMethod)="LoadDetails(SelectedDetails)" field="medical_term"
+               [minLength]="3"></p-autoComplete> -->
+            </form>
+
+            <div class="top-rigth-icons ">
+                <app-favorites></app-favorites>
+            </div>
+
+            <div class="items-container">
+                <span class="top-rigth-icons ml-3 mr-3" title="Waiting Room">
+                    <i class="fa fa-user" (click)="goWaitingRoom()"></i>
+                </span>
+                <span class="hidden-xs-down mr-3" title="Patient Action">
+                    <i class="fa fa-wrench" aria-hidden="true" (click)="goPatientAction()"></i>
+                </span>
+                <span class="hidden-xs-down mr-3" title="Patient Summary">
+                    <i class="fa fa-file-text-o" aria-hidden="true" (click)="goPatientSummary()"></i>
+                </span>
+
+            </div>
+            <div class="top-rigth-icons ml-2">
+                <!-- <span class="hidden-xs-down" title="Language">
+                    <app-flags-menu></app-flags-menu>
+                </span> -->
+                <span class="hidden-xs-down" title="Full Screen">
+                    <app-fullscreen></app-fullscreen>
+                </span>
+                <!-- <span class="hidden-xs-down">
+                    <app-applications></app-applications>                    
+                </span>  -->
+                <span class="hidden-xs-down" title="Notifications">
+                    <app-messages></app-messages>
+                </span>
+                <span class="hidden-xs-down pl-2 pr-2"
+                    (click)="settings.theme.showSideChat = !settings.theme.showSideChat" title="Chat">
+                    <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                </span>
+                <span class="hidden-xs-down" title="Profile">
+                    <app-user-menu></app-user-menu>
+                </span>
+                <span class="pl-2 pr-2" title="Sign Out">
+                    <!-- <a routerLink="/login"> -->
+                    <a href (click)="onSignOut()">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    </a>
+                </span>
+            </div>
+
+            <!--<div class="d-flex ml-auto">
+                <form class="app-search hidden-xs-down ml-2 mr-2">
+                    <i class="fa fa-search"></i>
+                    <input type="text" placeholder="Type to search..." class="form-control">
+                </form>
+                <span class="ml-2 mr-2">
+                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                </span>                
+            </div>-->
+
+
+
+
+
+            <!--<span class="navbar-text ml-2 mr-2">
+                <a id="info-content-icon" data-toggle="collapse" href="#info-content" (click)="showInfoContent = !showInfoContent" [class.show]="showInfoContent">
+                    <i [@showInfo]="showInfoContent" class="fa fa-arrow-circle-o-down"></i>
+                </a>
+            </span>           -->
+
+
+            <!--<div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                    <a class="nav-link" [routerLink]="['/']">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/login']">Link</a>
+                    </li>       
+                    <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                    </li>
+                </ul>
+                <form class="form-inline mt-2 mt-md-0 ml-auto ">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>-->
+
+
+        </div>
+
+        <!-- <div class="horizontal-menu-outer" *ngIf="settings.theme.menu == 'horizontal'">
+                   
+            <app-horizontal-menu *ngIf="showHorizontalMenu"  [menuItems]="menuItems"></app-horizontal-menu>        
+            <app-vertical-menu *ngIf="!showHorizontalMenu"  [menuItems]="menuItems"></app-vertical-menu>
+
+        </div> -->
+
+
+
+    </div>
+</nav>

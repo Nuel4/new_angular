@@ -1,0 +1,19 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{title}} Posts</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="form-group yeats-form-group ">
+    <label for="" class="yeats-form-label"> Posts Texts*</label>
+    <textarea rows="5" cols="50" ui-inputtextarea [(ngModel)]="myposts"></textarea>
+  </div>
+</div>
+<div class="modal-footer">
+  <div class="col-12">
+    <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3" (click)="SavePosts()">Save</button>
+    <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+      (click)="modal.close('Close click')">Cancel</button>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+.userschedulemail {
+  // .ui-button-icon-only .ui-button-text {
+    // padding: 19% !important;
+  // }
+    padding: 0px 12px;
+  .pi-spinner:before {
+    content: "\e926";
+    visibility: hidden !important;
+  }
+  .table th,
+  .table td {
+    padding: 0.5rem;
+    border-top: 1px solid #eceeef;
+    vertical-align: baseline;
+  }
+  .invalid-feedback{
+    color: red;
+  }
+  body .ui-inputtext {
+    padding: 0.1em;
+  }
+  .card-header{
+    background-color:white !important;
+  }
+  .card-body{
+    background-color:white !important;
+  }
+}

@@ -1,0 +1,72 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Search Patient Allergy</h5>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-3">
+        <label class="formLabel yeats-form-label">Description</label>
+        <input placeholder="Desciption" [(ngModel)]="searchDescription" id="Allergy" type="text"
+          class="form-control yeats-form-control d-inline" required />
+      </div>
+      <div class="col-lg-3 mt-1">
+        <label class="formLabel yeats-form-label">&nbsp;</label>
+        <button pButton class="yeats-btn yeats-btn-primary w-45" style="margin-right:10%"
+          (click)="getFirstDrugAllergy();getMrAllergiesByDesc()">Search</button>
+        <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary w-45" type="reset"
+          ng-click="searchDescription = null" (click)="onClearAllergy()">Clear</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="mt-4"></div>
+        <div class="yeats-tables">
+          <p-table [columns]="allergyHead" [value]="foodAllergies && foodAllergies.Results" selectionMode="single" 
+            [(selection)]="selectedAllergy" dataKey="name" [paginator]="true" [rows]="5" [totalRecords]="totalrecords" [responsive]="true"
+            (onRowSelect)="onRowSelectFood($event)">
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns">
+                  {{col.header}}
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr [pSelectableRow]="rowData">
+                <td *ngFor="let col of columns">
+                  {{rowData[col.field]}}
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="mt-4"></div>
+        <div class="yeats-tables">
+          <p-table [columns]="drugHead" [value]="drugAllergies && drugAllergies" selectionMode="single" [(selection)]="selectedAllergy"
+            dataKey="name" [paginator]="true" [rows]="5" [responsive]="true" (onRowSelect)="onRowSelectDrug($event)">
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns">
+                  {{col.header}}
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr [pSelectableRow]="rowData">
+                <td *ngFor="let col of columns">
+                  {{rowData[col.field]}}
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

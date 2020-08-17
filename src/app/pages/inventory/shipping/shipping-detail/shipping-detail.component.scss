@@ -1,0 +1,143 @@
+.primeNgShippingDetails{
+    .form-group{
+        margin:30px;
+    }
+    .modalButton{
+        .btn{
+            margin:20px;
+            padding:5px 10px;
+            font-size:16px;
+        }
+    }
+}
+.addToShip{
+  margin:20px;
+  padding:5px 10px;
+  font-size:16px;
+  color:#fff;
+  background-color: #3318ff;
+  border:none;
+  border-radius:2px;
+  padding:5px 10px;
+  // text-align:right;
+  font-size:12px;
+}
+
+.primeNgTableShipping {
+    .tableRowHead {
+      height: 50px;
+    }
+    .tableRowBody {
+      height: 50px;
+    }
+    .ui-card-body {
+        padding: 1em;
+        background-color: #F8FBFF;
+    }
+    .ui-table .ui-table-tbody > tr > td {
+      border: none;
+      // background-color: inherit;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      border-bottom: 5px solid #f5f6fa;
+      background-color: #fff;
+      font-size: 12px;
+      color: #8992af;
+      text-align: center;
+    }
+    .ui-table .ui-table-thead > tr > th,
+    .ui-table .ui-table-tfoot > tr > td {
+      // border:none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      border-bottom: 5px solid #f5f6fa;
+      font-size: 14px;
+      font-weight: bolder;
+      color: #8992af;
+      text-align: center;
+      // background-color: inherit;
+    }
+    .ui-table .ui-paginator-bottom {
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      background-color: #f5f6fa;
+      border-bottom: none;
+      text-align: right;
+    }
+    .ui-widget-header {
+        background: transparent;
+        background: linear-gradient(to bottom, #F8FBFF 0%, #F8FBFF 100%);
+    }
+    
+    .ui-paginator .ui-paginator-next,
+    .ui-paginator .ui-paginator-last,
+    .ui-paginator .ui-paginator-fist,
+    .ui-paginator .ui-paginator-prev,
+   {
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      line-height: 1.5em;
+      zoom: 1;
+      margin-left: 0.063em;
+      margin-right: 0.063em;
+      text-decoration: none;
+      vertical-align: middle;
+      text-align: center;
+      position: relative;
+    }
+    .ui-paginator-page{
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      padding:7px;
+    }
+    .ui-paginator .ui-state-active  {
+      background: #3318ff;
+      color: #ffffff;
+      border: 1px solid #3318ff;
+      padding: 2px;
+      width:36px;
+      height:36px;
+    }
+    .ui-paginator-first,
+    .ui-paginator .ui-paginator-prev,
+    .ui-paginator .ui-paginator-current {
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      line-height: 1.5em;
+      zoom: 1;
+      margin-left: 0.063em;
+      margin-right: 0.063em;
+      text-decoration: none;
+      vertical-align: middle;
+      text-align: center;
+      position: relative;
+    }
+    .breadcrumb {
+      padding: 0.75rem 1rem;
+      margin-bottom: 15px;
+      list-style: none;
+      background-color: #ebedf0;
+      border-radius: 0.25rem;
+      height: 38px;
+    }
+    .app.blue .breadcrumb {
+      padding: 6px;
+      padding-left: 15px;
+    }
+    .content .ui-button,
+    .ui-widget.ui-button,
+    .ui-button {
+      border: 1px solid #2399e5;
+      color: #ffffff;
+      background: #2399e5;
+      float: right;
+      right: 0;
+      transition: background-color 0.2s;
+    }
+  }

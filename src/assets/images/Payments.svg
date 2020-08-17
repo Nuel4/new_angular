@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28.606" height="24.419" viewBox="0 0 28.606 24.419">
+  <g id="Payments" transform="translate(-237 -219.906)">
+    <g id="Group_26391" data-name="Group 26391" transform="translate(237 219.906)">
+      <path id="Path_36129" data-name="Path 36129" d="M23.61,18.193V22.64H3.073a1.277,1.277,0,0,1-1.294-1.294V6.792a3.756,3.756,0,0,0,1.86.485H23.53v4.2H19.81a.9.9,0,0,0-.889.889V17.3a.9.9,0,0,0,.889.889ZM0,21.346a3.071,3.071,0,0,0,3.073,3.073H24.5a.9.9,0,0,0,.889-.889V18.193h1.294a.9.9,0,0,0,.889-.889V12.371a.9.9,0,0,0-.889-.889H25.389V6.307a.918.918,0,0,0-.97-.889H22.236V.889A.9.9,0,0,0,21.346,0H3.639A3.623,3.623,0,0,0,0,3.639ZM20.457,5.417H3.639a1.82,1.82,0,1,1,0-3.639H20.457Zm5.256,11H20.7V13.261h5.013Z" fill="#3a3a87" fill-rule="evenodd"/>
+      <g id="Rectangle_2625" data-name="Rectangle 2625" transform="translate(17.604 11.216)" fill="none" stroke="#114886" stroke-width="1.5">
+        <rect width="11.002" height="7.702" rx="2" stroke="none"/>
+        <rect x="0.75" y="0.75" width="9.502" height="6.202" rx="1.25" fill="none"/>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,162 @@
+<div class="approveRemittanceAdvice">
+  <div class="row">
+    <div class="col-lg-3 col-sm-6 col-12">
+      <label class="formLabel yeats-form-label">&nbsp;</label>
+      <div class="form-group yeats-form-group ">
+        <label for="ChequeReference" class="formLabel yeats-form-label"
+          >Cheque/Reference Number</label
+        >
+        <input
+          type="text"
+          [(ngModel)]="approveRemittanceChequeReference"
+          class="form-control yeats-form-control"
+          id="ChequeReference"
+          name="ChequeReference"
+          placeholder="Enter Cheque/Reference Number"
+        />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <label class="formLabel yeats-form-label">&nbsp;</label>
+      <div class="form-group yeats-form-group ">
+        <label for="dateOfBirth" class="formLabel yeats-form-label"
+          >Date of Birth</label
+        >
+        <input
+          type="text"
+          value="{{ authStore.PatientDetail? (authStore.PatientDetail.DateOfBirth | date: 'dd-MM-yyyy'):'' }}"
+          class="form-control yeats-form-control"
+          id="dateOfBirth"
+          name="dateOfBirth"
+          placeholder="Date of birth"
+          readonly
+        />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <label class="formLabel yeats-form-label">&nbsp;</label>
+      <div class="form-group yeats-form-group ">
+        <label for="uniqueNumber" class="formLabel yeats-form-label"
+          >Unique Number</label
+        >
+        <input
+          type="text"
+          value="{{ authStore.PatientDetail?authStore.PatientDetail.UniqueNumber:'' }}"
+          class="form-control yeats-form-control"
+          id="uniqueNumber"
+          name="uniqueNumber"
+          placeholder="Unique Number"
+          readonly
+        />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <label class="formLabel yeats-form-label">&nbsp;</label>
+      <div class="form-group yeats-form-group ">
+        <label for="cellPhone" class="formLabel yeats-form-label"
+          >Cell Phone</label
+        >
+        <input
+          type="text"
+          value="{{authStore.PatientDetail ? authStore.PatientDetail.HomePhone:'' }}"
+          class="form-control yeats-form-control"
+          id="cellPhone"
+          name="cellPhone"
+          placeholder="Cell Phone"
+          readonly
+        />
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 ">
+      <button
+        pButton
+        class="yeats-btn yeats-btn-danger ui-button-danger pull-right ml-3 mb-3"
+        (click)="clearApproveRemittance()"
+      >
+        Clear
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3"
+        (click)="getApproveRemittance(0)"
+      >
+        Search
+      </button>
+    </div>
+  </div>
+  <div class="yeats-tables">
+    <p-table
+      [columns]="cols"
+      [value]="approveRemittance"
+      dataKey="BillHeaderId" rowExpandMode="single"
+    >
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th></th>
+          <th *ngFor="let col of columns">
+            {{ col.header }}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template
+        pTemplate="body"
+        let-rowData
+        let-expanded="expanded"
+        let-columns="columns"
+      >
+        <tr>
+          <td>
+            <a
+              href="#"
+              [pRowToggler]="rowData"
+              (click)="getBillTransactionsApproved(rowData)"
+            >
+              <i
+                [ngClass]="
+                  expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
+                "
+              ></i>
+            </a>
+          </td>
+          <td *ngFor="let col of columns">
+            {{ rowData[col.field] }}
+            <span *ngIf="col.field === 'ClaimStatusCode'"
+              ><i class="pi pi-check" (click)="getApproved(rowData)"></i
+            ></span>
+            <span *ngIf="col.field === 'delete'"
+              ><img src="../../../../assets/images/Delete.svg" style="cursor: pointer;" alt="Delete" 
+                (click)="deleteApproveRemittance(rowData)"
+              ></span>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+        <tr>
+          <td [attr.colspan]="columns.length + 1">
+            <div class="yeats-tables">
+              <p-table [columns]="column" [value]="approveBillTransaction">
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th *ngFor="let col of columns">
+                      {{ col.header }}
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                  <tr>
+                    <td *ngFor="let col of columns">
+                      {{ rowData[col.field] }}
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <p-paginator [rows]="rows" (onPageChange)="selectedPage($event)" [totalRecords]="totrec"></p-paginator>
+</div>

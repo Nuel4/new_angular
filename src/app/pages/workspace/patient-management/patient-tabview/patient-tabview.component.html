@@ -1,0 +1,215 @@
+
+    <p-tabView>
+      <p-tabPanel header="Patient Info">
+        <div class="ui-g ui-fluid">
+          <div class="ui-g-12 ui-md-2 ml-4">
+            <img [attr.alt]="rowData.Name" width="89.997" height="90" src="data:image/jpeg;base64,{{rowData.PhotoImage}}" style="border-radius: 50%;" *ngIf="!rowData.PhotoImage==''"/>
+            <!--  -->
+            <img [attr.alt]="rowData.Name" src="../../../../assets/img/user.svg"
+              *ngIf="rowData.PhotoImage==''" class="userIcon" />
+          </div>
+          <div class="ui-g-12 ui-md-9" style="font-size:12px;">
+            <div class="ui-g mt-1">
+              <div class="ui-g-3">
+                <b>Patient Id :</b>
+                <p *ng></p> {{ rowData.PatientId }}
+              </div>
+              <div class="ui-g-3">
+                <b>Patient Name :</b> {{ rowData.Name }}
+              </div>
+              <div class="ui-g-3">
+                <b>Date of birth :</b> {{ rowData.DateOfBirth | date: 'dd-MM-yyyy' }}
+              </div>
+              <div class="ui-g-3 "><b>Sex :</b> {{ rowData.gender }}</div>
+              <div class="ui-g-3"><b>Phone :</b> {{ rowData.phoneNo }}</div>
+              <div class="ui-g-3"><b>Address :</b> {{rowData.Address}}</div>
+              <div class="ui-g-3"><b>Email :</b> {{rowData.Email1}}</div>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Insurance">
+        <!-- <div class="ui-g ui-fluid" style="font-size:12px;">
+          <div class="ui-g-12 ui-md-12">
+            <div class="ui-g-4">
+              <b><u>Primary Insurance</u></b>
+              <div class="ui-g mt-2">
+                <div class="ui-g">
+                  <b>Insurance Name:</b>
+                </div>
+              </div>
+              <div class="ui-g mt-3">
+                <div class="ui-g">
+                  <b>Policy Number:</b>
+                </div>
+              </div>
+
+            </div>
+            <div class="ui-g-4">
+              <b><u>Secondary Insurance</u></b>
+              <div class="ui-g mt-2">
+                <div class="ui-g">
+                  <b>Insurance Name:</b>
+                </div>
+              </div>
+              <div class="ui-g mt-3">
+                <div class="ui-g">
+                  <b>Policy Number:</b>
+                </div>
+              </div>
+            </div>
+            <div class="ui-g-4">
+              <b><u>Tertiary Insurance</u></b>
+              <div class="ui-g mt-2">
+                <div class="ui-g">
+                  <b>Insurance Name:</b>
+                </div>
+              </div>
+              <div class="ui-g mt-3">
+                <div class="ui-g">
+                  <b>Policy Number:</b>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <div class="ui-g ui-fluid" style="font-size:12px;" >
+          <div class="ui-g-12 ui-md-12">
+            <div class="ui-g-4 ui-md-4 ui-sm-4">
+              <b>Primary Insurance</b>
+              <div class="ui-g  mt-2">
+                <div class="ui-g">
+                  <b>Insurance Name:</b>&nbsp;<p *ngIf="pName">{{pName}}</p>
+                </div>
+              </div>
+              <div class="ui-g mt-3">
+                <div class="ui-g">
+                  <b>Policy Number:</b>&nbsp;<p *ngIf="pNumber">{{pNumber}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="ui-g-4 ui-md-4 ui-sm-4">
+              <b>Secondary Insurance:</b>
+              <div class="ui-g mt-2">
+                <div class="ui-g">
+                  <b>Insurance Name:</b>&nbsp;<p *ngIf="sName">{{sName}}</p>
+                </div>
+              </div>
+              <div class="ui-g mt-3">
+                <div class="ui-g">
+                  <b>Policy Number:</b>&nbsp;<p *ngIf="sNumber">{{sNumber}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="ui-g-4 ui-md-4 ui-sm-4">
+              <b>Tertiary Insurance:</b>
+              <div class="ui-g mt-2">
+                <div class="ui-g">
+                  <b>Insurance Name:</b>&nbsp;<p *ngIf="tName">{{tName}}</p>
+                </div>
+              </div>
+              <div class="ui-g mt-3">
+                <div class="ui-g">
+                  <b>Policy Number:</b>&nbsp;<p *ngIf="tNumber">{{tNumber}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Appointments">
+        <div>
+          <div class="row">
+            <div class="col-lg-3 col-sm-6 col-12 pull-left">
+              <div class="form-group yeats-form-group text-left">
+                <label class="formLabel yeats-form-label label-mb">Appointment Status</label>
+                <p-dropdown [options]="apptStatus" [(ngModel)]="selectedApptStatus" name="apptstatus"
+                  placeholder="Select Appointment Status" [showClear]="true"
+                  optionLabel="appointmentStatus" (onChange)="onAppointmentChange($event)">
+                </p-dropdown>
+                <!-- <div class="form-group yeats-form-group ">
+                  <label class="formLabel yeats-form-label">City</label>
+                  <p-dropdown [options]="cities" [(ngModel)]="selectedCity" placeholder="Select a City" optionLabel="name" [showClear]="true">
+                  </p-dropdown> </div> -->
+              </div>
+            </div>
+            <div class="col-lg-9 col-sm-9 col-12">
+              <div class="form-group yeats-form-group text-left">
+                <label class="formLabel yeats-form-label"> </label>
+                <button pButton class="yeats-btn yeats-btn-primary pull-right" (click)="openEditModal(rowData,false)">New
+                  Appointment</button>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="tableLabel mt-2">
+            <b>Scheduled Appointments:</b>
+          </div> -->
+          <div class="yeats-tables">
+            <p-table [value]="patientAppointment" [paginator]="true" [rows]="5"
+              [totalRecords]="totalRecords" [lazy]="true" (onLazyLoad)="paginateAppointment($event)">
+              <ng-template pTemplate="header">
+<tr>
+  <th>Date</th>
+  <th>Time</th>
+  <th>User</th>
+  <th>Type</th>
+  <th>Status</th>
+  <th>Cancelled By</th>
+  <th>Date Cancelled</th>
+  <th>Cancelled Reason</th>
+  <th>Action</th>
+</tr>
+</ng-template>
+<ng-template pTemplate="body" let-rowdata>
+<tr>
+  <td>{{rowdata.appointmentdate | date:'MM/dd/yyyy' }}</td>
+  <td>{{rowdata.appointmentdate | date:'hh:mm a' }}</td>
+  <td>{{rowdata.username}}</td>
+  <td>{{rowdata.appointmenttype}}</td>
+  <td>{{rowdata.appointmentstatus}}</td>
+  <td>{{rowdata.cancelledby}}</td>
+  <td>{{rowdata.datecancelled}}</td>
+  <td>{{rowdata.cancelledstatus}}</td>
+  <td style="font-size:10px !important;">
+    <i style="margin-right:5px !important;" *ngIf="(rowData.appointmentdate | date:'MM/DD/YYYY') === (todayDate | date:'MM/DD/YYYY')"
+      class="fa fa-undo" pTooltip="Reschedule" tooltipPosition="top" (click)="openEditModal(rowdata,false,true)"></i>
+    <i *ngIf="rowdata.appointmentstatus === 'Scheduled'" class="fa fa-times" pTooltip="Cancel Appointment"
+      tooltipPosition="top" (click)="openEditModal(rowdata.Id,true,false)"></i>
+  </td>
+</tr>
+</ng-template>
+</p-table>
+</div>
+</div>
+</p-tabPanel>
+<p-tabPanel header="Messages">
+<!-- <div *ngIf="isLoader" class="row">
+                                            <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+                                          </div> -->
+<div class="yeats-tables">
+
+<p-table [resizableColumns]="true">
+<ng-template pTemplate="header">
+<tr>
+  <th>Date</th>
+  <th>Time</th>
+  <th>Duration</th>
+  <th>Message type</th>
+  <th>Subject</th>
+  <th>Action</th>
+</tr>
+<tr *ngFor="let message of patientMessage">
+  <td>{{message.StartDate | date:'MM/dd/yyyy'}}</td>
+  <td>{{message.StartDate | date:'hh:mm a'}}</td>
+  <td></td>
+  <td>{{message.MessageType}}</td>
+  <td>{{message.Posting}}</td>
+  <td><button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right">Edit</button>
+
+  </td>
+</tr>
+</ng-template>
+</p-table>
+</div>
+</p-tabPanel>
+</p-tabView>

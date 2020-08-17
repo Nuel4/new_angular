@@ -1,0 +1,151 @@
+<div class="cpt_discalimer" *ngIf="cptDisclaimer">
+  <!--CPT Disclaimer Modal-->
+      <div class="modal-header">
+        <h4 class="modal-title">CPT Disclaimer</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="cptDisclaimerModal.dismiss('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <p class="disclaimer">CPT &reg; copyright 2018 American Medical Association.All rights reserved.Fee schedules,relative value units,convertion factors and/or related components are not assigned by the AMA,are not part of CPT,and the AMA is not recommending their use. The AMA does not directly or indirectly practice medicine or dispense medical services. The AMA assumes no liability for data contained herein. Applicable FARS/DFARS Restrictions Apply to Government Use.CPT is a registered trademark of the American Medical Association.Applicable FARS/DFARS Restrictions Apply to Government Use.  </p>
+          <div class="row">
+              <div class="col-12">
+               
+                <button
+                  pButton
+                  class="yeats-btn yeats-btn-danger ui-button-danger pull-right ml-3"
+                  (click)="cptDisclaimerModal.close('Close click')"
+                >
+                  Close
+                </button>
+              
+              </div>
+            </div>
+      </div>
+</div>
+<div class="cpt_discalimer" *ngIf="newUser">
+  <!--CPT Disclaimer Modal-->
+      <div class="modal-header">
+        <h6 class="modal-title" *ngIf="!about">Please Accept Our EULA Agreement</h6>
+        <h6 class="modal-title" *ngIf="about"></h6>
+        <!-- <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="cptDisclaimerModal.dismiss('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button> -->
+      </div>
+      <div class="modal-body newUser">
+        <h6><b>MEDICOMP SOLUTIONS END USERLICENSEAGREEMENT</b><br><br></h6>
+          <p><b>IMPORTANT-READ CAREFULLY:</b>This End-User License Agreement (“EULA”) is a legal agreement between you(either an individual or a single entity) and Medicomp Solutions Inc. (“Medicomp”) for the Yeats Clinical-Practice CentricHER software that accompanies this EULA, which includes computer software and may include associated media, upgrades,printed materials, “online” or electronic documentation, support services and Internet-based services (“Software”).Medicomp holds the exclusive license to exploit and distribute the Software in North America. An amendment or addendumto this EULA may accompany the software. YOU AGREE TO BE BOUND BY THE TERMS OF THIS EULA BYINSTALLING, COPYING OR OTHERWISE USING THE SOFTWARE. IF YOU DO NOT AGREE, DO NOT INSTALL,COPY OR USE THE SOFTWARE; YOU MAY RETURN IT FOR A FULL REFUND, IF APPLICABLE. This EULA,additional terms (including any printed-paper license terms authored by Medicomp that accompany the Software and maymodify or replace some or all of these terms), and the terms for supplements, updates, Internet-based services and supportservices that you use, are the entire agreement between you and Medicomp for the Software and support services,superseding any prior proposal, representation or understanding between the parties.<br></p>
+<p>1. GRANT OF LICENSE<br>In consideration of your acceptance of the terms and conditions of this EULA and your payment of the relevant subscription license fee, Medicomp grants you a non-exclusive, non-assignable single user license to use the Software.  The Software is licensed to you, not sold, for use only under the terms of this EULA.  Registered user account of the Software may only be used by a single person who uses the Software on one or more workstations. </p>
+          <p>You may access the registered version of the Software through an internet network, provided that you have obtained individual licenses for the Software covering all end users that will access the Software through the internet network. <br></p>
+         <p>2. SCOPE OF GRANT<br>You may not alter, adapt, merge, modify, translate, decompile, disassemble or otherwise reverse engineer the Software, or engage in any other activities to obtain underlying information that is not visible to the user in connection with normal use of the Software. You may not copy (other than for back-up purposes only), transfer, sublicense, modify, rent, lease, mortgage, lend or resell this Software, for profit or otherwise, or create derivative works based upon this Software. You may not publicize or distribute any registration code algorithms, information or registration codes used by this Software.<br></p>
+         <p>3. COPYRIGHT<br>This Software is protected by copyright laws and international copyright treaties, as well as other intellectual property laws and treaties.  You must not remove or alter any copyright or trademark notices on any and all copies of the Software.</p> 
+         <p>4. DISTRIBUTION<br>Under no circumstances can any element of the Software be distributed to third parties without prior written consent from Medicomp.</p>
+         <p>5. TERMINATION<br>The license for the Software will terminate automatically when your registration subscription license expires. You may contact Medicomp support services to obtain a new EULA, which EULA will require your payment of the appropriate subscription license fee at the time of renewal. Further, without prejudice to any other rights, Medicomp may terminate this EULA if you fail to comply with the terms and conditions hereof or if you become bankrupt, go into liquidation, suffer or make any winding up petition, make an arrangement with your creditors, have an administrator, administrative receiver or other receiver appointed or if you suffer or file any similar action in consequence of debt.  In the event of such termination, you must uninstall the Software, destroy all copies of the Software in your possession and provide Medicomp written confirmation of your compliance with this Section 5.  Your acceptance of this EULA indicates that you will grant Medicomp the right to enter your place of business and to examine equipment located there to ensure that this Section 5 has been properly adhered to upon termination.</p>
+         <p>6. DISCLAIMER OF WARRANTY<br>THIS SOFTWARE IS PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, MEDICOMP FURTHER DISCLAIMS ALL WARRANTIES, INCLUDING WITHOUT LIMITATION ANY IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. THE ENTIRE RISK ARISING OUT OF THE USE OR PERFORMANCE OF THE SOFTWARE REMAINS WITH THE RECIPIENT. Medicomp does not warrant or assume responsibility for the accuracy or completeness of any information, text, graphics, links or other items contained within the Software. Medicomp makes no warranties respecting any harm that may be caused by the transmission of a computer virus, worm, time bomb, logic bomb or other such computer program. Medicomp further expressly disclaims any warranty or representation to any third party.</p>
+         <p>7. LIMITATION OF LIABILITY<br>You can recover from Medicomp only direct damages up to the amount you paid for the Software. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL MEDICOMP BE LIABLE FOR ANY CONSEQUENTIAL, INCIDENTAL, DIRECT, INDIRECT, SPECIAL, PUNITIVE OR OTHER DAMAGES WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS, BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION OR OTHER PECUNIARY LOSS) ARISING OUT OF THIS EULA OR THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN IF MEDICOMP HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. In no event will MEDICOMP be liable for loss of data or for other damages based in contract, tort or otherwise. MEDICOMP shall have no liability with respect to the content of the SOFTWARE or any part thereof, including but not limited to errors or omissions contained therein, libel, infringements of rights of publicity, privacy, trademark rights, business interruption, personal injury, loss of privacy, moral rights or the disclosure of confidential information.</p>
+         <p>8. INDEMNIFICATION<br>Except to the extent caused by Medicomp’s gross negligence or willful misconduct, you shall indemnify and hold Medicomp harmless from any and all liability, loss or damage that Medicomp may suffer as a result of claims, demands or judgments by or for any third party arising out of the Software and/or your unauthorized use or operation of the Software.</p>
+         <p>9. COMPLIANCE WITH LAWS<br>You must comply with all applicable laws regarding use of the Software.</p>
+         <p>10. APPLICABLE LAW; VENUE<br>This EULA shall be governed by and construed and enforced in accordance with the laws of the Commonwealth of Virginia as it applies to a contract made and to be performed in such state. You consent and agree that the courts of the County of Fairfax in the Commonwealth of Virginia and the United States District Court Eastern District of Virginia in Alexandria shall have personal jurisdiction over you, as well as subject matter jurisdiction with respect to any provision of this EULA, and shall be the exclusive forums for any litigation arising out of or relating to this EULA. You also agree to and hereby waives your rights to a trial by jury and agrees to accept service of process by mail.</p>
+         <p>11. HEADINGS AND INTERPRETATION<br>Headings are for convenience only and shall not affect the construction or interpretation of this EULA.  For the avoidance of doubt, the terms “including” and “includes” shall be understood to mean “including without limitation” and “includes without limitation”, respectively.</p>
+         <p>12. WAIVER<br>Medicomp’s failure to enforce any particular term of this EULA shall not be construed as a waiver of any of Medicomp’s rights hereunder or a commitment that such particular term will not be enforced in the future.</p>
+         <p>13. SEVERABILITY<br>If any term of this EULA is held by a court of competent jurisdiction to be unenforceable, the validity of the remainder of the terms will not be affected.</p>
+         <p>14. JOINT DRAFTING<br>For purposes of interpreting this agreement, both parties shall be deemed to have drafted this document jointly.</p>
+         <p>15. AMERICAN MEDICAL ASSOCIATION’S (“AMA”) CURRENT PROCEDURAL TERMINOLOGY (CPT®) NOTICES AND DISCLAIMERS<br>To the extent that the Yeats Clinical-Practice Centric HER (“Yeats) contain CPT content or data (“Editorial Content”) licensed to Medicomp by The AMA, the following additional provisions and restrictions will apply:</p>
+         <p>15.1. GRANT OF RIGHTS RESTRICTIONS<br>The license granted to the Editorial Content as contained in the Yeats Clinical-Practice Centric EHR is a nontransferable, nonexclusive license, for the sole purpose of internal use by you within the United States of America.</p>
+         <p>You are prohibited from publishing, distributing via the Internet or other public computer based information system, creating derivative works (including translating), transferring, selling, leasing, licensing or otherwise making available to any unauthorized party the Editorial Contents embedded within the Yeats software, or a copy or portion of Editorial Contents from the Yeats software.</p>
+         <p>You understands that provision of updated Editorial Content within the Yeats software is dependent on a continuing contractual relationship between Medicomp and the AMA.</p>
+         <p>You must ensure that anyone with authorized access to the Yeats software, in general, and the Editorial Content, in particular, will comply with the provisions of this EULA Agreement.</p>
+         <p>15.2. NOTICES<br>You acknowledge that the Editorial Content is copyrighted by the AMA and that it is a registered trademark of the AMA.</p>
+         <p>U.S. Government Rights. This product includes CPT which is commercial technical data and/or computer data bases and/or commercial computer software and/or commercial computer software documentation, as applicable, which was developed exclusively at private expense by the American Medical Association, AMA Plaza, 330 N. Wabash Ave., Suite 39300, Chicago, IL 60611-5885. U.S. government rights to use, modify, reproduce, release, perform, display, or disclose these technical data and/or computer data bases and/or computer software and/or computer software documentation are subject to the limited rights restrictions of DFARS 252.227-7015(b)(2) (November 1995) and/or subject to the restrictions of DFARS 227.7202-1(a) (June 1995) and DFARS 227.7202-3(a) (June 1995), as applicable, for U.S. Department of Defense procurements and the limited rights restrictions of FAR 52.227-14 (December 2007) and/or subject to the restricted rights provisions of FAR 52.227-14 (December 2007) and FAR 52.227-19 (December 2007), as applicable, and any applicable agency FAR Supplements, for non-Department of Defense Federal procurements.</p>
+         <p>15.3. BACK UP RIGHTS<br>You may only make copies of the Editorial Content for back-up or archival purposes. All notices of proprietary rights, including trademark and copyright notices, must appear on all permitted back up or archival copies made.</p>
+         <p>15.4. DISCLAIMER OF WARRANTY<br>THE EDITORIAL CONTENT AS CONTAINED IN THE YEATS SOFTWARE IS PROVIDED “AS IS” AND WITHOUT ANY LIABILITY TO THE AMA AND/OR MEDICOMP, INCLUDING WITHOUT LIMITATION, NO LIABILITY FOR CONSEQUENTIAL, INDIRECT, CONTINGENT, OR SPECIAL DAMAGES, LOST PROFITS FOR SEQUENCE, ACCURACY OR COMPLETENESS OF DATA OR THAT IT WILL MEET YOUR REQUIREMENTS, EVEN IF THE AMA AND/OR MEDICOMP OR ANY OF THEIR REPRESENTATIVES HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES, OR FOR ANY CLAIM BY ANY THIRD PARTY. YOU ASSUME THE ENTIRE RISK OF USING THE YEATS CLINICAL-PRACTICE CENTRIC EHR AND ANY EDITORIAL CONTENT THEREIN.</p>
+         <p>AMA AND MEDICOMP’S SOLE LIABILITY AND RESPONSIBILITY IS FOR THE AMA TO MAKE AVAILABLE TO YOU THROUGH MEDICOMP A REPLACEMENT COPY OF THE EMBEDDED EDITORIAL CONTENT IF THE DATA IS NOT INTACT; AND THAT THE AMA AND MEDICOMP DISCLAIM ANY LIABILITY FOR ANY CONSEQUENCES DUE TO USE, MISUSE, OR INTERPRETATION OF INFORMATION CONTAINED OR NOT CONTAINED IN THE EDITORIAL CONTENT ITSELF OR AS EMBEEDED WITHIN THE YEATS SOFTWARE.</p>
+         <p>15.5. INDEMNIFICATION<br>You agree to defend, hold harmless and indemnify AMA and/or Medicomp for any and all claims or demands, including costs, expenses and reasonable attorney’s fees due to unauthorized access to or misuse of the CPT coding contained the Editorial Content by you or any of your other employees, agents, subcontractors, or other persons (whether authorized or unauthorized).</p>
+        
+      </div>
+      <div class="modal-footer">
+        <div class="row">
+          <div class="col-12" *ngIf="!about">
+              <button pButton class="yeats-btn ui-button-primary pull-right ml-3" (click)="onAccept()">Accept</button>
+              <button pButton class="yeats-btn yeats-btn-danger ui-button-danger pull-right ml-3" (click)="toLogin()">Reject</button>
+          </div>
+          <div class="col-12" *ngIf="about">
+            <button pButton class="yeats-btn ui-button-primary pull-right ml-3" (click)="clickOk()">Ok</button>
+            
+        </div>
+        </div>
+      </div>
+</div>
+<!-- Password Model -->
+<div class="cpt_discalimer" *ngIf="password">
+      <div class="modal-header">
+        <h4 class="modal-title">Forget Password</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="cptDisclaimerModal.dismiss('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <div class="row">
+           <div class="col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="patientName" class="formLabel yeats-form-label"
+                >Username</label
+              >
+              <input
+                type="text"
+                [(ngModel)]="userName"
+                class="form-control yeats-form-control"
+                name="userName"
+                placeholder="User Name"
+                
+              />
+            </div>
+           </div>
+           <div class="col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="patientName" class="formLabel yeats-form-label"
+                >Email Id</label
+              >
+              <input
+                type="text"
+                [(ngModel)]="email"
+                class="form-control yeats-form-control"
+                name="email"
+                placeholder="Email"
+                
+              />
+            </div>
+           </div>
+         </div>
+          <div class="row">
+              <div class="col-12">
+               
+                <button
+                  pButton
+                  class="yeats-btn yeats-btn-danger ui-button-danger pull-right ml-3"
+                  (click)="cptDisclaimerModal.close('Close click')"
+                >
+                  Close
+                </button>
+                <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" (click)="onSave()">
+                  Save
+                </button>
+              </div>
+            </div>
+      </div>
+</div>

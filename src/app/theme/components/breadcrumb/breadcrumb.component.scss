@@ -1,0 +1,120 @@
+.submenu{
+  display: inline-flex;
+  // max-width: 68% !important;
+  // width: 50%;
+  // word-break: break-word !important;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 15px;
+  text-align: left;
+  margin: 11px 0px 0px 0px;
+}
+.mainDiv{
+  // width: 50%;
+}
+.d-inline{
+  // padding-top: 6px
+  // margin-top: 0.5rem;
+  color: black;
+}
+.horizontalNavbar {
+  // min-height: 12px;
+  // background-color: rgba(196, 201, 232, 0.3) !important;
+  background-color: white;
+  color: #7f8fa6 !important; 
+  text-align: right;
+  // margin:5px;
+  // color:#1f70ba;;
+  margin: 5px 18px 4px 16px;
+  border-radius:2px;
+  font-family: 'Muli', sans-serif;
+  font-weight: bold;
+  font-size: 15px;
+  height: 40px;
+  // padding-bottom: 8px;
+  @media screen and (max-width: 1280px) {
+    .navBarItems {
+      margin-right: 5px !important;
+      margin-left: 10px !important;
+    }
+  }
+  @media screen and (max-width: 1024px) {
+    .navBarItems {
+      margin-right: 5px !important;
+      margin-left: 2px !important;
+    }
+  }
+  .navBarItems {
+    // background-color: #c4c9e8 !important;
+    // border-right: 2px solid #1f70ba80 !important;
+    // min-height: 40px !important;
+    margin-right: 15px;
+    margin-left: 1em;
+    .active {
+      color: #227de2 !important;
+      border-bottom: 2px solid #114886 !important;
+      border-top: 2px solid #114886 !important;
+      padding: 7px 0px 12px 0px;
+    }
+    a {
+      // max-width: 100% !important;
+    }
+
+
+    .bccolor{
+      color: gray;
+    }
+    .horizontalNavItemsIcon {
+      font-size: 21px;
+      width: 24px;
+      height:24px;
+      text-align: center !important;
+      padding-top: 3px;
+      margin:-2px 5px 2px 2px;
+      word-break: break-all;
+      // color: #114886 !important;
+    }
+    *:before {
+      vertical-align: middle;
+    }
+  }
+  @media screen and (max-width: 1225px) {
+    .text-center {
+      // margin-right: 2px !important;
+      // margin-left: 0px !important;
+    }
+  }
+  // .navBarItems:hover {
+  //   a {
+  //     color: #fff !important;
+  //   }
+  // }
+.subModuleName{
+  font-size: 13px;
+  font-weight: 600;
+  padding-right: 4px;
+  // display: inline;
+  // width: 20px;
+  word-break: break-all !important;
+}
+  .isViewChartDisableColor{
+    // color: #8f8f90 !important;
+    color: red !important;
+  }
+}
+
+.arrow{
+  padding-top: 10px;
+}
+.icon-selected {
+  border-bottom: 2px solid #114886;
+  border-top: 2px solid #114886
+}
+
+.text-inactive{
+  color: #7f8fa6 !important ;
+}
+
+.pointer{  
+  cursor: pointer;
+}

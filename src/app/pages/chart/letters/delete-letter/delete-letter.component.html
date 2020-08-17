@@ -1,0 +1,19 @@
+<div class="letterDeleteModal">
+  <div class="modal-header">
+    <h4 class="modal-title">Delete</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Are you sure want to delete this letter?
+  </div>
+  <div class="modal-footer">
+    <div class="col-12">
+      <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3"
+        (click)=" cancelReferralLetters()">Delete</button>
+      <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+        (click)="modal.close('Close click')">Cancel</button>
+    </div>
+  </div>
+</div>

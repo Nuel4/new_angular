@@ -1,0 +1,18 @@
+.primaryInsurance{
+    padding-bottom:7px;
+    .insuranceHead{
+        .yeats-form-group{
+            height:2rem !important;
+        }
+    }
+    .yeats-form-group {
+        min-height:0px;
+     }
+    .checkboxGroup{
+        padding-bottom: 0px;
+     }
+     .invalid-feedback{
+         color: red;
+     }
+
+}

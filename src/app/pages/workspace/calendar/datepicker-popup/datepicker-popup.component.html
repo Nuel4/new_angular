@@ -1,0 +1,40 @@
+<div class="datePickerModel" *ngIf="isDatepicker">
+  <!-- <div class="modal-header">
+      <h4 class="modal-title">Cancel Appointment</h4>
+      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div> -->
+  <div class="modal-body modal_content" style="position:absolute;">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <p-calendar [(ngModel)]="gotoDate" [inline]="true" monthNavigator="true" [yearNavigator]="true" yearRange="2000:2099" (onSelect)="moveToDate()"></p-calendar>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="unavailabeModel" *ngIf="!isDatepicker">
+  <div class="modal-header">
+    <h4 class="modal-title">User Unavailable!</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="form-group yeats-form-group">
+          <label class="formLabel yeats-form-label">User is unavailable during this time.<br>Do you wish to proceed
+            anyway?</label>
+        </div>
+      </div>
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <button pButton class="yeats-btn yeats-btn-primary ui-button-primary pull-right mr-2 mt-3"
+          (click)="processReq();activeModal.dismiss('Cross click')">OK</button>
+        <button pButton class="yeats-btn yeats-btn-primary ui-button-primary pull-right mr-2 mt-3"
+          (click)="activeModal.dismiss('Cross click')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

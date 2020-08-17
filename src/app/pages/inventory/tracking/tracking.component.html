@@ -1,0 +1,435 @@
+<div class="primeNgTracking">
+    <div style="text-align: right" *ngIf="switchTabs == 'trackingList'">
+        <p-button label="New Request" icon="fa fa-plus" iconPos="left" (click)="clearData()"></p-button>
+    </div>
+
+    <br>
+    <div *ngIf="isLoader" class="row">
+        <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+    </div>
+    <div class="tracking" *ngIf="switchTabs == 'trackingList'">
+        <p style="text-align:center" *ngIf="InvTrackingMastersData == 0 && !isLoader">No Data</p>
+        <p-card class="cardSec" *ngFor="let data of InvTrackingMastersData">
+            <div class="editSec">
+                <i class="fa fa-pencil-square-o editIcon" (click)="selectOrder(data)"></i>
+            </div>
+            <div class="row">
+                <div class="col-xl-3 col-sm-3 col-12">
+                    <table>
+                        <tr>
+                            <td class="tableHead">Receiver Name</td>
+                            <td class="tableData">{{data.ReceiverName}}</td>
+                        </tr>
+                        <tr>
+                            <td class="tableHead">Date</td>
+                            <td class="tableData">{{data.DateCreated}}</td>
+                        </tr>
+
+                    </table>
+                </div>
+                <div class="col-xl-3 col-sm-3 col-12">
+                    <table>
+                        <tr>
+                            <td class="tableHead">Transaction Type</td>
+                            <td class="tableData">{{data.TransactionType}}</td>
+                        </tr>
+                        <tr>
+                            <td class="tableHead">Patient ID</td>
+                            <td class="tableData">{{data.PatientId}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-xl-6 col-sm-6 col-12">
+                    <table>
+                        <tr>
+                            <td class="tableHead">Comments</td>
+                            <td class="tableData">{{data.Comments}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="primeNgTableTracking">
+                <p-table #dt [columns]="cols" [value]="data.TrackingItems" [paginator]="true" [rows]="5">
+                    <ng-template pTemplate="header" let-columns>
+                        <tr class="tableRowHead">
+                            <th *ngFor="let col of columns">
+                                {{col.header}}
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr class="tableRowBody" [pSelectableRow]="rowData">
+                            <td *ngFor="let col of columns">
+                                {{rowData[col.field]}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </p-card>
+    </div>
+
+    <div class="newRequest" *ngIf="switchTabs == 'newRequest'">
+        <h5 class="heading">Point of Sale</h5>
+        <div class="row">
+            <div class="col-xl-12 col-sm-12 col-12" style="text-align:right">
+                <button class="btn" (click)="backToHome()">Close</button>&nbsp;
+                <button class="btn" (click)="saveTracking(orderData, scannedItemsList, receiverData)">Save</button>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-xl-4 col-sm-4 col-12">
+                <form class="row">
+                    <div class="form-group col-xl-6 col-sm-6 col-12">
+                        <label for="transactionType" class="formLabel">Transaction Type</label>
+                        <select class="form-control" id="transactionType" [(ngModel)]="orderData.TransactionType"
+                            (ngModelChange)="TransactionTypeChange($event)" name="transactionType">
+                            <option *ngFor="let type of transactionType" value="{{type.InvTaxonomyItemId}}">{{type.Name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-xl-6 col-sm-6 col-12">
+                        <label for="flowDirection" class="formLabel">Flow Direction</label>
+                        <select class="form-control" id="flowDirection" [(ngModel)]="orderData.FlowDirection" name="flowDirection"
+                            disabled>
+                            <option value="1">INFLOW</option>
+                            <option value="0">OUTFLOW</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-xl-9 col-sm-9 col-12">
+                        <label for="scan" class="formLabel">Scan</label>
+                        <input type="text" class="form-control" (keyup)="scanItem(orderData)" [(ngModel)]="orderData.ScanOrId"
+                            name="scan">
+                    </div>
+                    <div class="form-group col-xl-3 col-sm-3 col-12">
+                        <p-button label="" icon="fa fa-search" iconPos="left" class="searchButton" (click)="scanItem(orderData)"></p-button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-xl-8 col-sm-8 col-12">
+                <div class="row">
+                    <div class="form-group col-xl-3 col-sm-3 col-12">
+                        <label for="name" class="formLabel">First Name</label>
+                        <p class="tableHead">{{receiverData.FirstName}}</p>
+
+                        <label for="name" class="formLabel">Last Name</label>
+                        <p class="tableHead">{{receiverData.LastName}}</p>
+
+                        <label for="ssn" class="formLabel">SSN</label>
+                        <p class="tableHead">{{receiverData.Ssn}}</p>
+                    </div>
+                    <div class="form-group col-xl-3 col-sm-3 col-12">
+                        <label for="mobile" class="formLabel">Mobile No.</label>
+                        <p class="tableHead">{{receiverData.MobilePhone}}</p>
+
+                        <label for="email" class="formLabel">Email</label>
+                        <p class="tableHead">{{receiverData.Email1}}</p>
+
+                        <label for="userId" class="formLabel">User ID</label>
+                        <p class="tableHead">{{receiverData.ReceiverId}}</p>
+                    </div>
+                    <div class="form-group col-xl-5 col-sm-5 col-11">
+                        <label for="comments" class="formLabel">Address</label>
+                        <p class="tableHead">{{receiverData.PrimaryAddressLine1}}, {{receiverData.PrimaryAddressLine2}}
+                        </p>
+                        <p class="tableHead" style="margin-top: 15px;">{{receiverData.PrimaryCity}},
+                            {{receiverData.PrimaryStateCode}} - {{receiverData.PrimaryZipCode}}</p>
+                    </div>
+                    <div class="form-group col-xl-1 col-sm-1 col-1">
+                        <a href="#" data-toggle="modal" data-target="#searchUserModal"><i class="fa fa-address-card-o searchReceiver"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="primeNgTableTracking">
+            <p-table *ngIf="scannedItemsActiveBatchList.length > 0" #dt [columns]="scannedItemsActiveBatchListCol"
+                [value]="scannedItemsActiveBatchList" selectionMode="single" [(selection)]="addItemToTrack" dataKey="BatchNumber"
+                (onRowSelect)="addItemToTracking($event)">
+                <ng-template pTemplate="header" let-columns>
+                    <tr class="tableRowHead">
+                        <th *ngFor="let col of columns">
+                            {{col.header}}
+                        </th>
+                        <th style="text-align: center;width: 2.3em">
+                            <i class="fa fa-check-circle"></i>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr class="tableRowBody" [pSelectableRow]="rowData">
+                        <td *ngFor="let col of columns">
+                            {{col.field == 'ExpiryDate' ? parseDate(rowData[col.field]) : rowData[col.field]}}
+                        </td>
+                        <td>
+                            <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <br>
+        <div class="primeNgTableTracking">
+            <p-table *ngIf="scannedItemsList.length > 0" [value]="scannedItemsList">
+                <ng-template pTemplate="header">
+                    <tr class="tableRowHead">
+                        <th>Item Name</th>
+                        <th>Category Id</th>
+                        <th>Item Code</th>
+                        <th>Store Id</th>
+                        <th>UOM</th>
+                        <th>Description</th>
+                        <th>Batch No</th>
+                        <th>Lot No</th>
+                        <th>Current Quantity</th>
+                        <th>Manufactured Date</th>
+                        <th>Expiry Date</th>
+                        <th>Item Location</th>
+                        <th>Batch Code</th>
+                        <th>Quantity</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData>
+                    <tr class="tableRowBody">
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" [(ngModel)]="rowData.InvItemMasterName" readonly>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.InvItemMasterName}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" [(ngModel)]="rowData.InvCategoryId" readonly>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.InvCategoryId}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" [(ngModel)]="rowData.ItemCode" readonly>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.ItemCode}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" [(ngModel)]="rowData.InvStoreId" readonly>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.InvStoreId}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" [(ngModel)]="rowData.ItemUom" readonly>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.ItemUom}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" [(ngModel)]="rowData.Description" readonly>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.Description}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" [(ngModel)]="rowData.BatchNumber" readonly>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.BatchNumber}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" [(ngModel)]="rowData.LotNumber" readonly>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.LotNumber}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" [(ngModel)]="rowData.CurrentQuantity" readonly>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.CurrentQuantity}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" [(ngModel)]="rowData.ManufacturedDate" readonly>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{parseDate(rowData.ManufacturedDate)}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" [(ngModel)]="rowData.ExpiryDate" readonly>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    <!-- {{rowData.ExpiryDate}} -->
+                                    <span class="{{findExpiryDate(rowData.ExpiryDate) ? 'expired' : ''}}">{{parseDate(rowData.ExpiryDate)}}</span>
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" [(ngModel)]="rowData.ItemLocation" readonly>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.ItemLocation}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" [(ngModel)]="rowData.BatchCode" readonly>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.BatchCode}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" [(ngModel)]="rowData.Quantity" class="editableClass" [value]="1"
+                                        name="Quantity">
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    <!-- <span class="editableClass">{{rowData.color}}</span> -->
+                                    <input type="text" [(ngModel)]="rowData.Quantity" class="editableClass" [value]="1"
+                                        name="Quantity">
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+
+    <!-- Search User/Patient Modal -->
+    <div class="modal fade" id="searchUserModal" tabindex="-1" role="dialog" aria-labelledby="modal-large-label">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header state modal-primary">
+                    <h4 class="modal-title">Search Item</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form class="row">
+                        <div class="form-group col-xl-3 col-sm-3 col-12">
+                            <label for="userType" class="formLabel">User Type</label>
+                            <select class="form-control" id="userType" [(ngModel)]="searchItem.userType" name="userType">
+                                <option value="user" selected>User</option>
+                                <option value="patient">Patient</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-xl-4 col-sm-4 col-12">
+                            <label for="scan" class="formLabel">Scan/Id</label>
+                            <input type="text" class="form-control" [(ngModel)]="searchItem.ScanOrId" (keyup)="findUsers(searchItem)" name="ScanOrId">
+                        </div>
+                    </form>
+                    <div *ngIf="isLoader" class="row">
+                        <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+                    </div>
+                    <div class="primeNgTableTracking" *ngIf="!isLoader">
+                        <p-table *ngIf="userType == 'user' && searchResults.length > 0" #dt [columns]="receiverUserCol"
+                            [value]="searchResults" selectionMode="single" [(selection)]="selectedReceiver" dataKey="UserId"
+                            (onRowSelect)="selectOnereceiver($event)" [lazy]="true" [loading]="loading">
+                            <ng-template pTemplate="header" let-columns>
+                                <tr class="tableRowHead">
+                                    <th *ngFor="let col of columns">
+                                        {{col.header}}
+                                    </th>
+                                    <th style="text-align: center;width: 2.3em">
+                                        <i class="fa fa-check-circle"></i>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                <tr class="tableRowBody" [pSelectableRow]="rowData">
+                                    <td *ngFor="let col of columns">
+                                        {{rowData[col.field]}}
+                                    </td>
+                                    <td>
+                                        <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                    <div class="primeNgTableTracking" *ngIf="!isLoader">
+                        <p-table *ngIf="userType == 'patient' && searchResults.length > 0" #dt [columns]="receiverPatientCol"
+                            [value]="searchResults" selectionMode="single" [(selection)]="selectedReceiver" dataKey="PatientId"
+                            (onRowSelect)="selectOnereceiver($event)">
+                            <ng-template pTemplate="header" let-columns>
+                                <tr class="tableRowHead">
+                                    <th *ngFor="let col of columns">
+                                        {{col.header}}
+                                    </th>
+                                    <th style="text-align: center;width: 2.3em">
+                                        <i class="fa fa-check-circle"></i>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                <tr class="tableRowBody" [pSelectableRow]="rowData">
+                                    <td *ngFor="let col of columns">
+                                        {{rowData[col.field]}}
+                                    </td>
+                                    <td>
+                                        <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" (click)="findUsers(searchItem)">Find</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,157 @@
+<div class="templatemodalcomponent">
+  <!-- this is for import module -->
+
+  <div *ngIf="import">
+    <div class="modal-header">
+      <h4 class="modal-title">Encounter Summary</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p-accordion [multiple]="true"  *ngFor="let encount of Encouter" (onOpen)="onTabOpen(encount)">
+        <p-accordionTab>
+          <p-header>
+            <span>{{encount.ConsultationDate}}</span>
+            <span style="margin-left: 10%"
+              >{{encount.GroupName}}</span
+            >
+            <span style="margin-left: 10%">{{encount.Physician}}</span>
+          </p-header>
+          <h6>Title</h6>
+          <p>CONSULTATION REPORT/ HISTORY AND PHYSICAL</p>
+          <br />
+          <h6>Impressions</h6>
+          <p>Qwerty will come to roaming dhhjikio</p>
+        </p-accordionTab>
+      </p-accordion>
+    </div>
+    <div class="modal-footer">
+      <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mt-3">
+        Import
+      </button>
+      <button
+        type="button"
+        class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3 mt-3"
+        (click)="activeModal.close('Close click')"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+
+  <!-- this is for showFollowup Visits module -->
+  <div *ngIf="follw_up_visit">
+    <div class="modal-header">
+      <h4 class="modal-title">Follow-up Visit for {{patientDetails.LastName ? patientDetails.LastName : ''}}, {{patientDetails.FirstName ? patientDetails.FirstName : ''}} {{patientDetails.MiddleName ? patientDetails.MiddleName: ''}}</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-2">
+          <label class="formLabel yeats-form-label">Follow-up Visit Date(From)<span style="color:red">*</span></label>
+          <p-dropdown [options]="Date" [(ngModel)]="selectedDate"></p-dropdown>
+        </div>
+        <div class="col-2">
+          <p-dropdown [options]="Year" [(ngModel)]="selectedYear"></p-dropdown
+          >
+        </div>
+      <!-- </div> -->
+      <!-- <div class="row"> -->
+        <div class="col-4">
+          <label class="formLabel yeats-form-label">Reasons <span style="color:red">*</span></label>
+          <p-dropdown [options]="Reasons" [(ngModel)]="selectedReason" optionLabel="FollowUpVisitReasonDescription" placeholder="Select Reason"></p-dropdown>
+        </div>
+        <div class="col-4">
+          <label class="formLabel yeats-form-label">Physician</label>
+          <p-dropdown [options]="Physician" [(ngModel)]="selectedPhysician" optionLabel="physicianName" placeholder="Select Physician"></p-dropdown>
+      </div>
+        <div class="col-4">
+            <label class="formLabel yeats-form-label" [(ngModel)]="comments">Comments</label>
+            <textarea [rows]="3" [cols]="55" pInputTextarea autoResize="autoResize"></textarea>
+
+        </div>
+      <!-- </div> -->
+      <!-- <div class="row"> -->
+        
+      </div>
+      <div class="row">
+        <div class="col-12">
+            <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2 mb-2" >Close</button>
+            <button pButton class="yeats-btn yeats-btn-danger ui-button-danger pull-right ml-2">Clear</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right ml-2" (click)="addFollowup()">Add</button>
+       
+        </div>
+      </div>
+      <div class="yeats-tables">
+          <p-table [columns]="cols" [value]="followupVisits.Results" [paginator]="true" [rows]="followupVisits.PageSize" [totalRecords]="followupVisits.TotalItems" [lazy]="true" (onLazyLoad)="getVisits($event)">
+              <ng-template pTemplate="header" let-columns>
+                  <tr>
+                      <th *ngFor="let col of columns">
+                          {{col.header}}
+                      </th>
+                      <th>Edit</th>
+                      <th>Delete</th>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                  <tr>
+                      <td *ngFor="let col of columns">
+                          {{rowData[col.field]}}
+                      </td>
+                      <td><img alt="edit" src="../../../../../../assets/images/Edit.svg" style="cursor: pointer;" (click)="editFollowup(rowData)"></td>
+                      <td><img alt="edit" src="../../../../../../assets/images/Delete.svg" style="cursor: pointer;" (click)="deleteFollowup(rowData)"></td>
+                  </tr>
+              </ng-template>
+          </p-table>
+          
+       </div> 
+    </div>
+   
+  </div>
+
+  <!-- this is for Save & sign module -->
+  <div *ngIf="save_sign">
+    <div class="modal-header">
+      <h4 class="modal-title">Save & Sign</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p style="text-align: center">Are You Sure?. Please enter your PIN.</p>
+      <div class="row mt-3">
+        <!-- <div > -->
+            <label  id="pin" for="" class="yeats-form-label">PIN </label> 
+            <input type="password" pPassword class="form-control yeats-form-control ml-2" style="width:5vw;" [(ngModel)]="pin">
+        <!-- </div> -->
+      </div>
+      <div class="row mt-4">
+        <div class="col-6">
+            <button pButton class="yeats-btn yeats-btn-primary pull-right ml-2" (click)="validatePin()">Yes</button>
+        </div>
+        <div class="col-6">
+            <button pButton class="yeats-btn yeats-btn-primary pull-left ml-2" (click)="activeModal.dismiss('Cross click')">No</button>
+        </div>
+      </div>
+    </div>
+   
+  </div>
+</div>

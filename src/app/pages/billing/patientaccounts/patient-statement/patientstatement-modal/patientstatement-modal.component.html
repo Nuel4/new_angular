@@ -1,0 +1,256 @@
+<div class="patientStamentModals">
+  <!--Artypes Modal-->
+  <div *ngIf="artypes">
+    <div class="modal-header">
+      <h4 class="modal-title">Select AR Type(Insurance Category)</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p-pickList
+        [source]="InsuranceCategoryNameList"
+        [target]="selectedArtypes"
+        sourceHeader="All A/R Types"
+        targetHeader="Selected A/R Types"
+        [responsive]="true"
+        dragdrop="true"
+        [sourceStyle]="{ height: '300px' }"
+        [showTargetControls]="false"
+        [showSourceControls]="false"
+        [targetStyle]="{ height: '300px' }"
+      >
+        <ng-template let-insurance pTemplate="item">
+          <div class="ui-helper-clearfix">
+            {{ insurance.InsuranceCategoryName }}
+          </div>
+        </ng-template>
+      </p-pickList>
+    </div>
+    <div class="col-12">
+      <button
+        pButton
+        class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+        (click)="modal.close('Close click')"
+      >
+        Close
+      </button>
+      <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3">
+        Clear
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3"
+        (click)="onSelect()"
+      >
+        Select
+      </button>
+    </div>
+  </div>
+
+  <!--Insurance Provider Style-->
+  <div *ngIf="insuraceProviderList">
+    <div class="modal-header">
+      <h4 class="modal-title">Select Insurance Provider(s)</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p-pickList
+        [source]="InsuranceProvider"
+        [target]="selectedInsuranceProvider"
+        sourceHeader="All A/R Types"
+        targetHeader="Selected A/R Types"
+        [responsive]="true"
+        dragdrop="true"
+        [sourceStyle]="{ height: '300px' }"
+        [showTargetControls]="false"
+        [showSourceControls]="false"
+        [targetStyle]="{ height: '300px' }"
+      >
+        <ng-template let-insurance pTemplate="item">
+          <div class="ui-helper-clearfix">
+            {{ insurance.insuranceprovider }}
+          </div>
+        </ng-template>
+      </p-pickList>
+    </div>
+    <div class="col-12">
+      <button
+        pButton
+        class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+        (click)="modal.close('Close click')"
+      >
+        Close
+      </button>
+      <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3">
+        Clear
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3"
+        (click)="selectInsuranceProvider()"
+      >
+        Select
+      </button>
+    </div>
+  </div>
+
+  <!--printStatement Model-->
+  <div *ngIf="printStatement">
+    <div class="modal-header">
+      <h4 class="modal-title">
+        Print/Email Patient Statement Confirmation Window
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="ui-g-12">
+        <p-radioButton
+          name="group1"
+          value="Option 1"
+          label="Since Last Patient Date "
+          [(ngModel)]="lastPatientaDate"
+        ></p-radioButton>
+      </div>
+      <div class="ui-g-12">
+        <p-radioButton
+          name="group1"
+          value="Option 2"
+          label="All Outstanding Patinet Balances"
+          [(ngModel)]="patientBalance"
+        ></p-radioButton>
+      </div>
+      <div class="ui-g-12">
+        <p-radioButton
+          name="group1"
+          value="Option 3"
+          label="By Date Range"
+          [(ngModel)]="dataRange" (onClick)="selectedButton()"
+        ></p-radioButton>
+      </div>
+      <div class="ui-g-12" *ngIf="date">
+      <div class="ui-g-3">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Start Date</label>
+          <p-calendar
+            class="yeats-form-control"
+            [showIcon]="true"
+            [(ngModel)]="startDate"
+          >
+          </p-calendar>
+        </div>
+        
+      </div>
+      <div class="ui-g-3">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">End Date</label>
+          <p-calendar
+            class="yeats-form-control"
+            [showIcon]="true"
+            [(ngModel)]="endDate"
+          >
+          </p-calendar>
+        </div>
+        
+      </div>
+    </div>
+      <div class="form-group yeats-form-group ">
+        <label for="" class="yeats-form-label"> </label>
+        <p-checkbox [(ngModel)]="paymants" label="Show with Payments">
+        </p-checkbox>
+      </div>
+    </div>
+    <div class="col-12">
+      <button
+        pButton
+        class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+        (click)="modal.close('Close click')"
+      >
+        Close
+      </button>
+      <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3">
+        Clear
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3"
+        (click)="getselectedPhysician()"
+      >
+        Select
+      </button>
+    </div>
+  </div>
+
+  <!--Physician Modal-->
+  <div *ngIf="physician">
+    <div class="modal-header">
+      <h4 class="modal-title">Select Physicians</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p-pickList
+        [source]="physicianList"
+        [target]="selectedPhysician"
+        sourceHeader="All A/R Types"
+        targetHeader="Selected A/R Types"
+        [responsive]="true"
+        dragdrop="true"
+        [sourceStyle]="{ height: '300px' }"
+        [showTargetControls]="false"
+        [showSourceControls]="false"
+        [targetStyle]="{ height: '300px' }"
+      >
+        <ng-template let-physician pTemplate="insuranceprovider">
+          <div class="ui-helper-clearfix">
+            {{ physician.name }}
+          </div>
+        </ng-template>
+      </p-pickList>
+    </div>
+    <div class="col-12">
+      <button
+        pButton
+        class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+        (click)="modal.close('Close click')"
+      >
+        Close
+      </button>
+      <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3">
+        Clear
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3"
+        (click)="getselectedPhysician()"
+      >
+        Select
+      </button>
+    </div>
+  </div>
+</div>

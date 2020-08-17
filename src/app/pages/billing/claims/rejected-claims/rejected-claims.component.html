@@ -1,0 +1,301 @@
+<div class="rejectedClaims">
+  <div class="row">
+    <div class="col-lg-3 col-sm-6 col-12 ">
+      <label class="formLabel yeats-form-label">Claim Submission Range:</label>
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">From</label>
+        <p-calendar
+          class="yeats-form-control"
+          [(ngModel)]="rejectedBillingRangeFrom"
+          [showIcon]="true"
+          monthNavigator="true"
+          yearNavigator="true"
+          yearRange="1900:2030"
+        >
+        </p-calendar>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12 ">
+      <label class="formLabel yeats-form-label">&nbsp;</label>
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">Untill</label>
+        <p-calendar
+          class="yeats-form-control"
+          [(ngModel)]="rejectedBillingRangeTo"
+          [showIcon]="true"
+          monthNavigator="true"
+          yearNavigator="true"
+          yearRange="1900:2030"
+        >
+        </p-calendar>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <label class="formLabel yeats-form-label">&nbsp;</label>
+      <div class="form-group yeats-form-group ">
+        <label for="electronicPhysician" class="formLabel yeats-form-label"
+          >Physician</label
+        >
+        <p-dropdown
+          [options]="physicianLists"
+          [(ngModel)]="rejectedSelectedPhysician"
+          placeholder="Select Physician"
+          optionLabel="physicianName"
+          [showClear]="true"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <label class="formLabel yeats-form-label">&nbsp;</label>
+      <div class="form-group yeats-form-group ">
+        <label for="electronicPhysician" class="formLabel yeats-form-label"
+          >Insurance Provider</label
+        >
+        <p-dropdown
+          [options]="insuranceProvidersList"
+          [(ngModel)]="rejectedInsuranceProvider"
+          placeholder="Select Insurance Provider"
+          optionLabel="InsuranceProviderName"
+          [showClear]="true"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="electronicPhysician" class="formLabel yeats-form-label"
+          >Insurance Filter</label
+        >
+        <p-dropdown
+          [options]="insuranceFilterType"
+          [(ngModel)]="electronicInsuranceProvider"
+          placeholder="Select Insurance Filter"
+          optionLabel="InsuranceFilterName"
+          [showClear]="true"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="patientName" class="formLabel yeats-form-label"
+          >Patient Name</label
+        >
+        <input
+          type="text"
+          value="{{ authStore.PatientDetail?authStore.PatientDetail.LastName:'' }}"
+          class="form-control yeats-form-control"
+          id="patientName"
+          name="patientName"
+          placeholder="Patient Name"
+          readonly
+        />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="patientSSN" class="formLabel yeats-form-label">SSN</label>
+        <input
+          type="text"
+          value="{{ authStore.PatientDetail?authStore.PatientDetail.Ssn:'' }}"
+          class="form-control yeats-form-control"
+          id="patientSSN"
+          name="patientSSN"
+          placeholder="SSN"
+          readonly
+        />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="dateOfBirth" class="formLabel yeats-form-label"
+          >Date of Birth</label
+        >
+        <input
+          type="text"
+          value="{{ authStore.PatientDetail? (authStore.PatientDetail.DateOfBirth | date: 'dd-MM-yyyy'):'' }}"
+          class="form-control yeats-form-control"
+          id="dateOfBirth"
+          name="dateOfBirth"
+          placeholder="Date of birth"
+          readonly
+        />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="uniqueNumber" class="formLabel yeats-form-label"
+          >Unique Number</label
+        >
+        <input
+          type="text"
+          value="{{ authStore.PatientDetail?authStore.PatientDetail.UniqueNumber:'' }}"
+          class="form-control yeats-form-control"
+          id="uniqueNumber"
+          name="uniqueNumber"
+          placeholder="Unique Number"
+          readonly
+        />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="cellPhone" class="formLabel yeats-form-label"
+          >Cell Phone</label
+        >
+        <input
+          type="text"
+          value="{{ authStore.PatientDetail?authStore.PatientDetail.HomePhone:'' }}"
+          class="form-control yeats-form-control"
+          id="cellPhone"
+          name="cellPhone"
+          placeholder="Cell Phone"
+          readonly
+        />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-12 col-12">
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label"> &nbsp;</label>
+        <p-checkbox
+          class="yeats-form-control"
+          [(ngModel)]="workedClaims"
+          label="Show Worked Claims"
+          binary="false"
+        >
+        </p-checkbox>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" (click)="downloadRejection()">
+        Download Rejections
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-danger ui-button-danger pull-right ml-3"
+        (click)="clearDetails()"
+      >
+        Clear
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary pull-right ml-3"
+        (click)="rejectedClaims(0)"
+      >
+        Retrieve Claims
+      </button>
+    </div>
+  </div>
+  <div class="yeats-tables">
+    <div class="row">
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label"> &nbsp;</label>
+        <button
+          pButton
+          class="yeats-btn yeats-btn-primary pull-right mr-4"
+          *ngIf="workedButton"
+          (click)="workedRemittanceClaim()"
+        >
+          Worked
+        </button>
+        <button
+          pButton
+          class="yeats-btn yeats-btn-primary pull-right mr-4"
+          *ngIf="workedButton"
+          (click)="reSubmitWindow()"
+        >
+          Re-Submit
+        </button>
+        <button
+          pButton
+          class="yeats-btn yeats-btn-primary pull-right mr-4"
+          (click)="reversedWorkedMethod()"
+          *ngIf="reversedWorked"
+        >
+          Reverse Worked
+        </button>
+      </div>
+    </div>
+    <div class="yeats-tables">
+    <p-table
+      [columns]="cols"
+      [value]="rejectedClaimsData"
+      rowExpandMode="single"
+      [(selection)]="selectedBillId"
+      dataKey="BillId"
+     
+    >
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th style="width: 3em">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th></th>
+          <th *ngFor="let col of columns">
+            {{ col.header }}
+          </th>
+          <th>Bill Info</th>
+          <th>Physician/Practice Info.</th>
+        </tr>
+      </ng-template>
+      <ng-template
+        pTemplate="body"
+        let-rowData
+        let-expanded="expanded"
+        let-columns="columns"
+      >
+        <tr [pSelectableRow]="rowData">
+          <td>
+            <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+          </td>
+          <td>
+            <a href="#" [pRowToggler]="rowData">
+              <i
+                [ngClass]="
+                  expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
+                "
+                (click)="expandRowComment(rowData)"
+              ></i>
+            </a>
+          </td>
+          <td *ngFor="let col of columns">
+            {{ rowData[col.field] }}
+          </td>
+          <td><img src="../../../../../assets/images/Edit.svg" alt="Edit"></td>
+          <td>
+            <img src="../../../../../assets/images/Edit.svg" alt="Edit"
+              (click)="physicianPracticeInformation(rowData)"
+            >
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+        <tr>
+          <td [attr.colspan]="columns.length + 1">
+            <div class="ui-g ui-fluid" style="font-size:16px;padding:20px">
+              <div class="ui-g-12 ui-md-3" style="text-align:center">
+                <h6 style="font-size: 10px;font-weight: 500;text-align: left">
+                  Error Information:
+                </h6>
+                <textarea
+                  [rows]="5"
+                  [cols]="150"
+                  readonly="true"
+                  style="font-size:.8em"
+                  pInputTextarea
+                  autoResize="autoResize"
+                  value="{{ remittanceComments.Comments }}"
+                ></textarea>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    </div>
+    <p-paginator [rows]="rows" (onPageChange)="selectedPage($event)" [totalRecords]="totrec"></p-paginator>
+  </div>
+</div>

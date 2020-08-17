@@ -1,0 +1,103 @@
+
+ <div class="searchmodal">
+ <div class="modal-header">
+    <div class="title">Search Results</div>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<div class="modal-body">
+  <!-- <div class="addProblem"> -->
+    <div class="card border-0 box-shadow">
+      <div class="card-header transparent border-0 text-muted">
+        <div class="card-body">
+            <div class="col-lg-12" style="padding-left:0px;">
+              <div class="form-group yeats-form-group" >
+                <p-checkbox label="Common Diagnosis Code" [(ngModel)]="selectedValues" binary="true" (click)="dropvalues()">
+                </p-checkbox>
+                <p-radioButton value="ICD9" label="ICD9" [(ngModel)]="Icdvalue" *ngIf="compname === 'template'"></p-radioButton>
+                <p-radioButton value="ICD10" label="ICD10" [(ngModel)]="Icdvalue" *ngIf="compname === 'template'"></p-radioButton>
+              </div>
+            </div>
+            
+            <div class="row" style="padding-left:15px;margin-top:5px;">
+              <div class="col-lg-4 col-sm-6">
+                  <p-dropdown [options]="searchtype" [(ngModel)]="selectedSearchType"
+                  optionLabel="label" (onChange)="SelectedSearch()">
+                </p-dropdown>
+              </div>
+              <div class="col-lg-8 col-sm-6">
+                <input type="text" class="form-control yeats-form-control" [(ngModel)]="problemName" />
+              </div>
+              <div class="form-group yeats-form-group buttonstyle">
+                <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2 mr-4">
+                  Clear
+                </button>
+                <button pButton class="yeats-btn yeats-btn-primary pull-right" (click)="searchIcd()">
+                  Search
+                </button>
+              </div>
+            </div>
+    
+            <!-- <div class="col-lg-12">
+              <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2">
+                Clear
+              </button>
+              <button pButton class="yeats-btn yeats-btn-primary pull-right">
+                Search
+              </button>
+            </div> -->
+            <div class="col-lg-12 col-md-12 offset-lg-0 offset-md-0 offset-sm-0 offset-0 mt-3" *ngIf="compname === 'post'">
+              <div class="post">
+                <p-pickList [source]="problemList" [target]="selectedProblem" sourceHeader="Avaliable Diagnosis" [sourceStyle]="{height: '200px', width:'250px', fontSize:'12px', overflowX:'hidden', overflowY:'auto'}"
+                [targetStyle]="{height: '200px', width:'250px', fontSize:'12px', overflowX:'hidden', overflowY:'auto'}" targetHeader="Selected Diagnosis" [responsive]="true" dragdrop="true"
+                (onMoveToTarget)="movedtotarget($event)" (onMoveAllToTarget)="movealltarget($event)">
+                <ng-template let-code pTemplate="item">
+                    <div class="row">
+                        <div class="col-3">
+                            {{code.Code}}
+                        </div>
+                        <div class="col-9">
+                            {{code.Description}}
+                        </div>
+                      </div>
+                  </ng-template>
+                </p-pickList>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 offset-lg-0 offset-md-0 offset-sm-0 offset-0 mt-3" *ngIf="compname === 'template'">
+              <p-pickList [source]="problemList" [target]="selectedProblem" showSourceFilter="false" showTargetFilter="false"
+                showTargetControls="false" showSourceControls="false" sourceHeader="Problem list" [sourceStyle]="{height: '200px', width:'250px', fontSize:'12px', overflowX:'hidden', overflowY:'auto'}"
+                [targetStyle]="{height: '200px', width:'250px', fontSize:'12px', overflowX:'hidden', overflowY:'auto'}" targetHeader="Selected Problems" [responsive]="true" dragdrop="true" >
+                <!-- [sourceStyle]="{ height: '350px'}"
+                [targetStyle]="isenablecheckbox ? { height: '200px'} : {height: '350px' }" -->
+                <ng-template let-code pTemplate="item">
+                  <div class="row">
+                    <div class="col-3">
+                        [{{ code.Code }}]
+                    </div>
+                    <div class="col-9">
+                        {{code.Description}}
+                    </div>
+                  </div>
+                  
+                </ng-template>
+              </p-pickList>
+            </div>
+        </div>
+      </div>
+      <div class="col-lg-12 mt-4 mb-3">
+          <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2 mr-4" (click)="modal.dismiss()" *ngIf="compname === 'template'">
+              Cancel
+            </button>
+          <button pButton class="yeats-btn yeats-btn-primary pull-right" (click)="saveProblem()" *ngIf="compname === 'template'">
+              Save
+            </button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right" (click)="saveProblem()" *ngIf="compname === 'post'">
+                Ok
+              </button>
+     </div>
+    </div>
+    <!-- </div> -->
+  </div>
+</div>

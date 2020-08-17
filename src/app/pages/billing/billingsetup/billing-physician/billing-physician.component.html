@@ -1,0 +1,57 @@
+<div class="billingSetupPhysician">
+  <div class="row">
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="cptcode" class="formLabel yeats-form-label">Facility</label>
+        <p-dropdown [options]="facilities" [(ngModel)]="selectedFacility" placeholder="Select Facility" optionLabel="FacilityName"
+          [showClear]="true">
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="billingSetupName" class="formLabel yeats-form-label">Name</label>
+        <input type="text" [(ngModel)]="billingSetupName" class="form-control yeats-form-control" id="billingSetupName"
+          name="billingSetupName" placeholder="Enter Name" />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label for="billingSetupSSN" class="formLabel yeats-form-label">EIN/SSN</label>
+        <input type="text" [(ngModel)]="billingSetupDescription" class="form-control yeats-form-control" id="billingSetupSSN"
+          name="billingSetupSSN" placeholder="Enter EIN/SSN" />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">&nbsp;</label>
+        <button pButton class="yeats-btn yeats-btn-primary w-45" style="margin-right:10%" (click)="searchPhysicianBilling()" >Search</button>
+        <button pButton class="yeats-btn yeats-btn-danger ui-button-danger w-45" (click)="clearDatas()">Clear</button>
+      </div>
+    </div>
+  </div>
+  <div class="yeats-tables">
+      <label for="billingSetupName" class="formLabel yeats-form-label"><b>Physician Billing Details</b></label>
+    <p-table [columns]="cols" [value]="physicianBillingList.Results">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns">
+            {{col.header}}
+          </th>
+          <th>Edit Billing Details</th>
+          <th>Edit Insurance Details</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+          <td *ngFor="let col of columns">
+            {{rowData[col.field]}}
+          </td>
+          <td><img src="../../../../../assets/images/Edit.svg" alt="Edit" (click)="editBillingDetails(rowData)"></td>
+          <td><img src="../../../../../assets/images/Edit.svg" alt="Edit" class="pi pi-pencil" (click)="editInsuranceDetails(rowData)"></td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <p-paginator [rows]="physicianBillingList.PageSize" (onPageChange)="selectedPage($event)" [totalRecords]="physicianBillingList.TotalItems"></p-paginator>
+  </div>
+</div>

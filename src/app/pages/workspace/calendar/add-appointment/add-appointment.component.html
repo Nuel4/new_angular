@@ -1,0 +1,586 @@
+<div class="addAppointment" *ngIf="!isCancel">
+     <div class="modal-header">
+    <h4 class="modal-title">Appointment</h4>
+    
+    <button type="button" class="close" aria-label="Close" (click)="onCancelBtn()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+  <p-tabView>
+        <p-tabPanel header=" Add Appointment" *ngIf="!isUpdate" class="tabView">
+           <div>
+              <form [formGroup]="AddApptForm">
+                  <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">Patient last name <span class="required">*</span></label>
+                        <div class="ui-inputgroup">
+                          <input type="text" placeholder="Enter Lastname" formControlName="lastname" class=" form-control yeats-form-control d-inline"
+                            required readonly />
+                          <button pButton type="button" icon="fa fa-search" (click)="findPatient()"  class="ui-button-warn btn-primary"></button>
+                        </div>
+                        <div *ngIf="AddApptForm && (AddApptForm.controls.lastname.invalid ) && (AddApptForm.controls.lastname.dirty || AddApptForm.controls.lastname.touched) && AddApptForm.controls.lastname.errors.required" class="alert alert-danger">
+                          Field Can't Be Blank.
+                        </div>
+                      </div>
+                    </div>
+                   
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label">Patient First name</label>
+                        <div class="ui-inputgroup">
+                          <input type="text" placeholder="Enter Firstname" formControlName="firstname" class="form-control yeats-form-control"
+                            readonly />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label">Patient Unique Number</label>
+                        <div class="ui-inputgroup">
+                          <input type="text" placeholder="Enter Uniquenumber" formControlName="uniqueNumber" class="form-control yeats-form-control"
+                            readonly />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label">Patient DOB</label>
+                        <div class="ui-inputgroup">
+                          <input type="text" placeholder="Enter DOB" formControlName="DateOfBirth" class="form-control yeats-form-control"
+                            readonly />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label">Patient Phone No</label>
+                        <div class="ui-inputgroup">
+                          <input type="text" placeholder="Enter PhoneNo" formControlName="phoneno" class="form-control yeats-form-control"
+                            readonly />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label"> &nbsp;</label>
+                        <p-checkbox class="yeats-form-control" [(ngModel)]="selfpayappt" formControlName="selfpayappt" label="Self Pay Appt"
+                          binary="true">
+                        </p-checkbox>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">Facility<span class="required">*</span></label>
+                        <p-dropdown [options]="facilityList" formControlName="SelectedFacility" placeholder="Select Facility"
+                          optionLabel="name" [showClear]="true" (onChange)="reLoadRoomUser(AddApptForm.controls.SelectedFacility.value)">
+                        </p-dropdown>
+                      </div>
+                      <div *ngIf="AddApptForm && (AddApptForm.controls.SelectedFacility.invalid ) && (AddApptForm.controls.SelectedFacility.dirty || AddApptForm.controls.SelectedFacility.touched) && AddApptForm.controls.SelectedFacility.errors.required"
+                        class="alert alert-danger">
+                        Field Can't Be Blank.
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">User<span class="required">*</span></label>
+                        <p-dropdown [options]="UserList" formControlName="SelecetedUser" placeholder="Select User" optionLabel="fullName"
+                          [showClear]="true">
+                        </p-dropdown>
+                      </div>
+                      <div *ngIf="AddApptForm && (AddApptForm.controls.SelecetedUser.invalid ) && (AddApptForm.controls.SelecetedUser.dirty || AddApptForm.controls.SelecetedUser.touched) && AddApptForm.controls.SelecetedUser.errors.required"
+                        class="alert alert-danger">
+                        Field Can't Be Blank.
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">Appointment Type<span class="required">*</span></label>
+                        <p-dropdown [options]="PatientType" formControlName="SelectedType" placeholder="Select Type" optionLabel="Description"
+                          [showClear]="true" (onChange)="onApptTypeChanged()">
+                        </p-dropdown>
+                      </div>
+                      <div *ngIf="AddApptForm && (AddApptForm.controls.SelectedType.invalid ) && (AddApptForm.controls.SelectedType.dirty || AddApptForm.controls.SelectedType.touched) && AddApptForm.controls.SelectedType.errors.required"
+                        class="alert alert-danger">
+                        Field Can't Be Blank.
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">Referring Organization</label>
+                        <p-dropdown [options]="RefOrganization" formControlName="SelectedRefOrg" placeholder="Select Organization"
+                          optionLabel="name" [showClear]="true">
+                        </p-dropdown>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">Referring Physician</label>
+                        <p-dropdown [options]="RefPhysician" formControlName="SelecetedRefPhy" placeholder="Select Physician"
+                          optionLabel="referringphysicianname" [showClear]="true">
+                        </p-dropdown>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">Internal Ref Physician</label>
+                        <p-dropdown [options]="InternalRefPhysician" formControlName="SelecetedInternalRefPhysician" placeholder="Select Physician"
+                          optionLabel="label" [showClear]="true">
+                        </p-dropdown>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">Appointment Date<span class="required">*</span></label>
+                        <p-calendar class="yeats-form-control" formControlName="AppointmentDate" [showIcon]="true" monthNavigator="true"
+                          [yearNavigator]="true" yearRange="2000:2099" required (onSelect)="changeDate()">
+                        </p-calendar>
+                      </div>
+                      <div *ngIf="AddApptForm && (AddApptForm.controls.AppointmentDate.invalid ) && (AddApptForm.controls.AppointmentDate.dirty || AddApptForm.controls.AppointmentDate.touched) && AddApptForm.controls.AppointmentDate.errors.required"
+                        class="alert alert-danger">
+                        Field Can't Be Blank.
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label">Start Time<span class="required">*</span></label>
+                        <p-calendar class="yeats-form-control" formControlName="startTime" [timeOnly]="true" [hourFormat]="12"
+                          [showIcon]="true" (onSelect)="updateEndTime($event)"></p-calendar>
+                      </div>
+                      <div *ngIf="AddApptForm && (AddApptForm.controls.startTime.invalid ) && (AddApptForm.controls.startTime.dirty || AddApptForm.controls.startTime.touched) && AddApptForm.controls.startTime.errors.required"
+                        class="alert alert-danger">
+                        Field Can't Be Blank.
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label">End Time<span class="required">*</span></label>
+                        <p-calendar class="yeats-form-control" formControlName="endTime" [timeOnly]="true" [hourFormat]="12"
+                          [showIcon]="true"></p-calendar>
+                      </div>
+                      <div *ngIf="AddApptForm && (AddApptForm.controls.endTime.invalid ) && (AddApptForm.controls.endTime.dirty || AddApptForm.controls.endTime.touched) && AddApptForm.controls.endTime.errors.required"
+                        class="alert alert-danger">
+                        Field Can't Be Blank.
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">Room</label>
+                        <p-dropdown [options]="Rooms" formControlName="SelecetedRoom" placeholder="Select Room" optionLabel="RoomName"
+                          [showClear]="true">
+                        </p-dropdown>
+                      </div>
+                      <!-- <div *ngIf="AddApptForm && (AddApptForm.controls.SelecetedRoom.invalid ) && (AddApptForm.controls.SelecetedRoom.dirty || AddApptForm.controls.SelecetedRoom.touched) && AddApptForm.controls.SelecetedRoom.errors.required"
+                        class="alert alert-danger">
+                        Field Can't Be Blank.
+                      </div> -->
+                    </div>
+            
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label"> &nbsp;</label>
+                        <p-checkbox (onChange)="disableReminderDate()" class="yeats-form-control" formControlName="sendReminder"
+                          [(ngModel)]="sendReminder" label="Send Reminder" binary="true">
+                        </p-checkbox>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">&nbsp;</label>
+                        <p-calendar class="yeats-form-control" formControlName="reminderDate" placeholder="Enter Date" [showIcon]="true"
+                          monthNavigator="true" [yearNavigator]="true" yearRange="2000:2099" required>
+                        </p-calendar>
+                        <!-- <ng-template #elsepart>
+                          <p-calendar class="yeats-form-control" formControlName="reminderDate" placeholder="Enter Date" [showIcon]="true"
+                            monthNavigator="true" [yearNavigator]="true" yearRange="2000:2099" yearRange="1900:2099" required >
+                          </p-calendar>
+                        </ng-template> -->
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-12">
+                      <div class="form-group yeats-form-group ">
+                        <label for="comments" class="formLabel yeats-form-label">Medical Co-payments</label>
+                        <textarea [rows]="1" [cols]="30" formControlName="medCoPay" pInputTextarea autoResize="autoResize" style="width:100%"></textarea>
+                      </div>
+                    </div>
+            
+                    <div class="col-lg-3 col-sm-6 col-12">
+                      <div class="form-group yeats-form-group ">
+                        <label for="comments" class="formLabel yeats-form-label">Comments</label>
+                        <textarea [rows]="1" [cols]="30" formControlName="comment" pInputTextarea autoResize="autoResize" style="width:100%"></textarea>
+                      </div>
+                    </div>
+                    <!-- <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group">
+                          <label class="formLabel yeats-form-label"> &nbsp;</label>
+                        <button pButton class="yeats-btn yeats-btn-primary">Details</button>
+                       </div>
+                    </div> -->
+                  </div>
+            
+                  <div class="row">
+            
+                    <div class="col-lg-12" *ngIf="!selfpayappt">
+                      Eligibility Verification
+                      <hr>
+                    </div>
+            
+                    <div class="col-lg-3 col-md-6" *ngIf="!selfpayappt">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label">Required Co-pay $</label>
+                        <div class="ui-inputgroup">
+                          <input type="text" formControlName="RequiredCopay" class="form-control yeats-form-control" />
+                        </div>
+                      </div>
+                    </div>
+            
+                    <div class="col-lg-3 col-md-6" *ngIf="!selfpayappt">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label"> &nbsp;</label>
+                        <p-checkbox class="yeats-form-control" formControlName="officeVisited" label="Is Specialist Office Visit"
+                          binary="true">
+                        </p-checkbox>
+                      </div>
+                    </div>
+            
+                    <div class="col-lg-3 col-md-6" *ngIf="!selfpayappt">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label">Results : Unknown</label>
+                        <button pButton class="yeats-btn yeats-btn-primary" data-toggle="modal" (click)="openDetailsModal()" data-target="#detailsmodule">Details</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer" *ngIf="!isUpdate">
+                    <!-- <div class="form-group yeats-form-group "> -->
+                    <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right mr-2" (click)="onCancelBtn()">Cancel</button>
+                    <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" *ngIf="!selfpayappt">Verify
+                      Eligibility</button>
+                    <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" [disabled]="AddApptForm && !AddApptForm.valid" (click)="onSubmit()">Save &
+                      Print</button>
+                    <!-- <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="CreateNewAppointment()">Save</button> -->
+                    <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" type="submit" [disabled]=" AddApptForm && !AddApptForm.valid" (click)="onSubmit()">Save</button>
+                    <!-- </div> -->
+                  </div>
+                  <div class="modal-footer" *ngIf="isUpdate">
+                    <!-- <div class="form-group yeats-form-group "> -->
+                    <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right mr-2" (click)="onCancelBtn()">Cancel</button>
+                    <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" type="submit" [disabled]=" AddApptForm && !AddApptForm.valid" (click)="onSubmit()">Update</button>
+                    <!-- <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="UpdateAppointment()" [disabled]="!AddApptForm.valid">Update</button> -->
+                    <!-- </div> -->
+                  </div>
+                </form>
+           </div>
+        </p-tabPanel>
+        <p-tabPanel header="Edit Appointment" *ngIf="isUpdate">
+           <div>
+              <form [formGroup]="AddApptForm">
+                  <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">Patient last name <span class="required">*</span></label>
+                        <div class="ui-inputgroup">
+                          <input type="text" placeholder="Enter Lastname" formControlName="lastname" class=" form-control yeats-form-control d-inline"
+                            required readonly />
+                          <button pButton type="button" icon="fa fa-search" (click)="findPatient()"  class="ui-button-warn btn-primary"></button>
+                        </div>
+                        <div *ngIf="AddApptForm && (AddApptForm.controls.lastname.invalid ) && (AddApptForm.controls.lastname.dirty || AddApptForm.controls.lastname.touched) && AddApptForm.controls.lastname.errors.required" class="alert alert-danger">
+                          Field Can't Be Blank.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label">Patient First name</label>
+                        <div class="ui-inputgroup">
+                          <input type="text" placeholder="Enter Firstname" formControlName="firstname" class="form-control yeats-form-control"
+                            readonly />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label">Patient Unique Number</label>
+                        <div class="ui-inputgroup">
+                          <input type="text" placeholder="Enter Uniquenumber" formControlName="uniqueNumber" class="form-control yeats-form-control"
+                            readonly />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label">Patient DOB</label>
+                        <div class="ui-inputgroup">
+                          <input type="text" placeholder="Enter DOB" formControlName="DateOfBirth" class="form-control yeats-form-control"
+                            readonly />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label">Patient Phone No</label>
+                        <div class="ui-inputgroup">
+                          <input type="text" placeholder="Enter PhoneNo" formControlName="phoneno" class="form-control yeats-form-control"
+                            readonly />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label"> &nbsp;</label>
+                        <p-checkbox class="yeats-form-control" [(ngModel)]="selfpayappt" formControlName="selfpayappt" label="Self Pay Appt"
+                          binary="true">
+                        </p-checkbox>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">Facility<span class="required">*</span></label>
+                        <p-dropdown [options]="facilityList" formControlName="SelectedFacility" placeholder="Select Facility"
+                          optionLabel="name" [showClear]="true" (onChange)="reLoadRoomUser(AddApptForm.controls.SelectedFacility.value)">
+                        </p-dropdown>
+                      </div>
+                      <div *ngIf="AddApptForm && (AddApptForm.controls.SelectedFacility.invalid ) && (AddApptForm.controls.SelectedFacility.dirty || AddApptForm.controls.SelectedFacility.touched) && AddApptForm.controls.SelectedFacility.errors.required"
+                        class="alert alert-danger">
+                        Field Can't Be Blank.
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">User<span class="required">*</span></label>
+                        <p-dropdown [options]="UserList" formControlName="SelecetedUser" placeholder="Select User" optionLabel="fullName"
+                          [showClear]="true">
+                        </p-dropdown>
+                      </div>
+                      <div *ngIf="AddApptForm && (AddApptForm.controls.SelecetedUser.invalid ) && (AddApptForm.controls.SelecetedUser.dirty || AddApptForm.controls.SelecetedUser.touched) && AddApptForm.controls.SelecetedUser.errors.required"
+                        class="alert alert-danger">
+                        Field Can't Be Blank.
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">Appointment Type<span class="required">*</span></label>
+                        <p-dropdown [options]="PatientType" formControlName="SelectedType" placeholder="Select Type" optionLabel="Description"
+                          [showClear]="true" (onChange)="onApptTypeChanged()">
+                        </p-dropdown>
+                      </div>
+                      <div *ngIf="AddApptForm && (AddApptForm.controls.SelectedType.invalid ) && (AddApptForm.controls.SelectedType.dirty || AddApptForm.controls.SelectedType.touched) && AddApptForm.controls.SelectedType.errors.required"
+                        class="alert alert-danger">
+                        Field Can't Be Blank.
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">Referring Organization</label>
+                        <p-dropdown [options]="RefOrganization" formControlName="SelectedRefOrg" placeholder="Select Organization"
+                          optionLabel="name" [showClear]="true">
+                        </p-dropdown>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">Referring Physician</label>
+                        <p-dropdown [options]="RefPhysician" formControlName="SelecetedRefPhy" placeholder="Select Physician"
+                          optionLabel="referringphysicianname" [showClear]="true">
+                        </p-dropdown>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">Internal Ref Physician</label>
+                        <p-dropdown [options]="InternalRefPhysician" formControlName="SelecetedInternalRefPhysician" placeholder="Select Physician"
+                          optionLabel="label" [showClear]="true">
+                        </p-dropdown>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">Appointment Date<span class="required">*</span></label>
+                        <p-calendar class="yeats-form-control" formControlName="AppointmentDate" [showIcon]="true" monthNavigator="true"
+                          [yearNavigator]="true" yearRange="2000:2099" required (onSelect)="changeDate()">
+                        </p-calendar>
+                      </div>
+                      <div *ngIf="AddApptForm && (AddApptForm.controls.AppointmentDate.invalid ) && (AddApptForm.controls.AppointmentDate.dirty || AddApptForm.controls.AppointmentDate.touched) && AddApptForm.controls.AppointmentDate.errors.required"
+                        class="alert alert-danger">
+                        Field Can't Be Blank.
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label">Start Time<span class="required">*</span></label>
+                        <p-calendar class="yeats-form-control" formControlName="startTime" [timeOnly]="true" [hourFormat]="12"
+                          [showIcon]="true" (onSelect)="updateEndTime($event)"></p-calendar>
+                      </div>
+                      <div *ngIf="AddApptForm && (AddApptForm.controls.startTime.invalid ) && (AddApptForm.controls.startTime.dirty || AddApptForm.controls.startTime.touched) && AddApptForm.controls.startTime.errors.required"
+                        class="alert alert-danger">
+                        Field Can't Be Blank.
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label">End Time<span class="required">*</span></label>
+                        <p-calendar class="yeats-form-control" formControlName="endTime" [timeOnly]="true" [hourFormat]="12"
+                          [showIcon]="true"></p-calendar>
+                      </div>
+                      <div *ngIf="AddApptForm && (AddApptForm.controls.endTime.invalid ) && (AddApptForm.controls.endTime.dirty || AddApptForm.controls.endTime.touched) && AddApptForm.controls.endTime.errors.required"
+                        class="alert alert-danger">
+                        Field Can't Be Blank.
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">Room</label>
+                        <p-dropdown [options]="Rooms" formControlName="SelecetedRoom" placeholder="Select Room" optionLabel="RoomName"
+                          [showClear]="true">
+                        </p-dropdown>
+                      </div>
+                      <!-- <div *ngIf="AddApptForm && (AddApptForm.controls.SelecetedRoom.invalid ) && (AddApptForm.controls.SelecetedRoom.dirty || AddApptForm.controls.SelecetedRoom.touched) && AddApptForm.controls.SelecetedRoom.errors.required"
+                        class="alert alert-danger">
+                        Field Can't Be Blank.
+                      </div> -->
+                    </div>
+            
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label"> &nbsp;</label>
+                        <p-checkbox (onChange)="disableReminderDate()" class="yeats-form-control" formControlName="sendReminder"
+                          [(ngModel)]="sendReminder" label="Send Reminder" binary="true">
+                        </p-checkbox>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group ">
+                        <label class="formLabel yeats-form-label">&nbsp;</label>
+                        <p-calendar class="yeats-form-control" formControlName="reminderDate" placeholder="Enter Date" [showIcon]="true"
+                          monthNavigator="true" [yearNavigator]="true" yearRange="2000:2099" required>
+                        </p-calendar>
+                        <!-- <ng-template #elsepart>
+                          <p-calendar class="yeats-form-control" formControlName="reminderDate" placeholder="Enter Date" [showIcon]="true"
+                            monthNavigator="true" [yearNavigator]="true" yearRange="2000:2099" yearRange="1900:2099" required >
+                          </p-calendar>
+                        </ng-template> -->
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-12">
+                      <div class="form-group yeats-form-group ">
+                        <label for="comments" class="formLabel yeats-form-label">Medical Co-payments</label>
+                        <textarea [rows]="1" [cols]="30" formControlName="medCoPay" pInputTextarea autoResize="autoResize" style="width:100%"></textarea>
+                      </div>
+                    </div>
+            
+                    <div class="col-lg-3 col-sm-6 col-12">
+                      <div class="form-group yeats-form-group ">
+                        <label for="comments" class="formLabel yeats-form-label">Comments</label>
+                        <textarea [rows]="1" [cols]="30" formControlName="comment" pInputTextarea autoResize="autoResize" style="width:100%"></textarea>
+                      </div>
+                    </div>
+                    <!-- <div class="col-lg-3 col-md-6">
+                      <div class="form-group yeats-form-group">
+                          <label class="formLabel yeats-form-label"> &nbsp;</label>
+                        <button pButton class="yeats-btn yeats-btn-primary">Details</button>
+                       </div>
+                    </div> -->
+                  </div>
+            
+                  <div class="row">
+            
+                    <div class="col-lg-12" *ngIf="!selfpayappt">
+                      Eligibility Verification
+                      <hr>
+                    </div>
+            
+                    <div class="col-lg-3 col-md-6" *ngIf="!selfpayappt">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label">Required Co-pay $</label>
+                        <div class="ui-inputgroup">
+                          <input type="text" formControlName="RequiredCopay" class="form-control yeats-form-control" />
+                        </div>
+                      </div>
+                    </div>
+            
+                    <div class="col-lg-3 col-md-6" *ngIf="!selfpayappt">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label"> &nbsp;</label>
+                        <p-checkbox class="yeats-form-control" formControlName="officeVisited" label="Is Specialist Office Visit"
+                          binary="true">
+                        </p-checkbox>
+                      </div>
+                    </div>
+            
+                    <div class="col-lg-3 col-md-6" *ngIf="!selfpayappt">
+                      <div class="form-group yeats-form-group">
+                        <label class="formLabel yeats-form-label">Results : Unknown</label>
+                        <button pButton class="yeats-btn yeats-btn-primary" data-toggle="modal" (click)="openDetailsModal()" data-target="#detailsmodule">Details</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer" *ngIf="!isUpdate">
+                    <!-- <div class="form-group yeats-form-group "> -->
+                    <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right mr-2" (click)="onCancelBtn()">Cancel</button>
+                    <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" *ngIf="!selfpayappt">Verify
+                      Eligibility</button>
+                    <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" [disabled]="AddApptForm && !AddApptForm.valid" (click)="onSubmit()">Save &
+                      Print</button>
+                    <!-- <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="CreateNewAppointment()">Save</button> -->
+                    <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" type="submit" [disabled]=" AddApptForm && !AddApptForm.valid" (click)="onSubmit()">Save</button>
+                    <!-- </div> -->
+                  </div>
+                  <div class="modal-footer" *ngIf="isUpdate">
+                    <!-- <div class="form-group yeats-form-group "> -->
+                    <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right mr-2" (click)="onCancelBtn()">Cancel</button>
+                    <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" type="submit" (click)="onSubmit()">Update</button>
+                    <!-- <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="UpdateAppointment()" [disabled]="!AddApptForm.valid">Update</button> -->
+                    <!-- </div> -->
+                  </div>
+                </form>
+           </div>
+          </p-tabPanel>
+        <p-tabPanel  header="Availability Exception">
+          <app-availability-exception [selectedData]="selectedData"></app-availability-exception>
+        </p-tabPanel>
+      </p-tabView>
+      </div>
+          <!-- <button type="button" class="close" aria-label="Close" (click)="onCancelBtn()">
+              <span aria-hidden="true">&times;</span>
+            </button> -->
+  
+  <!-- <div class="modal-header">
+    <h4 class="modal-title" *ngIf="!isUpdate">Add Appointment</h4>
+    <h4 class="modal-title" *ngIf="isUpdate">Edit Appointment</h4>
+    <button type="button" class="close" aria-label="Close" (click)="onCancelBtn()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div> -->
+  <div *ngIf="isLoader" class="row">
+    <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+  </div>
+  
+
+</div>
+<div class="cancelModel" *ngIf="isCancel">
+  <div class="modal-header">
+    <h4 class="modal-title">Cancel Appointment</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Cancelation Reason<span class="required">*</span></label>
+          <p-dropdown [options]="cancelReasonList" [(ngModel)]="SelectedReason" placeholder="Select Reason" optionLabel="Description"
+           (onChange)="selectionChanged()" [showClear]="true">
+          </p-dropdown>
+          <!-- <p-dropdown [options]="cancelReasonList" [(ngModel)]="SelectedReason" placeholder="Select Reason" optionLabel="Description"
+            [showClear]="true" (onChange)="cancelAppointment(SelectedReason)">
+          </p-dropdown> -->
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <button pButton [disabled]="reasonSelected" class="yeats-btn yeats-btn-primary ui-button-primary pull-right mr-2 mt-3" (click)="cancelAppointment(SelectedReason)">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+

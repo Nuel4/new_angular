@@ -1,0 +1,111 @@
+.viewbills{
+   padding: 12px;
+   .modal-content{
+      min-width: 150% !important;
+   }
+    
+      //   td{
+      //       padding-top: 0px;
+      //       padding-left: 0px;
+      //       padding-right: 10px;
+      //       padding-bottom: 0px;
+      //   }
+
+        .cf-table{
+         border-collapse: separate !important;
+         border: 1px solid #ccc !important;
+         border-radius: 0.125rem !important;
+         color: #565656 !important;
+         max-width: 100% !important;
+         width: 100% !important;
+         margin-top: 1rem !important;
+         margin-bottom: 1rem !important;
+         p-table {
+            td,
+            // tr:nth-child(even) {background-color: unset}
+            // tr:nth-child(odd) {background-color: unset}
+            tr {
+               color: #565656 !important;
+               font-size: 9px !important;
+               letter-spacing: 0.03em !important;
+               vertical-align: middle !important;
+               border-bottom: 1px solid #eee !important;
+               border-left: 0 !important;
+               border-right: 0 !important;
+               text-align: center !important;
+               padding-top: 0px !important;
+               padding-bottom: 0px !important;
+            }
+
+            th,
+            tr {
+              font-size: 10px !important;
+              line-height: 0.9rem !important;
+              padding: 0.45833333rem 0.5rem !important;
+              border-top: 0 !important;
+              border-bottom: 1px solid #ccc !important;
+              border-left: 0 !important;
+              border-right: 0 !important;
+              text-align: center !important;
+              vertical-align: middle !important;
+              color: #565656 !important;
+              height: 40px !important;
+            }
+            .ui-state-highlight {
+               td,tr{
+                 background-color: #007ad9 !important;
+                 color: #ffffff !important;
+                 cursor: pointer;
+               }
+             }
+        }
+        .ui-table .ui-table-tbody>tr.ui-state-highlight {
+         background-color: #007ad9 !important;
+         color: #ffffff !important;
+       }
+
+       p-paginator {
+         .ui-paginator-bottom {
+           border: 1px;
+           background-color: rgba(249, 249, 249, 0.3) !important;
+           cursor: pointer;
+           font-size: 13px !important;
+         }
+      }
+      }
+ .displaylabel{
+    font-weight: 500;
+    font-size: 0.75rem;
+    margin-bottom: 0px !important;
+    margin-top: 10px !important;
+    max-width: 100%;
+ }   
+ 
+ .overlay-container{
+   .toast-top-center .toast-container{
+      .toast-error .toast .ng-trigger .ng-trigger-flyInOut{
+         width: 50% !important;
+      }
+   }
+ }
+ .toast-container.toast-top-center .toast, .toast-container.toast-bottom-center .toast {
+   width: 50% !important;
+ }
+ .yeats-tables{
+ .yeats-form-group{
+    min-height: 2rem !important;
+   
+ }
+ .yeats-form-group{
+   margin-bottom: 0 ;
+   margin: 0 ;
+   padding-bottom: 0;
+    min-height: 3rem !important;
+ }
+}
+
+.todisplay{
+   font-weight: 500;
+    font-size: 0.75rem;
+}
+}

@@ -1,0 +1,123 @@
+<div class="addARType" *ngIf="artype">
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">AR Type (Insurance Category)</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body artypeModal">
+    <div class="row">
+      <div class="col-12" style="padding:0;">
+        <button pButton class="yeats-btn yeats-btn-primary pull-right mr-3 mb-3" (click)="openARAddModal()">Add New AR
+          Type
+          (Insurance Catg.)</button>
+      </div>
+    </div>
+    <div class="yeats-tables">
+      <p-table [columns]="cols" [value]="insuranceCategoryList" selectionMode="single" [(selection)]="selectedCategory"
+        dataKey="InsuranceCategoryId" (onRowSelect)="onRowSelect($event)" [scrollable]="true" scrollHeight="200px">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns">
+              {{col.header}}
+            </th>
+            <th>Delete</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr  [pSelectableRow]="rowData" pEditableColumn>
+            <td>
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <input pInputText type="text" [(ngModel)]="rowData.InsuranceCategoryName" (change)="addInsuranceCategory($event.target.value)"> 
+                </ng-template>
+                <ng-template pTemplate="output">
+                  {{rowData.InsuranceCategoryName}}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+            <td>
+              <button pButton class="yeats-btn yeats-btn-primary" (click)="deleteFeeSchedule(rowData)">
+                Delete
+              </button>
+
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+
+    <div class="CategorySelection">
+      <div class="row">
+        <label class="formLabel yeats-form-label">Assign Insurance Providers to this AR Type (Insurance
+          Category):</label>
+      </div>
+      <p-pickList
+      [source]="customFormattedCategory"
+      [target]="insuranceGrouped"
+      sourceHeader="Available Insurance Provider"
+      targetHeader="Selected Insurance Provider"
+      [responsive]="true"
+      dragdrop="true"
+      [sourceStyle]="{ height: '300px' }"
+      [showTargetControls]="false"
+      [showSourceControls]="false"
+      [targetStyle]="{ height: '300px' }"
+      (onMoveToTarget)="moveToTarget($event)"
+      >
+      <ng-template let-insurance pTemplate="item">
+        <div class="ui-helper-clearfix">
+          <div class="row">
+            <div class="col-2">
+                <i class="pi pi-times" style="font-size: 1em"  (click)="deleteProviderList(insurance)"></i>
+            </div>
+            <div class="col-10">
+
+              {{ insurance.insuranceProviderName }}
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-pickList>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button pButton class="yeats-btn yeats-btn-danger ui-button-danger pull-right ml-3 mt-3"
+        (click)="closeModal()">Cancel</button>
+        <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3 mt-3"
+        (click)="clearform()">Clear</button>
+      <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mt-3" (click)="onSave()">Save</button>
+    </div>
+  <div class="modal fade" id="addARTypes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:500px">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add/Edit AR Type (Insurance Category)</h5>
+          <button type="button" class="close" (click)="closeARAddModal()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-6 col-sm-12 col-12">
+              <div class="form-group yeats-form-group">
+                <label class="formLabel yeats-form-label">AR Type (Insurance Catgory)</label>
+                <input type="text" [(ngModel)]="rowTypeClicked.InsuranceCategoryName"
+                  class="form-control yeats-form-control" placeholder="Enter Location Provider Number" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <button pButton class="yeats-btn yeats-btn-danger ui-button-danger pull-right ml-3 mt-3"
+            (click)="closeARAddModal()">Cancel</button>
+            <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3 mt-3"
+                            (click)="clearform()">Clear</button>
+          <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mt-3">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

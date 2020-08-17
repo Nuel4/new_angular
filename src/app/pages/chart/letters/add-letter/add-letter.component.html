@@ -1,0 +1,256 @@
+<div class="add-letter">
+  <div class="card border-0 box-shadow">
+    <div class="card-header transparent border-0 text-muted">
+      <div class="card-body">
+        <div class="row">
+          <!-- <div class="col-12 col-md-12 col-lg-12 mt-3">
+                    <button pButton class="yeats-btn yeats-btn-primary pull-right mr-4"
+                        (click)="backbtnfun($event)">Back</button>
+                </div> -->
+          <div class="col-12 col-md-12 col-lg-12">
+            <label class="formLabel yeats-form-label"
+              ><b>Link Letter to Encounter</b></label
+            >
+            <div class="yeats-tables">
+              <p-table
+                [columns]="cols"
+                [value]="letterList"
+                [lazy]="true"
+                [rows]="pageSize"
+                paginator=true
+                [totalRecords]="totalrecords"
+                (onLazyLoad)="paginate($event)"
+                sortMode="multiple"
+                selectionMode="single"
+                [(selection)]="selectedLeter"
+                dataKey="mr_patient_encounter_id"
+                (onRowSelect)="onRowSelect($event)"
+              >
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th
+                      *ngFor="let col of columns"
+                      [pSortableColumn]="col.field"
+                    >
+                      {{ col.header }}
+                      <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                  <tr [pSelectableRow]="rowData">
+                    <td *ngFor="let col of columns">
+                      {{ rowData[col.field] }}
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <button
+        pButton
+        class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right mr-2"
+        (click)="cancelbtnfun($event)"
+      >
+        Cancel Letter
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary pull-right mr-2"
+        data-toggle="modal"
+        data-target="#letterModal"
+        (click)="getDropdowns()"
+      >
+        Continue Without Encounter
+      </button>
+      <button
+        pButton
+        class="yeats-btn yeats-btn-primary pull-right mr-2"
+        data-toggle="modal"
+        data-target="#letterModal"
+        (click)="getDropdowns()"
+        [disabled]="isdisabled"
+      >
+        Select Encounter
+      </button>
+    </div>
+    <!-- <div class="mb-3" *ngIf="isdisabled">
+        <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right mr-2" (click)="cancelbtnfun($event)">Cancel Letter</button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" [disabled]="true">Continue Without
+            Encounter</button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" [disabled]="true">Select Encounter</button>
+    </div> -->
+  </div>
+
+  <div
+    class="modal fade"
+    id="letterModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="letterModalLabel"
+    aria-hidden="true"
+  >
+    <div
+      class="modal-dialog modal-dialog-centered"
+      role="document"
+      style="max-width:800px"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="letterModalLabel">Add Letter</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="addLetter">
+          <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-6">
+              <div class="form-group yeats-form-group ">
+                <label class="formLabel yeats-form-label">Letter Date</label>
+                <p-calendar
+                  class="yeats-form-control"
+                  [(ngModel)]="filterLetter.letterdate"
+                  [showIcon]="true"
+                  monthNavigator="true"
+                  formControlName="letterdate"
+                  yearNavigator="true"
+                  yearRange="1900:2030"
+                  required
+                >
+                </p-calendar>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6">
+              <div class="form-group yeats-form-group ">
+                <label class="formLabel yeats-form-label">Letter Type</label>
+                <p-dropdown
+                  [options]="letterTempCategoryList"
+                  [(ngModel)]="filterLetter.selectedTemplateCategory"
+                  placeholder="Select Letter type"
+                  formControlName="selectedTemplateCategory"
+                  optionLabel="CategoryName"
+                  [showClear]="true"
+                >
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6">
+              <div class="form-group yeats-form-group ">
+                <label class="formLabel yeats-form-label"
+                  >Letter Template</label
+                >
+                <p-dropdown
+                  [options]="LetterTemplateList"
+                  [(ngModel)]="filterLetter.selectedTemplate"
+                  placeholder="Select Template"
+                  formControlName="selectedTemplate"
+                  optionLabel="TemplateName"
+                  [showClear]="true"
+                >
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6">
+              <div class="form-group yeats-form-group ">
+                <label class="formLabel yeats-form-label"
+                  >Related Organization</label
+                >
+                <p-dropdown
+                  [options]="relatedOrganizationList"
+                  [(ngModel)]="filterLetter.selectedRelOrganization"
+                  placeholder="Select Organization"
+                  optionLabel="RelatedOrganizationName"
+                  formControlName="selectedRelOrganization"
+                  [showClear]="true"
+                  (onChange)="getReferringPhysician()"
+                >
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6">
+              <div class="form-group yeats-form-group ">
+                <label class="formLabel yeats-form-label"
+                  >Referring Physician</label
+                >
+                <p-dropdown
+                  [options]="referringPhysicianList"
+                  [(ngModel)]="filterLetter.selectedRefPhysician"
+                  placeholder="Select Physician"
+                  formControlName="selectedRefPhysician"
+                  optionLabel="FullName"
+                  [showClear]="true"
+                >
+                </p-dropdown>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-3 col-sm-6">
+              <div class="form-group yeats-form-group ">
+                <label class="formLabel yeats-form-label"
+                  >Health Provider</label
+                >
+                <p-dropdown
+                  [options]="healthCareProviderList"
+                  [(ngModel)]="filterLetter.selectedHealthcareprovider"
+                  placeholder="Select Health Provider"
+                  formControlName="selectedHealthcareprovider"
+                  optionLabel="FullName"
+                  [showClear]="true"
+                >
+                </p-dropdown>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-sm-6 col-12">
+              <div class="form-group yeats-form-group ">
+                <label for="Description" class="formLabel yeats-form-label"
+                  >Description</label
+                >
+                <textarea
+                  [rows]="1"
+                  [cols]="30"
+                  pInputTextarea
+                  autoResize="autoResize"
+                  formControlName="description"
+                  [(ngModel)]="filterLetter.description"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <button
+                pButton
+                class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right"
+                data-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button
+                pButton
+                class="yeats-btn yeats-btn-primary pull-right mr-2"
+                data-dismiss="modal"
+                (click)="openEditor()"
+                [disabled]=" addLetter && !addLetter.valid"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

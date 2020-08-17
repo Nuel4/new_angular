@@ -1,0 +1,372 @@
+<div class="document-actions">
+  <div *ngIf="IsEdit">
+    <div class="modal-header">
+      <h4 class="modal-title">Edit Scan Information</h4>
+      <button type="button" class="close" aria-label="Close" (click)="canceloper(); activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+          <label for="" class="yeats-form-label">Name</label>
+          <input type="text" pInputText class="form-control yeats-form-control" [(ngModel)]="docName">
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Dms Category</label>
+            <p-dropdown [options]="dmsCategories" [(ngModel)]="selectedCategory" placeholder="Selecte Category"
+              optionLabel="CategoryName" [showClear]="true">
+            </p-dropdown>
+          </div>
+        </div>
+        <div *ngIf="rowData && rowData.ReviewedStatus === 2">
+          <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Review Status</label>
+              <p-dropdown [options]="dmsCategories" [(ngModel)]="selectedReview" optionLabel="CategoryName"
+                [showClear]="true">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Document Date</label>
+              <p-calendar [showIcon]="true" [(ngModel)]="selected_date" [monthNavigator]="true" [yearNavigator]="true"
+                yearRange="1900:2030" (onSelect)="onDateSelection()"></p-calendar>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12">
+          <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2"
+            (click)="activeModal.close('Close click')">Cancel</button>
+          <button pButton class="yeats-btn yeats-btn-primary pull-right"
+            (click)="updateEditedFile(); activeModal.close('Close click')">OK</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div *ngIf="IsTransfer">
+    <form #f="ngForm" (ngSubmit)="findPatient()">
+      <div class="modal-header">
+        <h4 class="modal-title">Transfer Document To Patient</h4>
+        <button type="button" class="close" aria-label="Close"
+          (click)=" canceloper(); activeModal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <label for="" class="yeats-form-label">Last Name</label>
+            <input type="text" pInputText [(ngModel)]="patientDeatils.lastname" name="lastname"
+              class="form-control yeats-form-control">
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <label for="" class="yeats-form-label">First Name</label>
+            <input type="text" pInputText [(ngModel)]="patientDeatils.firstname" name="firstname"
+              class="form-control yeats-form-control">
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class=" form-group yeats-form-group">
+              <label for="SSN" class="yeats-form-label">SSN</label>
+              <p-inputMask mask="99-999999" [(ngModel)]="patientDeatils.ssn" name="ssn" placeholder="Enter SSN">
+              </p-inputMask>
+            </div>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12">
+            <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2" (click)="onClear()">Clear</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right" (click)="findPatient()">Find</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="yeats-tables">
+              <p-table [columns]="cols" [value]="patientList.Results" selectionMode="single" [(selection)]="selectRow"
+                (onRowSelect)="onRowSelect($event)">
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th *ngFor="let col of columns">
+                      {{col.header}}
+                    </th>
+                    <th>
+                      chartwindow
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData>
+                  <tr [pSelectableRow]="rowData" (click)="onSelectRow(rowData)">
+                    <td>{{rowData.LastName}}, {{rowData.FirstName}}</td>
+                    <td>{{rowData.DateOfBirth | date:'MM/dd/yyyy'}}</td>
+                    <td>{{rowData.Ssn}}</td>
+                    <td><i class="fa fa-text-o" (click)="openCharts()"></i></td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+            <p-paginator [rows]="patientList.PageSize" [totalRecords]="patientList.TotalItems"
+              (onPageChange)="paginate($event)"></p-paginator>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2"
+          (click)="canceloper(); activeModal.close('Close click')">Cancel</button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right" [disabled]="transferDoc"
+          (click)="updateList(); activeModal.close('Close click')">OK</button>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="IsDelete ">
+    <div class="modal-header">
+      <h4 class="modal-title">Cancel Document Confirmation</h4>
+      <button type="button" class="close" aria-label="Close" (click)="canceloper(); activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Are you sure you want to delete this item?
+    </div>
+    <div class="modal-footer">
+      <div class="col-12">
+        <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3"
+          (click)="deleteDoc(); activeModal.close('Close click');">Delete</button>
+        <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+          (click)="canceloper();activeModal.close('Close click')">Cancel</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="IsUpload">
+    <div class="modal-header">
+      <h4 class="modal-title">Add Files</h4>
+      <button type="button" class="close" aria-label="Close" (click)="canceloper(); activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-12 col-md-12">
+          <div>
+            <input type="file" multiple (change)="fileChange(input.files)" #input class="m-img-upload-btn"
+              accept=".pdf,.jpeg,.png" />
+            <button class="btn btn-primary btn-block file-upload-btn" style="width:120px;margin-bottom:10px"
+              type="button">
+              Choose files...
+            </button>
+          </div>
+          <ngx-datatable class="material" [rows]="files" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="40"
+            [rowHeight]="'auto'" [limit]="10">
+            <ngx-datatable-column [minWidth]="150" [maxWidth]="450">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                Name
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.filename}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [minWidth]="50" [maxWidth]="100">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                Size(KB)
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.filesize}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [minWidth]="70" [maxWidth]="150">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                Type
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.filetype}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [minWidth]="50" [maxWidth]="70">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <div style="display:block; text-align:center;">
+                  Status
+                </div>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                <div style="display:block; text-align:center;">
+                  <i *ngIf="row.isInprogress" class="fa fa-spinner fa-pulse fa-lg fa-fw" style="color:blue"
+                    data-toggle="tooltip" data-placement="top" title={{row.message}}></i>
+                  <i *ngIf="row.isCompleted" class="fa fa-check-circle fa-lg" style="color:green" data-toggle="tooltip"
+                    data-placement="top" title={{row.message}}></i>
+                  <i *ngIf="row.isError" class="fa fa-exclamation-circle fa-lg" style="color:red" data-toggle="tooltip"
+                    data-placement="top" title="File Already Exist"></i>
+                </div>
+              </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>
+          <div>
+            <button class="btn btn-primary btn-block file-upload-btn" style="width:120px; margin-top:10px"
+              [disabled]="isDisabled" type="button" (click)="onUpload()">
+              <i class="fa fa-upload"></i> Upload
+            </button>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Dms Category</label>
+            <p-dropdown [options]="categories" [(ngModel)]="selectedCategory" optionLabel="name" [showClear]="true">
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-lg-9 col-md-9 col-sm-9 mt-5">
+          <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right"
+            (click)="resetTab(resetTab); activeModal.close('Close click');">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="IsReviewScan">
+    <div class="modal-header">
+      <div class="modal-title">{{patientData.lastname}} {{patientData.firstname}} Documents</div>
+      <button type="button" class="close" aria-label="Close"
+        (click)=" canceloper(); activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <button pButton class="yeats-btn yeats-btn-primary mr-2">Mark As Reviewed</button>
+      <button pButton class="yeats-btn yeats-btn-primary mr-2">Edit Scan Details</button>
+      <div class="yeats-tables">
+        <p-table [columns]="review_cols" [value]="scanList">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns">
+                {{col.header}}
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr [pSelectableRow]="row" (click)="onSelectRow(row)">
+              <td *ngFor="let row of columns">{{rowData[row.field]}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="IsAttachFile">
+    <div class="modal-header">
+      <div class="modal-title">Link File To Encounter</div>
+      <button type="button" class="close" aria-label="Close"
+        (click)=" canceloper(); activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <div class="yeats-tables">
+        <p-table [value]="attach_files.Results" #encounter [rows]="attach_files.PageSize" [lazy]="true"
+          (onLazyLoad)="paginateencounter($event)" [totalRecords]="attach_files.TotalItems" [paginator]="true"
+          [pageLinks]="3" [responsive]="true" selectionMode="single" [(selection)]="encounterRow"
+          (onRowSelect)="onRowSelect($event)" [dataKey]="mr_patient_encounter_id">
+          <ng-template pTemplate="header">
+            <tr>
+              <th *ngFor="let col of attach_cols">
+                {{col.header}}
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData>
+            <tr [pSelectableRow]="rowData" (click)="onSelectRow(rowData)">
+              <td>{{rowData.date_created}}</td>
+              <td>{{rowData.chief_complaint}}</td>
+              <td>{{rowData.physician}}</td>
+              <td>{{rowData.is_clinical_summary_given_to_patient}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 mb-3" [disabled]="!encounterRow"
+        (click)="selectEncounter(rowData); activeModal.close('Close click')">Select Encounter</button>
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 mb-3"
+        (click)="canceloper(); activeModal.dismiss('Cross click')">Cancel</button>
+    </div>
+  </div>
+  <div *ngIf="IsViewDoc">
+    <div class="modal-header">
+      <div class="modal-title">Review Document</div>
+      <button type="button" class="close" aria-label="Close" (click)="canceloper(); activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="!(rowData.Extension === '.pdf')">
+        <div *ngIf="((rowData.SavedMethodIdentifier === 4)||(rowData.SavedMethodIdentifier === 1))">
+          <img class='responsive' [src]="DocumentUrl.Value">
+        </div>
+        <div *ngIf="(rowData.SavedMethodIdentifier === 3)">
+          <img class='image' [src]="DocumentUrl.Value">
+        </div>
+      </div>
+      <div *ngIf="(rowData.Extension === '.pdf')">
+        <!-- <ng2-pdfjs-viewer [pdfSrc]="pdfSource" width="400px" height="400px"></ng2-pdfjs-viewer>  -->
+        <iframe width="100%" height="400vh" [src]="pdfSource">
+        </iframe>
+        <!-- <div style="height:500px">
+          <pdf-viewer [src]="pdfSource" [render-text]="true" style="display: block;"></pdf-viewer>
+        </div> -->
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 mb-3" *ngIf="(rowData.ReviewedStatus === 1)"
+        (click)="onreview(); activeModal.dismiss('Cross click')">Reviewed</button>
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 mb-3"
+        (click)="canceloper();activeModal.dismiss('Cross click')">Cancel</button>
+    </div>
+  </div>
+
+  <div *ngIf="IsSign">
+    <div class="modal-header">
+      <div class="modal-title">Signature Document</div>
+      <button type="button" class="close" aria-label="Close"
+        (click)=" canceloper(); activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Do your signature here
+      <!-- <app-draw-on-image [src]="src" [imageName]="imageName"></app-draw-on-image> -->
+      <!-- <canvas id="canvas"></canvas> -->
+      <!-- <div class="toolbar">
+            <div class="tools">
+                <div class="row">
+                    <i class="material-icons btn" [class.selected]="currentTool == 'brush'" (click)="selectTool('brush')" title="brush">brush</i>         
+                    <i class="material-icons btn" [class.disabled]="!canUndo" (click)="undo()" title="undo">undo</i>
+                    <i class="material-icons btn" [class.disabled]="!canRedo" (click)="redo()" title="redo">redo</i>
+                    <i class="fa fa-eraser btn"  style="color:#bdbdbd;font-size:22px" (click)="clearCanvas()" title="clear"></i>
+                </div>
+                <div class="row">
+                    <div class="color black" [class.selected]="currentColor == 'black'" (click)="selectColor('black')" title="black"></div>
+                    <div class="color white" [class.selected]="currentColor == 'white'" (click)="selectColor('white')" title="white"></div>
+                    <div class="color yellow" [class.selected]="currentColor == 'yellow'" (click)="selectColor('yellow')" title="yellow"></div>
+                    <div class="color red" [class.selected]="currentColor == 'red'" (click)="selectColor('red')" title="red"></div>
+                    <div class="color green" [class.selected]="currentColor == 'green'" (click)="selectColor('green')" title="green"></div>
+                    <div class="color blue" [class.selected]="currentColor == 'blue'" (click)="selectColor('blue')" title="blue"></div>
+                </div>
+            </div>
+            <div class="buttons">        
+            </div>
+        </div> -->
+    </div>
+    <div class="modal-footer">
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 mb-3" (click)="onsignsave()">Save</button>
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 mb-3" (click)="clearCanvas()">Clear</button>
+      <button pButton class="yeats-btn yeats-btn-primary ml-3 mb-3"
+        (click)=" canceloper(); activeModal.dismiss('Cross click')">Cancel</button>
+    </div>
+  </div>
+
+</div>

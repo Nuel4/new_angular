@@ -1,0 +1,41 @@
+.medication{
+
+.widget-header {
+    background:#104886;
+    color:#FFFFFF;
+}
+.header
+{
+  width: 100% !important;
+}
+.a {
+  // width:50px;
+  // text-overflow: ellipsis;
+  cursor: pointer;
+  // word-break: break-all;
+  overflow:hidden;
+  white-space: nowrap;
+}
+
+// .ui-table-scrollable-body{
+//   height: 165px;
+// }
+
+.ui-paginator{
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  font-size: 11px;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  background-color: #fff;
+  border: 1px solid #fff;
+}
+.yeats-tables{
+margin-top: 0px !important;
+}
+// .yeats-tables p-table th, .yeats-tables p-table tr{
+// height: 32px !important;
+// }
+}

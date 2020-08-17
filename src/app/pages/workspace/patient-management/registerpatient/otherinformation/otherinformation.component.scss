@@ -1,0 +1,41 @@
+.otherInformation{
+    // padding-top:7px;
+    padding-bottom:7px;
+    .subHead{
+        padding-top: 1rem;
+    }
+    .close{
+        color:#fff;
+    }
+    .modal-header{
+        background-color: #1F70BA;
+        color:#fff;
+        font-size:14px
+    }
+    .modal-title {
+        padding:5px;
+        font-size:16px;
+    }
+    .billerNotes{
+        padding:1%;
+        .row{
+            margin:0;
+        }
+    }
+    .mp-0{
+        margin: 0px;
+        padding: 2px;
+      }
+      .mpr-0{
+    margin-right: 0px !important;
+    padding-right: 0px !important; 
+      }
+      .mpl-0{
+    margin-left: 0px !important;
+    padding-left: 0px !important;
+      }
+
+      .invalid-feedback{
+          color: red;
+      }
+}

@@ -1,0 +1,268 @@
+<h3 style="margin-top:20px; margin-bottom:10px;"> Forms </h3>
+<table class="table style-guide">
+    <thead>
+        <tr>
+            <td> Example </td>
+            <td> Syntax </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <div class=" form-group yeats-form-group">
+                    <input type="text" pInputText class=" form-control yeats-form-control" placeholder="Enter name">
+                </div>
+            </td>
+            <td>
+                <pre>
+                    <code>
+                        &lt;input type=&quot;text&quot; pInputText class=&quot;form-control yeats-form-control&quot; placeholder=&quot;Enter name&quot;&gt;
+                    </code>
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Name</label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" placeholder="Enter name">
+                </div>
+            </td>
+            <td>
+                <pre>
+                    <code>
+                        &lt;label for=&quot;&quot; class=&quot;yeats-form-label&quot;&gt;Name &lt;/label&gt; <br>
+                        &lt;input type=&quot;text&quot; pInputText class=&quot;form-control yeats-form-control&quot; placeholder=&quot;Enter name&quot;&gt;
+                    </code>
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Mask</label>
+                    <p-inputMask mask="99-999999" [(ngModel)]="maskVal" placeholder="99-999999"></p-inputMask>
+                </div>
+            </td>
+            <td>
+                <pre>
+                    <code>
+                        &lt;label for=&quot;&quot; class=&quot;yeats-form-label&quot;&gt;Mask &lt;/label&gt; <br>
+                        &lt;p-inputMask mask=&quot;99-999999&quot; [(ngModel)]=&quot;maskVal&quot; placeholder=&quot;99-999999&quot;&gt;&lt;/p-inputMask&gt;<br>
+                    </code>
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">&nbsp;</label>
+                    <input type="text" pInputText class=" form-control yeats-form-control" placeholder="Enter name">
+                </div>
+            </td>
+            <td>
+                <pre>
+                    <code>
+                        &lt;label for=&quot;&quot; class=&quot;yeats-form-label&quot;&gt; &lt;/label&gt; <br>
+                        &lt;input type=&quot;text&quot; pInputText class=&quot;form-control yeats-form-control&quot; placeholder=&quot;Enter name&quot;&gt;
+                    </code>
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="form-group yeats-form-group ">
+                    <label class="formLabel yeats-form-label">Date of Birth</label>
+                    <p-calendar class="yeats-form-control" [showIcon]="true" formControlName="DateOfBirth">
+                    </p-calendar>
+                </div>
+            </td>
+            <td>
+                <pre>
+                    <code>
+                        &lt;div class=&quot;form-group yeats-form-group &quot;&gt;<br>
+                            &lt;label class=&quot;formLabel yeats-form-label&quot;&gt;Date of Birth&lt;/label&gt;<br>
+                            &lt;p-calendar class=&quot;yeats-form-control&quot; [showIcon]=&quot;true&quot;&gt;<br>
+                            &lt;/p-calendar&gt;<br>
+                        &lt;/div&gt;
+                    </code>
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="form-group yeats-form-group ">
+                    <label class="formLabel yeats-form-label">Time</label>
+                    <p-calendar class="yeats-form-control" [showIcon]="true" [timeOnly]="true" formControlName="DateOfBirth">
+                    </p-calendar>
+                </div>
+            </td>
+            <td>
+                <pre>
+                    <code>
+                        &lt;div class=&quot;form-group yeats-form-group &quot;&gt;<br>
+                            &lt;label class=&quot;formLabel yeats-form-label&quot;&gt;Time&lt;/label&gt;<br>
+                            &lt;p-calendar class=&quot;yeats-form-control&quot; [showIcon]=&quot;true&quot; [timeOnly]=&quot;true&quot; &gt;<br>
+                            &lt;/p-calendar&gt;<br>
+                        &lt;/div&gt;
+                    </code>
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="form-group yeats-form-group ">
+                    <label class="formLabel yeats-form-label">City</label>
+                    <p-dropdown [options]="cities" [(ngModel)]="selectedCity" placeholder="Select a City" optionLabel="name"
+                        [showClear]="true"></p-dropdown>
+                </div>
+            </td>
+            <td>
+                <pre>
+                    <code>
+                        &lt;div class=&quot;form-group yeats-form-group &quot;&gt;<br>
+                            &lt;label class=&quot;formLabel yeats-form-label&quot;&gt;City&lt;/label&gt;<br>
+                            &lt;p-dropdown [options]=&quot;cities&quot; [(ngModel)]=&quot;selectedCity&quot; placeholder=&quot;Select a City&quot; optionLabel=&quot;name&quot; [showClear]=&quot;true&quot;&gt;<br>
+                            &lt;/p-dropdown&gt;
+                        &lt;/div&gt;
+                    </code>
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Weight</label>
+                    <input type="text" class=" form-control yeats-form-control w-50 d-inline " placeholder="kg">
+                    <input type="text" class=" form-control yeats-form-control w-50 d-inline border-left-0" placeholder="gm">
+                </div>
+            </td>
+            <td>
+                <pre>
+                    <code>
+                        &lt;div class=&quot;form-group yeats-form-group &quot;&gt;<br>
+                            &lt;label for=&quot;&quot; class=&quot;yeats-form-label&quot;&gt; &lt;/label&gt; <br>
+                            &lt;input type=&quot;text&quot; class=&quot;form-control yeats-form-control w-50 d-inline &quot; placeholder=&quot;Enter name&quot;&gt;<br>
+                            &lt;input type=&quot;text&quot; class=&quot;form-control yeats-form-control w-50 d-inline border-left-0 &quot; placeholder=&quot;Enter name&quot;&gt;<br>
+                        &lt;/div&gt;
+                    </code>
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Height</label>
+                    <input type="text" class=" form-control yeats-form-control w-33 d-inline " placeholder="">
+                    <input type="text" class=" form-control yeats-form-control w-33 d-inline border-left-0" placeholder="">
+                    <input type="text" class=" form-control yeats-form-control w-33 d-inline border-left-0" placeholder="">
+                </div>
+            </td>
+            <td>
+                <pre>
+                    <code>
+                        &lt;div class=&quot;form-group yeats-form-group &quot;&gt;<br>
+                            &lt;label for=&quot;&quot; class=&quot;yeats-form-label&quot;&gt; &lt;/label&gt; <br>
+                            &lt;input type=&quot;text&quot; class=&quot;form-control yeats-form-control w-33 d-inline &quot; placeholder=&quot;Enter name&quot;&gt;<br>
+                            &lt;input type=&quot;text&quot; class=&quot;form-control yeats-form-control w-33 d-inline border-left-0 &quot; placeholder=&quot;Enter name&quot;&gt;<br>
+                            &lt;input type=&quot;text&quot; class=&quot;form-control yeats-form-control w-33 d-inline border-left-0 &quot; placeholder=&quot;Enter name&quot;&gt;<br>
+                        &lt;/div&gt;
+                    </code>
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Weight</label>
+                    <div class="d-flex justify-content-between">
+                        <input type="text" class=" form-control yeats-form-control d-inline" placeholder="">
+                        <span class="d-inline px-3">or</span>
+                        <input type="text" class=" form-control yeats-form-control d-inline" placeholder="">
+                    </div>
+                </div>
+            </td>
+            <td>
+                <pre>
+                    <code>
+                        &lt;div class=&quot; form-group yeats-form-group&quot;&gt;
+                            &lt;label for=&quot;&quot; class=&quot;yeats-form-label&quot;&gt;Weight&lt;/label&gt;<br>
+                            &lt;div class=&quot;d-flex justify-content-between&quot;&gt;<br>
+                                &lt;input type=&quot;text&quot; class=&quot; form-control yeats-form-control d-inline&quot; placeholder=&quot;&quot;&gt;<br>
+                                &lt;span class=&quot;d-inline px-3&quot;&gt;or&lt;/span&gt;<br>
+                                &lt;input type=&quot;text&quot; class=&quot; form-control yeats-form-control d-inline&quot; placeholder=&quot;&quot;&gt;<br>
+                            &lt;/div&gt;<br>
+                        &lt;/div&gt;
+                    </code>
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class=" form-group yeats-form-group">
+                    <label for="" class="yeats-form-label">Checkbox</label>
+                    <p-checkbox [(ngModel)]="checked" label="True"  binary="true"></p-checkbox>
+                </div>
+            </td>
+            <td>
+                <pre>
+                    <code>
+                        &lt;div class=&quot;form-group yeats-form-group &quot;&gt;<br>
+                            &lt;label for=&quot;&quot; class=&quot;yeats-form-label&quot;&gt; &lt;/label&gt; <br>
+                            &lt;p-checkbox [(ngModel)]=&quot;text&quot; label=&quot;True &quot; &gt;<br>
+                            &lt;/p-dropdown&gt;
+                        &lt;/div&gt;
+                    </code>
+                </pre>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 style="margin-top:20px; margin-bottom:10px;"> Buttons </h3>
+<table class="table style-guide">
+    <thead>
+        <tr>
+            <td> Example </td>
+            <td> Syntax </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <button pButton class="yeats-btn yeats-btn-primary">Save</button>
+            </td>
+            <td>
+                <pre>
+                    <code>
+                        &lt;button pButton class=&quot;yeats-btn yeats-btn-primary&quot;&gt;Save&lt;/button&gt;
+                    </code>
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary">Cancel</button>
+            </td>
+            <td>
+                <pre>
+                    <code>
+                        &lt;button pButton class=&quot;yeats-btn yeats-btn-secondary ui-button-secondary&quot;&gt;Cancel&lt;/button&gt;
+                    </code>
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button pButton class="yeats-btn yeats-btn-danger ui-button-danger">Delete</button>
+            </td>
+            <td>
+                <pre>
+                    <code>
+                        &lt;button pButton class=&quot;yeats-btn yeats-btn-danger ui-button-danger&quot;&gt;Delete&lt;/button&gt;
+                    </code>
+                </pre>
+            </td>
+        </tr>
+    </tbody>
+</table>

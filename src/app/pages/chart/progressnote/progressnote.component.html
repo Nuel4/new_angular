@@ -1,0 +1,59 @@
+<div class="progressNote">
+<div *ngIf="toChart">
+    <app-widget-header [widgetData]="widgetData" (refreshWidget)="refreshData()"></app-widget-header>
+</div>
+<div class="gridster-item-content">
+    <div *ngIf="isLoader" class="row">
+        <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+    </div>
+    <div class="yeats-tables">
+        <p-table [columns]="cols" [value]="progressNoteList.Results" [responsive]="false" [scrollable]="true" >
+                <ng-template pTemplate="colgroup" let-columns>
+                        <colgroup>
+                            <col *ngFor="let col of columns" style="widows: 60px">
+                        </colgroup>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <ng-container *ngFor="let col of columns">
+                            <th  class="a" data-toggle="tooltip" [title]='col.header'>
+                                {{col.header}}
+                            </th>
+                        </ng-container>
+                        </tr>
+                    </ng-template>
+            <ng-template pTemplate="body" let-rowData>
+                <tr>
+                    <td>
+                        <!-- {{rowData.date_created | date: 'MM/dd/yyyy'}} -->
+                    </td>
+                    <td>
+                        <div (click)="routeToTemplate(rowData)" class="a" data-toggle="tooltip" [title]='rowData.chief_complaint'>{{rowData.chief_complaint}}</div>
+                    </td>
+                    <td class="a" data-toggle="tooltip" [title]='rowData.physician'>{{rowData.physician}}</td>
+                    <td data-toggle="tooltip" [title]='"View Summary"'><i class="fa fa-search" (click)="openSummary(rowData)"></i></td>
+                    <td *ngIf="rowData.is_clinical_summary_given_to_patient === false" data-toggle="tooltip" [title]='"Clinical Summary Has Not Been Provided"'><i class="fa fa-exclamation-triangle" ></i></td>
+                    <td *ngIf="rowData.is_clinical_summary_given_to_patient === null" data-toggle="tooltip" [title]='"Clinical Summary Provided"'><i class="fa fa-check" style="color: green;"></i></td>
+                    <td data-toggle="tooltip" [title]='"View Patient File"'><i class="fa fa-paperclip"></i></td>
+                    <td (click)='downloadHtml(rowData)'>
+                        <!-- <a [href]="fileUrl" download="file.html"> -->
+                        <i class="fa fa-arrow-down"></i>
+                    <!-- </a> -->
+                </td>
+                    <td><i class="fa fa-book" (click)='auditReport()'></i></td>
+                    <td><img src="../../../../assets/images/Delete.svg" style="cursor: pointer;" alt="Edit" (click)='deleteNote(rowData)'></td>
+                    <td><i class="fa fa-book" (click)='auditReport()'></i></td>
+                </tr>
+
+            </ng-template>
+        </p-table>
+    </div>
+    <p-paginator [rows]="progressNoteList.PageSize" (onPageChange)="paginate($event)" [totalRecords]="progressNoteList.TotalItems"></p-paginator>
+
+    <!-- <div class="form-group yeats-form-group "> -->
+    <!-- <p-paginator [rows]="progressNoteList.PageSize" [totalRecords]="progressNoteList.TotalItems"
+                      (onPageChange)="paginate($event)"></p-paginator> -->
+    <!-- </div> -->
+</div>
+</div>
+<div id="abcd"></div>

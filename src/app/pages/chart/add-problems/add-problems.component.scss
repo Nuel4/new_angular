@@ -1,0 +1,55 @@
+
+.addProblem{
+    padding: 0px 12px;
+.p-radioButton{
+    margin-left: 1vw;
+}
+.yeats-form-group{
+    min-height:0rem; 
+    padding-bottom: inherit;
+}
+.buttonstyle{
+    margin-top:2.2rem;
+}
+
+.ui-widget {
+    font-size: 12px !important;
+}
+// input[source="searchResult"]{
+// font-size : 13px;
+// }
+
+
+// .ui-picklist.ui-picklist-responsive .ui-picklist-buttons {
+//   display:none;
+// }
+.ui-picklist-target-controls  {
+    display: none !important;
+}
+.ui-picklist-source-controls{
+   display: none !important;
+}
+.ui-button-icon-only .ui-button-text {
+    text-align: center !important;
+    padding: 15% !important;
+}
+.ui-picklist.ui-picklist-responsive .ui-picklist-buttons {
+    width: 6%;
+}
+p-radiobutton .ui-radiobutton .ui-radiobutton-box {
+    margin-left:10px;
+}
+p-radiobutton .ui-radiobutton-label {
+    margin-left:15px;
+}
+.dateTimeField {
+    width: 100px !important
+}
+.ui-calendar .ui-calendar-button{
+    margin-top: -35px;
+}
+
+.yeats-btn{
+    min-width:0px !important;
+}
+}

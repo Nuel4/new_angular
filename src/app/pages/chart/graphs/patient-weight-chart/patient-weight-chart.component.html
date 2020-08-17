@@ -1,0 +1,12 @@
+<div *ngIf="graphtype == 'month'" style="height:30%; width: 75%; margin-left: 10%">
+        <canvas id="weightChart1"></canvas>
+        <button pButton class="yeats-btn yeats-btn-primary" style="float: right;margin-top: -30px;margin-right: -100px;"
+                type="button" (click)="saveChart('weightChart1')"><i class="fa fa-print"></i> &nbsp; Print
+                Chart</button>
+</div>
+<div *ngIf="graphtype == 'year'" style="height:30%; width: 75%; margin-left: 10%">
+        <canvas id="weightChart2"></canvas>
+        <button pButton class="yeats-btn yeats-btn-primary" style="float: right;margin-top: -30px;margin-right: -100px;"
+                type="button" (click)="saveChart('weightChart2')"><i class="fa fa-print"></i> &nbsp; Print
+                Chart</button>
+</div>

@@ -1,0 +1,89 @@
+.select_icd {
+    .post{
+        .ui-picklist-buttons{
+            padding-right: 3%;
+        }
+        .ui-picklist-buttons
+     button:last-child{
+   visibility: hidden;
+}
+
+.ui-picklist-buttons
+button:nth-child(2){
+    visibility: hidden;
+ }
+
+//  .ui-orderlist-controls button:first-child{
+    // margin-top: 3em;
+//  }
+ .ui-picklist-buttons-cell button{
+background-color: transparent;
+border: none;
+color: #007AD8;
+.ui-button-icon-left{
+font-size: 3em;
+}
+}
+
+.ui-picklist-buttons-cell button:focus{
+    background-color: transparent;
+    border: none;
+    color: #007AD8;
+    .ui-button-icon-left{
+    font-size: 3em;
+    }
+    }
+
+// .ui-button-icon-only .ui-button-icon-left, .ui-button-text-icon-left .ui-button-icon-left, .ui-button-text-icon-right .ui-button-icon-right {
+//     color: blue;
+//     font-size: 3em;
+// }
+
+// .ui-button-icon-only .ui-button-icon-left, .ui-button-text-icon-left .ui-button-icon-left, .ui-button-text-icon-right .ui-button-icon-right :hover{
+    .ui-picklist-buttons-cell button:hover
+    {
+    color: white;
+    background-color: #007AD8; 
+    // font-size: 3em;
+    .ui-button-icon-left{
+        font-size: 3em;
+        }
+}
+}
+    .list_box{ 
+    //    div{
+    //     min-width: 0!important;
+    //     margin-top: 10px !important;
+    // }
+    .ui-listbox {
+        width:32.5em;
+    }
+}
+    .yeats-btn{
+        margin-top: -2em;
+    }
+    .Historical { 
+    //     div{
+    //     min-width: 29em !important;
+       
+    // }
+    // .ui-listbox {
+    //     width:15em;
+    // }
+    .common{
+        
+        .ui-listbox {
+           width:15em;
+        }
+    }
+}
+
+.ui-listbox .ui-listbox-list .ui-listbox-item.ui-state-highlight {
+    color: black;
+    background-color: white;
+    
+}
+.ui-listbox{
+    width: 32.5em;
+}
+}

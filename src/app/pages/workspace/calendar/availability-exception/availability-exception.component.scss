@@ -1,0 +1,65 @@
+.availability{
+    .required{
+        color: red;
+    }
+    .ui-widget{
+        font-size: 10px
+    }
+.rad{
+    padding-right: 10px;
+}
+.cal{
+    p-calendar .ui-calendar.ui-calendar-w-btn .ui-inputtext {
+        height: 20px;
+    }
+    .ui-calendar.ui-calendar-w-btn .ui-datepicker-trigger.ui-button {
+        position: absolute;
+        right: 0;
+        margin-top: 1px;
+        height: 20px;
+    }
+}
+.hol{
+    .ui-button{
+        background-color: black;
+    border: 1px solid black;
+    margin-left: 10px;
+    }
+}
+.lev{
+    .ui-button{
+        background-color:greenyellow;
+    border: 1px solid greenyellow;
+    margin-left: 5px;
+    }
+}
+.mee{
+    .ui-button{
+        background-color: skyblue;
+    border: 1px solid skyblue;
+    margin-left: 5px;
+    }
+}
+.navs{
+    .ui-button{
+        background-color: red;
+    border: 1px solid red;
+    margin-left: 5px;
+    }
+}
+.ot{
+    .ui-button{
+        background-color: red;
+    border: 1px solid red;
+    margin-left: 5px;
+    }
+}
+.selectButton{
+    // margin-left: 16px;
+    height:2vh !important;
+}
+}
+
+.color{
+    color: red
+}

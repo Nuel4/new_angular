@@ -1,0 +1,318 @@
+@font-face {
+  font-family: "MoonHouse";
+  src: url("./assets/fonts/moonhouse.eot");
+  src: url("./assets/fonts/moonhouse.eot?#iefix") format("embedded-opentype"),
+    url("./assets/fonts/moonhouse.ttf") format("truetype");
+}
+
+@-webkit-keyframes trans1 {
+  from {
+    transform: translate3d(53px, 0, 0);
+  }
+  to {
+    transform: translate3d(-250px, 0, 0);
+  }
+}
+@-moz-keyframes trans1 {
+  from {
+    transform: translate3d(53px, 0, 0);
+  }
+  to {
+    transform: translate3d(-250px, 0, 0);
+  }
+}
+@keyframes trans1 {
+  from {
+    transform: translate3d(53px, 0, 0);
+  }
+  to {
+    transform: translate3d(-250px, 0, 0);
+  }
+}
+
+@-webkit-keyframes trans2 {
+  from {
+    transform: translate3d(-160px, 0, 0);
+  }
+  to {
+    transform: translate3d(53px, 0, 0);
+  }
+}
+@-moz-keyframes trans2 {
+  from {
+    transform: translate3d(-160px, 0, 0);
+  }
+  to {
+    transform: translate3d(53px, 0, 0);
+  }
+}
+@keyframes trans2 {
+  from {
+    transform: translate3d(-160px, 0, 0);
+  }
+  to {
+    transform: translate3d(53px, 0, 0);
+  }
+}
+
+@-webkit-keyframes trans3 {
+  from {
+    transform: translate3d(53px, 0, 0);
+  }
+  to {
+    transform: translate3d(-220px, 0, 0);
+  }
+}
+@-moz-keyframes trans3 {
+  from {
+    transform: translate3d(53px, 0, 0);
+  }
+  to {
+    transform: translate3d(-220px, 0, 0);
+  }
+}
+@keyframes trans3 {
+  from {
+    transform: translate3d(53px, 0, 0);
+  }
+  to {
+    transform: translate3d(-220px, 0, 0);
+  }
+}
+
+.loader-outer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: #fff;
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: visibility 0.5s, opacity 0.3s linear;
+  -moz-transition: visibility 0.5s, opacity 0.3s linear;
+  transition: visibility 0.5s, opacity 0.3s linear;
+
+  &.hide {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .loader-container {
+    height: 100%;
+    width: 100%;
+    display: table;
+
+    .loader-inner {
+      vertical-align: middle;
+      height: 100%;
+      display: table-cell;
+
+      .loader {
+        width: 80px;
+        margin: auto;
+        position: relative;
+        height: 60px;
+
+        .mask {
+          position: absolute;
+          overflow: hidden;
+          -webkit-border-radius: 5px;
+          -moz-border-radius: 5px;
+          border-radius: 5px;
+
+          .plane {
+            background: #dd1b16;
+            width: 400%;
+            height: 100%;
+            position: absolute;
+          }
+        }
+
+        #top {
+          width: 53px;
+          height: 15px;
+          left: 20px;
+          -webkit-transform: skew(-15deg, 0);
+          -moz-transform: skew(-15deg, 0);
+          transform: skew(-15deg, 0);
+
+          .plane {
+            -webkit-animation: trans1 1.3s ease-in infinite 0s backwards;
+            -moz-animation: trans1 1.3s ease-in infinite 0s backwards;
+            animation: trans1 1.3s ease-in infinite 0s backwards;
+          }
+        }
+
+        #middle {
+          width: 33px;
+          height: 15px;
+          left: 20px;
+          top: 15px;
+          -webkit-transform: skew(-15deg, 40deg);
+          -moz-transform: skew(-15deg, 40deg);
+          transform: skew(-15deg, 40deg);
+
+          .plane {
+            transform: translate3d(0px, 0, 0);
+            background: #dd1b16;
+            -webkit-animation: trans2 1.3s linear infinite 0.3s backwards;
+            -moz-animation: trans2 1.3s linear infinite 0.3s backwards;
+            animation: trans2 1.3s linear infinite 0.3s backwards;
+          }
+        }
+
+        #bottom {
+          width: 53px;
+          height: 15px;
+          top: 30px;
+          -webkit-transform: skew(-15deg, 0);
+          -moz-transform: skew(-15deg, 0);
+          transform: skew(-15deg, 0);
+
+          .plane {
+            -webkit-animation: trans3 1.3s ease-out infinite 0.7s backwards;
+            -moz-animation: trans3 1.3s ease-out infinite 0.7s backwards;
+            animation: trans3 1.3s ease-out infinite 0.7s backwards;
+          }
+        }
+
+        p.loader-text {
+          color: #000;
+          position: absolute;
+          top: 42px;
+          font-family: "MoonHouse";
+          font-size: 16px;
+
+          span {
+            color: #dd1b16;
+          }
+        }
+      }
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+::-webkit-scrollbar-thumb {
+  background: #e1e1e1;
+  border: 0px none #ffffff;
+  border-radius: 0px;
+  &:hover {
+    background: #cccccc;
+  }
+  &:active {
+    background: #888888;
+  }
+}
+::-webkit-scrollbar-track {
+  background: #666666;
+  border: 0px none #ffffff;
+  border-radius: 0px;
+  &:hover {
+    background: #666666;
+  }
+  &:active {
+    background: #333333;
+  }
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+body .ui-calendar.ui-calendar-w-btn .ui-datepicker-trigger.ui-button {
+  position: absolute;
+  right: 0;
+}
+.ui-calendar {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+body .ui-calendar.ui-calendar-w-btn .ui-inputtext {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 0 none;
+  width: 100%;
+}
+select.form-control:not([size]):not([multiple]) {
+  height: 32px;
+}
+.form-control {
+  display: block;
+  width: 100%;
+  height: 32px;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.25;
+  color: #464a4c;
+  background-color: #fff;
+  background-image: none;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+.nav-tabs .nav-link {
+  border: 1px solid transparent;
+}
+.ui-dropdown {
+  width: 100%;
+}
+.required {
+  color: #dd1b16;
+}
+.close {
+  color: #fff;
+}
+.modal-header {
+  background-color: #1f70ba;
+  color: #fff;
+  font-size: 14px;
+}
+.modal-title {
+  padding: 5px;
+  font-size: 16px;
+}
+body .ui-button.ui-button-icon-only .ui-button-text {
+  padding: 0;
+}
+
+body {
+  background-color: #f1f3f6 !important;
+  font-size: 13px !important;
+}
+
+  // @media (min-width: 576px) {
+  //   .modal-dialog {
+  //     max-width: 1100px !important;
+  //   }
+  // }
+
+body .ui-inputtext {
+ 
+  background: transparent !important;
+  
+}
+body .ui-dropdown .ui-dropdown-trigger {
+  background: transparent !important;
+}
+
+p-dropdown .ui-dropdown .ui-dropdown-label {
+  height: 2rem;
+  padding: 0px 2.5rem 0px 16px !important;
+  line-height: 2rem;
+  margin: 0 !important;
+  font-size: 0.70rem;
+  text-overflow: ellipsis;
+}
+
+.modal { overflow: auto !important; }

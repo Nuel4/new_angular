@@ -1,0 +1,28 @@
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 4px 35px;
+    cursor: pointer;
+    margin-top: 6px;
+}
+.formLabel{
+    font-size: 11px;
+    color: black
+}
+.btn-custom{
+    position: absolute;
+    top: 29px;
+    left: 0
+}
+.btn-save{
+    position: absolute;
+    top: 26px;
+    right: 15px
+}
+.filename{
+    font-size: 11px;
+    margin: -7px 0 0 0;
+}

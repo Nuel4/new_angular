@@ -1,0 +1,67 @@
+<div *ngIf="openDeleteModal">
+  <div class="modal-header">
+    <h4 class="modal-title">Delete</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Are you sure you want to delete this Record?
+  </div>
+  <div class="col-12">
+    <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3" (click)="deleteInsurance() ">Delete</button>
+    <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+      (click)="modal.close('Close click')">Cancel</button>
+ </div>
+</div>
+
+ <div *ngIf="openReversalModal">
+  <div class="modal-header">
+    <h4 class="modal-title">Payment Reversal</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    The maximum reversible amount for this payment is {{ReverseAmount}}
+  <div class="row">
+    <div class="col-3">
+      <!-- Reversal amount -->
+      <label for="" class="yeats-form-label">Reversal Amount </label>
+    </div>
+    <div class="col-4">
+      <input type="number" class="form-control yeats-form-control" [(ngModel)]="changeReversalAmt" (input)="ValidateAmt()"/>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-3">
+      <label for="" class="yeats-form-label">Reversal Reason </label>
+    </div>
+    <div class="col-7">
+      <textarea [(ngModel)]="reversalReason" style="height: 100px;width:100%"> </textarea>
+    </div>
+   </div>
+   <div class="row">
+     <div class="col-12">
+      <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right" (click)="modal.close('Close click')">Cancel</button>
+      <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="getReversedPayment()">OK</button>
+     </div>
+   </div>
+  </div>
+</div>
+<div *ngIf="writeOff">
+    <div class="modal-header">
+        <h4 class="modal-title">Information Window</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Cannot allocate Payments.<br/>The write-off amount entered should not be greater than patient balance for the following Bill Transaction(s)
+      </div>
+      <div class="col-12">
+        
+        <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3 mb-2"
+          (click)="modal.close('Close click')">Ok</button>
+     </div>
+</div>

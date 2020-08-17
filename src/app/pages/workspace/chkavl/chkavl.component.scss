@@ -1,0 +1,126 @@
+.checkAvailability {
+  padding: 0px 12px;
+  .ui-datepicker table td {
+    padding: 0em !important;  
+}
+.csdatepicker{
+  .ui-datepicker{
+     left: -50% !important;
+    
+ }
+
+}
+  .height {
+    height: 500px !important;
+  }
+
+  .fc-time-grid,
+  .fc-time-grid-container {
+    height: 500px !important;
+  }
+
+  .fc-today {
+    background: #d1ecf1 !important;
+    border: none !important;
+    border-top: 1px solid #d1ecf1 !important;
+    font-weight: bold;
+    padding: 0 !important;
+  }
+
+  .fc-center {
+    h2 {
+      font-size: 13px;
+      font-weight: bold;
+    }
+  }
+
+  .fc-toolbar .fc-right {
+    margin-right: -10px;
+  }
+
+  .btn-primary {
+    width: auto;
+    padding: 0 0.75rem !important;
+    max-height: 1.5rem;
+    line-height: 1.375rem;
+    font-size: 14px;
+    border-radius: 2px;
+    margin-right: 10px;
+  }
+
+  #calendar {
+    padding: 0.5rem 0rem;
+  }
+
+  .ui-grid-row div {
+    padding: 4px 10px;
+  }
+
+  .fc .fc-toolbar {
+    margin-left: 0 !important;
+  }
+
+  .ui-grid-row div label {
+    font-weight: bold;
+  }
+
+  .fc-event-container {
+    margin: 1px !important;
+  }
+
+  .section-seperator {
+    width: 100%;
+    height: 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    margin-bottom: 16px;
+
+    .section-text {
+      font-size: 18px;
+      background-color: #ffffff;
+      padding-right: 10px;
+    }
+  }
+ 
+  .fc-view {
+    border-collapse: separate !important;
+    border: 1px solid #ccc !important;
+    border-radius: 0.125rem !important;
+    background-color: #fff !important;
+    color: #565656 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin-top: 0rem !important;
+    margin-bottom: 0rem !important;
+
+    td,
+    tr {
+      color: #565656 !important;
+      font-size: 12px !important;
+      letter-spacing: 0.03em !important;
+      background-color: #fff !important;
+      vertical-align: middle !important;
+      border-bottom: 1px solid #eee !important;
+      border-left: 0 !important;
+      border-right: 0 !important;
+      text-align: center !important;
+      padding-top: 0px !important;
+      padding-bottom: 0px !important;
+    }
+
+    th,
+    tr {
+      font-size: 12px !important;
+      line-height: 0.5833334rem !important;
+      padding: 0rem !important;
+      border-top: 0 !important;
+      background-color: #fafafa !important;
+      border-bottom: 1px solid #ccc !important;
+      border-left: 0 !important;
+      border-right: 0 !important;
+      text-align: center !important;
+      vertical-align: middle !important;
+      color: #565656 !important;
+      height: 25px !important;
+    }
+  }
+}

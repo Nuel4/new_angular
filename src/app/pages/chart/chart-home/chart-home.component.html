@@ -1,0 +1,25 @@
+
+<div class="chartHome">
+        <div class="row patientDetails">
+            <div class="col-lg-8 col-sm-10">
+                    <b><i style="font-size: 17px;margin-left: -7px"> {{patientName}} </i> {{dob}} {{age}} </b><span> Gender: <b>{{gender}} </b> &nbsp;Unique#: <b> </b> &nbsp;Smoking: <b> {{smokingStatus}} </b> &nbsp;Insurance: <b> </b> &nbsp;Signedby: <b> </b></span> 
+            </div>
+                <div class="col-lg-4 col-sm-2">
+                  <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2" (click)="bookAppointment()">Book appointment</button>
+                  <button  pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2" (click)="patientPortal()">Patient portal</button>
+              </div>
+            </div>
+      <div widget class="card workspace-container">
+      <gridster  [options]="options" style="padding: 0px !important">
+          <gridster-item *ngFor="let item of dashboard" [item]="item">
+              <!-- <div class="button-holder">
+                  <div class="gridster-item-content" *ngIf="item.hasContent">
+                      <div class="stuff"> -->
+                              <app-chart-widget [item]="item" (NBModaldata)="NoticeBoardModal($event)"></app-chart-widget>
+                      <!-- </div>
+                  </div>
+              </div> -->
+          </gridster-item>
+      </gridster>
+  </div>
+  </div>

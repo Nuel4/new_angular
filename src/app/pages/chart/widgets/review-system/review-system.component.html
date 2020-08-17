@@ -1,0 +1,50 @@
+<div class="ROS">
+  <div class="row">
+    <h6>Consititution</h6>
+      <div class="col-4">
+        <div class="form-group yeats-form-group">
+          <label for="" class="yeats-form-label"
+            >Patient Complaints of</label
+          >
+          <p-listbox
+            [options]="cities2"
+            [(ngModel)]="Item"
+            optionLabel="name"
+          ></p-listbox>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group yeats-form-group">
+          <label for="" class="yeats-form-label"
+            >Patient Complaints of</label
+          >
+          <p-listbox
+            [options]="cities2"
+            [(ngModel)]="Item"
+            optionLabel="name"
+          ></p-listbox>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group yeats-form-group">
+          <label for="" class="yeats-form-label"
+            >Patient Complaints of</label
+          >
+          <textarea
+            [rows]="5"
+            [cols]="30"
+            pInputTextarea
+            autoResize="autoResize"
+          ></textarea>
+        </div>
+      </div>
+      <div class="col-4">
+        <label for="" class="yeats-form-label">&nbsp;</label>
+        <button pButton class="yeats-btn yeats-btn-primary">
+          Spell Check
+        </button>
+      </div>
+    </div>
+</div>

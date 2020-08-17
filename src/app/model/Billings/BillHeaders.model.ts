@@ -1,0 +1,36 @@
+export class BillHeadersModel {
+        BillingClaimStatusCode?: any;
+        PrimaryInsuranceProviderCode?: string;
+        PrimaryPolicyNumber?: string;
+        PrimaryInsuranceEffectiveDateFrom?: any;
+        PrimaryInsuranceEffectiveDateTo?: any;
+        PrimaryInsuranceInsuredIsPatient?: boolean;
+        PrimaryInsuranceInsuredIsGuarantor?: boolean;
+        SecondaryInsuranceProviderCode?: string;
+        SecondaryPolicyNumber?: string;
+        SecondaryInsuranceEffectiveDateFrom?: any;
+        SecondaryInsuranceEffectiveDateTo?: any;
+        SecondaryInsuranceInsuredIsPatient?: boolean;
+        SecondaryInsuranceInsuredIsGuarantor?: boolean;
+        TertiaryInsuranceProviderCode?: string;
+        TertiaryPolicyNumber?: string;
+        TertiaryInsuranceEffectiveDateFrom?: any;
+        TertiaryInsuranceEffectiveDateTo?: any;
+        TertiaryInsuranceInsuredIsPatient?: boolean;
+        TertiaryInsuranceInsuredIsGuarantor?: boolean;
+        CopayAmountPaid?: number;
+        TotalPaymentsReceived?: number;
+        TotalCharges?: number;
+        TotalDueFromInsurance?: number;
+        TotalDueFromPatient?: number;
+        DateLastUpdated?: any;
+        LastUpdatedByUserId?: number;
+        AdmitDate?: any;
+        DischargeDate?: any;
+        DeductibleAmountPaid?: number;
+        CoInsurancePatientAmountPaid?: number;
+        SuperBill?: number;
+        PrimaryInsuranceGroupNumber?: string;
+        SecondaryInsuranceGroupNumber?: string;
+        TertiaryInsuranceGroupNumber?: string;
+    }

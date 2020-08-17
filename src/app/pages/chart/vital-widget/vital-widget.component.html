@@ -1,0 +1,38 @@
+<div class="vital">
+<div *ngIf="toChart">
+    <app-widget-header [widgetData]="widgetData" (refreshWidget)="refreshData()"></app-widget-header>
+</div>
+<div class="gridster-item-content">
+
+    <div class="yeats-tables">
+        <p-table [columns]="cols" [value]="vitalsList"
+            [scrollable]="true">
+            <ng-template pTemplate="colgroup" let-columns>
+                <colgroup>
+                    <col *ngFor="let col of columns" style="width:60px">
+                </colgroup>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <ng-container *ngFor="let col of columns">
+                    <th  class="a" data-toggle="tooltip" [title]='col.header'>
+                        {{col.header}}
+                    </th>
+                </ng-container>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr>
+                    <ng-container *ngFor="let col of columns">
+                    <td class="a" data-toggle="tooltip" [title]="rowData[col.field]">
+                        {{rowData[col.field]}}
+                    </td>
+                </ng-container>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <p-paginator [rows]="rows" (onPageChange)="paginate($event)" [totalRecords]="totalRecords"></p-paginator>
+
+</div>
+</div>

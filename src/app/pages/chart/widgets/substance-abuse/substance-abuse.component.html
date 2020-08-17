@@ -1,0 +1,52 @@
+<div class="substance-abuse">
+  <div class="row">
+    <div class="col-lg-5 col-md-5 col-5">
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">Substance abuse:</label>
+        <p-radioButton class="mr-2" value="No" label="NO" [(ngModel)]="substancevalue" (click)="onFormDataChange()"></p-radioButton>
+        <p-radioButton class="mr-2" value="Current" label="Current" [(ngModel)]="substancevalue" (click)="onFormDataChange()"></p-radioButton>
+        <p-radioButton value="Past" label="Past" [(ngModel)]="substancevalue" (click)="onFormDataChange()"></p-radioButton> 
+      </div>
+   </div> 
+   <div class="col-lg-3 col-md-3 col-3">
+      <label for="" class="yeats-form-label">Use Days per week</label> 
+      <input type="text" pInputText class="form-control yeats-form-control" [(ngModel)]="usedDays" (input)="onFormDataChange()">
+   </div>
+    <div class="col-lg-3 col-md-3 col-3">
+      <label for="" class="yeats-form-label">Weekly Expenditure ($):</label> 
+      <input type="text" pInputText class="form-control yeats-form-control" [(ngModel)]="WeeklyExpenditure" (input)="onFormDataChange()">
+    </div>
+    <div class="col-lg-5 col-md-5 col-5">
+      <div class="form-group yeats-form-group">
+      <label for="" class="yeats-form-label">Route:</label> 
+      <p-checkbox class="mr-2" label="IM" value="IMValue" [(ngModel)]="RouteValue" (onChange)="onFormDataChange()">
+      </p-checkbox> 
+      <p-checkbox class="mr-2" label="PO" value="POValue" [(ngModel)]="RouteValue" (onChange)="onFormDataChange()">           
+      </p-checkbox>
+      <p-checkbox label="IV" value="IVValue" [(ngModel)]="RouteValue" (onChange)="onFormDataChange()">
+      </p-checkbox>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-3">
+     <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">Last Use:</label>
+        <p-calendar class="yeats-form-control" [showIcon]="true" [(ngModel)]="lastUsedDate" (onSelect)="onFormDataChange()">
+        </p-calendar>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-3">
+        <label for="" class="yeats-form-label">Age of First Use:</label> 
+        <input type="text" pInputText class="form-control yeats-form-control" [(ngModel)]="ageOfFirstUse" (input)="onFormDataChange()">
+    </div>
+    <div class="col-lg-3 col-md-3 col-3">
+      <label for="" class="yeats-form-label">Comments:</label>
+      <textarea pInputTextarea autoResize="autoResize" [(ngModel)]="Comments" (input)="onFormDataChange()"></textarea>
+      <!-- <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary ml-3 ">Clear</button> -->
+   </div>
+    <div class="mt-5">
+        <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right" (click)="onFormReset()">Clear</button>
+    </div>
+    
+
+ </div>
+</div>

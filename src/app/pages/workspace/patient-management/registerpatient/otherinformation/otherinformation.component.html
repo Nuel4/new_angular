@@ -1,0 +1,503 @@
+<div class="otherInformation">
+  <form #f="ngForm" (ngSubmit)="onSubmit(PatientInformationform)">
+  <!-- <div class="row">
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+            name="" id="" #="ngModel"
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+            name="" id="" #="ngModel"
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+            name="" id="" #="ngModel"
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+            name="" id="" #="ngModel"
+        </div>
+      </div>
+    </div> -->
+
+  <!-- <form #OtherInformationform="ngForm" (ngSubmit)="onSubmit(OtherInformationform.value)"> -->
+  <div class="row">
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Marital Status</label>
+          <p-dropdown [options]="maritalStatus" [(ngModel)]="PatientInformationform.MaritalStatusId"
+            placeholder="Select Marital Status" name="MaritalStatusId" id="MaritalStatusId" #MaritalStatusId="ngModel">
+          </p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+
+        <label class="formLabel yeats-form-label">Religion</label>
+        <p-dropdown [options]="religion" [(ngModel)]="PatientInformationform.ReligionId" placeholder="Select Religion"
+          name="ReligionId" id="ReligionId" #ReligionId="ngModel" [showClear]="true">
+        </p-dropdown>
+
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">Other Language 1</label>
+        <p-dropdown [options]="patientLanguage" [(ngModel)]="PatientInformationform.Language2Id"
+          placeholder="Select Language 1" name="Language2Id" id="Language2Id" #Language2Id="ngModel" [showClear]="true">
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">Other Language 2</label>
+        <p-dropdown [options]="patientLanguage" [(ngModel)]="PatientInformationform.Language3Id"
+          placeholder="Select Language 2" name="Language3Id" id="Language3Id" #Language3Id="ngModel" [showClear]="true">
+        </p-dropdown>
+      </div>
+    </div>
+  </div>
+
+  </form>
+  <!-- <div class="row">
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">Marital Status</label>
+        <p-dropdown [options]="maritalStatus" [(ngModel)]="PatientInformationform.maritalStatusId" placeholder="Select Marital Status"
+          optionLabel="label" [showClear]="true">
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">Religion</label>
+        <p-dropdown [options]="religion" [(ngModel)]="PatientInformationform.religionId" placeholder="Select Religion" optionLabel="label"
+          [showClear]="true">
+        </p-dropdown>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">Other Language 1</label>
+        <p-dropdown [options]="patientLanguage" [(ngModel)]="PatientInformationform.languageOneId" placeholder="Select Language 1"
+          optionLabel="languagename" [showClear]="true">
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12">
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">Other Language 2</label>
+        <p-dropdown [options]="patientLanguage" [(ngModel)]="PatientInformationform.languageTwoId" placeholder="Select Language 2"
+          optionLabel="languagename" [showClear]="true">
+        </p-dropdown>
+      </div>
+    </div>
+  </div> -->
+  <p-accordion>
+    <p-accordionTab header="Secondary Address">
+      <div class="row">
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label for="SecondaryAddressLine1" class="formLabel yeats-form-label">Address Line 1</label>
+            <input type="text" [(ngModel)]="PatientInformationform.SecondaryAddressLine1"
+              class="form-control yeats-form-control" placeholder="Enter Address Line 1" id="SecondaryAddressLine1"
+              name="SecondaryAddressLine1" #SecondaryAddressLine1="ngModel" />
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label for="SecondaryAddressLine2" class="formLabel yeats-form-label">Address Line 2</label>
+            <input type="text" [(ngModel)]="PatientInformationform.SecondaryAddressLine2"
+              class="form-control yeats-form-control" placeholder="Enter Address Line 2" id="SecondaryAddressLine2"
+              name="SecondaryAddressLine2" #SecondaryAddressLine2="ngModel" />
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label for="SecondaryCity" class="formLabel yeats-form-label">City</label>
+            <input type="text" [(ngModel)]="PatientInformationform.SecondaryCity" class="form-control yeats-form-control"
+              placeholder="Enter City" id="SecondaryCity" name="SecondaryCity" #SecondaryCity="ngModel" />
+
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">State</label>
+            <p-dropdown [options]="patientState" [(ngModel)]="PatientInformationform.SecondaryStateCode" required
+              placeholder="Select State" id="SecondaryStateCode" name="SecondaryStateCode" #SecondaryStateCode="ngModel"
+              [showClear]="true">
+            </p-dropdown>
+          </div>
+        </div>
+
+        <!-- <div class="col-lg-3m8condaryZipCode" class="formLabel yeats-form-label">Zip Code<span class="required">*</span> -->
+                <!-- <span class="required">*</span> -->
+              <!-- </label> -->
+                <!-- <div class="row">
+                  <div class="col-lg-5 col-sm-5 col-5 mpr-0">
+                    <div class="form-group yeats-form-group ">
+                    <p-inputMask mask="99999" [(ngModel)]="PatientInformationform.SecondaryZipCode" required
+                    name="SecondaryZipCode" id="SecondaryZipCode" #SecondaryZipCode="ngModel" class="mpr-0"
+                      placeholder="Enter ZipCode"></p-inputMask>
+                      <div *ngIf="(SecondaryZipCode.invalid) && (SecondaryZipCode.dirty || SecondaryZipCode.touched) && SecondaryZipCode.errors.required"
+                      class="invalid-feedback">
+                      Please Enter Zip code
+                    </div>
+                      </div>
+                      
+                  </div>
+                  <div class="col-lg-1 col-sm-1 col-1 mp-0">
+                      ---
+                  </div>
+                  <div class="col-lg-5 col-sm-5 col-5 mpl-0">
+                    <p-inputMask mask="9999" [(ngModel)]="PatientInformationform.SecondaryZipPlus4"
+                    name="SecondaryZipPlus4" id="SecondaryZipPlus4" #SecondaryZipPlus4="ngModel" class="mpl-0"
+                      placeholder="Enter ZipCode"></p-inputMask>
+                  </div>
+                </div> -->
+              <!-- <div *ngIf="((SecondaryZipCode.invalid) && (SecondaryZipPlus4.invalid)) && (((SecondaryZipCode.dirty) && (SecondaryZipPlus4.dirty)) || ((SecondaryZipCode.touched)&&(SecondaryZipPlus4.touched))) && ((SecondaryZipCode.errors.required)&&(SecondaryZipPlus4.errors.required))"
+                  class="invalid-feedback">
+                  Please select date of birth
+                </div> -->
+              <!-- <app-field-error-display [displayError]="isFieldValid('PrimaryZipCode')" errorMsg="Please update zip code"> -->
+              <!-- </app-field-error-display> -->
+            <!-- </div>
+          </div> -->
+          <!-- </form> -->
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label for="SecondaryZipCode" class="formLabel yeats-form-label">Zip Code<span class="required">*</span>
+              <!-- <span class="required">*</span> -->
+            </label>
+            <div class="row">
+              <div class="col-lg-5 col-sm-5 col-5 mpr-0">
+                <p-inputMask mask="99999" [(ngModel)]="PatientInformationform.SecondaryZipCode" required
+                  pattern="[0-9 ]{5}" name="SecondaryZipCode" id="SecondaryZipCode" #SecondaryZipCode="ngModel"
+                  class="mpr-0" placeholder="Enter ZipCode"></p-inputMask>
+                <div
+                  *ngIf="(SecondaryZipCode.invalid) && (SecondaryZipCode.dirty || SecondaryZipCode.touched) && SecondaryZipCode.errors.required"
+                  class="invalid-feedback">
+                  Please enter Zip code
+                </div>
+                <div *ngIf="(formSumitAttempt && (!SecondaryZipCode.dirty))" class="invalid-feedback">
+                  Please enter Zip Code
+                </div>
+                <div
+                  *ngIf="(SecondaryZipCode.invalid) && (SecondaryZipCode.dirty || SecondaryZipCode.touched) && SecondaryZipCode.errors.minlength"
+                  class="invalid-feedback">
+                  Zip Code must be atleast 5 characters long
+                </div>
+                <div
+                  *ngIf="(SecondaryZipCode.invalid) && (SecondaryZipCode.dirty || SecondaryZipCode.touched) && SecondaryZipCode.errors.pattern"
+                  class="invalid-feedback">
+                  Zip Code must be atleast 5 characters long
+                </div>
+              </div>
+              <div class="col-lg-1 col-sm-1 col-1 mp-0">
+                ---
+              </div>
+              <div class="col-lg-5 col-sm-5 col-5 mpl-0">
+                <p-inputMask mask="9999" [(ngModel)]="PatientInformationform.SecondaryZipPlus4" pattern="[0-9]{4}"
+                  required name="SecondaryZipPlus4" id="SecondaryZipPlus4" #SecondaryZipPlus4="ngModel" class="mpl-0"
+                  placeholder="Enter ZipCode"></p-inputMask>
+                <div
+                  *ngIf="(SecondaryZipPlus4.invalid) && (SecondaryZipPlus4.dirty || SecondaryZipPlus4.touched) && SecondaryZipPlus4.errors.required"
+                  class="invalid-feedback">
+                  Please enter Zip code
+                </div>
+                <div *ngIf="(formSumitAttempt && (!SecondaryZipPlus4.dirty))" class="invalid-feedback">
+                  Please enter Zip Code
+                </div>
+                <div
+                  *ngIf="(SecondaryZipPlus4.invalid) && (SecondaryZipPlus4.dirty || SecondaryZipPlus4.touched) && SecondaryZipPlus4.errors.minlength"
+                  class="invalid-feedback">
+                  Zip Code must be atleast 4 characters long
+                </div>
+                <div
+                  *ngIf="(SecondaryZipPlus4.invalid) && (SecondaryZipPlus4.dirty || SecondaryZipPlus4.touched) && SecondaryZipPlus4.errors.pattern"
+                  class="invalid-feedback">
+                  Zip Code must be atleast 4 characters long
+                </div>
+              </div>
+              <!-- </div> -->
+              <!-- <div *ngIf="((SecondaryZipCode.invalid) && (SecondaryZipPlus4.invalid)) && (((SecondaryZipCode.dirty) && (SecondaryZipPlus4.dirty)) || ((SecondaryZipCode.touched)&&(SecondaryZipPlus4.touched))) && ((SecondaryZipCode.errors.required)&&(SecondaryZipPlus4.errors.required))"
+                  class="invalid-feedback">
+                  Please select date of birth
+                </div> -->
+              <!-- <app-field-error-display [displayError]="isFieldValid('PrimaryZipCode')" errorMsg="Please update zip code"> -->
+              <!-- </app-field-error-display> -->
+              <!-- </div>
+        </div> -->
+              <!-- </form> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-accordionTab>
+    <p-accordionTab header="Employer Information">
+      <div class="row">
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label for="patientDetailsList.EmployerName" class="formLabel yeats-form-label">Employer Name</label>
+            <input type="text" class="form-control yeats-form-control" id="patientDetailsList.EmployerName"
+              [(ngModel)]="patientDetailsList.EmployerName" name="patientDetailsList.EmployerName"
+              placeholder="Enter Name" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label for="AddressLine1" class="formLabel yeats-form-label">Address Line 1</label>
+            <input type="text" [(ngModel)]="patientDetailsList.AddressLine1"
+              class="form-control yeats-form-control" id="AddressLine1" name="AddressLine1"
+             placeholder="Enter Address Line1" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label for="AddressLine2" class="formLabel yeats-form-label">Address Line 2</label>
+            <input type="text" [(ngModel)]="patientDetailsList.AddressLine2"
+              class="form-control yeats-form-control" id="AddressLine2" name="AddressLine2"
+              #AddressLine2="ngModel" placeholder="Enter Address Line 2" />
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label for="City" class="formLabel yeats-form-label">City</label>
+            <input type="text" [(ngModel)]="patientDetailsList.City" class="form-control yeats-form-control"
+              id="City" name="City" #City="ngModel" placeholder="Enter City" />
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">State</label>
+            <p-dropdown [options]="patientState" [(ngModel)]="patientDetailsList.State"
+              placeholder="Select State" name="State" id="State" #State="ngModel"
+              [showClear]="true">
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label for="employerZipCode" class="formLabel yeats-form-label">Zip Code <span
+                class="required">*</span></label>
+            <div class="row">
+              <div class="col-lg-5 col-sm-5 col-5 mpr-0">
+                <p-inputMask mask="99999" [(ngModel)]="patientDetailsList.ZipCode" name="ZipCode"
+                  id="ZipCode" class="mpr-0" #ZipCode="ngModel" placeholder="Enter ZipCode">
+                </p-inputMask>
+                <div
+                  *ngIf="(ZipCode.invalid) && (ZipCode.dirty || ZipCode.touched) && ZipCode.errors.required"
+                  class="invalid-feedback">
+                  Please enter Zip code
+                </div>
+                <div *ngIf="(formSumitAttempt && (!ZipCode.dirty))" class="invalid-feedback">
+                  Please enter Zip Code
+                </div>
+                <div
+                  *ngIf="(ZipCode.invalid) && (ZipCode.dirty || ZipCode.touched) && ZipCode.errors.minlength"
+                  class="invalid-feedback">
+                  Zip Code must be atleast 4 characters long
+                </div>
+                <div
+                  *ngIf="(ZipCode.invalid) && (ZipCode.dirty || ZipCode.touched) && ZipCode.errors.pattern"
+                  class="invalid-feedback">
+                  Zip Code must be atleast 4 characters long
+                </div>
+              </div>
+              <div class="col-lg-1 col-sm-1 col-1 mp-0">
+                ---
+              </div>
+              <div class="col-lg-5 col-sm-5 col-5 mpl-0">
+                <p-inputMask mask="9999" [(ngModel)]="patientDetailsList.ZipPlus4" name="ZipPlus4"
+                  id="ZipPlus4" class="mpl-0" #ZipPlus4="ngModel" placeholder="Enter ZipCode">
+                </p-inputMask>
+              </div>
+              <div
+                  *ngIf="(ZipPlus4.invalid) && (ZipPlus4.dirty || ZipPlus4.touched) && ZipPlus4.errors.required"
+                  class="invalid-feedback">
+                  Please enter Zip code
+                </div>
+                <div *ngIf="(formSumitAttempt && (!ZipPlus4.dirty))" class="invalid-feedback">
+                  Please enter Zip Code
+                </div>
+                <div
+                  *ngIf="(ZipPlus4.invalid) && (ZipPlus4.dirty || ZipPlus4.touched) && ZipPlus4.errors.minlength"
+                  class="invalid-feedback">
+                  Zip Code must be atleast 4 characters long
+                </div>
+                <div
+                  *ngIf="(ZipPlus4.invalid) && (ZipPlus4.dirty || ZipPlus4.touched) && ZipPlus4.errors.pattern"
+                  class="invalid-feedback">
+                  Zip Code must be atleast 4 characters long
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-accordionTab>
+    <p-accordionTab header="Additional Directives">
+      <div class="row">
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group">
+            <label class="formLabel yeats-form-label"> &nbsp;</label>
+            <p-checkbox class="yeats-form-control" name="IsLivingWill" id="IsLivingWill" #IsLivingWill="ngModel"
+              [(ngModel)]="PatientInformationform.IsLivingWill" label="Living well" [binary]="false">
+            </p-checkbox>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group">
+            <label class="formLabel yeats-form-label"> &nbsp;</label>
+            <p-checkbox class="yeats-form-control" [(ngModel)]="PatientInformationform.AdvancedDirectivesId"
+              name="AdvancedDirectivesId" id="AdvancedDirectivesId" #AdvancedDirectivesId="ngModel"
+              (ngModelChange)="activateComment($event)" label="Advanced Directives Given" binary="false"></p-checkbox>
+          </div>
+        </div>
+        <!-- [attr.disabled]="activateComments ? null : 'disabled'" -->
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label for="comments" class="formLabel yeats-form-label">Comment</label>
+            <textarea class="yeats-text-area" pInputTextarea [rows]="5" [cols]="30"
+              [(ngModel)]="PatientInformationform.Comments" placeholder="Enter Message" pInputTextarea
+              [disabled]="activateComments" name="Comments" id="Comments"
+              #Comments="ngModel"></textarea>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label for="photoImage" class="formLabel yeats-form-label">Biller Details</label>
+            <button pButton class="yeats-btn yeats-btn-primary w-100" (click)="openBillersNote('Other Information')">Biller
+              Details</button>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label for="patientNote" class="formLabel yeats-form-label">Patient Note</label>
+            <textarea class="yeats-text-area" [rows]="5" [cols]="30" [(ngModel)]="PatientInformationform.Note"
+              placeholder="Enter Note" name="Note" id="Note" #Note="ngModel" pInputTextarea
+              ></textarea>
+          </div>
+        </div>
+      </div>
+    </p-accordionTab>
+  </p-accordion>
+  <!-- </form> -->
+  <!-- <h6 class="mb-16 subHead">
+    <a class="text-primary" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
+      aria-controls="collapseOne">
+      Secondary Address
+    </a>
+  </h6> -->
+
+  <!-- <h6 class="mb-16 subHead">
+    <a class="text-primary" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
+      aria-controls="collapseOne">
+      Employer Information
+    </a>
+  </h6> -->
+
+
+  <!-- <h6 class="mb-16 subHead">
+    <a class="text-primary" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
+      aria-controls="collapseOne">
+      Additional Directives
+    </a>
+  </h6> -->
+  <div class="row mt-3">
+    <div class="col-6">
+      <button pButton *ngIf="showprtandchrge" class="yeats-btn yeats-btn-primary mr-3" icon="fa fa-print" (click)="chargeSlips('PatientPrint')" label="print">Print</button>
+      <button pButton *ngIf="showprtandchrge" class="yeats-btn yeats-btn-primary" icon="fa fa-file-text-o" (click)="chargeSlips('PatientChargeSlips')" label="Charge Slip">Charge
+        Slip</button>
+    </div>
+    <div class="col-6">
+      <!-- <div class="row mt-3"> -->
+      <div class="col-12">
+        <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+          (click)="openNext()">Next</button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" [disabled]="PatientInformationform.invalid"
+          (click)="onSubmit(PatientInformationform.value)">Save</button>
+        <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+          (click)="onClose()">Close</button>
+      </div>
+      <!-- </div> -->
+    </div>
+  </div>
+
+  <!-- <div class="modal fade" id="billerNotes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:700px">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Biller Notes</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="billerNotes">
+            <div class="row">
+              <div class="form-group yeats-form-group ">
+                <label for="notes" class="formLabel yeats-form-label">Notes</label>
+                <textarea [rows]="8" class="form-control" [cols]="30" [(ngModel)]="billerNotesNote"
+                  placeholder="Enter Message" pInputTextarea autoResize="autoResize"></textarea>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group yeats-form-group ">
+                <label for="comments" class="formLabel yeats-form-label">Update History</label>
+                <textarea [rows]="8" [cols]="30" class="form-control" [(ngModel)]="updateHistory" pInputTextarea
+                  autoResize="autoResize" disabled></textarea>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group yeats-form-group">
+                <div class="pull-left">
+                  <label class="formLabel yeats-form-label"> &nbsp;</label>
+                  <p-checkbox class="yeats-form-control" [(ngModel)]="showNote" label="Show note on patient statement"
+                    binary="false"></p-checkbox>
+                </div>
+                <div class="pull-right ml-3">
+                  <button pButton class="yeats-btn yeats-btn-primary">Update</button>
+                </div>
+                <div class="pull-right ml-3">
+                  <button pButton class="yeats-btn yeats-btn-danger ui-button-danger">Clear</button>
+                </div>
+              </div>
+            </div>
+            <div class="yeats-tables">
+              <p-table [columns]="otherInformationCols" [value]="otherInformationData" [paginator]="true" [rows]="3"
+                [responsive]="true">
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th *ngFor="let col of columns">
+                      {{col.header}}
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                  <tr>
+                    <td *ngFor="let col of columns">
+                      {{rowData[col.field]}}
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+</div>

@@ -1,0 +1,32 @@
+<div *ngIf="audit">
+    <div class="modal-header">
+      <h4 class="modal-title">{{header}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+<div id="reportContainer" style=" width: 100%;" name="X-Frame-Options" value="sameorigin" [ngStyle]="{ 'height': (screenHeight-150)+ 'px' }" #reportContainer></div>
+</div>
+<div class="modal-footer">
+  <button pButton class="yeats-btn pull-right" (click)="activeModal.dismiss('Cross click')">Close</button>
+  <button pButton class="yeats-btn yeats-btn-primary pull-right" (click)="print()">Print</button>
+</div>
+</div>
+
+
+<div *ngIf="deleteModal">
+  <div class="modal-header">
+    <h4 class="modal-title">Delete Progress Notes</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+  <p>Do you want to delete {{rowData.chief_complaint}}?</p>
+  </div>
+<div class="modal-footer">
+  <button pButton class="yeats-btn yeats-btn-primary pull-right" (click)="deleteProgressNote()">Ok</button>
+  <button pButton class="yeats-btn yeats-btn-secondary pull-right" (click)="activeModal.dismiss('Cross click')">Close</button>
+</div>
+</div>

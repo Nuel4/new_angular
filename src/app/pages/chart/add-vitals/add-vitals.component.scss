@@ -1,0 +1,29 @@
+.vital{
+padding: 0px 12px;
+.dropDown{
+    width: 25% !important
+}
+.inputBox{
+width: 25% !important
+}
+.head{
+width: 25% !important
+
+}
+.a {
+    width:50px;
+    // text-overflow: ellipsis;
+    // cursor: pointer;
+    // word-break: break-all;
+    overflow:hidden;
+    white-space: nowrap;
+    .ui-dropdown-label{
+      white-space: nowrap;
+      width: 50px;
+    }
+  }
+  // .ui-dropdown-label{
+  //   white-space: nowrap;
+  //   width: 50px;
+  // }
+}

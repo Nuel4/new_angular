@@ -1,0 +1,39 @@
+.template-editor {
+  .ui-tabview.ui-tabview-top, .ui-tabview.ui-tabview-bottom, .ui-tabview.ui-tabview-left, .ui-tabview.ui-tabview-right {
+    padding-top: 0 !important;
+}
+  .smart-text {
+    height: 402px;
+    overflow-y: auto;
+    border: 1px solid black;
+    padding-right: 16px;
+  }
+
+  ui-inputtextarea {
+    text-align: left !important;
+  }
+
+  .list_box {
+    div {
+      min-width: 40em !important;
+
+    }
+
+    .Family_history {
+      font-size: 1em;
+    }
+  }
+
+  body .ui-table .ui-table-thead>tr>th {
+    width: 45px !important;
+  }
+
+  h6,
+  .h6 {
+    font-size: 1rem;
+    // margin-left: 10px;
+  }
+  // .multipleSelection{
+  //   margin-top: -7em;
+  // }
+}

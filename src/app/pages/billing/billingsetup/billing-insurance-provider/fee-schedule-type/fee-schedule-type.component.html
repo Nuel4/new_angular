@@ -1,0 +1,75 @@
+<div class="feeSchedule" *ngIf="feeSchedule">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Fee Schedule Type</h5>
+        <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-12">
+                <button
+                pButton 
+                class="yeats-btn yeats-btn-primary pull-right mr-1" (click)="addNewRow()" 
+              >
+               Add New Row
+              </button>
+            </div>
+          </div>
+  <div class="yeats-tables">
+    <p-table [columns]="cols" [value]="scheduleLists" [scrollable]="true" scrollHeight="200px" [(selection)]="selectedCar"
+      >
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{col.header}}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+          <th>Delete</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+            <td pEditableColumn>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input pInputText type="text" [(ngModel)]="rowData.Name">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{rowData.Name}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td style="text-align: center">
+                        <button
+                        pButton 
+                        class="yeats-btn yeats-btn-primary" (click)="deleteFeeSchedule(rowData)"
+                      >
+                       Delete
+                      </button>
+                    
+            </td>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="summary" let-rowData>
+       
+      </ng-template>
+    </p-table>
+  </div>
+  <div class="col-12">
+    <button pButton class="yeats-btn yeats-btn-danger ui-button-danger pull-right ml-3 mb-2"
+      data-dismiss="modal">Cancel</button>
+    <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mb-2" (click)="addFeeScheduleType()">Save</button>
+  </div>
+  </div>
+  <!-- <p-dialog header="Add/Edit Fee Schedule Type" [(visible)]="displayDialog" [responsive]="true" showEffect="fade"
+    [modal]="true">
+    
+    
+  </p-dialog> -->
+</div>

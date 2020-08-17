@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="21.792" height="26.251" viewBox="0 0 21.792 26.251">
+  <g id="Group_27932" data-name="Group 27932" transform="translate(-589.7 -84.441)">
+    <g id="Group_27933" data-name="Group 27933">
+      <path id="Path_35536" data-name="Path 35536" d="M24.844,5H11.063A3.072,3.072,0,0,0,8,8.063V26.438A3.072,3.072,0,0,0,11.063,29.5H24.844a3.072,3.072,0,0,0,3.063-3.063V8.063A3.072,3.072,0,0,0,24.844,5Z" transform="translate(582.575 80.316)" fill="none" stroke="#114886" stroke-width="1.75"/>
+      <path id="Path_35539" data-name="Path 35539" d="M0,0H6.14V1.531H0Z" transform="translate(594.388 88.923)" fill="#114886"/>
+      <rect id="Rectangle_29" data-name="Rectangle 29" width="12.079" height="1.531" transform="translate(594.388 92.972)" fill="#114886"/>
+      <g id="Ellipse_23" data-name="Ellipse 23" transform="translate(598 97)" fill="#fff" stroke="#114886" stroke-width="1.5">
+        <circle cx="2" cy="2" r="2" stroke="none"/>
+        <circle cx="2" cy="2" r="1.25" fill="none"/>
+      </g>
+      <g id="Ellipse_24" data-name="Ellipse 24" transform="translate(602 101)" fill="#fff" stroke="#114886" stroke-width="1.5">
+        <circle cx="2.5" cy="2.5" r="2.5" stroke="none"/>
+        <circle cx="2.5" cy="2.5" r="1.75" fill="none"/>
+      </g>
+      <g id="Ellipse_25" data-name="Ellipse 25" transform="translate(594 102)" fill="#fff" stroke="#114886" stroke-width="1.5">
+        <circle cx="2.5" cy="2.5" r="2.5" stroke="none"/>
+        <circle cx="2.5" cy="2.5" r="1.75" fill="none"/>
+      </g>
+      <path id="Path_35999" data-name="Path 35999" d="M591.118,109.018l4.314-3.39" fill="none" stroke="#114886" stroke-width="1.75"/>
+      <path id="Path_36000" data-name="Path 36000" d="M598,103.512l1.515-3.123" transform="matrix(0.998, -0.07, 0.07, 0.998, -5.628, 42.015)" fill="none" stroke="#114886" stroke-width="1.75"/>
+      <path id="Path_36001" data-name="Path 36001" d="M601.056,99.927l2.234,2.542" fill="none" stroke="#114886" stroke-width="1.75"/>
+      <path id="Path_36002" data-name="Path 36002" d="M605.678,104.935l4.338,4.941" transform="matrix(-0.087, -0.996, 0.996, -0.087, 554.19, 714.544)" fill="none" stroke="#114886" stroke-width="1.75"/>
+    </g>
+  </g>
+</svg>

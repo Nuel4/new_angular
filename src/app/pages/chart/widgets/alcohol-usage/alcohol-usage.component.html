@@ -1,0 +1,46 @@
+<div class="Alcohol-Usage">
+  <div class="row">
+    <div class="col-lg-5 col-md-5 col-5">
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">Alcohol Usage:</label>
+        <p-radioButton class="mr-2" value="NO" label="NO" [(ngModel)]="alcoholusage" (click)="toggleDisabled(true);onFormDataChange()"></p-radioButton>
+        <p-radioButton class="mr-2" value="Current" label="Current" [(ngModel)]="alcoholusage" (click)="toggleDisabled(false);onFormDataChange()"></p-radioButton>
+        <p-radioButton value="Past" label="Past" [(ngModel)]="alcoholusage" (click)="toggleDisabled(false);onFormDataChange()"></p-radioButton> 
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-3">
+      <label for="" class="yeats-form-label">Details of Usage</label>
+      <input
+        type="text"
+        pInputText
+        class="form-control yeats-form-control"
+        [(ngModel)]="detailUsage"
+        [disabled]="isdisabled"
+        (input)="onFormDataChange()"
+      />
+    </div>
+    <div class="col-lg-4 col-md-4 col-4">
+      <label for="" class="yeats-form-label">Number of Drinks Per week</label>
+      <input
+        type="text"
+        pInputText
+        class="form-control yeats-form-control"
+        [(ngModel)]="drinksPerWeek"
+        [disabled]="isdisabled"
+        (input) = "onFormDataChange()"
+      />
+  </div>
+  <div class="col-lg-6 col-md-6 col-6">
+    <div class="form-group yeats-form-group ">
+        <label for="" class="yeats-form-label">&nbsp;</label>
+        <p-checkbox name="groupname" value="Ask Patient to track alcohol usage via patient portal" [(ngModel)]="patientAlcoholUsage" (ngModelChange)="onFormDataChange()" label="Ask Patient to track alcohol usage via patient portal "  [disabled]="isdisabled"></p-checkbox>
+      </div>
+</div>
+<div class="col-lg-3 col-md-3 col-3">
+    <label for="" class="yeats-form-label">&nbsp;</label>
+    <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary" (click)="onFormReset()">Clear</button>
+
+</div>
+  </div>
+</div> 
+ 

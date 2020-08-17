@@ -1,0 +1,126 @@
+<div class="addProblem">
+<div class="card border-0 box-shadow">
+  <div class="card-header transparent border-0 text-muted">
+    <div class="card-body">
+      <div class="row" style="background-color:white;">
+        <div class="col-lg-12 col-md-12 col-12 mt-3">
+          <div class="form-group yeats-form-group">
+            <p-checkbox  label="Existing Preferred/Common Diagnosis Code" [(ngModel)]="existingCode">
+            </p-checkbox>
+            <p-radioButton *ngIf="!preferredIcd" value="ICD9" label="ICD9" [(ngModel)]="Icdvalue"></p-radioButton>
+            <p-radioButton *ngIf="!preferredIcd" value="ICD10" label="ICD10" [(ngModel)]="Icdvalue"></p-radioButton>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Search By Code</label>
+            <input type="text" class="form-control yeats-form-control" [(ngModel)]="searchCode" />
+          </div>
+        </div>
+        <div class=" col-lg-3 col-md-6 col-sm-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Search By Description</label>
+            <input type="text" class="form-control yeats-form-control" [(ngModel)]="searchDescription" />
+          </div>
+        </div>
+        <div class=" col-lg-3 col-md-6 col-sm-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Search By Category</label>
+            <p-dropdown class="yeats-form-control" [options]="categories" [(ngModel)]="selectedCategory" optionLabel="CategoryName"
+              [showClear]="true" [autoWidth]="false" placeholder="Select Category"></p-dropdown>
+          </div>
+        </div>
+        <!-- <p-calendar [(ngModel)]="date" [showIcon]="true"></p-calendar> -->
+        <div class=" col-lg-3 col-md-6 col-sm-12">
+          <div class="form-group yeats-form-group buttonstyle">
+            <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2 mr-4" (click)="clearData()">
+              Clear
+            </button>
+            <button *ngIf="!preferredIcd" pButton class="yeats-btn yeats-btn-primary pull-right" (click)="searchProblem()">
+              Search
+            </button>
+            <button *ngIf="preferredIcd" pButton class="yeats-btn yeats-btn-primary pull-right" (click)="onSearchPhysicianIcd9Code('event')">
+              Search
+            </button>
+          </div>
+        </div>
+
+        <!-- <div class="col-lg-12">
+          <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2">
+            Clear
+          </button>
+          <button pButton class="yeats-btn yeats-btn-primary pull-right">
+            Search
+          </button>
+        </div> -->
+
+        <div class="col-lg-12 col-md-12 offset-lg-0 offset-md-0 offset-sm-0 offset-0 mt-3">
+          <p-pickList *ngIf="!preferredIcd" (onMoveToTarget)="movetoTarget($event)" (onMoveToSource)="movetoSource($event)" [source]="searchResult" [target]="selectedCodes" showSourceFilter="false" showTargetFilter="false"
+            showTargetControls="false" showSourceControls="false" sourceHeader="Search Result"
+            targetHeader="Selected Codes" [responsive]="true" dragdrop="true" [sourceStyle]="{'height':'350px','overflow-x': 'hidden'}"
+            [targetStyle]="{'height':'350px','overflow-x': 'hidden'}">
+            <!-- <ng-template pTemplate="caption"> List of Codes </ng-template> -->
+            <ng-template let-code let-i = "index" pTemplate="item">
+              <!-- <div> -->
+                <!-- <div *ngIf="isenableradiobtn"> -->
+                <div class="row">
+                  <div class="dateTimeField col-3" *ngIf="code.calendar == true">
+                  <p-calendar [(ngModel)]="codeDate[i]" [showIcon]="true"></p-calendar></div>
+                  <!-- &nbsp; {{ code.Code }} ,  {{code.Description}} -->
+                 
+                    <div class="col-2">
+                        {{ code.Code }}
+                    </div>
+                    <div class="col-6">
+                        {{code.Description}} 
+                    </div>
+                  </div>
+                  
+              <!-- </div> -->
+              <!-- </div> -->
+            </ng-template>
+          </p-pickList>
+          <p-pickList *ngIf="preferredIcd" (onMoveToTarget)="movetoTargetPreferredIcd($event)" (onMoveToSource)="movetoSource($event)" [source]="searchResult" [target]="selectedCodes" showSourceFilter="false" showTargetFilter="false"
+          showTargetControls="false" showSourceControls="false" sourceHeader="Search Result"
+          targetHeader="Selected Codes" [responsive]="true" dragdrop="true" [sourceStyle]="{'height':'350px','overflow-x': 'hidden'}"
+          [targetStyle]="{'height':'350px','overflow-x': 'hidden'}">
+          <!-- <ng-template pTemplate="caption"> List of Codes </ng-template> -->
+          <ng-template let-code let-i = "index" pTemplate="item">
+            <!-- <div> -->
+              <!-- <div *ngIf="isenableradiobtn"> -->
+              <div class="row">
+                <!-- <div class="dateTimeField col-3" *ngIf="code.calendar == true">
+                <p-calendar [(ngModel)]="codeDate[i]" [showIcon]="true"></p-calendar></div> -->
+                <!-- &nbsp; {{ code.Code }} ,  {{code.Description}} -->
+                <div class="col-2">
+                  <i class="pi pi-times" (click)="deleteIcd9Code(code)" style="font-size: 1em"></i>
+              </div>
+                  <div class="col-2">
+                      {{ code.Code }}
+                  </div>
+                  <div class="col-8">
+                      {{code.Description}} 
+                  </div>
+                </div>
+                
+            <!-- </div> -->
+            <!-- </div> -->
+          </ng-template>
+        </p-pickList>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-12 col-md-12 col-12 mt-4 mb-3">
+      <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2 mr-4" (click)="pageCancel()" >
+          Cancel
+        </button>
+      <button *ngIf="!preferredIcd" pButton class="yeats-btn yeats-btn-primary pull-right" (click)="saveProblem()">
+          Save
+        </button>
+        <button *ngIf="preferredIcd" pButton class="yeats-btn yeats-btn-primary pull-right" (click)="submitIcd9Code()">
+          Save
+        </button>
+ </div>
+</div>
+</div>

@@ -1,0 +1,69 @@
+<div class="familyMedHistory">
+  <div class="row">
+    <div class="col-4">
+      <div class="form-group yeats-form-group ">
+        <label class="formLabel yeats-form-label">Relation</label>
+        <p-dropdown [options]="relationList" [(ngModel)]="selectedRelation" optionLabel="name" [showClear]="true" (onChange)="onFormDataChange()">
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-2 mt-4">
+      <div class="form-group yeats-form-group ">
+        <label for="" class="yeats-form-label"> </label>
+        <p-checkbox [(ngModel)]="selectedDeceased" label="Deceased" binary="true" (onChange)="deceasedChecked();onFormDataChange()">
+        </p-checkbox>
+      </div>
+    </div>
+    <div class="col-4">
+      <label for="" class="yeats-form-label">Age</label>
+      <input type="text" [(ngModel)]="age" pInputText class="form-control yeats-form-control"
+        disabled="{{!selectedDeceased?true:false}}" (input)="onFormDataChange()"/>
+    </div>
+    <div class="col-4">
+      <div class="form-group yeats-form-group">
+        <label class="formLabel yeats-form-label">Comments</label>
+        <div class="ui-inputgroup">
+          <textarea [rows]="1" [cols]="25" [(ngModel)]="comments" pInputTextarea style="width:100%" (input)="onFormDataChange()"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-6">
+      <div class="form-group yeats-form-group">
+        <label class="formLabel yeats-form-label">Problems</label>
+        <div class="ui-inputgroup">
+          <p-listbox  [listStyle]="{'max-height':'250px'}" [options]="FamilyMedicalHistory" [(ngModel)]="selectedProblem" optionLabel="name" (onChange)="onFormDataChange()">
+          </p-listbox>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-lg-12 col-12">
+      <div class="pull-right">
+        <button pButton class="yeats-btn yeats-btn-danger mr-2" (click)="onClear()" >
+          Clear
+        </button>
+      </div>
+      <div class="pull-right">
+        <button pButton class="yeats-btn yeats-btn-primary mr-2" (click)="onAddRelation()">
+          Add
+        </button>
+      </div>
+    </div>
+    <div class="col-12 mt-2">
+      <div class="row mt-2" *ngFor="let item of relationEntry; let i=index" (click)="onSelectRelation(item)" >
+        <div class="col-3">
+          <p class="Family_history">{{item.relation.value}}</p>
+        </div>
+        <div class="col-2">
+          <p class="Family_history">{{item.isAlive}}</p>
+        </div>
+        <div class="col-2">
+          <button pButton class="yeats-btn yeats-btn-danger " (click)="onRemoveRelation(item)">
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

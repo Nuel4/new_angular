@@ -1,0 +1,436 @@
+<div class="Policy">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Add/Edit Policy Owner</h4>
+      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- (ngSubmit)="onSubmit(GuarantorOwnPolicyForm.value)" -->
+      <div class="row">
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label for="primaryInsuranceCompany" class="formLabel yeats-form-label">Existing Guarantor</label>
+            <p-dropdown [options]="GuarantorDetails" optionLabel="FirstName" [(ngModel)]="selectedGuaranator"
+              placeholder="Select Guarantor" (onChange)="SelectedGuaranator($event)"></p-dropdown>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group " *ngIf="newbutton">
+            <label for="primaryInsuranceCompany" class="formLabel yeats-form-label">&nbsp;</label>
+            <button pButton class="yeats-btn yeats-btn-primary" type="button" (click)="clearData()">Clear</button>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label for="primaryInsuranceCompany" class="formLabel yeats-form-label">&nbsp;</label>
+            <button pButton class="yeats-btn yeats-btn-primary" (click)="ImportPatient()">Import Patient</button>
+          </div>
+        </div>
+      </div>
+      <form [formGroup]="GuarantorOwnPolicyForm" (ngSubmit)="onsubmit(GuarantorOwnPolicyForm.value)">
+        <div class="row">
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class=" form-group yeats-form-group">
+              <label for="Ssn" class="yeats-form-label">SSN</label>
+              <p-inputMask mask="999-99-9999" formControlName="Ssn" placeholder="Enter SSN" name="Ssn"></p-inputMask>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Date of Birth <span class="required">*</span></label>
+              <p-calendar class="yeats-form-control" formControlName="DateOfBirth" [showIcon]="true" [maxDate]="dateTime"
+                placeholder="Date of Birth" name="DateOfBirth" (onSelect)="calculateAge()" monthNavigator="true"
+                yearNavigator="true" yearRange="1900:2030" required>
+              </p-calendar>
+              <div
+                *ngIf="(GuarantorOwnPolicyForm.get('DateOfBirth').invalid)&&((GuarantorOwnPolicyForm.get('DateOfBirth').dirty)||(GuarantorOwnPolicyForm.get('DateOfBirth').touched))&&(GuarantorOwnPolicyForm.get('DateOfBirth').hasError('required'))"
+                class="invalid-feedback">
+                <!-- GuarantorOwnPolicyForm.get('DateofBirth').hasError('required')"  -->
+                Please Enter Date of Birth
+              </div>
+              <div *ngIf="DOBV" class="invalid-feedback">
+                Please select valid date of birth
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Salutation <span class="required">*</span></label>
+              <p-dropdown [options]="patientSalutation" formControlName="SalutationId" name="SalutationId"
+                placeholder="Select Salutation" [showClear]="true">
+              </p-dropdown>
+              <div class="invalid-feedback"
+                *ngIf="(GuarantorOwnPolicyForm.get('SalutationId').invalid)&&((GuarantorOwnPolicyForm.get('SalutationId').dirty)||(GuarantorOwnPolicyForm.get('SalutationId').touched))&&(GuarantorOwnPolicyForm.get('SalutationId').hasError('required'))">
+                Please Select Salutation
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="FirstName" class="formLabel yeats-form-label">First Name <span
+                  class="required">*</span></label>
+              <input type="text" formControlName="FirstName" class="form-control yeats-form-control"
+                pattern="[a-zA-Z ]{2,30}" name="FirstName" required placeholder="Enter First Name" minlength="4" />
+              <div class="invalid-feedback"
+                *ngIf="(GuarantorOwnPolicyForm.get('FirstName').invalid)&&((GuarantorOwnPolicyForm.get('FirstName').dirty)||(GuarantorOwnPolicyForm.get('FirstName').touched))&&(GuarantorOwnPolicyForm.get('FirstName').hasError('required'))">
+                Please Enter First Name
+              </div>
+              <div class="invalid-feedback" *ngIf="GuarantorOwnPolicyForm.get('FirstName').hasError('pattern')">
+                Please Enter Valid First Name
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="LastName" class="formLabel yeats-form-label">Last Name <span class="required">*</span></label>
+              <input type="text" formControlName="LastName" class="form-control yeats-form-control" id="LastName"
+                name="LastName" placeholder="Enter Last Name" required />
+              <div class="invalid-feedback"
+                *ngIf="(GuarantorOwnPolicyForm.get('LastName').invalid)&&((GuarantorOwnPolicyForm.get('LastName').dirty)||(GuarantorOwnPolicyForm.get('LastName').touched))&&(GuarantorOwnPolicyForm.get('LastName').hasError('required'))">
+                Please Enter Last Name
+              </div>
+              <div class="invalid-feedback" *ngIf="GuarantorOwnPolicyForm.get('LastName').hasError('pattern')">
+                Please Enter Valid Last Name
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group">
+              <label for="MiddleName" class="formLabel yeats-form-label">Middle Name</label>
+              <input type="text" formControlName="MiddleName" class="form-control yeats-form-control" name="MiddleName"
+                placeholder="Enter Middle Name" />
+              <div class="invalid-feedback" *ngIf="GuarantorOwnPolicyForm.get('MiddleName').hasError('pattern')">
+                Please Enter Valid Middle Name
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">RelationShip <span class="required">*</span></label>
+              <p-dropdown [options]="patientRelation" formControlName="RelationshipToPatientHcfa" optionLabel="Relationship1"
+                name="Relationship1" placeholder="Select Relationship" [showClear]="true">
+              </p-dropdown>
+              <div class="invalid-feedback"
+                *ngIf="(GuarantorOwnPolicyForm.get('RelationshipToPatientHcfa').invalid)&&((GuarantorOwnPolicyForm.get('RelationshipToPatientHcfa').dirty)||(GuarantorOwnPolicyForm.get('RelationshipToPatientHcfa').touched))&&(GuarantorOwnPolicyForm.get('RelationshipToPatientHcfa').hasError('required'))">
+                Please Select Relationship
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="Language1Id" class="formLabel yeats-form-label">Language</label>
+              <p-dropdown [options]="patientLanguage" formControlName="Language1Id" name="Language1Id"
+                placeholder="Select Language" [showClear]="true">
+              </p-dropdown>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="row">
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group">
+              <label for="RequiresInterpretor" class="formLabel yeats-form-label"> &nbsp;</label>
+              <p-checkbox class="yeats-form-control" formControlName="RequiresInterpreter" name="RequiresInterpreter"
+                label="Require Language Interpreter" binary="false"></p-checkbox>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="Language2Id" class="formLabel yeats-form-label">Other Language 1</label>
+              <p-dropdown [options]="patientLanguage" formControlName="Language2Id" name="Language2Id"
+                placeholder="Select Language" [showClear]="true">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="Language3Id" class="formLabel yeats-form-label">Other Language 2</label>
+              <p-dropdown [options]="patientLanguage" formControlName="Language3Id" name="Language3Id"
+                placeholder="Select Language" [showClear]="true">
+              </p-dropdown>
+            </div>
+          </div>
+
+        </div>
+        <hr class="hr-text" data-content="Primary Address">
+        <!-- <hr class="color"> -->
+        <!-- <div class="row"> -->
+        <!-- <div class="col-12"> -->
+        <!-- <p-fieldset legend="Primary Address"> -->
+        <div class="row">
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="PrimaryAddressLine1" class="formLabel yeats-form-label">Primary Address Line 1</label>
+              <input type="text" formControlName="PrimaryAddressLine1" class="form-control yeats-form-control"
+                name="PrimaryAddressLine1" placeholder="Enter Address Line 1" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="PrimaryAddressLine2" class="formLabel yeats-form-label">Primary Address Line 2</label>
+              <input type="text" formControlName="PrimaryAddressLine2" class="form-control yeats-form-control"
+                name="PrimaryAddressLine2" placeholder="Enter Address Line 2" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="PrimaryCity" class="formLabel yeats-form-label">Primary City</label>
+              <input type="text" formControlName="PrimaryCity" class="form-control yeats-form-control" id="PrimaryCity"
+                name="PrimaryCity" placeholder="Enter City" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group">
+              <label for="PrimaryStateCode" class="formLabel yeats-form-label">Primary State</label>
+              <p-dropdown [options]="patientState" formControlName="PrimaryStateCode" id="PrimaryStateCode"
+                name="PrimaryStateCode" placeholder="Select a State" [showClear]="true">
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="PrimaryZipCode" class="formLabel yeats-form-label">Zip Code
+                <!-- <span class="required">*</span> -->
+              </label>
+              <div class="row">
+                <div class="col-lg-5 mpr-0">
+                  <p-inputMask mask="99999" formControlName="PrimaryZipCode" name="PrimaryZipCode" class="mpr-0"
+                    [maxlength]=5 placeholder="Enter ZipCode"></p-inputMask>
+                </div>
+                <div class="col-lg-1 mp-0">
+                  -
+                </div>
+                <div class="col-lg-5 mpl-0">
+                  <p-inputMask mask="9999" formControlName="PrimaryZipPlus4" name="PrimaryZipPlus4" class="mpl-0"
+                    [maxlength]=4 placeholder="Enter ZipCode"></p-inputMask>
+                </div>
+              </div>
+              <!-- <app-field-error-display [displayError]="isFieldValid('PrimaryZipCode')" errorMsg="Please update zip code"> -->
+              <!-- </app-field-error-display> -->
+            </div>
+
+
+          </div>
+        </div>
+        <hr class="hr-text" data-content="Secondary Address">
+        <!-- </p-fieldset> -->
+        <!-- </div> -->
+        <!-- </div> -->
+        <!-- <div class="row">
+          <div class="col-12">
+            <p-fieldset legend="Secondary Address"> -->
+        <div class="row">
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="PrimaryAddressLine2" class="formLabel yeats-form-label">Secondary Address Line 1</label>
+              <input type="text" formControlName="SecondaryAddressLine1" class="form-control yeats-form-control"
+                id="SecondaryAddressLine1" name="SecondaryAddressLine1" placeholder="Enter Address Line 1" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="PrimaryAddressLine2" class="formLabel yeats-form-label">Secondary Address Line 2</label>
+              <input type="text" formControlName="SecondaryAddressLine2" class="form-control yeats-form-control"
+                id="SecondaryAddressLine2" name="SecondaryAddressLine2" placeholder="Enter Address Line 2" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="SecondaryCity" class="formLabel yeats-form-label">Secondary City</label>
+              <input type="text" formControlName="SecondaryCity" class="form-control yeats-form-control"
+                id="SecondaryCity" name="SecondaryCity" placeholder="Enter City" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group">
+              <label for="SecondaryStateCode" class="formLabel yeats-form-label">Secondary State</label>
+              <p-dropdown [options]="patientState" formControlName="SecondaryStateCode" id="SecondaryStateCode"
+                name="SecondaryStateCode" placeholder="Select a State" [showClear]="true">
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6 col-sm-6 col-12">
+
+            <div class="form-group yeats-form-group ">
+              <label for="SecondaryZipCode" class="formLabel yeats-form-label">Secondary Zip Code</label>
+              <p-inputMask mask="(99999)-(9999)" formControlName="SecondaryZipCode" name="SecondaryZipCode"
+                id="SecondaryZipCode" placeholder="Enter Zip Code"></p-inputMask>
+            </div>
+
+
+            <div class="form-group yeats-form-group ">
+              <label for="SecondaryZipCode" class="formLabel yeats-form-label">Zip Code
+                <!-- <span class="required">*</span> -->
+              </label>
+              <div class="row">
+                <div class="col-lg-5 mpr-0">
+                  <p-inputMask mask="99999" formControlName="SecondaryZipCode" name="SecondaryZipCode" class="mpr-0"
+                    [maxlength]=5 placeholder="Enter ZipCode"></p-inputMask>
+                </div>
+                <div class="col-lg-1 mp-0">
+                  -
+                </div>
+                <div class="col-lg-5 mpl-0">
+                  <p-inputMask mask="9999" formControlName="SecondaryZipPlus4" name="SecondaryZipPlus4" class="mpl-0"
+                    [maxlength]=4 placeholder="Enter ZipCode"></p-inputMask>
+                </div>
+              </div>
+              <!-- <app-field-error-display [displayError]="isFieldValid('PrimaryZipCode')" errorMsg="Please update zip code"> -->
+              <!-- </app-field-error-display> -->
+            </div>
+
+          </div>
+        </div>
+        <!-- </p-fieldset>
+          </div>
+        </div> -->
+        <hr class="color">
+        <div class="row">
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="workPhone" class="formLabel yeats-form-label">Work Phone</label>
+              <p-inputMask mask="(999) 999-9999" formControlName="WorkPhone" placeholder="Enter Work Phone"
+                name="WorkPhone" id="WorkPhone">
+              </p-inputMask>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="HomePhone" class="formLabel yeats-form-label">Home Phone</label>
+              <p-inputMask mask="(999) 999-9999" formControlName="HomePhone" placeholder="Enter Home Phone"
+                name="HomePhone" id="HomePhone">
+              </p-inputMask>
+            </div>
+
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="MobilePhone" class="formLabel yeats-form-label">Cell Phone</label>
+              <p-inputMask mask="(999) 999-9999" formControlName="MobilePhone" placeholder="Enter Mobile Phone"
+                name="MobilePhone" id="MobilePhone">
+              </p-inputMask>
+            </div>
+
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="AltPhone" class="formLabel yeats-form-label">Alternate phone</label>
+              <p-inputMask mask="(999) 999-9999" formControlName="AltPhone" placeholder="Enter Alternate Phone"
+                name="AltPhone" id="AltPhone">
+              </p-inputMask>
+            </div>
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="Fax" class="formLabel yeats-form-label">Fax</label>
+              <p-inputMask mask="(999) 999-9999" formControlName="Fax" placeholder="Enter Fax" name="Fax" id="Fax">
+              </p-inputMask>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="Email1" class="formLabel yeats-form-label">Email 1</label>
+              <input type="text" formControlName="Email1" class="form-control yeats-form-control" id="Email1"
+                name="Email1" placeholder="Enter Email 1" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="Email2" class="formLabel yeats-form-label">Email 2</label>
+              <input type="text" formControlName="Email2" class="form-control yeats-form-control" id="Email2"
+                name="Email2" placeholder="Enter Email 2" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Occupation</label>
+              <p-dropdown [options]="patientOccupation" formControlName="Occupation" id="Occupation" name="Occupation"
+                placeholder="Select Occupation" [showClear]="true">
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="photoImage" class="formLabel yeats-form-label">Photo</label>
+              <p-fileUpload name="demo[]" url="./upload.php" (onSelect)="onUpload($event)" [multiple]="false"
+                accept="image/*" maxFileSize="1000000" [showUploadButton]="false">
+                <ng-template pTemplate="content">
+                  <ul *ngIf="uploadedFiles.length">
+                    <li *ngFor="let file of uploadedFiles">{{file.name}}</li>
+                  </ul>
+                </ng-template>
+              </p-fileUpload>
+            </div>
+
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <img class="imgCard" width="89.997" height="90" [src]="url" style="border-radius: 0%;" />
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Gender</label>
+              <div>
+                <p-radioButton [value]="true" label="Male" formControlName="Sex" inputId="male" name="Sex">
+                </p-radioButton>
+              </div>
+              <div>
+                <p-radioButton [value]="false" label="Female" formControlName="Sex" inputId="female" name="Sex">
+                </p-radioButton>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-sm-12 col-12">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">General Comments</label>
+              <textarea rows="5" cols="60" pInputTextarea autoResize="autoResize" formControlName="GeneralNote"
+                name="GeneralNote" id="GeneralNote"></textarea>
+            </div>
+          </div>
+
+          <!-- <div class="col-lg-3 col-sm-6 col-12">
+               occupation
+              </div> -->
+        </div>
+      </form>
+    </div>
+
+    <!-- <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" data-toggle="modal" -->
+
+    <div class="modal-footer">
+      <!-- <div class="row"> -->
+      <!-- <div class="col-6">
+          <button pButton class="yeats-btn yeats-btn-primary mr-3" icon="fa fa-print" label="print">print</button>
+          <button pButton class="yeats-btn yeats-btn-primary" icon="fa fa-file-text-o" label="Charge Slip">Charge Slip</button>
+        </div> -->
+      <!-- <div class="col-6"> -->
+      <div class="col-12">
+        <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" [disabled]="GuarantorOwnPolicyForm.invalid"
+          (click)="onsubmit(GuarantorOwnPolicyForm.value)">Save</button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3"
+          (click)="activeModal.close('Close click')">Close</button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right"
+          (click)="activeModal.close('Close click')">Cancel</button>
+      </div>
+      <!-- </div> -->
+      <!-- </div> -->
+      <!-- <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button> -->
+    </div>
+  </div>
+</div>

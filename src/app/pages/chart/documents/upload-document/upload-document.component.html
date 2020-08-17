@@ -1,0 +1,17 @@
+<div class="document">
+  <div class="card border-0 box-shadow">
+    <div class="card-header transparent border-0 text-muted">
+      <div class="row">
+        <div class="col-lg-12 col-md-12">
+          <p-fileUpload name="demo[]" (onUpload)="onUpload($event)" multiple="multiple" maxFileSize="1000000">
+            <ng-template pTemplate="content">
+              <ul *ngIf="uploadedFiles.length">
+                <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+              </ul>
+            </ng-template>
+          </p-fileUpload>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

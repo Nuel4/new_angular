@@ -1,0 +1,128 @@
+<div class="editDefaultFeeSchedule" *ngIf="editDefaultFee">
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">CPT RVU Conversion</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row" *ngIf="cpt">
+      <div class="col-lg-12">
+
+        <label class="formLabel yeats-form-label">Fee Schedule Display Name : Default Fee Schedule</label>
+      </div>
+    </div>
+    <div class="row" *ngIf="feeScheduleRow">
+      <div class="col-lg-4">
+
+        <label class="formLabel yeats-form-label">Fee Schedule Display Name :
+          {{feeScheduleRowData.FeeScheduleDisplayName}}</label>
+      </div>
+      <div class="col-lg-4">
+        <label class="formLabel yeats-form-label">Fee Schedule Type : {{feeScheduleRowData.feeScheduleType}}</label>
+      </div>
+      <div class="col-lg-4">
+        <label class="formLabel yeats-form-label">Effective Start Date :
+          {{feeScheduleRowData.EffectiveStartDate}}</label>
+      </div>
+      <div class="col-lg-4">
+        <label class="formLabel yeats-form-label">Effective End Date : {{feeScheduleRowData.EffectiveEndDate}}</label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12 col-md-12">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">CPT Code</label>
+              <!-- <div class="ui-inputgroup"> -->
+              <input placeholder="Enter CPT Code" id="cpt" [(ngModel)]="cptCode" type="text"
+                class=" form-control yeats-form-control d-inline" />
+
+              <!-- </div> -->
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <label class="formLabel yeats-form-label">&nbsp;</label>
+            <button pButton class="yeats-btn yeats-btn-primary mt-1" (click)="filterCPT(cptCode)">Search</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="yeats-tables">
+      <p-table [columns]="rtuColumns" [value]="cptRvuFeeschedule" selectionMode="single" [(selection)]="selectedCPT"
+        [paginator]="true" [rows]="10" dataKey="cptCode" (onRowSelect)="onRowSelect($event)" dataKey="cptFeeScheduleId">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th>
+              CPT Code
+
+            </th>
+            <th>RVU Converstaion</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <td>
+              {{rowData.cptCode}}
+            </td>
+            <td pEditableColumn>
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <input pInputText type="text" [(ngModel)]="rowData.rvuConversionFactor"
+                    (keyup)="rvuConversation($event.target.value)">
+                </ng-template>
+                <ng-template pTemplate="output">
+                  {{rowData.rvuConversionFactor}}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button pButton class="yeats-btn yeats-btn-danger ui-button-danger pull-right ml-3 mt-3"
+      (click)="closeRVUEditModal()">Cancel</button>
+    <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mt-3" (click)="onSave()">Save</button>
+  </div>
+</div>
+<div class="modal fade" id="editRvu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:500px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit RVU Conversion ($)</h5>
+        <button type="button" class="close" (click)="closeARAddModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-6 col-sm-12 col-12">
+            <div class="form-group yeats-form-group">
+              <label class="formLabel yeats-form-label">CPT Code</label>
+              <input type="text" [(ngModel)]="rowRtuClicked.cptCode" class="form-control yeats-form-control"
+                placeholder="Enter CPT Code" disabled />
+            </div>
+          </div>
+          <div class="col-lg-6 col-sm-12 col-12">
+            <div class="form-group yeats-form-group">
+              <label class="formLabel yeats-form-label">RVU Conversion ($)</label>
+              <input type="text" [(ngModel)]="rowRtuClicked.rvu" class="form-control yeats-form-control"
+                placeholder="Enter RVU Conversion" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button pButton class="yeats-btn yeats-btn-danger ui-button-danger pull-right ml-3 mt-3"
+          (click)="closeRVUEditModal()">Cancel</button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mt-3">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- </div> -->

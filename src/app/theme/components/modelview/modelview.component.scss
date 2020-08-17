@@ -1,0 +1,23 @@
+// .viewpatientmodel{
+    // z-index: 99999999;
+// }
+.modelView{
+.required{
+    color: red;
+}
+.ui-table table {
+table-layout: unset !important;
+}
+.findPatient {
+ .table-width {
+    border-collapse: collapse;
+    // width: auto;
+    // table-layout: fixed;
+}
+ .table-css {
+    border-collapse: collapse;
+    // width: 100%;
+    // table-layout: fixed;
+}
+}
+}

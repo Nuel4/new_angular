@@ -1,0 +1,8 @@
+<div class="col-4">
+  <div class="form-group yeats-form-group " [formGroup]="group">
+    <label class="formLabel yeats-form-label">{{field.label?field.label:''}}</label><br>
+    <p-radioButton [formControlName]="opt.MrFormFieldId" [inputId]="opt.MrFormFieldValueId"
+      [name]="opt.MrFormFieldId" [value]="opt.ValueOption" styleClass="ml-1" [label]="opt.ValueOption"
+      *ngFor="let opt of field.options"></p-radioButton>
+  </div>
+</div>

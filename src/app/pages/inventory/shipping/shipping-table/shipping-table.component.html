@@ -1,0 +1,156 @@
+<div *ngIf="isLoader" class="row">
+    <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+</div>
+<div class="primeNgTableShipping" *ngIf="switchTabsShipping == 'activeShipping' && !isLoader">
+    <p-table #dt [columns]="InvShippingDetailCols" [value]="shippingDataWithName" [paginator]="true" [rows]="5">
+        <ng-template pTemplate="header" let-columns>
+            <tr class="tableRowHead">
+                <th *ngFor="let col of columns">
+                    {{col.header}}
+                </th>
+                <!-- <th>View</th> -->
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr class="tableRowBody" [pSelectableRow]="rowData">
+                <td *ngFor="let col of columns">
+                    <!-- {{rowData[col.field]}} -->
+                    {{col.field == 'DateShipped'|| col.field == 'DateRecevied' ? (rowData[col.field] |
+                    date:'yyyy-MM-dd') : rowData[col.field]}}
+                    <!-- {{col.field == 'DateShipped' || col.field == 'DateRecevied' ? parseDate(rowData[col.field]) -->
+                    <!-- : col.field == 'Status' ? getShippingStatus(rowData[col.field]) : rowData[col.field]}} -->
+                </td>
+                <td><span><i class="fa fa-eye" style="cursor:pointer" aria-hidden="true" (click)="viewShipping(rowData)"></i></span>&nbsp;</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<div class="primeNgTableShipping" *ngIf="switchTabsShipping == 'selectedShipping'">
+    <button class="btn" (click)="backToShip()">
+        Back to Shipping</button>
+    <form class="row">
+        <div class="form-group col-xl-3 col-sm-3 col-11">
+            <label for="orderNo" class="formLabel">Shipping Id</label>
+            <input type="text" class="form-control" [(ngModel)]="shippingsDetails.InvShippingId" name="orderNo"
+                disabled>
+        </div>
+        <div class="form-group col-xl-4 col-sm-4 col-12">
+            <label for="DoO" class="formLabel">Date Created</label>
+            <input type="text" class="form-control" [(ngModel)]="shippingsDetails.DateCreated" name="DoO" disabled>
+        </div>
+        <div class="form-group col-xl-3 col-sm-3 col-12">
+            <label for="category" class="formLabel">Status</label>
+            <input type="text" class="form-control" [(ngModel)]="shippingsDetails.Name" name="Status" disabled>
+            <!-- <select class="form-control" id="exampleSelect2" [(ngModel)]="orderItemDatas.Status" name="IsActive" [attr.disabled] = "orderItemDatas.Status === 1 ? null : 'disabled'">
+                        <option *ngFor="let data of orderStatus" value="{{data.InvTaxonomyItemId}}">{{data.Name}}</option>
+                    </select> -->
+        </div>
+    </form>
+    <p-table [columns]="selectedShippingColumns" [(selection)]="selectedRows" [value]="selectedShippingDetails"
+        (change)="objChanged($event)" dataKey="InvShippingDetailsId">
+        <ng-template pTemplate="header" let-columns>
+            <tr class="tableRowHead">
+                <th style="width: 3em"></th>
+                <th *ngFor="let col of columns">
+                    {{col.header}}
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+            <tr class="tableRowBody" [pSelectableRow]="rowData">
+                <td>
+                    <a href="#" value=[rowData] (click)="onExpand(rowData)" [pRowToggler]="rowData">
+                        <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+                    </a>
+                </td>
+                <td *ngFor="let col of columns">
+                    {{col.field == 'DateCreated' || col.field == 'DateLastUpdated' ? parseDate(rowData[col.field])
+                    :
+                    rowData[col.field]
+                    }}
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+            <tr class="tableRowHead">
+                <td [attr.colspan]="columns.length + 2">
+                    <div class="ui-g ui-fluid" style="font-size:16px;padding:20px">
+                        <button type="button" class="btn btn-primary" (click)="updateShippingItem(ShippingItems , locationItem)">Update</button>
+                        <p-table [value]="ShippingItems ">
+                            <ng-template pTemplate="header">
+            <tr>
+                <th>Item Master Name</th>
+                <th>Status</th>
+                <th>Order Quantity</th>
+                <th>Order Part Number</th>
+                <th>Remaining Quantity</th>
+                <th>Batch Number</th>
+                <th>Batch Code</th>
+                <th>Lot Number</th>
+                <th>Item Location</th>
+                <th>Manufactured Date</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData>
+            <tr>
+                <td>{{rowData.InvItemMasterName}}</td>
+                <td>{{rowData.Name}}</td>
+                <td>{{rowData.OrderedQuanity}}</td>
+                <td>{{rowData.OrderPartNumber}}</td>
+                <td>{{rowData.RemainingQuantity}}</td>
+                <td pEditableColumn>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text" [(ngModel)]="rowData.BatchNumber">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{rowData.BatchNumber}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td pEditableColumn>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text" [(ngModel)]="rowData.BatchCode">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{rowData.BatchCode}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td pEditableColumn>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="number" [(ngModel)]="rowData.LotNumber">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{rowData.LotNumber}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <select class="form-control" id="exampleSelect" [(ngModel)]="locationItem" name="store" >
+                        <option *ngFor="let location of itemLocation" value="{{location.ItemLocationId}}">{{location.Name}}</option>
+                    </select>
+                </td>
+                <td pEditableColumn>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text" [(ngModel)]="rowData.ManufacturedDate">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{rowData.ManufacturedDate}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+</td>
+</tr>
+</ng-template>
+</p-table>
+</div>

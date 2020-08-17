@@ -1,0 +1,479 @@
+<div class="noticeBoardComponent">
+  <div *ngIf="IsSent">
+    <div class="modal-header">
+      <h4 class="modal-title">View Sent Messages</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4">
+          <div class="form-group yeats-form-group">
+            <label class="formLabel yeats-form-label">To</label>
+            <p-dropdown
+              [options]="sentMsgList"
+              [(ngModel)]="recipient"
+              placeholder="Select Recipient"
+              optionLabel="fullName"
+              [showClear]="true"
+              (onChange)="filter(recipient, 'recipient')"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Date From:</label>
+            <p-calendar
+              class="yeats-form-control"
+              [showIcon]="true"
+              [(ngModel)]="from_date"
+              placeholder="Select Date"
+              (onSelect)="filter(from_date, 'from_date')"
+            >
+            </p-calendar>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Date To:</label>
+            <p-calendar
+              class="yeats-form-control"
+              [showIcon]="true"
+              [(ngModel)]="to_date"
+              class="cssdatepicker"
+              placeholder="Select Date"
+              (onSelect)="filter(to_date, 'to_date')"
+            >
+            </p-calendar>
+          </div>
+        </div>
+        <!-- <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
+          <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2">Cancel</button>
+          <button pButton class="yeats-btn yeats-btn-primary pull-right">Save</button>
+        </div> -->
+      </div>
+      <div class="yeats-tables" *ngIf="messages_list.length > 0">
+        <p-table [columns]="cols" [value]="messages_list">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th>Recipients</th>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{ col.header }}
+                <p-sortIcon
+                  [field]="col.field"
+                  ariaLabel="Activate to sort"
+                  ariaLabelDesc="Activate to sort in descending order"
+                  ariaLabelAsc="Activate to sort in ascending order"
+                ></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr>
+              <td style="text-align: center;">
+                <span class="tooltip">
+                  <i
+                    class="fa fa-user"
+                    placement="right"
+                    style="cursor:pointer;"
+                    aria-hidden="true"
+                    (mouseenter)="onMouseOver(rowData)"
+                    (mouseleave)="onMouseOver()"
+                  >
+                    <span class="tooltiptext" *ngIf="recipientList.length > 0"
+                      ><ul style="list-style:none">
+                        <li *ngFor="let user of recipientList">
+                          {{ user.Username }}
+                        </li>
+                      </ul></span
+                    >
+                    <!-- <input *ngFor="let user of recipientList" [ngbTooltip]="user.username" placement="right"> -->
+                  </i>
+                </span>
+                <!-- <span *ngIf="recipientList.length > 0"><i class="fa fa-user" style="cursor:pointer;" aria-hidden="true" (mouseenter)="onMouseOver(rowData)" *ngFor="let user of recipientList" [ngbTooltip]="user.username" placement="right"></i></span> -->
+              </td>
+              <td *ngFor="let col of columns">
+                <span>{{ rowData[col.field] }}</span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <!-- <div class="form-group yeats-form-group" *ngIf="messages_list.length > 0"> -->
+      <p-paginator
+        [rows]="messagesSent.PageSize"
+        [totalRecords]="messagesSent.TotalItems"
+        (onPageChange)="paginate($event)"
+      ></p-paginator>
+      <!-- </div> -->
+    </div>
+  </div>
+
+  <div class="addMessage" *ngIf="IsAdd">
+    <div class="modal-header">
+      <h5 class="modal-title" *ngIf="!data">Add Message</h5>
+      <h5 class="modal-title" *ngIf="data">
+        Edit Message : {{ data.Posting }}
+      </h5>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+        (click)="closeModal()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+          <div class="card border-0 box-shadow cardMargin">
+            <div class="card-header transparent border-0 text-muted">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-lg-4 col-md-4 mt-1">
+                    <b>Assign Patient</b>
+                  </div>
+                  <div class="col-lg-5 col-md-5">
+                    <input
+                      type="text"
+                      pInputText
+                      class="form-control yeats-form-control"
+                      [(ngModel)]="assign_patient"
+                    />
+                  </div>
+                  <div class="col-lg-3 col-md-3">
+                    <button
+                      pButton
+                      class="yeats-btn yeats-btn-primary pull-right mt-1 mr-2"
+                      (click)="findPatient(assign_patient)"
+                    >
+                      Search
+                    </button>
+                  </div>
+                  <div *ngIf="enablePatientDetails" class="row">
+                    <div class="patient-details">
+                      <label>SSN:</label>
+                      <span>{{ patientDetails.Ssn }}</span>
+                    </div>
+                    <div class="patient-details">
+                      <label>Phone:</label>
+                      <span>{{ patientDetails.MobilePhone }}</span>
+                    </div>
+                    <div class="patient-details">
+                      <label>DOB:</label>
+                      <span>{{
+                        patientDetails.DateOfBirth | date: "dd/MM/yyyy"
+                      }}</span>
+                    </div>
+                    <div class="patient-details">
+                      <label>Gender:</label>
+                      <span *ngIf="this.patientDetails.Sex">Male</span>
+                      <span *ngIf="!this.patientDetails.Sex">Female</span>
+                    </div>
+                    <div class="patient-details">
+                      <label>Address:</label>
+                      <span>{{ patientDetails.PrimaryAddressLine1 }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card border-0 box-shadow cardMargin">
+            <div class="card-header transparent border-0 text-muted">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-lg-3 col-md-6 col-sm-3">
+                    <b>Assign to</b>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6">
+                    <button
+                      pButton
+                      class="yeats-btn yeats-btn-primary pull-right"
+                      (click)="enableRoleUsers(true)"
+                      [disabled]="data.Status === 'Completed'"
+                    >
+                      Select User
+                    </button>
+                  </div>
+                  <div
+                    class="col-lg-3 col-md-6 col-sm-6"
+                    *ngIf="data.Status !== 'Completed'"
+                  >
+                    <button
+                      pButton
+                      class="yeats-btn yeats-btn-primary pull-right mr-2"
+                      (click)="enableRoleUsers(false)"
+                    >
+                      Me
+                    </button>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="form-group yeats-form-group mt-3 ">
+                      <label class="formLabel yeats-form-label">Role:</label>
+                      <p-dropdown
+                        [options]="roleList"
+                        [(ngModel)]="selectedRole"
+                        optionLabel="RoleName"
+                        [showClear]="true"
+                        placeholder="Select Role"
+                        [disabled]="!roleUsersEnabled"
+                        (onChange)="onRoleChange($event.value)"
+                      >
+                      </p-dropdown>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6" *ngIf="data">
+                    <div class="form-group yeats-form-group mt-3 ">
+                      <label class="formLabel yeats-form-label"
+                        >Current Assignees</label
+                      >
+                      <p-listbox
+                        [options]="current_assignees"
+                        optionLabel="fullName"
+                        [listStyle]="{ 'max-height': '100px' }"
+                      ></p-listbox>
+                    </div>
+                  </div>
+                  <div
+                    class="col-lg-12 mt-2"
+                    *ngIf="data.Status !== 'Completed'"
+                  >
+                    <p-pickList
+                      [source]="users"
+                      [target]="usersAssign"
+                      [disabled]="!roleUsersEnabled"
+                      sourceHeader="Users"
+                      targetHeader="Users to Assign"
+                    >
+                      <ng-template let-item pTemplate="item">
+                        <div
+                          class="ui-helper-clearfix"
+                          style="font-size: 12px;"
+                        >
+                          {{ item.firstName }} {{ item.lastName }}
+                        </div>
+                      </ng-template>
+                    </p-pickList>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+          <div class="card border-0 box-shadow cardMargin">
+            <div class="card-header transparent border-0 text-muted">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-lg-12 col-md-12 col-sm-12">
+                    <b>Details</b>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="form-group yeats-form-group ">
+                      <label class="formLabel yeats-form-label"
+                        >Start<span class="required">*</span></label
+                      >
+                      <p-calendar
+                        class="yeats-form-control"
+                        [showIcon]="true"
+                        [(ngModel)]="start_date"
+                        [showTime]="true"
+                        (onSelect)="onChangeDate(start_date)"
+                        [disabled]="data.Status === 'Completed'"
+                      >
+                      </p-calendar>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="form-group yeats-form-group ">
+                      <label class="formLabel yeats-form-label"
+                        >End<span class="required">*</span></label
+                      >
+                      <p-calendar
+                        class="yeats-form-control"
+                        [showIcon]="true"
+                        [(ngModel)]="end_date"
+                        [showTime]="true"
+                        class="csdatepicker"
+                        [disabled]="data.Status === 'Completed'"
+                      >
+                      </p-calendar>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6" *ngIf="!data">
+                    <label class="yeats-form-label">Subject</label>
+                    <input
+                      type="text"
+                      pInputText
+                      class="form-control yeats-form-control"
+                      [(ngModel)]="subject_data"
+                    />
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6" *ngIf="!data">
+                    <div class="form-group yeats-form-group">
+                      <label class="formLabel yeats-form-label"> &nbsp;</label>
+                      <p-checkbox
+                        class="yeats-form-control"
+                        label="Patient Request"
+                        [(ngModel)]="patient_req"
+                      >
+                      </p-checkbox>
+                    </div>
+                  </div>
+                  <div class="col-lg-12 col-md-12 col-sm-12">
+                    <label class="formLabel yeats-form-label"
+                      >Message Text<span class="required">*</span></label
+                    >
+                    <div
+                      class="col-lg-12 col-md-12 col-sm-12 text-area"
+                      autoResize="autoResize"
+                      *ngIf="data"
+                    >
+                      <span *ngFor="let msgs of chatList">
+                        <div class="chat-view" style="display:block">
+                          <span style="margin-left: 10px;color: #00008b;">{{
+                            msgs.PostedByUser
+                          }}</span
+                          ><br />
+                          <span style="margin-left: 4px;">{{
+                            msgs.Comment
+                          }}</span
+                          ><br />
+                          <span class="pull-right">{{
+                            msgs.DateCreated | date: "dd/MM/yyyy HH:mm a"
+                          }}</span>
+                        </div>
+                        <br />
+                      </span>
+                    </div>
+                    <div
+                      class="col-lg-12 col-md-12 col-sm-12"
+                      autoResize="autoResize"
+                    >
+                      <textarea
+                        class="chat-view"
+                        [(ngModel)]="send_reply"
+                        *ngIf="!data"
+                        style="height: 212px;width:100%"
+                      >
+                      </textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="card-body"
+                *ngIf="data && data.Status !== 'Completed'"
+              >
+                <label>Reply</label>
+                <input
+                  type="text"
+                  pInputText
+                  class="form-control yeats-form-control"
+                  [(ngModel)]="send_reply"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 mt-2">
+          <button
+            pButton
+            class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2"
+            (click)="closeModal()"
+          >
+            Cancel
+          </button>
+          <button
+            pButton
+            class="yeats-btn yeats-btn-primary pull-right ml-2"
+            *ngIf="data && data.Status !== 'Completed'"
+            (click)="markAsCompleted()"
+          >
+            Mark as Completed
+          </button>
+          <button
+            pButton
+            class="yeats-btn yeats-btn-primary pull-right ml-2"
+            [disabled]="usersAssign.length <= 0"
+            *ngIf="data && data.Status !== 'Completed'"
+            (click)="forwardMessages()"
+          >
+            Forward
+          </button>
+          <button
+            pButton
+            class="yeats-btn yeats-btn-primary pull-right"
+            (click)="sendMessages()"
+            *ngIf="data.Status !== 'Completed'"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12">
+            <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2" (click)="closeModal()">Cancel</button>
+            <button pButton  class="yeats-btn yeats-btn-primary pull-right ml-2" *ngIf="data && data.Status !== 'Completed'" (click)="markAsCompleted()">Mark as Completed</button>
+            <button pButton  class="yeats-btn yeats-btn-primary pull-right ml-2" [disabled]="usersAssign.length <= 0" *ngIf="data && data.Status !== 'Completed'" (click)="forwardMessages()">Forward</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right" (click)="sendMessages()" *ngIf="data.Status !== 'Completed'">Save</button>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<!-- <p-dialog [contentStyle]="{'height': '30%'; 'width' : '30%'}" appendTo="body" header="Add " [(visible)]="visible" modal="modal" responsive="true">
+        <p>Some content....</p>
+            <p-footer>
+                    <button type="button" pButton  (click)="visible=false" ><i class="fa fa-close"></i> Close</button>
+                    <button type="button" pButton  (click)="visible=false" ><i class="fa fa-check"></i> Add</button>
+            </p-footer>
+    </p-dialog> -->
+
+<div class="addMessage" *ngIf="viewDoc">
+  <div class="modal-header">
+    <h5 class="modal-title">View Document</h5>
+    <button
+      type="button"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+      (click)="activeModal.close('Close click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <div>
+          <button
+          pButton
+          class="yeats-btn yeats-btn-primary pull-right"   
+          (click)="reviewDoc()"
+        >
+          Review
+        </button>
+          <iframe *ngIf="docResult" width="100%" height="400vh" [src]="docResult">
+            </iframe>
+      </div>
+    </div>
+    <div class="modal-footer">
+        <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+          (click)="activeModal.close('Close click')">
+          Close
+        </button>
+      </div>
+  
+</div>

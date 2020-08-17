@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-lg-12">
+    <li class="categoryName" *ngFor="let item of reportCate" (click)="categoryNameSelection(item)">{{item.ReportCategoryName}}</li>
+</div>
+</div>
+<div class="row">
+    <div class="col-lg-12" *ngIf="reportShow">
+            <!-- <button  pButton class="yeats-btn yeats-btn-secondary ui-button-secondary" (click)="showReports()">Show Reports</button> -->
+            <div class="form-group yeats-form-group reportsName"  *ngFor="let rowData of reportName">
+                    <!-- <label class="formLabel yeats-form-label">&nbsp;</label>
+                    <p-dropdown [(ngModel)]="selectedReport" class="ml-3"
+                        [options]="report" optionLabel="name" 
+                        (onChange)="showReports()">
+                    </p-dropdown> -->
+                    <p-radioButton  value="{{rowData.ReportId}}" label="{{rowData.ReportName}}" [(ngModel)]="selectedValue" (onClick)="showReports(rowData)"></p-radioButton>
+                </div>
+    </div>
+</div>
+    <div style=" width: 100%;padding: 0px 12px" name="X-Frame-Options" value="sameorigin" [ngStyle]="{ 'height': (screenHeight-150)+ 'px' }" #reportContainer></div>

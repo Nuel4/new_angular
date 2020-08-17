@@ -1,0 +1,444 @@
+<p-panel header="Patient Guarantor Details" [style]="{'margin-bottom':'20px'}">
+<button (click)="backtoHome()">Back</button>
+<div class="ui-g">
+  <!-- <div class="ui-g-12 ui-md-6 ui-lg-3">
+    <span class="ui-float-label">
+      <input id="patuniqueno" type="text" size="25" pInputText>
+      <label for="patuniqueno">Patient Unique Number</label>
+    </span>
+  </div> -->
+  <div class="ui-g-12 ui-md-6 ui-lg-3">
+    <span>SSN  </span> 
+    <p-inputMask mask="999-99-9999" placeholder="999-99-9999"></p-inputMask>
+  </div>
+  <div class="ui-g-12 ui-md-6 ui-lg-3">
+    <span class="ui-float-label">
+      <input id="firstname" type="text" size="25" pInputText>
+      <label for="firstname">First Name</label>
+    </span>
+  </div>
+  <div class="ui-g-12 ui-md-6 ui-lg-3">
+    <span class="ui-float-label">
+      <input id="middlename" type="text" size="25" pInputText>
+      <label for="middlename">Middle Name</label>
+    </span>
+  </div>
+</div>
+
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-6 ui-lg-4">
+    <span class="ui-float-label">
+      <input id="lastname" type="text" size="25" pInputText>
+      <label for="lastname">Last Name</label>
+    </span>
+  </div>
+  <div class="ui-g-12 ui-md-6 ui-lg-4">
+    <span>Date of Birth </span>
+    <p-calendar appendTo="body" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2030" [inputStyle]="{'width':'150px'}"
+      [showIcon]="true"> </p-calendar>
+  </div>
+</div>
+
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-6 ui-lg-4">
+    <select class="custom-select" name="guarantorRealtionship" required>
+      <option value="">-- Relationship --</option>
+      <option *ngFor="let guarantorRealtionship of guarantorRealtionship" [value]="guarantorRealtionship.GuarantorRealtionshipId">{{guarantorRealtionship.GuarantorRealtionshipValue}}</option>
+    </select>
+  </div>
+  <div class="ui-g-12 ui-md-6 ui-lg-4">
+    <select class="custom-select" name="gurantorOtherLang1">
+      <option value="">-- Select Other Language1 --</option>
+      <option *ngFor="let gurantorOtherLang1 of gurantorOtherLang1" [value]="gurantorOtherLang1.GurantorOtherLang1Id">{{gurantorOtherLang1.GurantorOtherLang1Value}}</option>
+    </select>
+  </div>
+</div>
+
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-6 ui-lg-4">
+    <select class="custom-select" name="gurantorOtherLang2" required>
+      <option value="">-- Select Other Language2 --</option>
+      <option *ngFor="let gurantorOtherLang2 of gurantorOtherLang2" [value]="gurantorOtherLang2.GurantorOtherLang2Id">{{gurantorOtherLang2.GurantorOtherLang2Value}}</option>
+    </select>
+  </div>
+  <div class="ui-g-12 ui-md-6 ui-lg-4">
+    <select class="custom-select" name="guarantorRealtionship" required>
+      <option value="">-- Main Language --</option>
+      <option *ngFor="let gurantorMainLang of gurantorMainLang" [value]="gurantorMainLang.GurantorMainLangId">{{gurantorMainLang.GurantorMainLangValue}}</option>
+    </select>
+    <p-checkbox name="ReqlangIntep" value="ReqlangIntep" label="Require language Inteperter" inputId="ReqlangIntep"></p-checkbox>
+  </div>
+</div>
+
+<!-- <style type="text/css">
+  .ui-fieldset .ui-fieldset-legend {
+    padding: .75px .75px !important;
+  }
+</style> -->
+
+<p-fieldset legend="Primary Details">
+
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-6 ui-lg-4">
+    <span class="ui-float-label">
+      <input id="PrimAdd1" type="text" size="25" pInputText>
+      <label for="Address1">Address1</label>
+    </span>
+  </div>
+  <div class="ui-g-12 ui-md-6 ui-lg-4">
+    <span class="ui-float-label">
+      <input id="PrimAdd2" type="text" size="25" pInputText>
+      <label for="Address2">Address2</label>
+    </span>
+  </div>
+</div>
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-6 ui-lg-4">
+    <span class="ui-float-label">
+      <input id="city" type="text" size="25" pInputText>
+      <label for="city">City</label>
+    </span>
+  </div>
+  <div class="ui-g-12 ui-md-6 ui-lg-4">
+    <span class="ui-float-label">
+      <select class="custom-select" name="primstate" required>
+        <option value="">-- Primary State--</option>
+        <option *ngFor="let primState of primState" [value]="primState.GurantorPrimStateId">{{primState.GurantorPrimStateValue}}</option>
+      </select>
+    </span>
+  </div>
+</div>
+
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-6 ui-lg-4">
+    <span>ZipCode </span>
+    <p-inputMask mask="99999-9999" placeholder="99999-9999"></p-inputMask>
+  </div>
+  <div class="ui-g-12 ui-md-6 ui-lg-4">
+
+  </div>
+</div>
+</p-fieldset>
+<p-fieldset legend="Secondary Details">
+
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-6 ui-lg-4">
+      <span class="ui-float-label">
+        <input id="SecAdd1" type="text" size="25" pInputText>
+        <label for="Sec Address1">Address1</label>
+      </span>
+    </div>
+    <div class="ui-g-12 ui-md-6 ui-lg-4">
+      <span class="ui-float-label">
+        <input id="SecAdd2" type="text" size="25" pInputText>
+        <label for="Sec Address2">Address2</label>
+      </span>
+    </div>
+  </div>
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-6 ui-lg-4">
+      <span class="ui-float-label">
+        <input id="seccity" type="text" size="25" pInputText>
+        <label for="seccity">City</label>
+      </span>
+    </div>
+    <div class="ui-g-12 ui-md-6 ui-lg-4">
+      <span class="ui-float-label">
+        <select class="custom-select" name="guarantorRealtionship" required>
+          <option value="">-- Secondary State--</option>
+          <option *ngFor="let secState of secState" [value]="secState.SecStateId">{{secState.SecStateValue}}</option>
+        </select>
+      </span>
+    </div>
+  </div>
+
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-6 ui-lg-4">
+      <span> ZipCode </span>
+      <p-inputMask mask="99999-9999" placeholder="99999-9999"></p-inputMask>
+    </div>
+    <div class="ui-g-12 ui-md-6 ui-lg-4">
+
+    </div>
+  </div>
+</p-fieldset>
+
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-6 ui-lg-4">
+    <span> Work Phone </span>
+    <p-inputMask mask="999-999-9999" placeholder="999-999-9999"></p-inputMask>
+  </div>
+  <div class="ui-g-12 ui-md-6 ui-lg-4">
+    <span> Fax </span>
+    <p-inputMask mask="999-999-9999" placeholder="999-999-9999"></p-inputMask>
+  </div>
+</div>
+
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-6 ui-lg-4">
+    <span> Home Phone </span>
+    <p-inputMask mask="999-999-9999" placeholder="999-999-9999"></p-inputMask>
+  </div>
+  <div class="ui-g-12 ui-md-6 ui-lg-4">
+    <span class="ui-float-label">
+      <input id="email1" type="text" size="25" pInputText>
+      <label for="email1">Email1</label>
+    </span>
+  </div>
+</div>
+
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-6 ui-lg-4">
+    <span> Cell Phone </span>
+    <p-inputMask mask="999-999-9999" placeholder="999-999-9999"></p-inputMask>
+  </div>
+  <div class="ui-g-12 ui-md-6 ui-lg-4">
+    <span class="ui-float-label">
+      <input id="email2" type="text" size="25" pInputText>
+      <label for="email2">Email2</label>
+    </span>
+  </div>
+</div>
+
+
+
+
+</p-panel>
+
+
+<!-- <div class="card-block widget-body">
+
+
+  <form>
+    <div class="row">
+      <div class="form-group col-lg-3 col-sm-6 col-6">
+        <div class="form-group">
+          <select class="custom-select" name="PatientStatus" required>
+            <option value="">-- Select Existing Gurantor --</option>
+            <option *ngFor="let existinggurantor of existingGurantor" [value]="existinggurantor.GurantorId">{{existinggurantor.GurantorValue}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group col-lg-3 col-sm-6 col-6">
+        <div class="form-group">
+          <button type="button" class="btn btn-sm btn-primary">Import Patient</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="form-group col-lg-3 col-sm-6 col-6">
+        <select class="custom-select" name="SalutationId" required>
+          <option value="">-- Saluatation --</option>
+          <option *ngFor="let guarnatorSalutation of gurantorSalutation" [value]="guarnatorSalutation.GurantorSalutationId">{{guarnatorSalutation.GurantorSalutationValue}}</option>
+        </select>
+      </div>
+      <div class="form-group  col-lg-3 col-sm-5 col-6">
+        <div class="form-group">
+          <input type="text" class="form-control" name="guartSSN" placeholder="Guarntor SSN" id="guartSSN">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-lg-3 col-sm-6 col-12">
+        <input type="text" class="form-control" name="LastName" placeholder="Last Name" id="LastName">
+      </div>
+      <div class="form-group col-lg-3 col-sm-6 col-12">
+        <input type="text" class="form-control" name="FirstName" placeholder="First Name" id="FirstName">
+      </div>
+      <div class="form-group col-lg-3 col-sm-6 col-12">
+        <input type="text" class="form-control" name="MiddleName" id="Middle Name" placeholder="MiddleName">
+      </div>
+      <div class="form-group col-lg-3 col-sm-6 col-12">
+        <label> Gender </label>
+        <p-radioButton name="groupname" value="val1" label="Male"></p-radioButton>
+        <p-radioButton name="groupname" value="val2"  label="Female"></p-radioButton>
+      </div>
+    </div> -->
+    <!--end of Last name row-->
+
+    <!-- <div class="row">
+
+      <div class="form-group col-xl-3 col-lg-3 col-sm-3 col-3">
+        <p-calendar placeholder = "DateOfBirth" [showIcon]="true"></p-calendar>
+      </div>
+
+      <div class="form-group col-xl-3 col-lg-3 col-sm-3 col-3">
+        <select class="custom-select" name="guarantorRealtionship" required>
+          <option value="">-- Relationship --</option>
+          <option *ngFor="let guarantorRealtionship of guarantorRealtionship" [value]="guarantorRealtionship.GuarantorRealtionshipId">{{guarantorRealtionship.GuarantorRealtionshipValue}}</option>
+        </select>
+      </div>
+
+      <div class="form-group col-xl-3 col-lg-3 col-sm-3 col-3" required>
+        <select class="custom-select" name="gurantorOtherLang1">
+          <option value="">-- Select Other Language1 --</option>
+          <option *ngFor="let gurantorOtherLang1 of gurantorOtherLang1" [value]="gurantorOtherLang1.GurantorOtherLang1Id">{{gurantorOtherLang1.GurantorOtherLang1Value}}</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <div class="form-group col-xl-3 col-lg-3 col-sm-3 col-4">
+        <select class="custom-select" name="gurantorOtherLang2" required>
+          <option value="">-- Select Other Language2 --</option>
+          <option *ngFor="let gurantorOtherLang2 of gurantorOtherLang2" [value]="gurantorOtherLang2.GurantorOtherLang2Id">{{gurantorOtherLang2.GurantorOtherLang2Value}}</option>
+        </select>
+      </div>
+
+
+            <div class= "form-group col-xl-3 col-lg-3 col-sm-3 col-4">
+              <select class="custom-select" name="guarantorRealtionship" required>
+                <option value="">-- Main Language --</option>
+                <option *ngFor="let gurantorMainLang of gurantorMainLang" [value]="gurantorMainLang.GurantorMainLangId">{{gurantorMainLang.GurantorMainLangValue}}</option>
+              </select>
+            </div>
+            <div class="form-group col-xl-3 col-lg-3 col-sm-3 col-4">
+                  <p-checkbox label="Require Language Interpreter" binary="false"></p-checkbox>
+             </div>
+            </div>
+
+
+    <div id="accordion" role="tablist" aria-multiselectable="true">
+
+        <div class="row">
+          <div class="form-group col-xl-3 col-lg-3 col-sm-3 col-4">
+            <label> PRIMARY ADDRESS </label>
+          </div>
+        </div>
+            <div class="row">
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                <input type="text" class="form-control" name="patAddress1" placeholder="Address1" id="patAddress1" >
+              </div>
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                <input type="text" class="form-control" name="patAddress1" placeholder="Address2" id="patAddres2">
+              </div>
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                <input type="text" class="form-control" name="PrimCity" id="PrimCity" placeholder="City">
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                  <select class="custom-select" name="guarantorRealtionship" required>
+                    <option value="">-- Primary State--</option>
+                    <option *ngFor="let primState of primState" [value]="primState.GurantorPrimStateId">{{primState.GurantorPrimStateValue}}</option>
+                  </select>
+              </div>
+
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                <input type="text" class="form-control" name="ZipCode" title="Primary Zip Code" placeholder="Zip Code" >
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-xl-3 col-lg-3 col-sm-3 col-4">
+                <label> SECONDARY ADDRESS </label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                <input type="text" class="form-control" name="SecPatAddress1" placeholder="Address1" id="patAddress1">
+              </div>
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                <input type="text" class="form-control" name="SecPatAddress1" placeholder="Address2" id="patAddres2">
+              </div>
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                <input type="text" class="form-control" name="SecCity" id="SecCity" placeholder="City">
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                <select class="custom-select" name="guarantorRealtionship" required>
+                  <option value="">-- Primary State--</option>
+                  <option *ngFor="let secState of secState" [value]="secState.SecStateId">{{secState.SecStateValue}}</option>
+                </select>
+              </div>
+
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                <input type="text" class="form-control" name="SecZipCode" title="Secondary Zip Code" placeholder="Zip Code">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                <input type="text" class="form-control" name="Work Phone" placeholder="Work Phone">
+
+              </div>
+
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                <input type="text" class="form-control" name="HomePhone" placeholder="Home Phone">
+              </div>
+
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                <input type="text" class="form-control" name="CellPhone" placeholder="Cell Phone">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                <input type="text" class="form-control" name="AltPhone" placeholder="Alternate Phone">
+              </div>
+
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                <input type="text" class="form-control" name="Fax" placeholder="Fax">
+              </div>
+
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                <input type="text" class="form-control" name="Email1" placeholder="Email1">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-lg-3 col-sm-6 col-12" >
+                <input type="text" class="form-control" name="Email2" placeholder="Email2" >
+              </div>
+
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                <select class="custom-select" name="guarantorRealtionship" required>
+                  <option value="">-- Occupation--</option>
+                  <option *ngFor="let gurantorOccup of gurantorOccup" [value]="gurantorOccup.OccupId">{{gurantorOccup.OccupValue}}</option>
+                </select>
+              </div>
+
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                  <label>Photo Image   </label>
+                  <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+                  <button class="btn btn-secondary" type="button" (click)="fileInput.click()" #input>Add</button> -->
+                  <!-- <button class="btn btn-secondary" ng-click="angular.copy(files)" type="reset">Remove</button> -->
+              <!-- </div>
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                <button class="btn btn-secondary" ng-click="angular.copy(files)" type="reset">Remove</button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                <input type="text" class="form-control" name="GeneralComments" placeholder="General Comments">
+              </div>
+            </div>
+
+          </div> -->
+          <!--end of card block-->
+
+
+    <!-- <div class="row">
+
+      <div class="col-xl-6 col-lg-6 col-sm-6 col-12">
+        <button type="button" class="btn btn-sm btn-primary" >Save</button>
+        <button type="button" class="btn btn-sm btn-primary">Save and Close</button>
+        <button type="button" class="btn btn-sm btn-primary" >Cancel</button>
+      </div>
+    </div>
+
+  </form>
+</div> -->

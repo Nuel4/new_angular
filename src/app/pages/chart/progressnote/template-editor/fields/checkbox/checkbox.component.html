@@ -1,0 +1,8 @@
+<div class="col-4">
+  <div class="form-group yeats-form-group " [formGroup]="group">
+    <label class="formLabel yeats-form-label"> {{field.label?field.label:''}} </label><br>
+    <p-checkbox class="yeats-form-control ml-1" [formControlName]="opt.MrFormFieldValueId" [inputId]="opt.MrFormFieldValueId"
+      [name]="opt.MrFormFieldValueId" (onChange)="checkboxEvent($event)" *ngFor="let opt of field.options; let i = index" [label]="opt.ValueOption" [value]="opt.ValueOption">
+    </p-checkbox>
+  </div>
+</div>

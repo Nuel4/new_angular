@@ -1,0 +1,71 @@
+<div class="appointment-calendar">
+  <div *ngIf="toWorkSpace">
+    <app-widget-header [widgetData]="widgetData" (refreshWidget)="refreshData()"></app-widget-header>
+  </div>
+  <div class="gridster-item-content">
+    <div [class]="toWorkSpace?'widget-container':''">
+      <!-- <div class="card border-0 box-shadow  cardMargin" *ngIf="isChkVal">
+        <div class="card-header transparent border-0 text-muted">
+          <div class="card-body"> -->
+            <div *ngIf="workspaceHead" class="row">
+              <div class="col-md-3" style="margin-top:-5px !important">
+                <div class="form-group yeats-form-group ">
+                  <label class="formLabel yeats-form-label">Facility<span class="required">*</span></label>
+                  <p-dropdown [options]="facilityList" [(ngModel)]="selectedFacility" placeholder="Select Facility"
+                    optionLabel="name" [showClear]="true" (onChange)="getUsers(selectedFacility.id)">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="col-md-3" style="margin-top:-5px !important">
+                <div class="form-group yeats-form-group ">
+                  <label class="formLabel yeats-form-label">User<span class="required">*</span></label>
+                  <p-dropdown [options]="usersList" [(ngModel)]="selectedUser" placeholder="Select User"
+                    optionLabel="fullName" [showClear]="true" (onChange)="loadAppointments()">
+                  </p-dropdown>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!workspaceHead" class="row">
+              <div class="col-md-6">
+                <div class="form-group yeats-form-group ">
+                  <!-- <label class="formLabel yeats-form-label">Facility<span class="required">*</span></label> -->
+                  <p-dropdown [options]="facilityList" [(ngModel)]="selectedFacility" placeholder="Select Facility"
+                    optionLabel="name" [showClear]="true" (onChange)="getUsers()">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group yeats-form-group ">
+                  <!-- <label class="formLabel yeats-form-label">User<span class="required">*</span></label> -->
+                  <p-dropdown [options]="usersList" [(ngModel)]="selectedUser" placeholder="Select User"
+                    optionLabel="fullName" [showClear]="true" (onChange)="loadAppointments()">
+                  </p-dropdown>
+                </div>
+              </div>
+            </div>
+          <!-- </div>
+        </div>
+      </div> -->
+      <div class="card border-0 box-shadow calendarHeight cardMargin">
+        <div class="card-header transparent border-0 text-muted" style="height:100%">
+          <div class="card-body calendarTable" style="height:100%">
+            <div id="calendar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="modal fade bd-example-modal-sm" id="inlineCalendar" tabindex="-1" role="dialog"
+    aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content" style="background-color: #fff0;border: none;">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <p-calendar [(ngModel)]="gotoDate" [inline]="true" (onSelect)="moveToDate()"></p-calendar>
+      </div>
+    </div>
+  </div> -->
+</div>
+
+<div id="date"></div>

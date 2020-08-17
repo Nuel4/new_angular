@@ -1,0 +1,534 @@
+<div class="card-block settings" style="top:-40px !important">
+  <div class="modal-content">
+    <div widget class="card border-0 box-shadow">
+      <div class="modal-header">
+        <h4 class="modal-title" style="margin-left: .5rem;">
+          <i class="fa fa-arrow-left" style="color:#fff;" (click)="reset()"></i><span
+            style="margin-left: .5rem;">Patient Action</span>
+        </h4>
+      </div>
+      <div class="card-block widget-body">
+        <div class="row">
+          <div class="col">
+            <div class="row">
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label>
+                  <H5><u> Personal Details </u> </H5>
+                </label>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label>
+                  <H5> <u> Address </u> </H5>
+                </label>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label>
+                  <H5><u> Insurance Details(Primary) </u> </H5>
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div *ngIf="patient_details" class=" col-lg-3 col-sm-6 col-12">
+                <label class="lable-size">Name: {{ patient_details.patientname }}</label>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label class="lable-size">
+                  Address: {{ patient_details.primaryaddressline1 }}
+                  {{ patient_details.primaryaddressline1
+                    }}{{ patient_details.primaryaddressline2 }}
+                  {{ patient_details.primarycity }}
+                  {{ patient_details.primarystate }}
+                  {{ patient_details.primaryzipcode }}
+                </label>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label class="lable-size">
+                  Provider: {{ patient_details.primaryinsurancename }}
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-3 col-sm-6 col-12">
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label class="lable-size">
+                  Policy No: {{ patient_details.primaryinsurancepolicynumber }}
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label class="lable-size">DOB:
+                  {{ patient_details.patientdateofbirth | date: "dd/MM/yyyy" }}
+                </label>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label class="lable-size">
+                  Cell: {{ patient_details.patientmobilephone }}
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label class="lable-size">
+                  Age: {{ patient_details.date }}
+                </label>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12"></div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label class="lable-size">
+                  Home Phone Number:
+                  {{ patient_details.patienthomephone }}</label>
+              </div>
+            </div>
+            <div class="row">
+              <div [ngSwitch]="patient_details.sex" class="col-lg-3 col-sm-6 col-12">
+                <div *ngSwitchCase="true">
+                  <label class="lable-size">Sex: Male </label>
+                </div>
+                <div *ngSwitchCase="false">
+                  <label class="lable-size">Sex: Female </label>
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12"></div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <label class="lable-size">
+                  Work Phone Number:
+                  {{ patient_details.patientworkphone }}</label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-3 col-sm-6 col-12">
+                <a (click)="opneEditPatient(patient_details)" class="lable-size">Edit Patient Details</a>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+                <div class="input-group"></div>
+              </div>
+              <div class="col-lg-3 col-sm-6 col-12">
+              </div>
+              <div class="form-group col-lg-3 col-sm-6 col-12">
+                <div class="input-group">
+                  <button pButton class="yeats-btn yeats-btn-primary ml-3" data-toggle="tooltip" data-placement="top"
+                    title="Refresh Waiting Room" data-animation="false" (click)="ngOnInit()">
+                    <i class="fa fa-refresh"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group yeats-form-group col-lg-2 col-sm-2 col-12">
+                <label class="formLabel yeats-form-label">&nbsp;</label>
+                <button *ngIf="!myQueue" pButton class="yeats-btn yeats-btn-primary ml-3 mb-3"
+                  [disabled]="enableButtons" (click)="onToggleQueue(!myQueue)">
+                  My Queue
+                </button>
+                <button *ngIf="myQueue" pButton class="yeats-btn yeats-btn-primary ml-3 mb-3"
+                  (click)="onToggleQueue(!myQueue)">
+                  All Queue
+                </button>
+              </div>
+              <div class="form-group yeats-form-group col-lg-3 col-sm-3 col-12">
+                <label class="formLabel yeats-form-label">&nbsp;</label>
+                <p-calendar [showIcon]="true" [(ngModel)]="selected_date" [monthNavigator]="true" [yearNavigator]="true"
+                  yearRange="1900:2030" (onSelect)="onDateSelection()"></p-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p-tabView (onChange)="SelectedTab($event)">
+            <p-tabPanel *ngFor="let headerName of tabLabel; let i = index" header="{{ headerName.name }}"
+              class="board-height">
+              <div class="row" *ngIf="i === 0">
+                <label class="ml-3" style="margin-top: 0.3rem;">Confirmation Status</label>
+                <p-dropdown class="dropdown ml-3" [options]="ConfirmationList" placeholder="Confirmation Status"
+                  optionLabel="name" [showClear]="true" [(ngModel)]="selectedConfirmation" (onChange)="getFilterdData()">
+                </p-dropdown>
+              </div>
+              <div class="row" *ngIf="i === 1">
+                <label class="ml-3" style="margin-top: 0.3rem;">Status</label>
+                <p-dropdown class="dropdown ml-3" [options]="StatusList" placeholder="Status" optionLabel="name"
+                  [showClear]="true" [(ngModel)]="selectedStatus" (onChange)="getReminders()">
+                </p-dropdown>
+              </div>
+              <div class="yeats-tables">
+                <p-table [columns]="cols" [value]="patient_documents_list" rowExpandMode="single"
+                  dataKey="appointmentstarttime">
+                  <ng-template pTemplate="header" let-columns>
+                    <tr>
+                      <th style="width: 3%;" *ngIf="patient_documents_list.length > 0"></th>
+                      <th *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pEditableColumn
+                        (click)="openFilter(i)">
+                        <span *ngIf="headerIndex !== i">{{ col.header }}</span><span
+                          *ngIf="headerIndex === i && !col.filter">{{
+                            col.header
+                          }}</span>
+                        <i class="fa fa-filter" *ngIf="headerIndex !== i && col.filter"></i>
+                        <p-cellEditor *ngIf="col.filter">
+                          <ng-template pTemplate="input">
+                            <input pInputText type="text" placeholder="{{ col.header }}" (keyup)="
+                                  filterTableData($event.target.value, col.field)
+                                " style="width:100%; height: 75%;" />
+                          </ng-template>
+                        </p-cellEditor>
+                      </th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+                    <tr [pSelectableRow]="rowData" (click)="onSelectedRow(rowData)">
+                      <td *ngIf="patient_documents_list.length > 0">
+                        <a *ngIf="i === 0" style="padding-left:10px" href="#" [pRowToggler]="rowData" (click)="!expanded 
+                            ? onExpand(rowData) : ''">
+                          <i [ngClass]="
+                                expanded
+                                  ? 'pi pi-chevron-down'
+                                  : 'pi pi-chevron-right'
+                              "></i>
+                        </a>
+                      </td>
+                      <td *ngFor="let col of columns">
+                        <span *ngIf="col.field === 'eligibility'">
+                          <button pButton class="yeats-btn yeats-btn-primary"
+                            style="min-width: 2.7rem;padding: 0px !important" (click)="verifyEligibility(rowData)">
+                            verify
+                          </button>
+                        </span>
+                        <span>{{
+                            rowData[col.field]
+                          }}</span>
+                        <span *ngIf="col.field === 'Reason'" class="tooltip">
+                          <i class="fa fa-info-circle" placement="right" style="cursor:pointer;" aria-hidden="true"
+                            (mouseenter)="toggleTooltip('reason',true)" (mouseleave)="toggleTooltip('reason',false)">
+                            <span class="tooltiptext" *ngIf="isReasonToolTipVisible">
+                              <label style="list-style:none">
+                                {{rowData.CallReason}}
+                              </label>
+                            </span>
+                          </i>
+                        </span>
+                        <span *ngIf="col.field === 'Note'" class="tooltip" (click)="openReminderModal(rowData)">
+                          <i class="fa fa-file" placement="right" style="cursor:pointer;" aria-hidden="true"
+                            (mouseenter)="toggleTooltip('notes',true)" (mouseleave)="toggleTooltip('notes',false)" >
+                            <span class="tooltiptext" *ngIf="isNoteToolTipVisible">
+                              <label style="list-style:none">
+                                {{rowData.Notes}}
+                              </label>
+                            </span>
+                          </i>
+                        </span>
+                        <span *ngIf="col.field === 'Done'">
+                          <i class="fa fa-arrow-right" (click)="CloseReminder(rowData)"></i>
+                        </span>
+                      </td>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns" *ngIf="i === 0">
+                    <tr>
+                      <td [attr.colspan]="columns.length + 2">
+                        <p-tabView>
+                          <p-tabPanel header="Patient Info">
+                            <div class="ui-g ui-fluid">
+                              <div class="ui-g-12 ui-md-2 ml-4">
+                                <img [attr.alt]="rowData.Name" src="rowData.PhotoImage"
+                                  *ngIf="!rowData.PhotoImage==''" />
+                                <img [attr.alt]="rowData.Name" src="../../../../assets/img/user.svg"
+                                  *ngIf="rowData.PhotoImage==''" class="userIcon" />
+                              </div>
+                              <div class="ui-g-12 ui-md-9" style="font-size:12px;">
+                                <div class="ui-g mt-1">
+                                  <div class="ui-g-3">
+                                    <b>Patient Id :</b>
+                                    <p *ng></p>{{ rowData.PatientId }}
+                                  </div>
+                                  <div class="ui-g-3">
+                                    <b>Patient Name :</b> {{ rowData.Name }}
+                                  </div>
+                                  <div class="ui-g-3">
+                                    <b>Date of birth :</b> {{ rowData.DateOfBirth }}
+                                  </div>
+                                  <div class="ui-g-3 "><b>Sex :</b> {{ rowData.gender }}</div>
+                                  <div class="ui-g-3"><b>Phone :</b> {{ rowData.phoneNo }}</div>
+                                  <div class="ui-g-3"><b>Address:</b>{{rowData.Address}}</div>
+                                  <div class="ui-g-3"><b>Email:</b>{{rowData.Email1}}</div>
+                                </div>
+                              </div>
+                            </div>
+                          </p-tabPanel>
+                          <p-tabPanel header="Insurance">
+                            <div *ngIf="showInsurance" class="ui-g ui-fluid" style="font-size:12px;">
+                              <div class="ui-g-12 ui-md-12">
+                                <div class="ui-g-4">
+                                  <b><u>Primary Insurance</u></b>
+                                  <div class="ui-g mt-2">
+                                    <div class="ui-g">
+                                      <b>Insurance Name:</b>
+                                    </div>
+                                  </div>
+                                  <div class="ui-g mt-3">
+                                    <div class="ui-g">
+                                      <b>Policy Number:</b>
+                                    </div>
+                                  </div>
+
+                                </div>
+                                <div class="ui-g-4">
+                                  <b><u>Secondary Insurance</u></b>
+                                  <div class="ui-g mt-2">
+                                    <div class="ui-g">
+                                      <b>Insurance Name:</b>
+                                    </div>
+                                  </div>
+                                  <div class="ui-g mt-3">
+                                    <div class="ui-g">
+                                      <b>Policy Number:</b>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="ui-g-4">
+                                  <b><u>Tertiary Insurance</u></b>
+                                  <div class="ui-g mt-2">
+                                    <div class="ui-g">
+                                      <b>Insurance Name:</b>
+                                    </div>
+                                  </div>
+                                  <div class="ui-g mt-3">
+                                    <div class="ui-g">
+                                      <b>Policy Number:</b>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="ui-g ui-fluid" style="font-size:12px;" *ngFor="let patient of patientInsurance">
+                              <div class="ui-g-12 ui-md-12">
+                                <div class="ui-g-4">
+                                  <b>Primary Insurance</b>
+                                  <div class="ui-g mt-2">
+                                    <div class="ui-g">
+                                      <b>Insurance Name:</b>&nbsp;<p *ngIf="patient.order == 1">
+                                        {{patient.insurancename}}</p>
+                                    </div>
+                                  </div>
+                                  <div class="ui-g mt-3">
+                                    <div class="ui-g">
+                                      <b>Policy Number:</b>&nbsp;<p *ngIf="patient.order == 1">
+                                        {{patient.insurancepolicynumber}}</p>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="ui-g-4">
+                                  <b>Secondary Insurance:</b>
+                                  <div class="ui-g mt-2">
+                                    <div class="ui-g">
+                                      <b>Insurance Name:</b>&nbsp;<p *ngIf="patient.order == 2">
+                                        {{patient.insurancename}}</p>
+                                    </div>
+                                  </div>
+                                  <div class="ui-g mt-3">
+                                    <div class="ui-g">
+                                      <b>Policy Number:</b>&nbsp;<p *ngIf="patient.order == 2">
+                                        {{patient.insurancepolicynumber}}</p>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="ui-g-4">
+                                  <b>Tertiary Insurance:</b>
+                                  <div class="ui-g mt-2">
+                                    <div class="ui-g">
+                                      <b>Insurance Name:</b>&nbsp;<p *ngIf="patient.order == 3">
+                                        {{patient.insurancename}}</p>
+                                    </div>
+                                  </div>
+                                  <div class="ui-g mt-3">
+                                    <div class="ui-g">
+                                      <b>Policy Number:</b>&nbsp;<p *ngIf="patient.order == 3">
+                                        {{patient.insurancepolicynumber}}</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </p-tabPanel>
+                          <p-tabPanel header="Appointments">
+                            <div *ngIf="showAppointments">
+                              <div class="tableLabel mt-2">
+                                <b>Scheduled Appointments:</b>
+                              </div>
+                              <div class="yeats-tables">
+                                <p-table [resizableColumns]="true">
+                                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>User</th>
+                      <th>Type</th>
+                      <th>Action</th>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+              <div class="tableLabel mt-2">
+                <b>Previous Appointments:</b>
+              </div>
+              <div class="yeats-tables">
+                <p-table [resizableColumns]="true">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>User</th>
+                      <th>Type</th>
+                      <th>Status</th>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+              <div class="tableLabel mt-2">
+                <b>Cancelled Appointments:</b>
+              </div>
+              <div class="yeats-tables">
+                <p-table [resizableColumns]="true">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>User</th>
+                      <th>Type</th>
+                      <th>Cancelled By</th>
+                      <th>Date Cancelled</th>
+                      <th>Cancelled Reason</th>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+        </div>
+        <div *ngIf="!showAppointments">
+          <div class="tableLabel mt-2">
+            <b>Scheduled Appointments:</b>
+          </div>
+          <div class="yeats-tables">
+            <p-table [resizableColumns]="true">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>User</th>
+                  <th>Type</th>
+                  <th>Action</th>
+                </tr>
+                <ng-container *ngFor="let appointment of patientAppointment">
+                  <tr *ngIf="appointment.appointmentstatus == 'scheduled'">
+                    <td>{{appointment.appointmentdate | date:'MM/dd/yyyy' }}</td>
+                    <td>{{appointment.appointmentdate | date:'hh:mm a' }}</td>
+                    <td>{{appointment.username}}</td>
+                    <td>{{appointment.appointmenttype}}</td>
+                    <td><button style="margin-right: 33%" pButton [disabled]="isDisable"
+                        class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2"
+                        (click)="disableEdit()">Edit</button></td>
+                  </tr>
+                </ng-container>
+              </ng-template>
+            </p-table>
+          </div>
+          <div class="tableLabel mt-2">
+            <b>Previous Appointments:</b>
+          </div>
+          <div class="yeats-tables">
+            <p-table [resizableColumns]="true">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>User</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                </tr>
+                <ng-container *ngFor="let appointment of patientAppointment">
+                  <tr *ngIf="appointment.appointmentstatus == 'Completed_NoVisit'">
+                    <td>{{appointment.appointmentdate | date:'MM/dd/yyyy' }}</td>
+                    <td>{{appointment.appointmentdate | date:'hh:mm a' }}</td>
+                    <td>{{appointment.username}}</td>
+                    <td>{{appointment.appointmenttype}}</td>
+                    <td>{{appointment.appointmentstatus}}</td>
+                  </tr>
+                </ng-container>
+              </ng-template>
+            </p-table>
+          </div>
+          <div class="tableLabel mt-2">
+            <b>Cancelled Appointments:</b>
+          </div>
+          <div class="yeats-tables">
+            <p-table [resizableColumns]="true">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>User</th>
+                  <th>Type</th>
+                  <th>Cancelled By</th>
+                  <th>Date Cancelled</th>
+                  <th>Cancelled Reason</th>
+                </tr>
+                <ng-container *ngFor="let appointment of patientAppointment">
+                  <tr *ngIf="appointment.appointmentstatus == 'No Show'">
+                    <td>{{appointment.appointmentdate | date:'MM/dd/yyyy' }}</td>
+                    <td>{{appointment.appointmentdate | date:'hh:mm a' }}</td>
+                    <td>{{appointment.username}}</td>
+                    <td>{{appointment.appointmenttype}}</td>
+                    <td>{{appointment.cancelledby}}</td>
+                    <td>{{appointment.datecancelled}}</td>
+                    <td></td>
+                  </tr>
+                </ng-container>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+        </p-tabPanel>
+        <p-tabPanel header="Messages">
+          <div class="yeats-tables">
+            <p-table [resizableColumns]="true">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Duration</th>
+                  <th>Message type</th>
+                  <th>Subject</th>
+                  <th>Action</th>
+                </tr>
+                <tr *ngFor="let message of patientMessage">
+                  <td>{{message.StartDate | date:'MM/dd/yyyy'}}</td>
+                  <td>{{message.StartDate | date:'hh:mm a'}}</td>
+                  <td></td>
+                  <td>{{message.MessageType}}</td>
+                  <td>{{message.Posting}}</td>
+                  <td><button style="margin-right: 33%" pButton [disabled]="isDisable"
+                      class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-2"
+                      (click)="disableEdit()">Edit</button></td>
+                </tr>
+              </ng-template>
+
+            </p-table>
+          </div>
+        </p-tabPanel>
+        </p-tabView>
+        </td>
+        </tr>
+        </ng-template>
+        </p-table>
+      </div>
+      </p-tabPanel>
+      </p-tabView>
+    </div>
+  </div>
+</div>
+</div>
+</div>

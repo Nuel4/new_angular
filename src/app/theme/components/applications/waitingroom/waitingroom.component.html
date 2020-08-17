@@ -1,0 +1,175 @@
+<!--div id="reportstatic" class="powerbi-container"></div-->
+
+<div class="row">
+  <div class="col">
+
+    <div widget class="card border-0 box-shadow">
+
+      <div class="card-block widget-body">
+        <form>
+          <div class="row">
+            <div class="form-group col-lg-3 col-sm-6 col-12">
+              <div class="input-group">
+                <label><H5><u> Personal Details </u> </H5></label>
+              </div>
+            </div>
+            <div class="form-group col-lg-3 col-sm-6 col-12">
+                <label> <H5> <u> Address </u> </H5></label>
+            </div>
+            <div class="form-group col-lg-3 col-sm-6 col-12">
+              <label> <H5><u> Insurance Details(Primary) </u> </H5></label>
+            </div>
+          </div>
+
+        <div class="row">
+          <div class="form-group col-lg-3 col-sm-6 col-12">
+            <div class="input-group">
+              <label>Name: </label>
+            </div>
+          </div>
+          <div class="form-group col-lg-3 col-sm-6 col-12">
+            <label>  Address: </label>
+          </div>
+          <div class="form-group col-lg-3 col-sm-6 col-12">
+            <label>  Provider:  </label>
+
+          </div>
+          <div class="form-group col-lg-3 col-sm-6 col-12">
+            <label> Policy No: </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-lg-3 col-sm-6 col-12">
+            <div class="input-group">
+              <label>DOB: </label>
+            </div>
+          </div>
+          <div class="form-group col-lg-3 col-sm-6 col-12">
+
+          </div>
+          <div class="form-group col-lg-3 col-sm-6 col-12">
+            <label> Cell: </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-lg-3 col-sm-6 col-12">
+            <div class="input-group">
+              <label> Age: </label>
+            </div>
+          </div>
+          <div class="form-group col-lg-3 col-sm-6 col-12">
+
+          </div>
+          <div class="form-group col-lg-3 col-sm-6 col-12">
+            <label> Home Phone Number: </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-lg-3 col-sm-6 col-12">
+            <div class="input-group">
+              <label>Sex: </label>
+            </div>
+          </div>
+          <div class="form-group col-lg-3 col-sm-6 col-12">
+
+          </div>
+          <div class="form-group col-lg-3 col-sm-6 col-12">
+            <label> Work Phone Number: </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-lg-3 col-sm-6 col-12">
+            <div class="input-group">
+            <a href="#">Edit Patient Details</a>
+            </div>
+          </div>
+          <div class="form-group col-lg-3 col-sm-6 col-12">
+            <div class="input-group"></div>
+          </div>
+          <div class="form-group col-lg-3 col-sm-6 col-12">
+            <div class="input-group">
+              <a href="#">Walk-In Patient</a>
+            </div>
+          </div>
+
+          <div class="form-group col-lg-3 col-sm-6 col-12">
+            <div class="input-group">
+              <button type="button" class="btn btn-primary tt mb-1" data-toggle="tooltip" data-placement="top" title="Refresh Waiting Room" data-animation="false">Refresh</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-lg-3 col-sm-6 col-12 pull-right">
+            <button type="button" class="btn btn-primary tt mb-1" >Cancel Appt</button>
+            <button type="button" class="btn btn-primary tt mb-1 ml-3" >All Queue</button>
+            <button type="button" class="btn btn-primary tt mb-1 ml-3" >Forms</button>
+            <!-- <button type="button" class="btn btn-primary tt mb-1" title="Refresh Waiting Room">Documents</button>
+            <button type="button" class="btn btn-primary tt mb-1" title="Refresh Waiting Room">Scan</button>
+            <button type="button" class="btn btn-primary tt mb-1" title="Refresh Waiting Room">Co-Pay</button> -->
+          </div>
+          <div class="form-group col-lg-3 col-sm-6 col-12 pull-right">
+             <button type="button" class="btn btn-primary tt mb-1 ml-3" >Documents</button>
+            <button type="button" class="btn btn-primary tt mb-1 ml-3" >Scan</button>
+            <button type="button" class="btn btn-primary tt mb-1 ml-3" >Co-Pay</button>
+          </div>
+          <!-- <div class="form-group col-lg-3 col-sm-6 col-12">
+            <button type="button" class="btn btn-primary tt mb-1" (click) = "reset()">Back</button>
+          </div> -->
+      </div>
+
+
+
+      </form>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<div class="card border-0 box-shadow">
+
+  <div class="card-block pt-0 widget-body">
+      <div class="clearfix">
+        <ul class="nav nav-tabs custom top">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#duePatList">Due Patient List</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#currentPatLists">Current Patient List</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#compApp">Completed Appointments</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#noVisitCompApp">No Visited Completed Appointments</a>
+          </li>
+
+        </ul>
+      </div>
+  </div>
+
+  <div class="tab-content top">
+
+    <div class="tab-pane active" id="duePatList">
+      <p-calendar [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2030" ></p-calendar>
+    </div>
+
+    <div class="tab-pane" id="currentPatLists">
+     <p> Current Patient lists</p>
+    </div>
+
+    <div class="tab-pane" id="compApp">
+     <p> Completed Patient Lists </p>
+    </div>
+
+    <div class="tab-pane" id="noVisitCompApp">
+      <p>Number visited Completed Appointments </p>
+    </div>
+
+  </div>
+</div>

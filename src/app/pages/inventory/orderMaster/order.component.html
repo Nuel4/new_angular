@@ -1,0 +1,283 @@
+<div class="primeNgOrder">
+    <div *ngIf="isLoader" class="row">
+        <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+    </div>
+    <div class="activeOrders" *ngIf="switchTabs == 'activeOrders' && !isLoader">
+        <div class="headingSec">
+            <h5 class="heading">Active Orders</h5>
+        </div>
+        <p-card class="cardSec" *ngFor="let data of InvOrderMastersDatawithStatus">
+            <div class="editSec">
+                <i class="fa fa-pencil-square-o editIcon" *ngIf="data.Status === 1" (click)="selectOrder(data.InvOrderMasterId)"></i>
+                <i class="fa fa-external-link editIcon" *ngIf="data.Status !== 1" (click)="selectOrder(data.InvOrderMasterId)"></i>
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    <p class="tableHead">Order No</p>
+                    <p class="tableData">{{data.InvOrderMasterId}}</p>
+                </div>
+                <div class="col-2">
+                    <p class="tableHead">Date of Order</p>
+                    <p class="tableData">{{data.DateCreated | slice: 0:10}}</p>
+                </div>
+                <div class="col-2">
+                    <p class="tableHead">Order By</p>
+                    <p class="tableData">{{data.CreatedByUserId}}</p>
+                </div>
+                <div class="col-2">
+                    <p class="tableHead">Status</p>
+                    <p class="tableData">{{(data.Name)}}</p>
+                </div>
+                <div class="col-2">
+                    <p class="tableHead">Store Name</p>
+                    <p class="tableData">{{data.StoreName}}</p>
+                </div>
+                <div class="col-2">
+                    <p class="tableHead">Description</p>
+                    <p class="tableData">{{data.Description}}</p>
+                </div>
+            </div>
+        </p-card>
+    </div>
+
+    <div class="orderHome" *ngIf="switchTabs == 'selectedOrders'">
+        <form class="row">
+            <div class="form-group col-xl-12 col-sm-12 col-12" style="text-align:right">
+                <button class="btn" (click)="backToHome()">Close</button>&nbsp;
+                <button class="btn" data-toggle="modal" data-target="#addItem" (click)="onAddNewItem()" [attr.disabled]="orderItemDatas.Status === 1 ? null : 'disabled'">Add
+                    New Item</button>
+                <button class="btn" (click)="updateOrder(orderItemDatas)" [attr.disabled]="orderItemDatas.Status === 1 ? null : 'disabled'">Update</button>
+                <button class="btn" (click)="submitOrder(orderItemDatas)" [attr.disabled]="orderItemDatas.Status === 1 ? null : 'disabled'">Submit</button>
+            </div>
+            <div class="form-group col-xl-3 col-sm-3 col-11">
+                <label for="orderNo" class="formLabel">Order No</label>
+                <input type="text" class="form-control" [(ngModel)]="orderItemDatas.InvOrderMasterId" name="orderNo"
+                    disabled>
+            </div>
+            <div class="form-group col-xl-1 col-sm-1 col-1">
+                <button class="btn searchBtn" data-toggle="modal" data-target="#myModal" [attr.disabled]="orderItemDatas.Status === 1 ? null : 'disabled'"><i
+                        class="fa fa-search"></i></button>
+            </div>
+            <div class="form-group col-xl-4 col-sm-4 col-12">
+                <label for="DoO" class="formLabel">Date of Order</label>
+                <input type="text" class="form-control" [(ngModel)]="DateCreated" name="DoO" disabled>
+            </div>
+            <div class="form-group col-xl-4 col-sm-4 col-12">
+                <label for="orderBy" class="formLabel">Order By</label>
+                <input type="text" class="form-control" [(ngModel)]="orderItemDatas.CreatedByUserId" name="orderBy"
+                    disabled>
+            </div>
+            <div class="form-group col-xl-3 col-sm-3 col-12">
+                <label for="category" class="formLabel">Status</label>
+                <input type="text" class="form-control" [(ngModel)]="orderItemDatas.Name" name="status" disabled>
+                <!-- <select class="form-control" id="exampleSelect2" [(ngModel)]="orderItemDatas.Status" name="IsActive" [attr.disabled] = "orderItemDatas.Status === 1 ? null : 'disabled'">
+                    <option *ngFor="let data of orderStatus" value="{{data.InvTaxonomyItemId}}">{{data.Name}}</option>
+                </select> -->
+            </div>
+            <div class="form-group col-xl-3 col-sm-3 col-12">
+                <label for="storeId" class="formLabel">Store</label>
+                <input type="text" class="form-control" [(ngModel)]="orderItemDatas.StoreName" name="store" disabled>
+            </div>
+            <div class="form-group col-xl-6 col-sm-6 col-12">
+                <label for="Description" class="formLabel">Description</label>
+                <input type="text" class="form-control" [(ngModel)]="orderItemDatas.Description" name="Description"
+                    [attr.disabled]="orderItemDatas.Status === 1 ? null : 'disabled'">
+            </div>
+        </form>
+        <br>
+        <div class="primeNgTableOrder">
+            <p-table [value]="orderItemDatas.InvOrderItems">
+                <ng-template pTemplate="header">
+                    <tr class="tableRowHead">
+                        <th>Item Name</th>
+                        <th>Item Code</th>
+                        <th>Item Master Id</th>
+                        <th>Order Master Id</th>
+                        <th>Ordered Quantity</th>
+                        <th>Status</th>
+                        <th>Date Created</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData>
+                    <tr class="tableRowBody">
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" [(ngModel)]="rowData.InvItemMasterId" [attr.readonly]="orderItemDatas.Status === 1 ? null : 'readonly'"
+                                        k>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.InvItemMasterName}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" [(ngModel)]="rowData.InvItemMasterId" [attr.readonly]="orderItemDatas.Status === 1 ? null : 'readonly'"
+                                        k>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.ItemCode}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" [(ngModel)]="rowData.InvItemMasterId" [attr.readonly]="orderItemDatas.Status === 1 ? null : 'readonly'"
+                                        k>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.InvItemMasterId}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" [(ngModel)]="rowData.InvOrderMasterId" [attr.readonly]="orderItemDatas.Status === 1 ? null : 'readonly'">
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.InvOrderMasterId}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" [(ngModel)]="rowData.OrderedQuanity" [attr.readonly]="orderItemDatas.Status === 1 ? null : 'readonly'">
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.OrderedQuanity}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td>
+                            {{rowData.Name}}
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" [(ngModel)]="rowData.DateCreated" [attr.readonly]="orderItemDatas.Status === 1 ? null : 'readonly'">
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.DateCreated | slice: 0:10}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modal-large-label">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header state modal-primary">
+                    <h4 class="modal-title">Search Order</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form class="row">
+                        <div class="form-group col-xl-4 col-sm-4 col-12">
+                            <label for="name" class="formLabel">Order No</label>
+                            <input type="text" class="form-control" [(ngModel)]="searchOrder.InvOrderMasterId" name="name">
+                        </div>
+                        <div class="form-group col-xl-4 col-sm-4 col-12">
+                            <label for="code" class="formLabel" style="display: block">Date of Order</label>
+                            <p-calendar [(ngModel)]="searchOrder.DateOfOrder" [showIcon]="true" dateFormat="yy-mm-dd"
+                                name="expDate"></p-calendar>
+                            <!-- <input type="text" class="form-control" [(ngModel)]="searchOrder.DateCreated" name="code"> -->
+                        </div>
+                        <div class="form-group col-xl-4 col-sm-4 col-12">
+                            <label for="Status" class="formLabel">Status</label>
+                            <select class="form-control" id="exampleSelect2" [(ngModel)]="searchOrder.Status" name="Status">
+                                <option *ngFor="let data of orderStatus" value="{{data.InvTaxonomyItemId}}">{{data.Name}}</option>
+                            </select>
+                        </div>
+                    </form>
+                    <div class="primeNgTableOrder">
+                        <p-table *ngIf="searchResults.length > 0" #dt [columns]="searchCols" [value]="searchResults"
+                            selectionMode="single" [(selection)]="slectedSearchItems" dataKey="InvItemMasterName"
+                            [paginator]="true" [rows]="5" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
+                            <ng-template pTemplate="header" let-columns>
+                                <tr class="tableRowHead">
+                                    <th *ngFor="let col of columns">
+                                        {{col.header}}
+                                    </th>
+                                    <th style="text-align: center;width: 2.3em">
+                                        <i class="fa fa-check-circle"></i>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                <tr class="tableRowBody" [pSelectableRow]="rowData">
+                                    <td *ngFor="let col of columns">
+                                        {{rowData[col.field]}}
+                                    </td>
+                                    <td>
+                                        <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" (click)="findOrders(searchOrder)">Find</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addItem" tabindex="-1" role="dialog" aria-labelledby="modal-large-label">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header state modal-primary">
+                    <h4 class="modal-title">Add Item</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="primeNgTableOrder" style="padding:16px">
+                    <p-table [columns]="itemHeader" [value]="itemMasterData" [(selection)]="selectedItems" [paginator]="true"
+                        [rows]="5" dataKey="InvItemMasterId">
+                        <ng-template pTemplate="header" let-columns>
+                            <tr class="tableRowHead">
+                                <th style="width: 3em">
+                                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                </th>
+                                <th *ngFor="let col of columns">
+                                    {{col.header}}
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-columns="columns">
+                            <tr class="tableRowBody" [pSelectableRow]="rowData">
+                                <td>
+                                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                                </td>
+                                <td *ngFor="let col of columns">
+                                    {{rowData[col.field]}}
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" (click)="AddItemToOrder(selectedItems)">Add Items To
+                        Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,293 @@
+.noticeboard{
+height: 100%;
+// .yeats-tables 
+// {
+  // margin-top: -1px !important;
+  
+// }
+.scanForReview{
+  margin-top: 10px;
+}
+.user{
+  color: #114286;
+  font-size:1.5em;
+}
+.ui-tabview.ui-tabview-top .ui-tabview-nav li, body .ui-tabview.ui-tabview-bottom .ui-tabview-nav li, body .ui-tabview.ui-tabview-left .ui-tabview-nav li, body .ui-tabview.ui-tabview-right .ui-tabview-nav li {
+   border: 1px solid #114286; 
+   background-color: #fff; 
+  transition: background-color 0.2s;
+} 
+ .ui-tabview.ui-tabview-top .ui-tabview-nav li.ui-state-active, body .ui-tabview.ui-tabview-bottom .ui-tabview-nav li.ui-state-active, body .ui-tabview.ui-tabview-left .ui-tabview-nav li.ui-state-active, body .ui-tabview.ui-tabview-right .ui-tabview-nav li.ui-state-active {
+  border: 1px solid #114286 !important; 
+  background-color: #114286 !important; 
+}
+p-table tr {
+  // font-size: 10px !important;
+  line-height: 0.9rem !important;
+  padding: 0.45833333rem 0.5rem !important;
+  border-top: 0 !important;
+  background-color: #fafafa !important;
+  border-bottom: 1px solid #ccc !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  color: #565656 !important;
+  height: 6.4vh !important;
+  
+}
+
+.ui-tabview{
+  height:100%;
+  border: none;
+  background-color: transparent;
+}
+    .ui-tabview-panels{
+      // height:95%;
+}
+.ui-tabview-panel{
+  // height:100%;
+}
+.ui-grid-row div {
+  padding: 4px 10px;
+}
+
+.ui-grid-row div label {
+  font-weight: bold;
+}
+
+.fc-event-container {
+  margin: 0 !important;
+}
+
+// .noticeboard {
+  p-calendar {
+    .ui-calendar {
+      width: 50%;
+      input {
+        height: 28px;
+        text-align: left;
+      }
+    }
+  }
+  .cardSec {
+    position: relative;
+    margin: 6px 1px;
+    padding: 0px 8px;
+
+    background-color: #ffffff;
+    color: #333333;
+    box-shadow:0px 1px 2px 0px rgba(17, 72, 134, 0.15);
+    cursor: pointer;
+    height:17%;
+  }
+  @media only screen and (max-width: 768px) {
+    .cardSec {
+      height:10%;
+    }
+  }
+  .top-image {
+    width: 100px;
+    height: 500px;
+  }
+
+  .editSec {
+    position: relative;
+    font-size: 18px;
+    .editIcon {
+      z-index: 9999;
+      cursor: pointer;
+      position: absolute;
+      right: 0;
+    }
+    .tableHead {
+      // color: #8992af;
+      font-weight: 600;
+      margin-bottom: 1px;
+      margin-left: 1px !important;
+    }
+  }
+  .ui-button {
+    margin-top: 10px;
+    font-size:12px;
+  }
+
+  .ui-tabview.ui-tabview-top .ui-tabview-nav li a,
+  body .ui-tabview.ui-tabview-bottom .ui-tabview-nav li a,
+  body .ui-tabview.ui-tabview-left .ui-tabview-nav li a,
+  body .ui-tabview.ui-tabview-right .ui-tabview-nav li a {
+    float: none;
+    display: inline-block;
+    color: black;
+    // background-color: #114286;
+    border: none;
+    // padding: 6px 8px !important;
+    padding: 0.335em 0.535em !important;
+    font-weight: 100 !important;
+    height: 5vh;
+    border-radius: 4px;
+  }
+  
+  @media only screen and (max-width: 768px) {
+    .ui-tabview.ui-tabview-top .ui-tabview-nav li a,
+  body .ui-tabview.ui-tabview-bottom .ui-tabview-nav li a,
+  body .ui-tabview.ui-tabview-left .ui-tabview-nav li a,
+  body .ui-tabview.ui-tabview-right .ui-tabview-nav li a {
+    height: 0vh;
+    padding:0px;
+    // display: inline-block;
+  }
+  }
+    
+  @media only screen and (max-width: 1024px) {
+    .ui-tabview.ui-tabview-top .ui-tabview-nav li a,
+  body .ui-tabview.ui-tabview-bottom .ui-tabview-nav li a,
+  body .ui-tabview.ui-tabview-left .ui-tabview-nav li a,
+  body .ui-tabview.ui-tabview-right .ui-tabview-nav li a {
+    height: 5vh;
+    padding: 0.645em 0.535em !important;
+    // display: inline-block;
+  }
+  }
+  .section-seperator {
+    width: 100%;
+    height: 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    margin-bottom: 16px;
+    .section-text {
+      font-size: 18px;
+      background-color: #ffffff;
+      padding-right: 10px;
+    }
+  }
+  .container {
+    padding: 0 !important;
+    height: calc(100% - 50px);
+  }
+  .ui-tabview {
+    // padding: 0.5rem 0rem;
+    .ui-tabview-panels{
+        padding: 0px !important;
+        // border:1px solid #eceeef;
+        border: 1px solid #fff;
+    }
+  }
+  .noticeTab {
+    .ui-widget {
+      margin-top: -6px;
+      font-size: 13px !important;
+      font-family: 'Muli',sans-serif;
+    }
+  }
+  .ui-widget-content p{
+    font-size:12px !important;
+  }
+  .pad-15 {
+    // padding: 16px;
+    padding: 12px 14px 14px 18px;
+  }
+  @media screen and (max-width: 1024px) {
+    .pad-15{
+    padding:11px;
+    }
+  }
+  .unread {
+    background: lightblue !important;
+  }
+  .truncate {
+    font-weight: bold;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    line-clamp: 2;
+    font-size: 13px;
+  }
+  .ui-paginator{
+    display: flex;
+    justify-content: center;
+    font-size: 11px;
+    position: absolute;
+    bottom: -3%;
+    width: 93%;
+    top:auto;
+    background-color: white;
+    border: 1px solid #fff;
+    // margin-top:-1vh;
+    // bottom: 0;
+  }
+  @media screen and (max-width: 1024px) {
+    .ui-paginator{
+    //  bottom:4%;
+      // padding:8%;
+      width:75%
+    }
+  }
+  .noticePagination{
+    display: flex;
+    justify-content: center;
+    font-size: 11px;
+    // margin-top:-6vh;
+    // height:5vh;
+    // position: absolute;
+    width: 100%
+  }
+  
+  .paginator {
+    // height:100%;
+    .ui-paginator {
+      display: flex;
+      justify-content: center;
+      font-size: 11px !important;
+      position: absolute;
+      width: 94%;
+      left:50%;
+      transform: translateX(-50%);
+      height: 27px;
+      bottom: -3%;
+    }
+  }
+  .a {
+    width:120px;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    word-break: break-all;
+    overflow:hidden;
+    white-space: nowrap;
+  }
+  .board-height {
+    // height: 450px;
+    font-family: 'Muli',sans-serif !important;
+    font-size: 13px;
+  }
+// }
+.notice{
+  // height:94%;
+  margin-top: 0px !important;
+}
+/* Tooltip text */
+.tooltip {
+  position: relative;
+  z-index:0;
+  display: inline-block;
+  opacity: 1;
+  word-wrap: normal;
+  .tooltiptext
+   {
+    visibility: hidden;
+    width: 180px;
+    background-color: aliceblue;
+    padding: 10px;
+  //   text-align: center;
+    border-radius: 6px;
+    position: absolute;
+    margin-left: 3px;
+    top: 9%;
+}
+}
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover {
+  .tooltiptext {
+  visibility: visible;
+}
+}
+}

@@ -1,0 +1,25 @@
+<div class="workspaceHome">
+
+
+  <div widget class="card workspace-container">
+    <gridster [options]="options">
+      <!-- <div class="col-lg-6 col-md-6 marpad"> -->
+        <gridster-item *ngFor="let item of dashboard" class="gridster" [item]="item">
+
+          <!-- <div class="button-holder">
+                    <div class="gridster-item-content" *ngIf="item.hasContent">
+                        <div class="stuff"> -->
+          <app-dashboard-widget [item]="item" class="marpad" (NBModaldata)="NoticeBoardModal($event)">
+          </app-dashboard-widget>
+          <!-- </div>
+                    </div>
+                </div> -->
+
+        </gridster-item>
+      <!-- </div> -->
+    </gridster>
+  </div>
+
+
+
+</div>

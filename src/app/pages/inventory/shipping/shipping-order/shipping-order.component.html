@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-md-4" style="margin-top:25px;">
+    <form class=" ">
+      <div class="row">
+        <div class="col-6">
+          <label for="DateShipped" class="formLabel" style="display: block">Shipped Date</label>
+          <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+          <p-calendar [(ngModel)]="shippingsDetails.DateShipped" [showIcon]="true" dateFormat="yy-mm-dd" name="DateShipped"></p-calendar>
+        </div>
+        <div class="col-2" style="position:relative">
+          <button class="btn createShip" (click)="createShip(shippingsDetails)" [attr.disabled]="!shippingDisabled ? null : 'disabled'"
+            data-toggle="modal" data-target="#myModal">Create
+            New Shipping</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <br>
+  <div class="col-md-8">
+    <div class=" row makeNewShipping" style="margin-top:25px;">
+      <div class="col-5"></div>
+      <div class="col-7">
+        <div class="row" style="margin:0;">
+          <div class="col-4"></div>
+          <div class="col-2">
+            <button class="btn" (click)="putShippingStatusShipped(this.parentId, data)" [attr.disabled]="!PostShipped ? null : 'disabled'"
+            *ngIf="shippingDisabled">
+              Shipped</button>
+          </div>
+          <div class="col-2">
+            <button class="btn" (click)="putShippingStatusDelivered(this.parentId)" [attr.disabled]="!DeliverShipped ? null : 'disabled'"
+            *ngIf="shippingDisabled" >
+              Delivered</button>
+          </div>
+          <div class="col-2">
+            <button class="btn" (click)="putShippingStatusClosed(this.parentId)" [attr.disabled]="!CloseShipped ? null : 'disabled'"
+            *ngIf="shippingDisabled" >
+              Closed</button>
+          </div>
+          <div class="col-2">
+            <button class="btn" routerLink="/pages/shipping-label" *ngIf="shippingDisabled">
+              Label</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-shipping-detail [parentId]="parentId" (childEvent)=displayArray($event)></app-shipping-detail>

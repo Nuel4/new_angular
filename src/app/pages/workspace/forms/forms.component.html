@@ -1,0 +1,117 @@
+<div class="formsModule">
+    <div class="card border-0 box-shadow cardMargin">
+        <div class="card-header transparent border-0 text-muted">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="form-group yeats-form-group ">
+                            <label class="formLabel yeats-form-label">File Name</label>
+                            <div class="ui-inputgroup">
+                                <input placeholder="Enter File Name" id="fileName" [(ngModel)]="fileNameSearch"
+                                    (keyup)="updateFilter($event)" type="text"
+                                    class=" form-control yeats-form-control d-inline" />
+                                <button pButton type="button" icon="fa fa-search" (click)="updateFilterByButton($event)"
+                                    class="ui-button-warn"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-9 col-sm-6 col-12">
+                        <div class="form-group yeats-form-group pull-left">
+                            <label for="findPatient" class="formLabel yeats-form-label">&nbsp;</label>
+                            <!-- <button pButton class="yeats-btn yeats-btn-primary pull-left" (click)="findFile(fileName)">
+                    Find
+                </button> -->
+                            <button pButton class="yeats-btn yeats-btn-primary pull-right"
+                                (click)="onAddFile(modalContent,modelda)" data-toggle="tooltip" data-placement="top"
+                                title="Add new form.">
+                                Add New Files
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card border-0 box-shadow cardMargin">
+        <div class="card-header transparent border-0 text-muted">
+            <div class="card-body">
+                <div *ngIf="isLoader" class="row">
+                    <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+                </div>
+                <div *ngIf="!isLoader" class="yeats-tables">
+                    <p-table [columns]="formsHead" [value]="formsData" [paginator]="true" [rows]="5"
+                        [totalRecords]="totalRecords" [lazy]="true" (onLazyLoad)="paginate($event)">
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th *ngFor="let col of columns">
+                                    {{col.header}}
+                                </th>
+                                <th>Type</th>
+                                <th>Download</th>
+                                <th>Delete</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-columns="columns">
+                            <tr>
+                                <td *ngFor="let col of columns">
+                                    {{rowData[col.field]}}
+                                </td>
+                                <td>
+                                    <i *ngIf="rowData.FormExtension == '.pdf'" class="fa fa-file-pdf-o fa-lg"
+                                        style="color:red; cursor: pointer;" data-toggle="tooltip" [title]=rowData.FormExtension></i>
+                                    <i *ngIf="rowData.FormExtension == '.png' || rowData.FormExtension == '.jpeg' || rowData.FormExtension == '.jpg' || rowData.FormExtension == '.PNG'"
+                                        class="fa fa-file-picture-o fa-lg" style="color:brown; cursor: pointer;" data-toggle="tooltip" [title]=rowData.FormExtension></i>
+                                    <i *ngIf="rowData.FormExtension == '.xlsx'" class="fa fa-file-excel-o fa-lg"
+                                        style="color:green; cursor: pointer;" data-toggle="tooltip" [title]=rowData.FormExtension></i>
+                                    <i *ngIf="rowData.FormExtension == '.docx'" class="fa fa-file-word-o fa-lg"
+                                        style="color:blue; cursor: pointer;" data-toggle="tooltip" [title]=rowData.FormExtension></i>
+                                    <i *ngIf="rowData.FormExtension == '.pptx'" class="fa fa-file-powerpoint-o fa-lg"
+                                        style="color:orangered; cursor: pointer;" data-toggle="tooltip" [title]=rowData.FormExtension></i>
+                                    <i *ngIf="rowData.FormExtension == '.txt' || rowData.FormExtension == '.tif'"
+                                        class="fa fa-file-text-o fa-lg"  style="cursor: pointer;" data-toggle="tooltip" [title]=rowData.FormExtension></i>
+                                    <i *ngIf="rowData.FormExtension == '.zip'" class="fa fa-file-archive-o fa-lg"
+                                        style="color:gold ; cursor: pointer;" data-toggle="tooltip" [title]=rowData.FormExtension></i>
+                                    <i *ngIf="rowData.FormExtension == '.mp4'" class="fa fa-file-video-o fa-lg"
+                                        style="color:lightseagreen; cursor: pointer;" data-toggle="tooltip" [title]=rowData.FormExtension></i>
+                                    <i *ngIf="rowData.FormExtension == '.mp3'" class="fa fa-file-audio-o fa-lg"
+                                        style="color:navy; cursor: pointer;" data-toggle="tooltip" [title]=rowData.FormExtension></i>
+                                    <i *ngIf="rowData.FormExtension == ''" class="fa fa-file-o"></i>
+                                </td>
+                                <td>
+                                    <a style="cursor: pointer;" (click)="onDownload(rowData)">
+                                        <img class="yeats-icons" src="../../../../assets/img/download.svg" alt="edit">
+                                    </a>
+                                </td>
+                                <td>
+                                    <a style="cursor: pointer;" (click)="openDeleteModal(rowData)">
+                                        <img style="cursor: pointer;" class="yeats-icons"
+                                            src="../../../../assets/images/Edit.svg" alt="edit">
+                                    </a>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- File upload model -->
+    <!-- ngb Model used in same Component -->
+    <ng-template #modalContent>
+        <div class="modal-content">
+            <div class="modal-header state modal-primary">
+                <h5 class="modal-title">Practice files upload</h5>
+                <button type="button" class="close" data-dismiss="modal" (click)="onModelClose()" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <app-fileupload [filepath]="filePath" [uploadType]="uploadType"></app-fileupload>
+            </div>
+            <div class="modal-footer">
+                <button type="button"  pButton class="yeats-btn yeats-btn-secondary ui-button-secondary" (click)="onModelClose()">Close</button>
+            </div>
+        </div>
+    </ng-template>
+</div>

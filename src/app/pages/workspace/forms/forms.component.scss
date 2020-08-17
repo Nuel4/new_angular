@@ -1,0 +1,29 @@
+.formsModule {
+  background-color: transparent;
+  padding: 0px 12px;
+
+  //   .forms-modal {
+  .modal-content {
+    border: none;
+    border-radius: 2px;
+  }
+
+  .modal-header {
+    background-color: #1f70ba !important;
+  }
+
+  .app.blue .btn-primary {
+    background-color: #1f70ba !important;
+    border: none !important;
+    width: auto;
+    height: 32px !important;
+    border-radius: 2px !important;
+  }
+
+  // .fa-file-excel-o{
+  //   padding-left: 40px !important;
+  // }
+  // .ui-table .ui-table-tbody > tr > th {
+  //   padding-left: 10px !important;
+  // }
+}

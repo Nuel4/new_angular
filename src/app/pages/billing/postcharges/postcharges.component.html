@@ -1,0 +1,150 @@
+<div class="postCharges">
+  <div class="card-block widget-body">
+    <div class="card card-block border-0 box-shadow" style="height: 100%;">
+      <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Date From</label>
+            <p-calendar [(ngModel)]="DateFrom" name="DateFrom" id="DosF" class="yeats-form-control" [showIcon]="true">
+            </p-calendar>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Date To</label>
+            <p-calendar [(ngModel)]="DateTo" name="DateTo" id="DosT" class="yeats-form-control" [showIcon]="true">
+            </p-calendar>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Physician Name</label>
+            <p-dropdown [options]="usersList" [(ngModel)]="selectedPhysician" placeholder="Select Physician" optionLabel="FullName" [showClear]="true">
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">&nbsp;</label>
+            <p-checkbox label="Show Deactivated Appointments Only"
+              [(ngModel)]="DeletedAppointments" binary="true" ></p-checkbox>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 col-md-12 col-sm-6 col-12 mb-2">
+        <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3" [disabled]="!patientdata" (click)="showPostCharges()">Post Charges</button>
+        <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right"
+          (click)="ClearData()">Clear</button>
+          <button pButton class="yeats-btn yeats-btn-primary pull-right mr-3" (click)="postBills()">Search</button>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="card-block widget-body">
+    <div class="card card-block border-0 box-shadow">
+      <div class="yeats-tables">
+        <p-table [columns]="cols" [value]="data" [paginator]="true" [rows]="10">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns">
+                {{col.header}}
+              </th>
+              <th></th>
+              <th>Deactivate</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns">
+                {{rowData[col.field]}}
+              </td>
+              <td>
+                <button pButton class="yeats-btn yeats-btn-primary" (click)="showPostCharges(rowData)">Post Charges</button>
+              </td>
+              <td>
+                <i class="fa fa-trash-o" aria-hidden="true" (click)="Deactivateappointments(rowData)"></i>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+<!-- Old Data-->
+<!-- <div class="row">
+     <div class="col">
+
+        <div widget class="card border-0 box-shadow"> -->
+<!--div class="row card-header  transparent border-0 text-muted">
+                <h5 class="mb-0 mr-5">Patient Name : </h5>
+
+            </div-->
+<!-- <div class="card-block widget-body">
+
+                <form>
+                    <div class="row">
+                      <div class="form-group col-xl-2 col-lg-3 col-sm-6 col-12">
+                        <div class="input-group">
+                          <input class="form-control" placeholder="DOS From"  [(ngModel)]="dateFrom" name="dateFrom" ngbDatepicker #from="ngbDatepicker">
+                          <div class="input-group-addon" (click)="from.toggle()">
+                            <i class="fa fa-calendar"></i>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group col-xl-2 col-lg-3 col-sm-6 col-12">
+                        <div class="input-group">
+                          <input class="form-control" placeholder="DOS To"  [(ngModel)]="dateTo" name="dateTo" ngbDatepicker #to="ngbDatepicker">
+                          <div class="input-group-addon" (click)="to.toggle()">
+                            <i class="fa fa-calendar"></i>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group col-xl-2 col-lg-3 col-sm-6 col-12">
+                        <select class="custom-select" [(ngModel)]="postBill.pPhysicianUserId" name="pPhysicianUserId">
+                          <option value="">--Select Physician--</option>
+                          <option *ngFor="let phy of physicianList" [value]="phy.physicianid">{{phy.firstname +" "+ phy.lastname}}</option>
+                        </select>
+                      </div>
+					  <div class="form-group col-xl-4 col-lg-3 col-sm-12 col-12">
+                        <label class="custom-control custom-checkbox">
+                            <input class="custom-control-input checkbox-success" type="checkbox" [(ngModel)]="postBill.pDisplayDeletedApptOnly" name="showDeatApp" checked="" >
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description align-middle">Show Deactivated Appointments Only</span>
+                        </label>
+						<button type="button" class="btn btn-sm btn-primary" (click)="postBills()">Search</button>
+                        <button type="button" class="btn btn-sm btn-primary">Clear</button>
+                      </div>
+                      
+                    </div>
+
+                   
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="card border-0 box-shadow">
+
+  <div class="card-block pt-0 widget-body">
+    <div class="table-responsive">
+      <ng2-smart-table class="table table-hover"
+                       [settings]="settings"
+                       [source]="data"
+                       (deleteConfirm)="onDeleteConfirm($event)"
+                       (rowSelect)="onRowSelect($event)"
+                       (userRowSelect)="onUserRowSelect($event)"
+                       (rowHover)="onRowHover($event)"></ng2-smart-table>
+    </div>
+  </div>
+
+</div> -->

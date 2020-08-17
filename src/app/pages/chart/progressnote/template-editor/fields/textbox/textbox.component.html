@@ -1,0 +1,11 @@
+<div class="textbox">
+  <div class="col-4">
+    <div class="form-group yeats-form-group" [formGroup]="group">
+      <label class="formLabel yeats-form-label" *ngIf="field.label">{{field.label?field.label:''}}</label>
+      <div class="ui-inputgroup">
+        <input [type]="field.inputType" [name]="field.name" [formControlName]="field.name"
+          class="form-control yeats-form-control" />
+      </div>
+    </div>
+  </div>
+</div>

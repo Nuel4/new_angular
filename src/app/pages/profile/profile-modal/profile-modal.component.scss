@@ -1,0 +1,19 @@
+.profile-modal{
+    .required{
+        color: red;
+    }
+    .imgCard{
+        bottom: 0;
+      height: 100%;
+      left: 0;
+      object-fit: cover;
+      object-position: top center;
+      -ms-object-fit: cover;
+      -ms-object-position: top center;
+      background-size: cover !important;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 50%;
+      }
+}

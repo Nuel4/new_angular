@@ -1,0 +1,36 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<div class="loading" *ngIf="isLoading">
+    <ng-container *ngTemplateOutlet="loadingTemplate ? loadingTemplate : defaultLoading"></ng-container>
+</div>
+<div class="error" *ngIf="hasError">
+    <ng-container *ngTemplateOutlet="errorTemplate ? errorTemplate : defaultError"></ng-container>
+</div>
+
+<ng-template #defaultLoading><p>{{ loadingText }}</p></ng-template>
+<ng-template #defaultError><p>{{ errorMessage }}</p></ng-template>
+
+<!-- <canvas *ngIf="ComponentName === 'Signature'" width="500px" height="400px" id="canvas"></canvas> *ngIf="ComponentName === 'Sketch Pad'"-->
+<canvas id="canvas"></canvas>
+<div *ngIf="ComponentName === 'Sketch Pad'">
+<div class="toolbar" *ngIf="!isLoading">
+    <div class="tools">
+        <div class="row">
+            <i class="material-icons btn" [class.selected]="currentTool == 'brush'" (click)="selectTool('brush')" title="brush">brush</i>         
+            <i class="material-icons btn" [class.disabled]="!canUndo" (click)="undo()" title="undo">undo</i>
+            <i class="material-icons btn" [class.disabled]="!canRedo" (click)="redo()" title="redo">redo</i>
+            <i class="fa fa-eraser btn"  style="color:#bdbdbd;font-size:22px" (click)="clearCanvas()" title="clear"></i>
+        </div>
+        <div class="row">
+            <div class="color black" [class.selected]="currentColor == 'black'" (click)="selectColor('black')" title="black"></div>
+            <div class="color white" [class.selected]="currentColor == 'white'" (click)="selectColor('white')" title="white"></div>
+            <div class="color yellow" [class.selected]="currentColor == 'yellow'" (click)="selectColor('yellow')" title="yellow"></div>
+            <div class="color red" [class.selected]="currentColor == 'red'" (click)="selectColor('red')" title="red"></div>
+            <div class="color green" [class.selected]="currentColor == 'green'" (click)="selectColor('green')" title="green"></div>
+            <div class="color blue" [class.selected]="currentColor == 'blue'" (click)="selectColor('blue')" title="blue"></div>
+        </div>
+    </div>
+    <div class="buttons">        
+    </div>
+</div>
+</div>

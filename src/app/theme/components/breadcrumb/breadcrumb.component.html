@@ -1,0 +1,106 @@
+<!-- <ol class="breadcrumb">  
+    <li *ngIf="router.url != '/pages/dashboard'" class="breadcrumb-item"><a routerLink="/" (click)="closeSubMenus()">
+        <i class="fa fa-home mr-2"></i>Home</a></li>
+    <li *ngFor="let breadcrumb of breadcrumbs; let i = index;" class="breadcrumb-item">
+        <a [hidden]="i == (breadcrumbs.length - 1)" [routerLink]="[breadcrumb.url]">{{breadcrumb.name}}</a>          
+        <span [hidden]="i != (breadcrumbs.length - 1)"><i *ngIf="router.url == '/pages/dashboard'" class="fa fa-home mr-2"></i><b>{{breadcrumb.name}}</b></span>
+    </li>
+</ol> -->
+<ul class="horizontalNavbar">
+    <div class="row " *ngIf="nav.visible">
+        <div class="col-2">
+            <label class="d-inline  pull-left ml-2 mt-2"
+                *ngIf="breadcrumbs[0].url===router.url"><b>{{breadcrumbs[0].name}}</b></label>
+            <label class="d-inline  pull-left ml-2 mt-2"
+                *ngIf="breadcrumbs[1] && breadcrumbs[1].url===router.url"><b>{{breadcrumbs[0].name}}</b></label>
+        </div>
+        <div class="col-10 text-center">
+            <div class="row">
+                
+                <div *ngIf="arrowLeft" (click)="onLeftClick()"><i class="pi pi-chevron-left arrow"></i></div>
+                <div *ngFor="let module of showHorizontalMenu">
+                    <div class="mainDiv navBarItems" *ngIf="(module.target != null) && module.isactive">
+                        <a  id="link{{module.id}}"
+                            routerLinkActive="active" routerLink={{module.routerLink}}>
+                            <img class="horizontalNavItemsIcon" src="../../../../assets/images/{{module.icon}}">
+                            <span *ngIf="(module.target != null) && module.isactive">
+                                <p class="submenu">{{module.title}}</p>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="mainDiv navBarItems"  *ngIf="module.target == null && module.title !== 'Progress Note' && module.title !== 'View Charts' && module.isactive">
+                        <a  id="link{{module.id}}"                      
+                            routerLinkActive="active" routerLink={{module.routerLink}}>
+                            <img class="horizontalNavItemsIcon" src="../../../../assets/images/{{module.icon}}">
+                            <span
+                                *ngIf="module.target == null && module.title !== 'Progress Note' && module.title !== 'View Charts' && module.isactive">
+                                <p class="submenu">{{module.title}}</p></span>
+                        </a>
+                    </div>
+                    <div class="mainDiv navBarItems" *ngIf="module.title === 'View Charts' && authStore.isViewChart">
+                        <a  id="link{{module.id}}" 
+                            routerLinkActive="active" routerLink={{module.routerLink}}>
+                            <img class="horizontalNavItemsIcon" src="../../../../assets/images/{{module.icon}}">
+                            <span *ngIf="module.title === 'View Charts' && authStore.isViewChart">
+                                <p class="submenu">{{module.title}}</p></span>
+                        </a>
+                    </div>
+                    <div class="mainDiv navBarItems"  *ngIf="module.title === 'View Charts' && !authStore.isViewChart">
+                        <a id="link{{module.id}}" 
+                            routerLinkActive="active">
+                            <img class="horizontalNavItemsIcon" src="../../../../assets/images/{{module.icon}}">
+                            <span *ngIf="module.title === 'View Charts' && !authStore.isViewChart">
+                                <p class="submenu">{{module.title}}</p></span>
+                        </a>
+                    </div>
+                    <div class="mainDiv navBarItems">
+                        <a  id="link{{module.id}}" (click)="openModal(module)" [ngClass]="{'text-inactive': !module.isactive, 'pointer': module.isactive}">
+                            <img class="horizontalNavItemsIcon"
+                                *ngIf="module.title === 'Progress Note' || !module.isactive" [ngStyle]="{'color': getColor(module)}"
+                                src="../../../../assets/images/{{module.icon}}">
+                            <span *ngIf="module.title === 'Progress Note' || !module.isactive">
+                                <p class="submenu">{{module.title}}</p></span>
+                        </a>
+                    </div>
+                </div>
+                <div *ngIf="arrowRight" (click)="onRightClick()"><i class="pi pi-chevron-right arrow" ></i></div>
+            </div>
+            <!-- <li class=" d-inline navBarItems" *ngFor="let module of showHorizontalMenu"> -->
+            <!-- <label class=" d-inline pull-left ml-2 mt-1" *ngIf="module.routerLink===router.url"><b>{{module.title}}</b></label> -->
+
+            <!-- <a *ngIf="(module.target != null) && module.isactive" id="link{{module.id}}" routerLinkActive="active" routerLink={{module.routerLink}}
+                    > -->
+            <!-- <i class="fa fa-{{module.icon}} horizontalNavItemsIcon"></i> -->
+            <!-- <img class="horizontalNavItemsIcon" src="../../../../assets/images/{{module.icon}}">                    
+                    <span class="subModuleName" *ngIf="(module.target != null) && module.isactive">{{module.title}}</span>
+                </a> -->
+
+            <!-- <a id="link{{module.id}}" *ngIf="module.target == null && module.title !== 'Progress Note' && module.title !== 'View Charts' && module.isactive"
+                    routerLinkActive="active" routerLink={{module.routerLink}} > -->
+            <!-- <i class="fa fa-{{module.icon}} horizontalNavItemsIcon"></i> -->
+            <!-- <img class="horizontalNavItemsIcon" src="../../../../assets/images/{{module.icon}}">
+                    <span class="subModuleName" *ngIf="module.target == null && module.title !== 'Progress Note' && module.title !== 'View Charts' && module.isactive">{{module.title}}</span>
+                </a>
+                <a id="link{{module.id}}" *ngIf="module.title === 'View Charts' && authStore.isViewChart" routerLinkActive="active"
+                    routerLink={{module.routerLink}}> -->
+            <!-- <i class="fa fa-{{module.icon}} horizontalNavItemsIcon"></i> -->
+
+            <!-- <img class="horizontalNavItemsIcon" src="../../../../assets/images/{{module.icon}}">
+                    <span class="subModuleName" *ngIf="module.title === 'View Charts' && authStore.isViewChart">{{module.title}}</span>
+                </a> -->
+            <!-- <a id="link{{module.id}}" *ngIf="module.title === 'View Charts' && !authStore.isViewChart" routerLinkActive="active"
+                    style="color: #1148869c !important"> -->
+            <!-- <i class="fa fa-{{module.icon}} horizontalNavItemsIcon"></i> -->
+            <!-- <img class="horizontalNavItemsIcon" src="../../../../assets/images/{{module.icon}}">
+                    <span class="subModuleName" *ngIf="module.title === 'View Charts' && !authStore.isViewChart">{{module.title}}</span>
+                </a> -->
+            <!-- <a id="link{{module.id}}"> -->
+            <!-- <i *ngIf="module.title === 'Progress Note' || !module.isactive" [ngStyle]="{'color': getColor(module)}"
+                        class="fa fa-{{module.icon}} horizontalNavItemsIcon" (click)="openModal(module)"></i> -->
+            <!-- <img class="horizontalNavItemsIcon" *ngIf="module.title === 'Progress Note' || !module.isactive" src="../../../../assets/images/{{module.icon}}"  (click)="openModal(module)">
+                        <span class="subModuleName" *ngIf="module.title === 'Progress Note' || !module.isactive">{{module.title}}</span>
+                </a> -->
+            <!-- </li> -->
+        </div>
+    </div>
+</ul>

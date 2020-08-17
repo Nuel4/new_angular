@@ -1,0 +1,66 @@
+<div class="showResults">
+    <div class="yeats-tables">
+        <p-table [columns]="cols" [value]="labOrder.Results" [paginator]="true" [rows]="labOrder.PageSize"
+            [totalRecords]="labOrder.TotalRecords" [lazy]="true" (onLazyLoad)="selectedPage($event)" [pageLinks]="3"
+            dataKey="OrderItemID" rowExpandMode="single">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th style="width: 3em"></th>
+                    <th *ngFor="let col of columns">
+                        {{col.header}}
+                    </th>
+                    <th>Is Electronic</th>
+                    <th>Matched</th>
+                    <th>Print</th>
+                    <th>Emdeon Report</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+                <tr>
+                    <td>
+                        <a href="#" [pRowToggler]="rowData" (click)="getLabOrderItemResults(rowData)">
+                            <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+                        </a>
+                    </td>
+                    <td *ngFor="let col of columns">
+                        {{rowData[col.field]}}
+                    </td>
+                    <td><i class="pi pi-globe" (click)="onClickElectronic(rowData)"></i></td>
+                    <td><i class="pi pi-user-minus" (click)="onClickMatched(rowData)"></i></td>
+                    <td><i class="pi pi-print" (click)="printReport(rowData)"></i></td>
+                    <td><i class="pi pi-cog" (click)="embdeonReport(rowData)"></i></td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+                <tr>
+                    <td [attr.colspan]="columns.length + 1">
+                        <div class="yeats-tables innerTable">
+                            <p-table [value]="labOrderItems">
+                                <ng-template pTemplate="header">
+                <tr>
+                    <th>View</th>
+                    <th>
+                        Description
+                    </th>
+                    <th>Comment</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData>
+                <tr>
+                    <td><i class="pi pi-search" (click)="viewLabOrder(rowData)"></i></td>
+                    <td>
+                        {{rowData.ItemResultName}}
+                    </td>
+                    <td>{{rowData.Comments}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    </td>
+    </tr>
+    </ng-template>
+    </p-table>
+</div>
+<!-- <p-paginator [rows]="labOrder.PageSize" (onPageChange)="selectedPage($event)" [totalRecords]="labOrder.TotalItems">
+</p-paginator> -->
+</div>

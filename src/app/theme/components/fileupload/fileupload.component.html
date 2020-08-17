@@ -1,0 +1,65 @@
+<div>
+    <input type="file" multiple (change)="fileChange(input.files)" #input class="m-img-upload-btn" accept=".pdf,.jpeg,.png" />
+    <button class="btn btn-primary btn-block file-upload-btn" style="width:120px;margin-bottom:10px" type="button">
+        Choose files...
+    </button>
+</div>
+<ngx-datatable class="material" [rows]="files" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="40" [rowHeight]="'auto'"
+    [limit]="10">
+    <ngx-datatable-column [minWidth]="150" [maxWidth]="450">
+        <ng-template let-column="column" ngx-datatable-header-template>
+            Name
+        </ng-template>
+        <ng-template let-row="row" ngx-datatable-cell-template>
+            {{row.filename}}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column [minWidth]="50" [maxWidth]="100">
+        <ng-template let-column="column" ngx-datatable-header-template>
+            Size(KB)
+        </ng-template>
+        <ng-template let-row="row" ngx-datatable-cell-template>
+            {{row.filesize}}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column [minWidth]="70" [maxWidth]="150">
+        <ng-template let-column="column" ngx-datatable-header-template>
+            Type
+        </ng-template>
+        <ng-template let-row="row" ngx-datatable-cell-template>
+            {{row.filetype}}
+        </ng-template>
+    </ngx-datatable-column>
+    <!-- <ngx-datatable-column [minWidth]="100">
+        <ng-template let-column="column" ngx-datatable-header-template>
+            Progress
+        </ng-template>
+        <ng-template let-row="row" ngx-datatable-cell-template>
+            <div class="progress" style="margin-bottom: 0">
+                <div class="progress-bar" style="vertical-align: middle" role="progressbar" [ngStyle]="{ 'width': row.progress + '%' }"></div>
+            </div>
+        </ng-template>
+    </ngx-datatable-column> -->
+    <ngx-datatable-column [minWidth]="50" [maxWidth]="70">
+        <ng-template let-column="column" ngx-datatable-header-template>
+            <div style="display:block; text-align:center;">
+                Status
+            </div>
+        </ng-template>
+        <ng-template let-row="row" ngx-datatable-cell-template>
+            <div style="display:block; text-align:center;">
+                <i *ngIf="row.isInprogress" class="fa fa-spinner fa-pulse fa-lg fa-fw" style="color:blue" data-toggle="tooltip" data-placement="top"
+                    title={{row.message}}></i>
+                <i *ngIf="row.isCompleted" class="fa fa-check-circle fa-lg" style="color:green" data-toggle="tooltip" data-placement="top"
+                    title={{row.message}}></i>
+                <i *ngIf="row.isError" class="fa fa-exclamation-circle fa-lg" style="color:red" data-toggle="tooltip" data-placement="top"
+                    title={{row.message}}></i>
+            </div>
+        </ng-template>
+    </ngx-datatable-column>
+</ngx-datatable>
+<div>
+    <button class="btn btn-primary btn-block file-upload-btn" style="width:120px; margin-top:10px" [disabled]="isDisabled" type="button" (click)="onUploadFiles()">
+        <i class="fa fa-upload"></i> Upload
+    </button>
+</div>

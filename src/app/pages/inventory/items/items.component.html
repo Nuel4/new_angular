@@ -1,0 +1,221 @@
+<div class="primeNgTableItems">
+    <div class="row" style="margin-bottom:15px;">
+        <div class="form-group col-lg-2 col-xl-2 col-sm-5 col-11">
+            <label for="code" class="formLabel">Item Code</label>
+            <input type="text" class="form-control" (keyup)="filterItemDatas(code , ItemName , CategoryId , checked)"
+                placeholder="Item Code" [(ngModel)]="code">
+        </div>
+        <div class="form-group col-lg-2 col-xl-2 col-sm-5 col-11">
+            <label for="id" class="formLabel">Category</label>
+            <select class="form-control" id="exampleSelect2" [(ngModel)]="CategoryId" name="store" (change)="filterItemDatas(code , ItemName , CategoryId , checked)">
+                <option *ngFor="let category of categoryData" value="{{category.InvCategoryId}}">{{category.InvCategoryName}}</option>
+            </select>
+        </div>
+        <div class="form-group col-lg-1 col-xl-1 col-sm-5 col-11">
+            <label for="status" class="formLabel">Is Active</label>
+            <div>
+                <p-checkbox [(ngModel)]="checked" binary="true" (change)="filterItemDatas(code , ItemName , CategoryId , checked)"></p-checkbox>
+            </div>
+        </div>
+        <div class="form-group col-lg-1 col-xl-1 col-sm-5 col-11">
+            <button style="margin-top:27px;" type="button" class="btn btn-primary" (click)="filterItemDatas(code , ItemName , CategoryId , checked)">Search</button>
+        </div>
+        <div class="addCategory">
+            <p-button label="Add To Order" icon="fa fa-plus" iconPos="left" (click)="addToOrder(slectedItems)"></p-button>&nbsp;
+            <p-button label="Add Item" icon="fa fa-plus" iconPos="left" data-toggle="modal" data-target="#myModal"
+                (click)="clearData()"></p-button>
+        </div>
+    </div>
+    <div *ngIf="isLoader" class="row">
+        <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+    </div>
+    <p-table *ngIf="!isLoader" #dt [columns]="cols" [value]="invItemDatasWithCategory" [(selection)]="slectedItems"
+        dataKey="InvItemMasterId" [resizableColumns]="true" [paginator]="true" [rows]="10" [totalRecords]="TotalRecords"
+        [lazy]="true" (onLazyLoad)="paginate($event)" [loading]="loading">
+        <ng-template pTemplate="header" let-columns>
+            <tr class="tableRowHead">
+                <th style="width: 2.3em">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th *ngFor="let col of columns">
+                    {{col.header}}
+                </th>
+                <th>Operations</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr class="tableRowBody" [pSelectableRow]="rowData">
+                <td>
+                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                </td>
+                <td *ngFor="let col of columns">
+                    <!-- {{rowData[col.field]}} -->
+                    <span class="{{col.field == 'CurrentQuantity' ? checkLessQuantity(rowData) ? 'expired' : '' :''}}">{{rowData[col.field]}}</span>
+                </td>
+                <td>
+                    <span><i class="fa fa-pencil-square-o" aria-hidden="true" (click)="editItem(rowData.InvItemMasterId)"></i></span>&nbsp;
+                    <!-- <span><i class="fa fa-trash-o" aria-hidden="true" (click)="deleteItem(rowData)"></i></span>&nbsp; -->
+                    <span *ngIf="rowData?.IsActive" (click)="changeStatus(rowData.InvItemMasterId, false)"><i class="fa fa-check-square-o"></i></span>
+                    <span *ngIf="!rowData?.IsActive" (click)="changeStatus(rowData.InvItemMasterId, true)"><i class="fa fa-square-o"></i></span>&nbsp;
+                    <!-- <span><i class="fa fa-link" aria-hidden="true" (click)="addbatch(rowData)"></i></span> -->
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+</div>
+<!-- Add/Edit Category Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modal-large-label">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header state modal-primary">
+                <h4 class="modal-title" *ngIf="!itemData.InvItemMasterId">Add Item</h4>
+                <h4 class="modal-title" *ngIf="itemData.InvItemMasterId">Edit Item</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form class="row">
+                    <div class="form-group col-xl-5 col-sm-5 col-11">
+                        <label for="name" class="formLabel">Item Name</label>
+                        <input type="text" class="form-control" placeholder="Enter Item Name" [(ngModel)]="itemData.InvItemMasterName"
+                            name="item_name">
+                    </div>
+                    <div class="form-group col-xl-1 col-sm-1 col-1">
+                        <button class="btn searchItemButton" *ngIf="!itemData.InvItemMasterId" data-toggle="modal"
+                            data-target="#searchModal"><i class="fa fa-search"></i></button>
+                    </div>
+                    <div class="form-group col-xl-6 col-sm-6 col-12">
+                        <label for="store" class="formLabel">Store</label>
+                        <select class="form-control" id="exampleSelect2" [(ngModel)]="itemData.InvStoreId" name="store">
+                            <option *ngFor="let store of storeData" value="{{store.InvStoreId}}">{{store.StoreName}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-xl-6 col-sm-6 col-12">
+                        <label for="code" class="formLabel">Code</label>
+                        <input type="text" class="form-control" placeholder="Enter Code" [(ngModel)]="itemData.ItemCode"
+                            name="item_code">
+                    </div>
+                    <div class="form-group col-xl-6 col-sm-6 col-12">
+                        <label for="category" class="formLabel">Category</label>
+                        <select class="form-control" id="exampleSelect2" [(ngModel)]="itemData.InvCategoryId" name="store">
+                            <option *ngFor="let category of categoryData" value="{{category.InvCategoryId}}">{{category.InvCategoryName}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-xl-6 col-sm-6 col-12">
+                        <label for="UOM" class="formLabel">UOM</label>
+                        <input type="text" class="form-control" placeholder="Enter UOM" [(ngModel)]="itemData.Uom" name="item_uom">
+                    </div>
+                    <div class="form-group col-xl-6 col-sm-6 col-12">
+                        <label for="currentQnty" class="formLabel">Current Quantity</label>
+                        <input type="text" class="form-control" placeholder="Enter Current Quantity" [(ngModel)]="itemData.CurrentQuantity"
+                            name="item_currentQnty" disabled>
+                    </div>
+                    <div class="form-group col-xl-6 col-sm-6 col-12">
+                        <label for="dfltOrdrQnty" class="formLabel">Default Order Quantity</label>
+                        <input type="text" class="form-control" placeholder="Enter Default Order Quantity" [(ngModel)]="itemData.DefaultOrderQuantity"
+                            name="item_dfltOrdrQnty">
+                    </div>
+                    <div class="form-group col-xl-6 col-sm-6 col-12">
+                        <label for="thresholdQnty" class="formLabel">Threshold Quantity</label>
+                        <input type="text" class="form-control" placeholder="Enter Threshold Quantity" [(ngModel)]="itemData.ThresholdQuantity"
+                            name="item_thresholdQnty">
+                    </div>
+                    <div class="form-group col-xl-6 col-sm-6 col-12">
+                        <label class="custom-control custom-checkbox">
+                            <!-- <input class="custom-control-input checkbox-primary" type="checkbox" [(ngModel)]="itemData.IsActive"
+                                (change)="onChange($event)" [checked]="itemData.IsActive" name="isActive">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Is Active</span> -->
+                            <p-checkbox name="checkboxName" [(ngModel)]="checkedIsActive" binary="true" label="Is Acitve"></p-checkbox>
+                        </label>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" *ngIf="!itemData.InvItemMasterId" (click)="addNewItem(itemData, checkedIsActive)">Add</button>
+                <button type="button" class="btn btn-primary" *ngIf="itemData.InvItemMasterId" (click)="updateItem(itemData, checkedIsActive)">Update</button>
+                <!-- <button type="button" class="btn btn-primary" (click)="addNewItem(itemData)">Add</button> -->
+                <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Search Filter Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="modal-large-label">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header state modal-primary">
+                <h4 class="modal-title">Search Item</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form class="row">
+                    <div class="form-group col-xl-3 col-sm-3 col-12">
+                        <label for="name" class="formLabel">By Name</label>
+                        <input type="text" class="form-control" [(ngModel)]="searchItem.InvItemMasterName" name="name">
+                    </div>
+                    <div class="form-group col-xl-3 col-sm-3 col-12">
+                        <label for="code" class="formLabel">By Code</label>
+                        <input type="text" class="form-control" [(ngModel)]="searchItem.ItemCode" name="code">
+                    </div>
+                    <div class="form-group col-xl-3 col-sm-3 col-12">
+                        <label for="category" class="formLabel">Category</label>
+                        <select class="form-control" id="exampleSelect2" [(ngModel)]="searchItem.InvCategory" name="store">
+                            <option *ngFor="let category of categoryData" value="{{category.InvCategoryId}}">{{category.InvCategoryName}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-xl-3 col-sm-3 col-12">
+                        <label for="IsActive" class="formLabel">Is Active</label>
+                        <select class="form-control" id="exampleSelect2" [(ngModel)]="searchItem.IsActive" name="IsActive">
+                            <option value="true">Active</option>
+                            <option value="false">InActive</option>
+                        </select>
+                    </div>
+                </form>
+                <p-table *ngIf="searchResults.length > 0" #dt [columns]="searchCols" [value]="searchResults"
+                    selectionMode="single" [(selection)]="slectedSearchItems" dataKey="InvItemMasterName" [paginator]="true"
+                    [rows]="10" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of columns">
+                                {{col.header}}
+                            </th>
+                            <th style="text-align: center;width: 2.3em">
+                                <i class="fa fa-check-circle"></i>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr [pSelectableRow]="rowData">
+                            <td *ngFor="let col of columns">
+                                {{rowData[col.field]}}
+                            </td>
+                            <td>
+                                <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="findItems(searchItem)">Find</button>
+            </div>
+
+        </div>
+    </div>
+</div>

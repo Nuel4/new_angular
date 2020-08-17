@@ -1,0 +1,107 @@
+
+.workspaceHome {
+  max-width: 100%;
+  min-width: 100%;
+  // padding: 0px 10px 0px 0px;
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+  .yeats-form-group {
+    min-height: 1rem;
+    // height: 2.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  p-dropdown {
+    width: 100% !important;
+    .ui-dropdown {
+      // border: 1px solid rgba(0, 0, 0, 0.15);
+      border: 1px solid #dadbff;
+      border-radius: 7px !important;
+      width: inherit !important;
+      .ui-dropdown-label {
+        /// height: $form-component-height;
+        padding: 0px 2rem 0px 16px;
+        line-height: 2rem;
+        margin: 0 !important;
+        font-size: 0.78rem;
+        font-family: 'Muli', sans-serif;
+        font-weight: 600;
+      }
+      .ui-dropdown-items {
+        font-size: 13px;
+      }
+      &:hover {
+        border: 1px solid rgba(0, 0, 0, 0.15) !important;
+      }
+      &:focus {
+        border: 1px solid rgba(17, 72, 134, 0.6) !important;
+      }
+      .ui-dropdown-trigger {
+        .ui-dropdown-trigger-icon {
+          top: 57% !important;
+        }
+      }
+    }
+  }
+  .fc-view-container {
+    overflow: auto;
+  }
+  .fc-center h2 {
+    font-size: 10px !important;
+    // margin-right:10px;
+    // margin-top:px;
+  }
+  .calendarTable {
+    .table-bordered {
+      font-size: 12px;
+      margin: 0 !important;
+    }
+    .fc th {
+      padding: 0 !important;
+    }
+    .fc-axis {
+      width: 34px !important;
+      padding: 0 !important;
+      text-align: center !important;
+      border: 0 !important;
+    }
+  }
+  .main-content {
+    padding-bottom: 0px;
+  }
+  
+  .workspace-container {
+    height: 87vh;
+    border: 1px solid #f1f3f6 !important;
+    .fit {
+      // padding:5px !important;
+      background-color:#f1f3f6 !important;
+    }
+
+    gridster-item {
+      // width:428.33px !important;
+      border-radius:5px !important;
+      .widget-container {
+        padding: 0px 8px;
+        // height: calc(100% - 60px);
+        // overflow: auto;
+      }
+    }
+  }
+
+  .fc-time-grid,
+  .fc-time-grid-container {
+    height: 100% !important;
+  }
+  // .marpad{
+  //   margin-left: 1% !important;
+  //           margin-right: 1% !important;
+  //           position: inherit;
+  //           // float: right;
+  // //   position: relative;
+    
+  // }
+ 
+}

@@ -1,0 +1,850 @@
+<div class="icdsearchmodal">
+  <div class="modal-header ">
+    <div class="title">Search Results</div>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="card border-0 box-shadow cardMargin">
+      <div class="card-header transparent border-0 text-muted">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-4">
+              Patient Details:{{patientDetails && patientDetails.FirstName + patientDetails.LastName || "" }}
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+              Unique No:{{patientDetails && patientDetails.UniqueNumber || ""}}
+            </div>
+            <div class="col-lg-2 col-md-2 col-2">
+              DOB:{{ patientDetails && patientDetails.DateOfBirth || "" | date: 'dd/MM/yyyy'}}
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+              Cell Phone:{{patientDetails && patientDetails.HomePhone || ""}}
+            </div>
+            <div class="col-lg-4 col-md-4 col-4">
+              Date of Service:
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+              Insurance:{{patientDetails && patientDetails.PI || ""}}
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+              AR Type: {{patientDetails && patientDetails.AR || ""}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p-tabView [activeIndex]="index" (onChange)="handleChange($event)">
+      <p-tabPanel header="Select CPT Codes">
+        <div class="row">
+          <div class="col-lg-3 col-md-3 col-3">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Physician Name<span class="required">*</span></label>
+              <p-dropdown [options]="usersList" [(ngModel)]="selectedPhysician" placeholder="Select Physician"
+                optionLabel="FullName" (onChange)="SelectedPhysicianChange(selectedPhysician)">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-3">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Facility</label>
+              <p-dropdown [options]="facilitylist" [(ngModel)]="selectedfacility" placeholder="Select Facility"
+                optionLabel="FacilityName" (onChange)="SelectFacility($event)" [showClear]="true">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Date of Service</label>
+              <p-calendar [(ngModel)]="DOS" name="DOS" id="DosT" class="yeats-form-control" [showIcon]="true" [maxDate]="maxDate">
+              </p-calendar>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="" class="yeats-form-label">Description <span class="required">*</span></label>
+              <input type="text" pInputText [(ngModel)]="description" class="form-control yeats-form-control">
+            </div>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 labelStyle">
+            <b>Use CPT Codes:</b>
+          </div>
+          <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <app-add-problems (childEvent)="recallChild($event)"></app-add-problems>
+          </div> -->
+          <div class="col-lg-12 col-md-12 col-12">
+            <app-select-cpt-code [ComponentName]="ComponentName" (childEvent)="recallChild($event)"></app-select-cpt-code>
+          </div>
+        </div>
+        <!-- <div class="row">
+          <div class="col-lg-12 col-md-12 col-12 mt-2">
+            <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right">Close</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2">Save</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="openNext()">Next</button>
+          </div>
+        </div> -->
+
+      </p-tabPanel>
+      <p-tabPanel header="Select ICD9 Codes" [disabled]="firsttab">
+        <app-select-icd [SelectedPhysicianId]="SelectedPhysicianId" [compFrom]="compFrom" (buttons)="ButtonsPressed($event)" (DXexmitter)="catchdxcode($event)" (childEvent)="recallingChild($event)"></app-select-icd>
+
+        <!-- <div class="row">
+           <div class="col-lg-12 col-md-12 col-12 mt-2">
+            <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right">Close</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2">Save</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="openNext()">Next</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="openPrev()">Previous</button>
+          </div>
+        </div> -->
+      </p-tabPanel>
+      <p-tabPanel header="Association"[disabled]="secondtab">
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="" class="yeats-form-label">Computed Level of Service CPT code</label>
+              <input type="text" pInputText class="form-control yeats-form-control" [(ngModel)]="ServiceCptCode">
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-2 col-2">
+            <div class="form-group yeats-form-group" style="margin-top:33px;">
+              <button pButton class="yeats-btn yeats-btn-primary ml-3" (click)="UpdateAssociation()">Update</button>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Admit Date</label>
+              <p-calendar [(ngModel)]="admitDate" placeholder="Enter Date" name="admitDate" class="yeats-form-control" [showIcon]="true">
+              </p-calendar>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Discharge Date</label>
+              <p-calendar [(ngModel)]="DischargeDate" placeholder="Enter Date" name="DateTo" id="DosT" class="yeats-form-control" [showIcon]="true">
+              </p-calendar>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 col-12 mt-4">
+            <label class="formLabel yeats-form-label">Referring Physician:</label>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Referral Start Date</label>
+              <p-calendar [(ngModel)]="ReferralStartDate" name="DateTo" placeholder="Enter Date" id="DosT" class="yeats-form-control" [showIcon]="true">
+              </p-calendar>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Referral Expiration Date</label>
+              <p-calendar [(ngModel)]="ReferralEndDate" name="DateTo" placeholder="Enter Date" id="DosT" class="yeats-form-control" [showIcon]="true">
+              </p-calendar>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="" class="yeats-form-label">Allowable Visits</label>
+              <input type="text" pInputText class="form-control yeats-form-control">
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label for="" class="yeats-form-label">Used Visits</label>
+              <input type="text" pInputText class="form-control yeats-form-control">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-12">
+            <div class="yeats-tables">
+                <p-table [columns]="cols" #cpttable [value]="AssociationTable"  dataKey="cptCode">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th style="width: 3em"></th>
+                        <th *ngFor="let col of columns">
+                            {{col.header}}
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+                    <tr>
+                        <td>
+                            <a href="#" [pRowToggler]="rowData">
+                                <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+                            </a>
+                        </td>
+                        <td *ngFor="let col of columns">
+                            {{rowData[col.field]}}
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="rowexpansion" let-expanded="expanded" let-rowData  let-columns="columns">
+                    <tr>
+                        <td [attr.colspan]="columns.length + 1">
+                            <div class="ui-fluid" style="font-size:16px;padding:20px">
+                                <div class="row" style="text-align:left">
+                                    <div class="col-lg-12" *ngIf="rowData.assessmentDiagnosisCode1Visibility === 'Visible'">
+                                        <div class="form-group yeats-form-group">
+                                         <label class="todisplay">{{rowData.a}}</label><p-checkbox name="group1" class="yeats-form-group" [(ngModel)]="rowData.assessmentDiagnosisCode1Checked" label="{{rowData.assessmentDiagnosisCode1}}" binary="true" (onChange)="addPointers('A',rowData)"></p-checkbox><label class="todisplay">{{rowData.assessmentDiagnosisCodeDescription1}}</label>         
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" *ngIf="rowData.assessmentDiagnosisCode2Visibility === 'Visible'">
+                                        <div class="form-group yeats-form-group">
+                                            <label class="todisplay">{{rowData.b}}</label><p-checkbox name="group1" class="yeats-form-group" [(ngModel)]="rowData.assessmentDiagnosisCode2Checked" label="{{rowData.assessmentDiagnosisCode2}}" binary="true" (onChange)="addPointers('B',rowData)"></p-checkbox><label class="todisplay">{{rowData.assessmentDiagnosisCodeDescription2}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" *ngIf="rowData.assessmentDiagnosisCode3Visibility === 'Visible'">
+                                        <div class="form-group yeats-form-group">
+                                            <label class="todisplay">{{rowData.c}}</label><p-checkbox name="group1" class="yeats-form-group"  [(ngModel)]="rowData.assessmentDiagnosisCode3Checked" label="{{rowData.assessmentDiagnosisCode3}}" binary="true" (onChange)="addPointers('C',rowData)"></p-checkbox><label class="todisplay">{{rowData.assessmentDiagnosisCodeDescription3}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" *ngIf="rowData.assessmentDiagnosisCode4Visibility === 'Visible'">
+                                        <div class="form-group yeats-form-group">
+                                            <label class="todisplay">{{rowData.d}}</label><p-checkbox name="group1" class="yeats-form-group" [(ngModel)]="rowData.assessmentDiagnosisCode4Checked" label="{{rowData.assessmentDiagnosisCode4}}" binary="true" (onChange)="addPointers('D',rowData)"></p-checkbox><label class="todisplay">{{rowData.assessmentDiagnosisCodeDescription4}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" *ngIf="rowData.assessmentDiagnosisCode5Visibility === 'Visible'">
+                                        <div class="form-group yeats-form-group">
+                                            <label class="todisplay"> {{rowData.e}}</label><p-checkbox name="group1" class="yeats-form-group" [(ngModel)]="rowData.assessmentDiagnosisCode5Checked" label="{{rowData.assessmentDiagnosisCode5}}" binary="true"  (onChange)="addPointers('E',rowData)"></p-checkbox><label class="todisplay">{{rowData.assessmentDiagnosisCodeDescription5}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" *ngIf="rowData.assessmentDiagnosisCode6Visibility === 'Visible'">
+                                        <div class="form-group yeats-form-group">
+                                            <label class="todisplay"> {{rowData.f}}</label><p-checkbox name="group1" class="yeats-form-group" [(ngModel)]="rowData.assessmentDiagnosisCode6Checked" label="{{rowData.assessmentDiagnosisCode6}}" binary="true" (onChange)="addPointers('F',rowData)"></p-checkbox><label class="todisplay">{{rowData.assessmentDiagnosisCodeDescription6}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" *ngIf="rowData.assessmentDiagnosisCode7Visibility === 'Visible'">
+                                        <div class="form-group yeats-form-group">
+                                            <label class="todisplay"> {{rowData.g}}</label><p-checkbox name="group1" class="yeats-form-group" [(ngModel)]="rowData.assessmentDiagnosisCode7Checked" label="{{rowData.assessmentDiagnosisCode7}}" binary="true" (onChange)="addPointers('G',rowData)"></p-checkbox><label class="todisplay">{{rowData.assessmentDiagnosisCodeDescription7}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" *ngIf="rowData.assessmentDiagnosisCode8Visibility === 'Visible'">
+                                        <div class="form-group yeats-form-group">
+                                            <label class="todisplay"> {{rowData.h}}</label><p-checkbox name="group1" class="yeats-form-group" [(ngModel)]="rowData.assessmentDiagnosisCode8Checked" label="{{rowData.assessmentDiagnosisCode8}}" binary="true"  (onChange)="addPointers('H',rowData)"></p-checkbox><label class="todisplay">{{rowData.assessmentDiagnosisCodeDescription8}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" *ngIf="rowData.assessmentDiagnosisCode9Visibility === 'Visible'">
+                                        <div class="form-group yeats-form-group">
+                                            <label class="todisplay"> {{rowData.i}}</label><p-checkbox name="group1" class="yeats-form-group" [(ngModel)]="rowData.assessmentDiagnosisCode9Checked" label="{{rowData.assessmentDiagnosisCode9}}" binary="true" (onChange)="addPointers('I',rowData)"></p-checkbox><label class="todisplay">{{rowData.assessmentDiagnosisCodeDescription9}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" *ngIf="rowData.assessmentDiagnosisCode10Visibility === 'Visible'">
+                                        <div class="form-group yeats-form-group">
+                                            <label class="todisplay"> {{rowData.j}}</label><p-checkbox name="group1" class="yeats-form-group" [(ngModel)]="rowData.assessmentDiagnosisCode10Checked" label="{{rowData.assessmentDiagnosisCode10}}" binary="true"  (onChange)="addPointers('J',rowData)"></p-checkbox><label class="todisplay">{{rowData.assessmentDiagnosisCodeDescription10}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" *ngIf="rowData.assessmentDiagnosisCode11Visibility === 'Visible'">
+                                        <div class="form-group yeats-form-group">
+                                            <label class="todisplay"> {{rowData.k}}</label><p-checkbox name="group1" class="yeats-form-group" [(ngModel)]="rowData.assessmentDiagnosisCode11Checked" label="{{rowData.assessmentDiagnosisCode11}}" binary="true"  (onChange)="addPointers('K',rowData)"></p-checkbox><label class="todisplay">{{rowData.assessmentDiagnosisCodeDescription11}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" *ngIf="rowData.assessmentDiagnosisCode12Visibility === 'Visible'">
+                                        <div class="form-group yeats-form-group">
+                                            <label class="todisplay"> {{rowData.l}}</label><p-checkbox name="group1" class="yeats-form-group" [(ngModel)]="rowData.assessmentDiagnosisCode12Checked" label="{{rowData.assessmentDiagnosisCode12}}" binary="true"  (onChange)="addPointers('L',rowData)"></p-checkbox><label class="todisplay">{{rowData.assessmentDiagnosisCodeDescription12}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12" style="text-align:left">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <label class="displaylabel">
+                                                    Modifier</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <!-- <div class="col-lg-12"> -->
+                                            <div class="col-lg-1">
+                                                <div class="form-group yeats-form-group">
+                                                    <label class="formLabel yeats-form-label">M1</label>
+                                                    <input type="text" pInputText
+                                                        class="form-control yeats-form-control"
+                                                        [(ngModel)]="rowData.cptCodeModifier1"
+                                                        [disabled]="Billdetail">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1">
+                                                <div class="form-group yeats-form-group">
+                                                    <label class="formLabel yeats-form-label">M2</label>
+                                                    <input type="text" pInputText
+                                                        class="form-control yeats-form-control"
+                                                        [(ngModel)]="rowData.cptCodeModifier2"
+                                                        [disabled]="Billdetail">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1">
+                                                <div class="form-group yeats-form-group">
+                                                    <label class="formLabel yeats-form-label">M3</label>
+                                                    <input type="text" pInputText
+                                                        class="form-control yeats-form-control"
+                                                        [(ngModel)]="rowData.cptCodeModifier3"
+                                                        [disabled]="Billdetail">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1">
+                                                <div class="form-group yeats-form-group">
+                                                    <label class="formLabel yeats-form-label">M4</label>
+                                                    <input type="text" pInputText
+                                                        class="form-control yeats-form-control"
+                                                        [(ngModel)]="rowData.cptCodeModifier4"
+                                                        [disabled]="Billdetail">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1">
+                                                <div class="form-group yeats-form-group">
+                                                    <label class="formLabel yeats-form-label">Units</label>
+                                                    <input type="text" pInputText  [(ngModel)]="rowData._decimalunits"
+                                                        class="form-control yeats-form-control"
+                                                        [disabled]="Billdetail">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1">
+                                                <div class="form-group yeats-form-group pos">
+                                                    <label class="formLabel yeats-form-label">POS</label>
+                                                    <p-dropdown [(ngModel)]="rowData._posc" name="SBSD"
+                                                        id="SBSD" [options]="POSList" optionLabel="Code"
+                                                        (onChange)="StatusChange(rowData)"></p-dropdown>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="form-group yeats-form-group ">
+                                                    <label class="formLabel yeats-form-label">Date
+                                                        From</label>
+                                                    <!-- <p-calendar class="yeats-form-control"
+                                                        [(ngModel)]="rowData._serviceStartDate" [showIcon]="true"
+                                                        dateFormat="dd/mm/yy" [disabled]="Billdetail">
+                                                    </p-calendar> -->
+                                                    <p-calendar class="yeats-form-control" [(ngModel)]="rowData._serviceStartDate" [showIcon]="true" [disabled]="Billdetail"></p-calendar>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="form-group yeats-form-group ">
+                                                    <label class="formLabel yeats-form-label">Date
+                                                        To</label>
+                                                    <!-- <p-calendar class="yeats-form-control"
+                                                        [(ngModel)]="rowData._serviceEndDate" [showIcon]="true"
+                                                        dateFormat="dd/mm/yy" [disabled]="Billdetail">
+                                                    </p-calendar> -->
+                                                    <p-calendar class="yeats-form-control" [(ngModel)]="rowData._serviceEndDate" [showIcon]="true" [disabled]="Billdetail"></p-calendar>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="form-group yeats-form-group">
+                                                    <label
+                                                        class="formLabel yeats-form-label">Authorization</label>
+                                                    <input type="text" pInputText
+                                                        class="form-control yeats-form-control"
+                                                        [(ngModel)]="rowData._insurancePriorAuthorizationNumber" [disabled]="Billdetail">
+                                                </div>
+                                            </div>
+                                            <!-- </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-top: 30px;">
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-lg-4 ">
+                                                <label style="font-weight: 500;font-size: 0.75rem; max-width: 100%;margin-top: 5px;">Unit charge for
+                                                    Procedure</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="row">
+                                                    <div class="col-lg-6" >
+                                                        <p-checkbox [(ngModel)]="rowData._modifyUnitCharge"
+                                                      label="Modify Unit Charge $" binary="true">
+                                                        </p-checkbox>
+                                                    </div>
+                                                    <div class="col-lg-4" style="text-align: left; padding: 0px">
+                                                        <input
+                                                            type="text" pInputText [(ngModel)]="rowData.modifiedProcedureUnitCharge"
+                                                            class="form-control yeats-form-control"
+                                                            [disabled]="!rowData._modifyUnitCharge">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-sm-6">
+                                        <div class="row">
+                                                <div class="col-lg-6 col-sm-6">
+                                        <div class="form-group yeats-form-group" style="text-align: left">
+                                            <label class="formLabel yeats-form-label">&nbsp;</label>
+                                            <button pButton class="yeats-btn yeats-btn-primary" style="text-align: left;"
+                                                (click)="copyCpt(rowData)">Copy CPT</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group yeats-form-group" style="text-align: left">
+                                                    <label class="formLabel yeats-form-label">&nbsp;</label>
+                                                    <button pButton class="yeats-btn yeats-btn-primary" *ngIf="rowData.showDeletebutton"
+                                                        (click)="deletecpt(rowData,cpttable)">Delete CPT</button>
+                                                </div>
+                                    </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                        <div class="form-group yeats-form-group" style="text-align: left">
+                                            <label class="formLabel yeats-form-label">Notes</label>
+                                            <textarea rows="5" cols="60" [(ngModel)]="rowData.billersNote" pInputTextarea></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="row">
+          <div class="col-lg-12 ol-md-12 col-12">
+            <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right">Close</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2">Post to Billing</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2">Save</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2">Approve and Submit Claim</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="openNext()">Next</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="openPrev()">Previous</button>
+          </div>
+        </div> -->
+
+
+
+
+      </p-tabPanel>
+      <p-tabPanel header="Insurance Information">
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-4">
+            <label for="" class="yeats-form-label"><b>Primary Insurance</b></label>
+            <div class="row InsuranceStyle">
+              <div class="col-6">
+                <label for="" class="yeats-form-label">Insurance Code </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">
+                  {{InsuranceList?InsuranceList[0]?InsuranceList[0].insuranceprovidercode:'':''}}
+                </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">Payer Id</label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">
+                  {{InsuranceList?InsuranceList[0]?InsuranceList[0].insuranceproviderpayerid:'':''}}
+                </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">Insurance Category </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">
+                  {{InsuranceList?InsuranceList[0]?InsuranceList[0].insuranceprovidercategory:'':''}}
+                </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">Company Name</label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">
+                  {{InsuranceList?InsuranceList[0]?InsuranceList[0].insurancename:'':''}}
+                </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">Policy Number </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">
+                  {{InsuranceList?InsuranceList[0]?InsuranceList[0].insurancepolicynumber:'':''}}
+                </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">Group Number</label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">
+                  {{InsuranceList?InsuranceList[0]?InsuranceList[0].groupnumber:'':''}}
+                </label>
+              </div>
+            </div>
+            <label for="" class="yeats-form-label">Other Claim ID(11b)</label>
+            <span><input type="text" pInputText class="form-control yeats-form-control" [(ngModel)]="primaryClaim"></span>
+            <div class="mt-3">
+              <p-checkbox name="insurance" value="insurance1" label="Accept Assignment(27)" binary="true"
+                [(ngModel)]="primaryAccept"></p-checkbox>
+            </div>
+          </div>
+
+
+
+          <div class="col-lg-4 col-md-4 col-4">
+            <label for="" class="yeats-form-label"><b>Secondary Insurance</b></label>
+
+            <div class="row InsuranceStyle">
+              <div class="col-6">
+                <label for="" class="yeats-form-label">Insurance Code </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">
+                  {{InsuranceList?InsuranceList[1]?InsuranceList[1].insuranceprovidercode:'':''}}
+                </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">Payer Id</label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">
+                  {{InsuranceList?InsuranceList[1]?InsuranceList[1].insuranceproviderpayerid:'':''}}
+                </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">Insurance Category </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">
+                  {{InsuranceList?InsuranceList[1]?InsuranceList[1].insuranceprovidercategory:'':''}}
+                </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">Company Name</label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">
+                  {{InsuranceList?InsuranceList[1]?InsuranceList[1].insurancename:'':''}}
+                </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">Policy Number </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">
+                  {{InsuranceList?InsuranceList[1]?InsuranceList[1].insurancepolicynumber:'':''}}
+                </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">Group Number</label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">
+                  {{InsuranceList?InsuranceList[1]?InsuranceList[1].groupnumber:'':''}}
+                </label>
+              </div>
+            </div>
+            <label for="" class="yeats-form-label">Other Claim ID(11b)</label>
+            <span><input type="text" pInputText class="form-control yeats-form-control" [(ngModel)]="secondaryClaim"></span>
+            <div class="mt-3">
+              <p-checkbox name="insurance" value="insurance2" label="Accept Assignment(27)" binary="true"
+                [(ngModel)]="secondaryAccept"></p-checkbox>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-4 col-4">
+            <label for="" class="yeats-form-label"><b>Tertiary Insurance</b></label>
+
+
+            <div class="row InsuranceStyle">
+              <div class="col-6">
+                <label for="" class="yeats-form-label">Insurance Code </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">
+                  {{InsuranceList?InsuranceList[2]?InsuranceList[2].insuranceprovidercode:'':''}}
+                </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">Payer Id</label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">
+                  {{InsuranceList?InsuranceList[2]?InsuranceList[2].insuranceproviderpayerid:'':''}}
+                </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">Insurance Category </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">
+                  {{InsuranceList?InsuranceList[2]?InsuranceList[2].insuranceprovidercategory:'':''}}
+                </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">Company Name</label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">
+                  {{InsuranceList?InsuranceList[2]?InsuranceList[2].insurancename:'':''}}
+                </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">Policy Number </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">
+                  {{InsuranceList?InsuranceList[2]?InsuranceList[2].insurancepolicynumber:'':''}}
+                </label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">Group Number</label>
+              </div>
+              <div class="col-6">
+                <label for="" class="yeats-form-label">
+                  {{InsuranceList?InsuranceList[2]?InsuranceList[2].groupnumber:'':''}}
+                </label>
+              </div>
+            </div>
+            <label for="" class="yeats-form-label">Other Claim ID(11b)</label>
+            <span><input type="text" pInputText class="form-control yeats-form-control" [(ngModel)]="tertiaryClaim"></span>
+            <div class="mt-3">
+              <p-checkbox class="mt-2" name="insurance" value="insurance3" label="Accept Assignment(27)" binary="true"
+                [(ngModel)]="tertiaryAccept"></p-checkbox>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="row">
+          <div class="col-lg-12 col-md-12 col-12 mt-3">
+            <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right">Close</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2">Save</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="openNext()">Next</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="openPrev()">Previous</button>
+          </div>
+        </div> -->
+      </p-tabPanel>
+      <p-tabPanel header="Additional Billing Details" [disabled]="lasttab">
+        <p-accordion>
+          <p-accordionTab header="Current Condition(Form Item 14)">
+            <div class="row">
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label class="formLabel yeats-form-label">Injury/Illness/LMP Date</label>
+                  <p-calendar [(ngModel)]="symptomDate" name="DateTo" placeholder="Enter Date" id="DosT" class="yeats-form-control" [showIcon]="true">
+                  </p-calendar>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-3">
+                <div class="form-group yeats-form-group ">
+                  <label class="formLabel yeats-form-label">Symptom Type</label>
+                  <p-dropdown [options]="symtomType" [(ngModel)]="selectedSType" placeholder="Select Type"
+                    optionLabel="name" [showClear]="true">
+                  </p-dropdown>
+                </div>
+              </div>
+            </div>
+          </p-accordionTab>
+          <p-accordionTab header="Other Condition / Treatment Type(Form Item 15)">
+            <div class="row">
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label class="formLabel yeats-form-label">Other Treatment Date</label>
+                  <p-calendar [(ngModel)]="OtherTreatmentDate" name="Date" placeholder="Enter Date" class="yeats-form-control" [showIcon]="true">
+                  </p-calendar>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-6">
+                <div class="form-group yeats-form-group ">
+                  <label class="formLabel yeats-form-label">Treatment Type</label>
+                  <p-dropdown [options]="treatmentType" [(ngModel)]="selectedTreatment" placeholder="Select Treatment"
+                    optionLabel="name" [showClear]="true">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label class="formLabel yeats-form-label">Last X-Ray Date</label>
+                  <p-calendar [(ngModel)]="LastXrayDate" name="DateTo" placeholder="Enter Date" id="DosT" class="yeats-form-control" [showIcon]="true">
+                  </p-calendar>
+                </div>
+              </div>
+            </div>
+          </p-accordionTab>
+          <p-accordionTab header="Accident(box10,11b,16,18)">
+            <div class="row">
+              <div class="col-lg-3 col-md-3 col-3">
+                <div class="form-group yeats-form-group ">
+                  <label class="formLabel yeats-form-label">Accident Type</label>
+                  <p-dropdown [options]="AccidentType" [(ngModel)]="selectedAccidentType"
+                    placeholder="Select Accident Type" optionLabel="name" [showClear]="true">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label class="formLabel yeats-form-label">Accident Date</label>
+                  <p-calendar [(ngModel)]="AccidentDate" name="DateTo" placeholder="Enter Date" id="DosT" class="yeats-form-control" [showIcon]="true">
+                  </p-calendar>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label class="formLabel yeats-form-label">Unable to work From Date</label>
+                  <p-calendar [(ngModel)]="UnableToWorkFromDate" name="DateTo" placeholder="Enter Date" id="DosT" class="yeats-form-control" [showIcon]="true">
+                  </p-calendar>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label class="formLabel yeats-form-label">Unable to work To Date </label>
+                  <p-calendar [(ngModel)]="UnableToWorkTo" name="DateTo" placeholder="Enter Date" id="DosT" class="yeats-form-control" [showIcon]="true">
+                  </p-calendar>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-3">
+                <div class="form-group yeats-form-group ">
+                  <label class="formLabel yeats-form-label">Accident State</label>
+                  <p-dropdown [options]="patientState" [(ngModel)]="selectedPatientState" placeholder="Select State"
+                     [showClear]="true">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-3">
+                <div class="form-group yeats-form-group ">
+                  <label class="formLabel yeats-form-label">Nature of Accident</label>
+                  <p-dropdown [options]="NatureOfAccident" [(ngModel)]="selectedNature" placeholder="Select Type"
+                    optionLabel="name" [showClear]="true">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="" class="yeats-form-label">Qualifer</label>
+                  <input type="text" [(ngModel)]="accidentQualifier" pInputText class="form-control yeats-form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-3 col-md-3 col-3">
+                <div class="form-group yeats-form-group ">
+                  <label class="formLabel yeats-form-label">Hospitalization From Date</label>
+                  <p-calendar [(ngModel)]="hospitalizationFrom" name="DateTo" id="DosT" placeholder="Enter Date" class="yeats-form-control" [showIcon]="true">
+                  </p-calendar>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-3">
+                <div class="form-group yeats-form-group ">
+                  <label class="formLabel yeats-form-label">Date To Date</label>
+                  <p-calendar [(ngModel)]="hospitalizationTo" name="DateTo" id="DosT" placeholder="Enter Date" class="yeats-form-control" [showIcon]="true">
+                  </p-calendar>
+                </div>
+              </div>
+            </div>
+          </p-accordionTab>
+          <p-accordionTab header="Claims Codes(Form item 10d)">
+            <div class="row">
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="" class="yeats-form-label">Condition1</label>
+                  <input type="text" [(ngModel)]="claimCondition1" pInputText class="form-control yeats-form-control" maxlength="2">
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="" class="yeats-form-label">Condition2</label>
+                  <input type="text" [(ngModel)]="claimCondition2" pInputText class="form-control yeats-form-control" maxlength="2">
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="" class="yeats-form-label">Condition3</label>
+                  <input type="text" [(ngModel)]="claimCondition3" pInputText class="form-control yeats-form-control" maxlength="2">
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="" class="yeats-form-label">Condition4</label>
+                  <input type="text" [(ngModel)]="claimCondition4" pInputText class="form-control yeats-form-control" maxlength="2">
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="" class="yeats-form-label">Condition5</label>
+                  <input type="text" [(ngModel)]="claimCondition5" pInputText class="form-control yeats-form-control" maxlength="2">
+                </div>
+              </div>
+            </div>
+          </p-accordionTab>
+          <p-accordionTab header="Miscellaneous(boxes 17,19,22,23)">
+            <div class="row">
+              <div class="col-lg-3 col-md-3 col-3">
+                <div class="form-group yeats-form-group ">
+                  <label class="formLabel yeats-form-label">Referring Type(Box 17)</label>
+                  <p-dropdown [options]="referringType" [(ngModel)]="selectedReferringType" placeholder="Select Type"
+                    optionLabel="name" [showClear]="true">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="" class="yeats-form-label">Local Use (Box 23)</label>
+                  <input type="text" [(ngModel)]="box23" pInputText class="form-control yeats-form-control" maxlength="2">
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="" class="yeats-form-label">Local Use (Box 19)</label>
+                  <input type="text" [(ngModel)]="box19" pInputText class="form-control yeats-form-control">
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <p-checkbox name="insurance" value="insurance1" label="Outside Lab Work" binary="true"
+                    [(ngModel)]="outsideLab"></p-checkbox>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="" class="yeats-form-label">Charge</label>
+                  <input type="text" [(ngModel)]="labCharge" pInputText class="form-control yeats-form-control">
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-3">
+                <div class="form-group yeats-form-group ">
+                  <label class="formLabel yeats-form-label">Local Use(Box 22)</label>
+                  <p-dropdown [options]="LocalUseBox" [(ngModel)]="selectedLocalUse" placeholder="Select Local Use"
+                    optionLabel="name" [showClear]="true">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="form-group yeats-form-group ">
+                  <label for="" class="yeats-form-label">Local Use(Box22) Text</label>
+                  <input type="text" [(ngModel)]="LocalUseBox22Text" pInputText class="form-control yeats-form-control" maxlength="5">
+                </div>
+              </div>
+            </div>
+          </p-accordionTab>
+        </p-accordion>
+        <!-- <div class="row">
+          <div class="col-lg-12 col-md-12 col-12 mt-4">
+            <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right">Close</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2">Post to Billing</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2">Save</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2">Approve and Submit Claim</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2">Next</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2">Previous</button>
+
+          </div>
+        </div> -->
+
+      </p-tabPanel>
+    </p-tabView>
+    <div class="row" *ngIf="!(index === 1)">
+      <div class="col-lg-12 col-md-12 col-12 mt-2">
+        <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right">Close</button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="saveData()">Save</button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="openNext()">Next</button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" *ngIf="!(index===0)" (click)="openPrev()">Previous</button>
+        <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" *ngIf="((index===2)||(index===4))" (click)="CreateNewAppointment('postbill')">Post to Billing</button>
+      <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" *ngIf="((index===2)||(index===4))"  (click)="approve()">Approve and Submit Claim</button>
+      </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12 ol-md-12 col-12">
+      
+    </div>
+  </div>
+</div>

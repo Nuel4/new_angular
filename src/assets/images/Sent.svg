@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="27" height="12" viewBox="0 0 27 12">
+  <defs>
+    <clipPath id="clip">
+      <use xlink:href="#fill"/>
+    </clipPath>
+    <clipPath id="clip-2">
+      <use xlink:href="#fill-2"/>
+    </clipPath>
+    <clipPath id="clip-3">
+      <use xlink:href="#fill-3"/>
+    </clipPath>
+  </defs>
+  <g id="Group_27915" data-name="Group 27915" transform="translate(-729 -209)">
+    <g id="Rectangle_47" data-name="Rectangle 47" transform="translate(740 209)" fill="none" stroke="#fff" stroke-width="1.5">
+      <rect width="16" height="12" rx="3" stroke="none"/>
+      <rect x="0.75" y="0.75" width="14.5" height="10.5" rx="2.25" fill="none"/>
+    </g>
+    <path id="Path_35807" data-name="Path 35807" d="M781.28,213.184l6.3,4.792,6.3-4.792" transform="translate(-39.716 -2.616)" fill="none" stroke="#fff" stroke-width="1.5"/>
+    <g id="Rectangle_48" data-name="Rectangle 48" transform="translate(729 210)" fill="#fff" stroke="#fff" stroke-width="2">
+      <rect id="fill" width="9" height="1" stroke="none"/>
+      <path d="M0,0h9M8,0v1M9,1h-9M1,1v-1" fill="none" clip-path="url(#clip)"/>
+    </g>
+    <g id="Rectangle_49" data-name="Rectangle 49" transform="translate(731 213)" fill="#fff" stroke="#fff" stroke-width="2">
+      <rect id="fill-2" width="7" height="1" stroke="none"/>
+      <path d="M0,0h7M6,0v1M7,1h-7M1,1v-1" fill="none" clip-path="url(#clip-2)"/>
+    </g>
+    <g id="Rectangle_50" data-name="Rectangle 50" transform="translate(734 216)" fill="#fff" stroke="#fff" stroke-width="2">
+      <rect id="fill-3" width="4" height="1" stroke="none"/>
+      <path d="M0,0h4M3,0v1M4,1h-4M1,1v-1" fill="none" clip-path="url(#clip-3)"/>
+    </g>
+  </g>
+</svg>

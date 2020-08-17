@@ -1,0 +1,377 @@
+<div class="modelView">
+<div *ngIf="openPopUp">
+  <div class="viewpatientmodel">
+    <!-- <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content"> -->
+    <div class="modal-header">
+      <h4 class="modal-title">Find Patient</h4>
+      <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button> -->
+      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- <form> -->
+      <div class="row">
+
+        <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+          <div class=" form-group yeats-form-group">
+            <label for="" class="yeats-form-label">Last Name</label>
+            <input type="text" pInputText class=" form-control yeats-form-control" placeholder="Last Name"
+              name="patientObj.lastname" [(ngModel)]="patientObj.lastname" (change)="patientsSearch()">
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+          <div class=" form-group yeats-form-group">
+            <label for="" class="yeats-form-label">First Name</label>
+            <input type="text" pInputText class=" form-control yeats-form-control" placeholder="First Name"
+              name="firstname" [(ngModel)]="patientObj.firstname" (change)="patientsSearch()">
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Status</label>
+            <p-dropdown [options]="status" [(ngModel)]="selectedStatus" placeholder="Select a Status"
+              optionLabel="Description" [showClear]="true"></p-dropdown>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+          <div class=" form-group yeats-form-group">
+            <label for="" class="yeats-form-label">SSN</label>
+            <input type="text" pInputText class=" form-control yeats-form-control" placeholder="SSN" name="ssn"
+              [(ngModel)]="patientObj.ssn">
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+          <div class=" form-group yeats-form-group">
+            <label for="" class="yeats-form-label">Phone</label>
+            <input type="number" pInputText class=" form-control yeats-form-control" placeholder="Phone" name="phone"
+              [(ngModel)]="patientObj.phone" (change)="patientsSearch()">
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Date of Birth</label>
+            <p-calendar class="yeats-form-control" [showIcon]="true" name="dob" [(ngModel)]="patientObj.dob">
+            </p-calendar>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">Visit Date</label>
+            <p-calendar class="yeats-form-control" [showIcon]="true" name="dob" [(ngModel)]="patientObj.visitdate">
+            </p-calendar>
+          </div>
+        </div>
+
+        <div class="col-xl-12 col-lg-12 col-sm-12 col-12">
+          <div class="form-group yeats-form-group ">
+            <label class="formLabel yeats-form-label">&nbsp;</label>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="patientsSearch()">Find</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="clearPatient()">Clear</button>
+            <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="openQuickADD()">Quick
+              Add</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- </form> -->
+
+
+      <div class="table-responsive yeats-tables findPatient" *ngIf="!isLoader">
+        <!-- <div *ngIf="emptyList"> -->
+        <p-table [tableStyleClass]="expandedCSS ? 'table-width' : 'table-css'" rowExpandMode="single" [value]="data" [columns]='tableCol' [paginator]="true" [rows]="10" selectionMode="single"
+          [(selection)]="selectedRow" dataKey="PatientId" [pageLinks]="3"
+          [responsive]="true" [rows]="PageSize" [totalRecords]="TotalRecords" [lazy]="true"
+          (onLazyLoad)="paginate($event)">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th style="width: 3em"></th>
+              <th *ngFor="let col of columns">
+                {{col.header}}
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-row let-expanded="expanded">
+            <tr *ngIf="data.length>=0 else nodata" [pSelectableRow]="row">
+              <td>
+                  <a style="padding-left:10px" href="#" [pRowToggler]="row">
+                    <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" (click)="autoTable(expanded)"></i>
+                  </a>
+              </td>
+              <td (click)="onRowSelect(row)">{{row.PatientId}}</td>
+              <td (click)="onRowSelect(row)">{{row.LastName}}, {{row.FirstName}}</td>
+              <td (click)="onRowSelect(row)">{{row.DateOfBirth | date:'MM/dd/yyyy'}}</td>
+              <td (click)="onRowSelect(row)">{{row.Sex==true?'M':'F'}}</td>  
+              <td (click)="onRowSelect(row)">{{row.HomePhone?row.HomePhone:(row.MobilePhone?row.MobilePhone:row.WorkPhone)}}</td>
+              <td><i class="fa fa-window-maximize" (click)="onRowSelect(row);openCharts()"></i></td>
+              <!-- <td><i class="fa fa-pencil" (click)="onRowSelect(row);onEditPatient(row)"></i></td> -->
+              <td><img src="../../../../assets/images/Edit.svg" style="cursor: pointer;" alt="Edit" (click)="onRowSelect(row);onEditPatient(row)"></td>
+              <td><i class="fa fa-calendar" (click)="openEditModal(row, true);onRowSelect(row)"></i></td>
+            </tr>
+            <ng-template #nodata>
+              <tr *ngIf="data.length==0">
+                <td>NO data found</td>
+              </tr>
+            </ng-template>
+
+
+          </ng-template>
+          <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+            <tr>
+                <td [attr.colspan]="columns.length + 2">
+                    <app-patient-tabview [rowData]="rowData"></app-patient-tabview>
+                </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      <!-- </div> -->
+      <!-- <div *ngIf="patientList">
+          <p-table [tableStyleClass]="expandedCSS ? 'table-width' : 'table-css'" rowExpandMode="single" [value]="searchedPatient" [columns]='tableCol' [paginator]="true" [rows]="10" selectionMode="single"
+            [(selection)]="selectedRow" dataKey="PatientId" [pageLinks]="3"
+            [responsive]="true" [rows]="PageSize" [totalRecords]="TotalRecords" [lazy]="true"
+            (onLazyLoad)="paginate($event)">
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th style="width: 3em"></th>
+                <th *ngFor="let col of columns">
+                  {{col.header}}
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-row let-expanded="expanded">
+              <tr *ngIf="data.length>=0 else nodata" [pSelectableRow]="row">
+                <td>
+                    <a style="padding-left:10px" href="#" [pRowToggler]="row">
+                      <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" (click)="autoTable(expanded)"></i>
+                    </a>
+                </td>
+                <td (click)="onRowSelect(row)">{{row.PatientId}}</td>
+                <td (click)="onRowSelect(row)">{{row.LastName}}, {{row.FirstName}}</td>
+                <td (click)="onRowSelect(row)">{{row.DateOfBirth | date:'MM/dd/yyyy'}}</td>
+                <td (click)="onRowSelect(row)">{{row.Sex==true?'M':'F'}}</td>  
+                <td (click)="onRowSelect(row)">{{row.HomePhone?row.HomePhone:(row.MobilePhone?row.MobilePhone:row.WorkPhone)}}</td>
+                <td><i class="fa fa-window-maximize" (click)="onRowSelect(row);openCharts()"></i></td>
+                <td><i class="fa fa-pencil" (click)="onRowSelect(row);onEditPatient(row)"></i></td>
+                <td><img src="../../../../assets/images/Edit.svg" style="cursor: pointer;" alt="Edit" (click)="onRowSelect(row);onEditPatient(row)"></td>
+                <td><i class="fa fa-calendar" (click)="openEditModal(row, true);onRowSelect(row)"></i></td>
+              </tr>
+              <ng-template #nodata>
+                <tr *ngIf="data.length==0">
+                  <td>NO data found</td>
+                </tr>
+              </ng-template>
+  
+  
+            </ng-template>
+            <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+              <tr>
+                  <td [attr.colspan]="columns.length + 2">
+                      <app-patient-tabview [rowData]="rowData"></app-patient-tabview>
+                  </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div> -->
+      </div>
+    </div>
+    <div class="modal-footer">
+        <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right mr-2"
+        (click)="onCancel()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="qucikaddpatient" *ngIf="isquickadd">
+  <div class="modal-header state modal-primary">
+    <h4 class="modal-title" id="modal-large-label">Add Quick Patient</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeQuickADD()">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+
+      <div class="col-12">
+        <h6>Patient Details:</h6>
+        <hr>
+      </div>
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+          <div class=" form-group yeats-form-group">
+              <label for="" class="yeats-form-label">Patient Unique Number</label>
+              <input type="text" pInputText class=" form-control yeats-form-control d-inline" placeholder=" "
+                name="patientUniqueNumber" [(ngModel)]="patientUniqueNumber" required readonly>
+            </div>
+      </div>
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Salutation</label>
+          <p-dropdown [options]="salutationlist" [(ngModel)]="selectedSalutation" placeholder="Select a Salutation"
+            optionLabel="SalutationCode" [showClear]="true"></p-dropdown>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class=" form-group yeats-form-group">
+          <label for="" class="yeats-form-label">First Name <span class="required">*</span> </label>
+          <input type="text" pInputText class=" form-control yeats-form-control" placeholder="First Name"
+            name="firstname" [(ngModel)]="firstname" required>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class=" form-group yeats-form-group">
+          <label for="" class="yeats-form-label">Middle Name</label>
+          <input type="text" pInputText class=" form-control yeats-form-control" placeholder="Middle Name"
+            name="middlename" [(ngModel)]="middlename">
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class=" form-group yeats-form-group">
+          <label for="" class="yeats-form-label">Last Name <span class="required">*</span></label>
+          <input type="text" pInputText class=" form-control yeats-form-control" placeholder="Last Name" name="lastname"
+            [(ngModel)]="lastname" required>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class=" form-group yeats-form-group">
+          <label for="" class="yeats-form-label">SSN</label>
+          <input type="text" pInputText maxlength="9" pattern="[0-9]" class=" form-control yeats-form-control" placeholder="___-__-____"
+            name="lastname" [(ngModel)]="ssn">
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Date of Birth <span class="required">*</span></label>
+          <p-calendar class="yeats-form-control" [showIcon]="true" name="dob" [(ngModel)]="dob" aria-required="true">
+          </p-calendar>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Gender <span class="required">*</span></label>
+          <p-radioButton name="groupname" value="true" [(ngModel)]="gender" label="Male"></p-radioButton>
+          <p-radioButton name="groupname" value="false" styleClass="ml-2" [(ngModel)]="gender" label="Female">
+          </p-radioButton>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class=" form-group yeats-form-group">
+          <label for="" class="yeats-form-label">Cell Phone <span class="required">*</span></label>
+          <input type="number" pInputText maxlength="10" pattern="[0-9]" class=" form-control yeats-form-control" placeholder="(___)___-____"
+            name="cellphone" [(ngModel)]="cellphone" required>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class=" form-group yeats-form-group">
+          <label for="" class="yeats-form-label">Home Phone <span class="required">*</span></label>
+          <input type="number" pInputText maxlength="10" pattern="[0-9]" class=" form-control yeats-form-control" placeholder="(___)___-____"
+            name="homephone" [(ngModel)]="homephone" required>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">&nbsp;</label>
+          <p-checkbox name="group2" binary="false" value="true" label="Self Pay" [(ngModel)]="selectedselfpay"
+            inputId="sp"></p-checkbox>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <h6>Default Physician Details:</h6>
+        <hr>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Default Facility</label>
+          <div class="ui-fluid">
+            <p-autoComplete class="yeats-form-control autodropdown" [(ngModel)]="defaultFacility" name="DefaultFacility"
+              #DefaultFacility="ngModel" [suggestions]="selectedFacilityList" [dropdown]="true"
+              (onSelect)="SelectedFacility($event)" (completeMethod)="LoadFacility($event)" field="FacilityName"
+              [dropdown]="true" placeholder="Enter Facility Name" [minLength]="3"></p-autoComplete>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Default Physician</label>
+          <p-dropdown class="yeats-form-control" [(ngModel)]="selectedUser" [options]="User" optionLabel="fullName"
+            [showClear]="true" [autoWidth]="false" placeholder="Select Physician"></p-dropdown>
+        </div>
+      </div>
+
+      <div class="col-12" *ngIf="!selectedselfpay">
+        <h6>Insurance Details:</h6>
+        <hr>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12" *ngIf="!selectedselfpay">
+        <div class="form-group yeats-form-group ">
+          <label class="formLabel yeats-form-label">Insurance Provider</label>
+          <p-dropdown [options]="insprovider" [(ngModel)]="selectedinsprovider"
+            placeholder="Select a Insurance Provider" optionLabel="insname" (onChange)='setInsCode(selectedinsprovider)'
+            [showClear]="true"></p-dropdown>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12" *ngIf="!selectedselfpay">
+        <div class=" form-group yeats-form-group">
+          <label for="" class="yeats-form-label">Insurance Code</label>
+          <input type="text" pInputText class=" form-control yeats-form-control" placeholder="" name="inscode"
+            [(ngModel)]="inscode" readonly>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12" *ngIf="!selectedselfpay">
+        <div class=" form-group yeats-form-group">
+          <label for="" class="yeats-form-label">Co-pay Amount</label>
+          <input type="text" pInputText class=" form-control yeats-form-control" placeholder="0.00" name="copayamt"
+            [(ngModel)]="copayamt">
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12" *ngIf="!selectedselfpay">
+        <div class=" form-group yeats-form-group">
+          <label for="" class="yeats-form-label">Group Number</label>
+          <input type="text" pInputText class=" form-control yeats-form-control" placeholder="" name="GroupNumber"
+            [(ngModel)]="groupname">
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3 col-sm-6 col-12" *ngIf="!selectedselfpay">
+        <div class=" form-group yeats-form-group">
+          <label for="" class="yeats-form-label">Policy Number <span class="required">*</span></label>
+          <input type="text" pInputText class=" form-control yeats-form-control" placeholder="" name="PolicyNumber"
+            [(ngModel)]="policynumber">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="addQuickPatient()">Save</button>
+    <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right mr-2"
+      (click)="closeQuickADD()">Cancel</button>
+  </div>
+</div>
+</div>

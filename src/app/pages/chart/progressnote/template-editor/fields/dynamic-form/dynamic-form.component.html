@@ -1,0 +1,6 @@
+<div class="dynamic-form ml-2">
+    <form class="dynamic-form row" [formGroup]="form">
+        <ng-container *ngFor="let field of fields;" appDynamicField [field]="field" [group]="form">
+        </ng-container>
+    </form>
+</div>

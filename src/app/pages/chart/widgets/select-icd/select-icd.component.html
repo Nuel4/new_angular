@@ -1,0 +1,141 @@
+<div class="select_icd">
+  <!-- <div class="row"> -->
+
+  <div class="col-12" style="padding-left:0px;margin-top:5px;">
+    <!-- <div class="form-group yeats-form-group "> -->
+    <!-- <label for="" class="yeats-form-label"> </label> -->
+    <p-checkbox [(ngModel)]="selectedValues" label="Common Diagnosis Codes" binary="true" (click)="dropvalues()">
+    </p-checkbox>
+    <!-- </div> -->
+  </div>
+  <!-- </div> -->
+  <div class="row">
+    <div class="col-lg-4 col-sm-4 mt-1">
+      <p-dropdown [options]="searchtype" [(ngModel)]="selectedSearchType" optionLabel="label"
+        (onChange)="SelectedSearch()">
+      </p-dropdown>
+    </div>
+    <div class="col-lg-4 col-sm-4 mt-1">
+      <!-- <label for="" class="yeats-form-label">&nbsp;</label> -->
+      <input type="text" pInputText class="form-control yeats-form-control" [(ngModel)]="problemName"
+        placeholder="Enter name" />
+    </div>
+    <div class="col-lg-4 col-sm-4 mt-2">
+      <!-- <div class="col-2"> -->
+      <!-- <label for="" class="yeats-form-label">&nbsp;</label> -->
+      <!-- <div class="col-lg-12 col-sm-12"> -->
+      <button pButton class="yeats-btn yeats-btn-primary mb-2 mr-2" (click)="searchIcd()" style="cursor: pointer;">
+        Search
+      </button>
+      <!-- </div> -->
+      <!-- <div class="col-2"> -->
+      <!-- <label for="" class="yeats-form-label">&nbsp;</label> -->
+      <button pButton class="yeats-btn yeats-btn-danger ">
+        Clear
+      </button>
+      <!-- </div> -->
+      <!-- </div> -->
+    </div>
+  </div>
+  <div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 mt-4" style="margin-left: 10%; padding-bottom: 15px;" *ngIf="compFrom === 'post'">
+    <div class="post">
+      <div class="col-lg-10 col-sm-10" style="padding: 0px">
+        <!-- <p-orderList [value]="dxcodelist" controlsPosition="right" [listStyle]="{'height':'200px'}" header="Code & Description" dragdrop="true" (onReorder)="ReorderLabel($event)">
+          <ng-template let-car pTemplate="item">
+              {{car.label}} - {{car.Code}} - {{car.Description}}
+              <i class="fa fa-times" style="float: right" (click)="remove(car)" aria-hidden="true"></i>
+          </ng-template>
+      </p-orderList> -->
+        <p-pickList [source]="problemList" [target]="dxcodelist" sourceHeader="Available Diagnosis"
+          targetHeader="Selected Code & Description" [responsive]="true" dragdrop="true"
+          [sourceStyle]="{'height':'200px'}" [targetStyle]="{'height':'200px'}" (onMoveToSource)="MovetoSource($event)"
+          (onMoveToTarget)="movedtotarget($event)" (onTargetReorder)="ReorderLabel($event)" [showTargetControls]="true"
+          [showSourceControls]="false">
+          <ng-template let-code pTemplate="item">
+            {{code.label? code.label: ''}} {{code.Code}} - {{code.Description}}
+            <!-- <div class="row">
+        <div class="col-3">
+            {{code.Code}}
+        </div>
+        <div class="col-9">
+            {{code.Description}}
+        </div>
+      </div> -->
+          </ng-template>
+        </p-pickList>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-12 col-md-12 col-12" style="padding-left:0px;" *ngIf="compFrom === 'template'">
+    <label for="" class="yeats-form-label">Select Codes</label>
+    <p-listbox class="selectedcode" [options]="icdcodelist" [(ngModel)]="selected"
+      [listStyle]="{'max-height':'120px','overflowX':'hidden', 'overflowY':'auto'}">
+      <ng-template let-list pTemplate="item" let-i="index">
+        <div class="row ui-helper-clearfix">
+          <div class="col-1">
+            <i class="fa fa-times" (click)="removeCode(list, i)" style="cursor: pointer;"></i>
+          </div>
+          <div class="col-10">
+            <span style="margin:20px 10px 0 0" *ngIf="list.listName == 'PL'">[{{list.Code}}]</span><span
+              style="margin:20px 10px 0 0" *ngIf="list.listName == 'PL'">{{list.Description}}</span>
+            <span style="margin:20px 10px 0 0" *ngIf="list.listName == 'HDC'">[{{list.Code}}]</span><span
+              style="margin:20px 10px 0 0" *ngIf="list.listName == 'HDC'">{{list.Description}}</span>
+            <span style="margin:20px 10px 0 0" *ngIf="list.listName == 'CDC'">{{list.Icd9Description}}</span>
+          </div>
+          <!-- <span style="margin:20px 10px 0 0">{{list.Code}}</span> -->
+        </div>
+      </ng-template>
+    </p-listbox>
+  </div>
+  <div class="row" *ngIf="compFrom === 'template'">
+    <div class="col-6">
+      <label for="" class="yeats-form-label">Historical Diagnosis code</label>
+      <p-listbox class="list_box" [options]="historicalDC"
+        [listStyle]="{'max-height':'200px','overflowX':'hidden', 'overflowY':'auto'}">
+        <ng-template let-list pTemplate="item" let-i="index">
+          <div class="row ui-helper-clearfix">
+            <div class="col-1">
+              <i class="fa fa-plus" (click)="selectedHDC(list, i)" style="cursor:pointer;"></i>
+            </div>
+            <div class="col-10">
+              <span style="margin:20px 10px 0 0">[{{list.Code}}]</span><span
+                style="margin:20px 10px 0 0">{{list.Description}}</span>
+            </div>
+          </div>
+        </ng-template>
+      </p-listbox>
+    </div>
+    <div class="col-6">
+      <label for="" class="yeats-form-label">Common Diagnosis code</label>
+      <p-listbox class="list_box" [options]="commonIcdCode"
+        [listStyle]="{'max-height':'200px','overflowX':'hidden', 'overflowY':'auto'}">
+        <ng-template let-list pTemplate="item" let-i="index">
+          <div class="row ui-helper-clearfix">
+            <div class="col-1">
+              <i class="fa fa-plus" (click)="selectedCDC(list, i)" style="cursor: pointer;"></i>
+            </div>
+            <div class="col-10">
+              <span style="margin:20px 10px 0 0">{{list.Icd9Description}}</span>
+            </div>
+          </div>
+        </ng-template>
+      </p-listbox>
+    </div>
+  </div>
+</div>
+  <div class="row" *ngIf="compFrom === 'post'">
+    <div class="col-lg-12 col-md-12 col-12 mt-2 pt-3">
+      <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right"
+        (click)="emitbuttons('close')">Close</button>
+      <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="emitbuttons('save')">Save</button>
+      <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" (click)="emitbuttons('next')">Next</button>
+      <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" *ngIf="!(index===0)"
+        (click)="emitbuttons('previous')">Previous</button>
+      <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" *ngIf="((index===2)||(index===4))"
+        (click)="emitbuttons('post')">Post to Billing</button>
+      <button pButton class="yeats-btn yeats-btn-primary pull-right mr-2" *ngIf="((index===2)||(index===4))"
+        (click)="emitbuttons('approve')">Approve and Submit Claim</button>
+    </div>
+  </div>
+</div>

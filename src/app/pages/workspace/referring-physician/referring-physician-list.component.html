@@ -1,0 +1,103 @@
+<div class="referringPhysician">
+  <div class="card border-0 box-shadow cardMargin">
+    <div class="card-header transparent border-0 text-muted">
+      <div class="card-body">
+        <div class="row align-items-end">
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Related Organization</label>
+              <p-dropdown class="yeats-form-control" [options]="relOrg" optionLabel="RelatedOrganizationName"
+                [(ngModel)]="selectedrelorgid" name="RelOrgId" placeholder="Select Related Organization" (onChange)="loadReferringPhysician(0)"></p-dropdown>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">Name</label>
+              <!-- <div class="ui-inputgroup">
+                <input type="text" [(ngModel)]="Name" class="form-control yeats-form-control" id="firstname" name="firstname"
+                  (change)="loadReferringPhysician(0)" placeholder="Enter Name" class=" form-control yeats-form-control d-inline" />
+                <button pButton type="button" icon="fa fa-search" class="ui-button-warn" (click)="loadReferringPhysician(0)"></button>
+              </div> -->
+              <div class="ui-inputgroup">
+                <input placeholder="Enter Physician Name" id="patientName" [(ngModel)]="Name"
+                  (keyup)="updateFilter($event)" type="text" class=" form-control yeats-form-control d-inline" />
+                <button pButton type="button" icon="fa fa-search" class="ui-button-warn"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-sm-12 col-12">
+            <div class="form-group yeats-form-group ">
+              <label class="formLabel yeats-form-label">&nbsp;</label>
+              <button pButton class="yeats-btn yeats-btn-primary ml-2 pull-right" (click)="onAddreferringphysician($event)">
+                Add Referring Physician
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card border-0 box-shadow cardMargin">
+    <div class="card-header transparent border-0 text-muted">
+      <div class="card-body">
+        <div *ngIf="isLoader" class="row">
+          <div class="col-12 text-center"><img src="../../../../assets/img/loader.gif" alt="loading"></div>
+        </div>
+        <!-- Datagrid-->
+        <div class="yeats-tables">
+
+          <p-table *ngIf="!isLoader" dataKey="ReferringPhysicianId" [resizableColumns]="true" [paginator]="true"
+            [loading]="isLoader" [value]="cachedata" [rows]="PageSize" [totalRecords]="TotalRecords" [lazy]="true"
+            (onLazyLoad)="paginate($event)">
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Main Phone</th>
+                <th>Email</th>
+                <th>Active</th>
+                <th>Actions</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr>
+                <td>
+                  {{ rowData.ReferringPhysicianFirstName }}
+                  {{ rowData.ReferringPhysicianLastName }}
+                </td>
+                <td>{{ rowData.AddressLine1 }}</td>
+                <td>{{ rowData.MainPhone }}</td>
+                <td>{{ rowData.Email }}</td>
+
+                <td>
+                  <!-- <i *ngIf="rowData.IsActive;  else elseIsInactive" class="fa fa-user" style="color:green"
+                    data-toggle="tooltip" data-placement="top" title="Active"></i> -->
+                  <img *ngIf="rowData.IsActive;  else elseIsInactive" class="yeats-icons" src="../../../../assets/img/userActive.svg"
+                    alt="edit">
+                  <img *ngIf="!rowData.IsActive;  else elseIsInactive" class="yeats-icons" src="../../../../assets/img/userdeactive.svg"
+                    alt="edit">
+                  <!-- <ng-template #elseIsInactive>
+                    <i class="fa fa-user" style="color:red" data-toggle="tooltip" data-placement="top"
+                      title="Inactive"></i>
+                  </ng-template> -->
+
+                </td>
+
+                <td>
+                  <a style="cursor: pointer;" (click)="onEditReferringPhysician(rowData)">
+                    <!-- <i class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i> -->
+                    <img class="yeats-icons" src="../../../../assets/images/Edit.svg" alt="edit">
+                  </a>
+                  <a style="margin-left: 20px; cursor: pointer;" (click)="openDeleteModal(rowData)">
+                    <!-- <i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Delete"></i> -->
+                    <img class="yeats-icons" src="../../../../assets/images/Delete.svg" alt="Delete">
+                  </a>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

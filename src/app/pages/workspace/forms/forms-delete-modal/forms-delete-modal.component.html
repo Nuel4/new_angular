@@ -1,0 +1,19 @@
+<div class="formDeleteModal">
+  <div class="modal-header">
+    <h4 class="modal-title">Delete</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Are you sure!, you want to delete this form?
+  </div>
+  <div class="modal-footer">
+    <div class="col-12">
+      <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3 mb-3"
+        (click)="ConfirmFormDelete.emit(true); modal.close('Close click')">Delete</button>
+      <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+        (click)="modal.close('Close click')">Cancel</button>
+    </div>
+  </div>
+</div>

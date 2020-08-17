@@ -1,0 +1,22 @@
+<div class="insurance">
+    <p-tabView [activeIndex]="childindex" (onChange)="handleChange($event)">
+        <p-tabPanel header="Primary Insurance">
+            <app-primary-insurance [_insuranceCompany]="_insuranceCompany" [_showprtandchrge]="_showprtandchrgebut" (chrgslip)="chargeSlips($event)" [_patientIdToEdit]="_patientIdToEdit" (childnext)="onNext()" (modal)="passdata($event)"></app-primary-insurance>
+        </p-tabPanel>
+        <p-tabPanel header="Secondary Insurance">
+            <app-secondary-insurance [_insuranceCompany]="_insuranceCompany" [_patientIdToEdit]="_patientIdToEdit" (chrgslip)="chargeSlips($event)" [_showprtandchrge]="_showprtandchrgebut" (childnext)="onNext()" (modal)="passdata($event)"></app-secondary-insurance>
+        </p-tabPanel>
+        <p-tabPanel header="Tertiary Insurance">
+            <app-tertiary-insurance [_insuranceCompany]="_insuranceCompany" [_patientIdToEdit]="_patientIdToEdit" (chrgslip)="chargeSlips($event)" [_showprtandchrge]="_showprtandchrgebut" (childnext)="onNext()" (modal)="passdata($event)"></app-tertiary-insurance>
+        </p-tabPanel>
+        <!-- <div class="row mt-3">
+            <div class="col-12">
+                <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+                    (click)="openNext()">Next</button>
+                <button pButton class="yeats-btn yeats-btn-primary pull-right ml-3"
+                    (click)="onCompleteSave()">Save</button>
+                    <button pButton class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3" (click)="onClose()">Close</button>
+            </div>
+        </div> -->
+    </p-tabView>
+</div>

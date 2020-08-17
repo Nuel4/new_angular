@@ -1,0 +1,155 @@
+<div class="viewLaborderModal" *ngIf="showModal">
+<div *ngIf="viewModal">
+    <div class="modal-header">
+        <h4 class="modal-title">View Lab Order Item Result</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body viewLabOrder">
+          <div class="row">
+              <div class="col-6">
+                  <b>Patient Details:</b>
+                    <div class="row">
+                        <div class="col-6">
+                                        <label for="" class="yeats-form-label">Patient:</label>
+                                        <label for="" class="yeats-form-label">Date of Birth:</label>
+                                        <label for="" class="yeats-form-label">Gender:</label>
+                                        <label for="" class="yeats-form-label">Phone(Home):</label>
+                                        <label for="" class="yeats-form-label">Address:</label>
+                        </div>
+                        <div class="col-6">
+                                        <label for="" class="yeats-form-label">{{labOrderItem.PatientName}}</label>
+                                        <p-calendar class="yeats-form-control" [showIcon]="true" 	 [(ngModel)]="patientDOB">
+                                            </p-calendar>
+                                        <label for="" class="yeats-form-label">{{labOrderItem.Gender}}</label>
+                                        <label for="" class="yeats-form-label">{{labOrderItem.PatientPhoneNumber}}</label>
+                                        <label for="" class="yeats-form-label">{{labOrderItem.PatientAddress}}</label>
+                        </div>
+                    </div>
+              </div>
+              <div class="col-6">
+                  <div class="row">
+                      <div class="col-6">
+                            <b>Lab Order Item Details:</b>
+                                    <label for="" class="yeats-form-label">Ordering Physician:</label>
+                                    <label for="" class="yeats-form-label">Lab Item:</label>
+                      </div>
+                      <div class="col-6">
+                          <label for="" class="yeats-form-label">&nbsp;</label>
+                            <label for="" class="yeats-form-label">{{orderFullName}}</label>
+                            <label for="" class="yeats-form-label">&nbsp;</label>
+                      </div>
+                  </div>
+             
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-6">
+                <b>Edit Lab Orders:</b>
+                <div class="row">
+                    <div class="col-6">
+                            <label for="" class="yeats-form-label">Laboratory:</label>
+                            <label for="" class="yeats-form-label">Address:</label>
+                            <label for="" class="yeats-form-label">Phone:</label>
+                    </div>
+                    <div class="col-6">
+                            <p-dropdown [options]="laboratory" [(ngModel)]="selectedLaboratory" optionLabel="LabName"
+                            [showClear]="true"></p-dropdown>
+                            <label for="" class="yeats-form-label">{{labAddress}}</label>
+                            <label for="" class="yeats-form-label">{{labphoneNumber}}</label>
+                      </div>
+                </div>
+              </div>
+             <div class="col-6"></div>
+          </div>
+          <div class="row">
+              <div class="col-3">
+                   
+                    <label for="" class="yeats-form-label">Lab test barcode/reference number:</label>
+                    <!-- <label for="" class="yeats-form-label">&nbsp;</label> -->
+                    <label for="" class="yeats-form-label">Date test performed:</label>
+                    <label for="" class="yeats-form-label">&nbsp;</label>
+                    <label for="" class="yeats-form-label">Test result value:</label>
+                    <label for="" class="yeats-form-label">&nbsp;</label>
+                    <label for="" class="yeats-form-label">Test Specimen Source:</label>
+                    <label for="" class="yeats-form-label">&nbsp;</label>
+                    <label for="" class="yeats-form-label">Comments:</label>
+              </div>
+              <div class="col-3">
+                    <input type="text" pInputText class=" form-control yeats-form-control" [(ngModel)]="barCodeNumber">
+                    <label for="" class="yeats-form-label">&nbsp;</label>
+                    <p-calendar class="yeats-form-control" [showIcon]="true" [(ngModel)]="testPerformedDate">
+                        </p-calendar>
+                        <label for="" class="yeats-form-label">&nbsp;</label>
+                        <input type="text" pInputText class=" form-control yeats-form-control" [(ngModel)]="testResultValue">
+                        <label for="" class="yeats-form-label">&nbsp;</label>
+                        <input type="text" pInputText class=" form-control yeats-form-control" [(ngModel)]="testSpecimenSource">
+                        <label for="" class="yeats-form-label">&nbsp;</label>
+                        <textarea
+                        [rows]="5"
+                        [cols]="25"
+                        pInputTextarea
+                        autoResize="autoResize" [(ngModel)]="comments"
+                      ></textarea>
+              </div>
+              <div class="col-3">
+                    <label for="" class="yeats-form-label">Test result:</label>
+                    <label for="" class="yeats-form-label">&nbsp;</label>
+                    <label for="" class="yeats-form-label">Date report received:</label>
+                    <label for="" class="yeats-form-label">&nbsp;</label>
+                    <label for="" class="yeats-form-label">Units:</label>
+                    <label for="" class="yeats-form-label">&nbsp;</label>
+                    <label for="" class="yeats-form-label">Specimen Rejected:</label>
+                    <label for="" class="yeats-form-label">&nbsp;</label>
+                    <label for="" class="yeats-form-label">Condition of Specimen:</label>
+                    <label for="" class="yeats-form-label">&nbsp;</label>
+                    <label for="" class="yeats-form-label">Lab result entered by:</label>
+                    <label for="" class="yeats-form-label">&nbsp;</label>
+                    <label for="" class="yeats-form-label">Result Item Status:</label>
+              </div>
+              <div class="col-3">
+                    <p-dropdown [options]="testResult" [(ngModel)]="selectedTestResult"  optionLabel="label"
+                    [showClear]="true"></p-dropdown>
+                    <label for="" class="yeats-form-label">&nbsp;</label> 
+                    <p-calendar class="yeats-form-control" [showIcon]="true" [(ngModel)]="testReportDate">
+                        </p-calendar>
+                        <label for="" class="yeats-form-label">&nbsp;</label>
+                        <input type="text" pInputText [(ngModel)]="units"  class="form-control yeats-form-control"> 
+                        <label for="" class="yeats-form-label">&nbsp;</label>
+                        <p-checkbox [(ngModel)]="checked"  binary="true"></p-checkbox> 
+                        <label for="" class="yeats-form-label">&nbsp;</label>
+                        <input type="text" pInputText [(ngModel)]="conditionSpecimen"  class=" form-control yeats-form-control">
+                        <label for="" class="yeats-form-label">&nbsp;</label>
+                        <label  for="" class="yeats-form-label">{{userDetails.FirstName}} {{userDetails.LastName}}</label>
+                        <label for="" class="yeats-form-label">&nbsp;</label>
+                        <label for="" class="yeats-form-label">{{resultView.LabOrderResultStatus ? resultView.LabOrderResultStatus : ''}}</label>
+              </div>
+          </div>
+          <div class="col-12 mt-4">
+            <button
+              pButton
+              class="yeats-btn yeats-btn-secondary ui-button-secondary pull-right ml-3"
+              style="margin-bottom:3em "
+              (click)="modal.close('Close click')"
+            >
+              Cancel
+            </button>
+            <button
+            pButton
+            class="yeats-btn yeats-btn-primary pull-right ml-3"
+            style="margin-bottom:3em "
+            (click)="onSave()"
+          >
+            Save
+          </button>
+          </div>
+      </div>
+     
+</div>
+</div>

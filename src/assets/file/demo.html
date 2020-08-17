@@ -1,0 +1,549 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head id="Head1"><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /><meta name="msapplication-task" content="name=New Messages;
+		action-uri=http://localhost/MyAccount/WebMsgs.aspx;
+		icon-uri=http://localhost/favicon.ico" /><meta name="msapplication-task" content="name=Send/Recieve Files;
+		action-uri=http://localhost/ManageClaims/JavaTest.aspx;
+		icon-uri=http://localhost/favicon.ico" /><meta name="msapplication-task" content="name=Primary Claim Rejections;
+		action-uri=http://localhost/ManageClaims/NewRejectsBatches.aspx;
+		icon-uri=http://localhost/favicon.ico" /><meta name="msapplication-task" content="name=New Remittances;
+		action-uri=http://localhost/ManagePayments/RemittanceDisplay/SelectRemits.aspx;
+		icon-uri=http://localhost/favicon.ico" /><meta name="msapplication-task" content="name=Check Patient Eligibility;
+		action-uri=http://localhost/ManagePatients/RealTimeEligibility/;
+		icon-uri=http://localhost/favicon.ico" /><title>
+	TriZetto Provider Solutions&trade;
+</title><link href="Styles/GatewayEDI.css" rel="stylesheet" type="text/css" /><link href="Content/LogoutWindow.css" rel="stylesheet" type="text/css" /><link href="Styles/Widgets.css" rel="stylesheet" type="text/css" /><link href="Styles/Home.css" rel="stylesheet" type="text/css" /><link rel="stylesheet" type="text/css" href="Styles/Poll.css" /><link rel="stylesheet" type="text/css" href="Styles/MultiSiteVendorUserHome.css" /><link rel="stylesheet" href="/Fonts/FagoMedium/FagoComp-CondMedium.ttf" type="text/css" />
+
+	<!-- MultiSiteDropDown -->
+	<link rel="stylesheet" type="text/css" href="/Styles/MultiSiteDropDown.css" />
+	<!-- END MultiSiteDropDown -->
+
+	<!--[if IE]>
+<link href="Styles/IEhacks.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+
+	<script type="text/javascript">
+		var minutes = 50;
+		var minutesRemaining = 9;
+	</script>
+
+	<script type="text/javascript" src="/Scripts/jquery/jquery-1.1.3.1.pack.js"></script>
+	<script type="text/javascript" src="/Scripts/jquery/jquery.corner.js"></script>
+	<script type="text/javascript" src="/Scripts/jquery/jquery.apply.corner.js"></script>
+	<script type="text/javascript" src="/Scripts/nav/global.js"></script>
+	<script type="text/javascript" src="/Scripts/nav/drop_down.js"></script>
+
+	<script type="text/javascript" src="/Scripts/prototype/prototype.js"></script>
+	<script type="text/javascript" src="/Scripts/scriptaculous/scriptaculous.js?d=20081212"></script>
+	<script type="text/javascript" src="/Scripts/scriptaculous/effects.js"></script>
+	<script type="text/javascript" src="/Scripts/nav/master.js"></script>
+	<script type="text/javascript" src="/Scripts/nav/behavior.js"></script>
+	<script type="text/javascript" src="/Scripts/contentFunctions/hideshowReports.js?d=20081210"></script>
+	<script type="text/javascript" src="/Scripts/tabs/tabDefinition.js"></script>
+	<script type="text/javascript" src="/Scripts/tabs/applyTabs.js?d=20081210"></script>
+	<script type="text/javascript" src="/Scripts/DotNetAjax.js"></script>
+	<script type="text/javascript" src="/Scripts/Home.js?d=20081210"></script>
+	<script type="text/javascript" src="/Scripts/WatchList.js"></script>
+	<script type="text/javascript" src="/Scripts/Top5RejectionSites.js"></script>
+	<script type="text/javascript" src="/Scripts/ContentFunctions/Util.js"></script>
+	<script type="text/javascript" src="/Scripts/Globals/LogoutPrompt.js"></script>
+
+	<!-- MultiSiteDropDown -->
+	<script type="text/javascript" src="/Scripts/Globals/MultiSiteDropDown.js"></script>
+	<!-- END MultiSiteDropDown -->
+
+</head>
+<body id="Body1">
+	<!-- div id="Container" This is included in the header control -->
+	
+<link rel='stylesheet' href='/Fonts/FagoMedium/FagoComp-CondMedium.ttf'  type="application/octet-stream"/>
+<div id="Container">
+    <div id="Header">
+        <div id="ClientLogo">
+            <div id="test" style="display: none"></div>
+            
+        </div>
+
+        <div id="Identity">
+            <h1 style="padding-right:0px !important;">
+                <a href="/"><span>TriZetto Provider Solutions</span></a>
+            </h1>
+            
+            <div id="custPhone">
+                Customer Service: 800.556.2231
+            </div>
+            
+            <p>
+                <a href="/Help/" target="Help" class="divider">Online Help</a><span>|</span><a href="/Resources/Contacts.aspx"
+                    class="divider">Contact Us</a><span>|</span><a href="/LogOut.aspx">Log Out</a>
+            </p>
+            
+
+            <!-- MultiSiteDropDown -->
+            <!--MSE Bug# 11797 -->
+            <!--Conditional statement is updated to display SITE when site or user does not have bundles or sites Bug#9558 -->
+            <h2 class="divider" id="dividerSiteID">
+                SITE V2RT<span>|</span>
+            </h2>
+            <h2 class="divider" id="dividerUserName">
+                USER V2RT<span>|</span>
+            </h2>
+            <!--Conditional statement is updated to display CURRENT SITE when MMF in on and have bundles or sites Bug#9558 -->
+            <div class="clear">
+            </div>
+        </div>
+
+        <div id="Client">
+            <h2>
+                <a href="/" style="font-family: FagoWeb-CondMedium; font-size: 24px;">
+                    Medicomp Solutions Inc.       
+                </a>
+            </h2>
+            <div class="clear">
+            </div>
+        </div>
+
+        <div>
+            
+        </div>
+        <hr />
+    </div>
+	
+<div id="Navigation">
+	<div id="NavCtrl_RevenueImg" class="ManageGroup">
+	</div>
+	<div id="MainMenu">
+		<ul>
+			<li id="NavCtrl_liHome" class="active">
+				<a id="NavCtrl_navHome" class="Home" href="./">Home</a>
+			</li>
+			
+			<li id="NavCtrl_liReports" class="">
+				<a id="NavCtrl_navReports" class="Reports" href="Reports/Default.aspx">Reports</a>
+			</li>
+			 <li id="NavCtrl_liManageClaims" class="">
+				<a id="NavCtrl_navManageClaims" class="ManageClaims" href="ManageClaims/Default.aspx">Manage Claims</a>
+			 </li>
+			<li id="NavCtrl_liManagePayments" class="">
+				<a id="NavCtrl_navManagePayments" class="ManagePayments" href="ManagePayments/Default.aspx">Manage Payments</a>
+			</li>
+			<li id="NavCtrl_liManagePatients" class="">
+				<a id="NavCtrl_navManagePatients" class="ManagePatients" href="ManagePatients/Default.aspx">Manage Patients</a>
+			</li>
+			<li id="NavCtrl_liResources" class="">
+				<a id="NavCtrl_navResources" class="Resources" href="Resources/Default.aspx">Resources</a>
+			</li>
+			
+			<li id="NavCtrl_liMyAccount" style="float: right !important;" class="">
+				<a id="NavCtrl_navMyAccount" class="MyAccount" href="MyAccount/Default.aspx">My Account</a>
+			</li>
+		</ul>
+		<hr class="HomePageDivider" />
+	</div>
+	<div id="SubMenu">
+		<ul id="NavCtrl_HomeSub" style="display:none">
+		</ul>
+		
+		
+		<ul id="NavCtrl_ReportsSub">
+			<li>
+				<a id="NavCtrl_IconLink1" class="iconLink" href="Reports/"><img src="Images/Nav/Icon/Reports.png" alt="TriZettoProivederSolutions Reports" border="0" /></a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlSafetyNet" href="Reports/SafetyNet.aspx">Run Safety Net<br />Report</a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlAnalyzeRejections" href="Reports/AnalyzeRejections.aspx">Analyze<br />Rejections</a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlTransactionSummary" href="Reports/TransactionSummary.aspx">Run Transaction<br />Summary</a>
+			</li>
+			<li>
+				
+			</li>
+			<li>
+				<a id="NavCtrl_hlStaffProductivity" href="Reports/StaffProductivity.aspx">Monitor Staff<br />Productivity</a>
+			</li>
+			<li>
+				
+			</li>
+			<li class="clear"></li>
+		</ul>
+		
+		<ul id="NavCtrl_ManageClaimsSub">
+			<li>
+				<a id="NavCtrl_IconLink2" class="iconLink" href="ManageClaims/"><img src="Images/Nav/Icon/ManageClaims.png" alt="GatewayEDI Manage Claims" border="0" /></a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlSendReceive" href="ManageClaims/SendReceive.aspx">Send/Receive<br />Files</a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlWorkRejectedClaims" href="ManageClaims/Default.aspx?id=WorkRejectedClaims">Work Rejected<br />Claims</a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlClaimStatus" href="ManageClaims/ClaimStatus.aspx">Search Claim<br />History</a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlClaimStatusInquiry" href="ManageClaims/ClaimStatusInquiry">Claim Status<br />Inquiry</a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlCCI" href="http://www.trizettoprovider.com/physician-tools/advanced-coding-edits" target="GediMarketing">Work <br />Suspensions</a>
+			</li>
+			 <li>
+				 
+			</li>
+			<li>
+				<a id="NavCtrl_hlReconciliation" href="ManageClaims/SendReceiveResults.aspx">View Claim File<br />Reconciliation</a>
+			</li>
+			<!--The link should be displayed only for Child sites -->
+			
+			<li>
+				<a id="NavCtrl_hlDiagAndProcedureCode" href="ManageClaims/TopDiagnosisProcedureCode.aspx">Top Diagnosis and <br />Procedure Code Pairs</a>
+			</li>
+			 
+			
+			<li class="clear"></li>
+		</ul>
+		
+		<ul id="NavCtrl_ManagePaymentsSub">
+			<li>
+				<a id="NavCtrl_IconLink3" class="iconLink" href="ManagePayments/"><img src="Images/Nav/Icon/ManagePayments.png" alt="TriZettoProivederSolutions Manage Payments" border="0" /></a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlRemittance" class="navRemits" href="ManagePayments/RemittanceDisplay/SelectRemits.aspx?CheckStartMonth=10&amp;CheckStartDay=9&amp;CheckStartYear=2019&amp;CheckEndMonth=10&amp;CheckEndDay=16&amp;CheckEndYear=2019&amp;rbnload=true">View Insurance<br />Payments (Remittances)</a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlRunEraAnalysis" href="ManagePayments/EraAnalysis">Run ERA<br />Analysis</a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlPatientPayments" href="http://www.trizettoprovider.com/physician-tools/credit-card-processing" target="GediMarketing">Accept Patient<br />Payments</a>
+			</li>
+			<li>
+				
+			</li>
+			<li>
+				
+			</li>
+			<li>
+				<a id="NavCtrl_hlManageReimbursements" href="http://www.trizettoprovider.com/physician-tools/advanced-reimbursement-manager" target="GediMarketing">Manage <br />Reimbursements</a>
+			</li>
+			
+			<li class="clear"></li>
+		</ul>
+		
+		<ul id="NavCtrl_ManagePatientsSub">
+			<li>
+				<a id="NavCtrl_IconLink4" class="iconLink" href="ManagePatients/"><img src="Images/Nav/Icon/ManagePatients.png" alt="TriZettoProivederSolutions Manage Patients" border="0" /></a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlEligibility" href="ManagePatients/default.aspx?id=PatientEligibility">Check Patient<br />Eligibility</a>
+			</li>
+			<li>
+				
+			</li>
+			<li>
+				<a id="NavCtrl_hlPatientsBill" href="http://www.trizettoprovider.com/physician-tools/patient-statements" target="GediMarketing">Bill Patients<br /> &nbsp;</a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlMonitorPatient" href="http://www.trizettoprovider.com/physician-tools/patient-exchange" target="GediMarketing">Monitor Patient<br />Exchange</a>
+			</li>
+			
+			
+				<li>
+					<a id="NavCtrl_HyperLink3" href="http://www.trizettoprovider.com/solutions/patient-access/patient-responsibility-estimation">Patient Responsibility<br />Estimation</a>
+				</li>
+			
+			<li class="clear"></li>
+		</ul>
+		
+		<ul id="NavCtrl_ResourcesSub">
+			<li>
+				<a id="NavCtrl_IconLink5" class="iconLink" href="Resources/"><img src="Images/Nav/Icon/Resources.png" alt="TriZettoProivederSolutions Resources" border="0" /></a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlCustomerService" href="Resources/default.aspx?id=CustomerService">Customer<br />Service</a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlHelpVideos" href="Resources/default.aspx?id=HelpVideos">Help<br />Videos</a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlOnlineHelp" href="/Help/" target="_blank">Online<br />Help</a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlTraining" href="/Resources/Webinar">Training<br /> &nbsp; </a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlBestPractices" href="Resources/BestPractices.aspx">Best Practices<br /> &nbsp; </a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlPayerList" href="Resources/default.aspx?id=PayerList">Payer List<br /> &nbsp; </a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlNPI" href="Resources/default.aspx?id=ProviderLkUp">Provider<br />Look-Up</a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlProducts" href="Resources/default.aspx?id=AdditionalProducts">Additional<br />Products</a>
+			</li>
+			<li>
+				
+			</li>
+			<li>
+				<a id="NavCtrl_hlAbout" href="Resources/default.aspx?id=AboutGEDI">About Us<br /> &nbsp; </a>
+			</li>
+			<li class="clear"></li>
+		</ul>
+	
+		
+		
+		<ul id="NavCtrl_MyAccountSub">
+			<li>
+				<a id="NavCtrl_IconLink7" class="iconLink" href="MyAccount/"><img src="Images/Nav/Icon/MyAccount.png" alt="TriZettoProivederSolutions My Account" border="0" /></a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlMyMessages" href="MyAccount/WebMsgs.aspx">Message Center <br /> &nbsp; </a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlManageUsers" href="MyAccount/ManageMyAccount.aspx">Manage My Account <br /> &nbsp; </a>
+			</li>
+			<li>
+				<a id="NavCtrl_hlManageProduct" href="MyAccount/ManageProducts/default.aspx" target="ControlPanel">Manage Products <br /> &nbsp; </a>
+			</li>
+            <li>			
+			
+            </li>           
+			<li>
+				<a id="NavCtrl_hlManageProvider" href="MyAccount/default.aspx?id=ManageProviders">Manage Providers <br /> &nbsp; </a>
+			</li>
+			
+			<li>
+				
+			</li>
+			
+			<li>
+				
+			</li>
+			<li class="clear"></li>
+		</ul>
+
+		<div class="clear">
+		</div>
+	</div>
+</div>
+<div id="Content">
+	 
+	<!-- div id="Content" This is included in the header control -->
+	
+	<div class="clear">
+	</div>
+	<div id="Widgets">
+		<div id="Left">
+			
+<div id="WorkFlow" >
+     <ul id="Tasks" >
+<li>
+<a href="javascript:void(0);" id="tab_daily" class="tab"><strong>Daily Tasks</strong></a><div id="panel_daily" class="panel" style="display:none"><span style="display:inline;font:arial;margin: 0px; padding: 0px; font-size: 18px; position: absolute; top: -60px; left: 1px; width: 255px; height: 25px;">Work Flow-Daily Tasks</span><ul><li class="messages">Message Center<ul><li><a class="toggleLink" href="/MyAccount/WebMsgs.aspx"><div class="redText"><span>74</span>&nbsp;</div><div class="linkRightText">New Messages</div></a></li></ul> 
+<div class="clear"></div></li> 
+<li class="send">Send/Receive<ul><li><a  class="toggleLink" href="/ManageClaims/SendReceive.aspx">Send/Receive Files</a></li><li><a  class="toggleLink" href="/ManageClaims/SendReceiveResults.aspx?DaysBack=3">Confirm File Delivery</a></li></ul><div class="clear"></div></li> 
+<li class="work">Work Rejected Claims<ul><li><a class="toggleLink twoLines" href="/ManageClaims/NewRejectsBatches.aspx"><div class="linkRightText">Primary&nbsp;Claim Rejections </div></a></li></ul><div class="clear"></div></li> 
+<li class="manage">View Insurance Payments<ul><li><a  class="toggleLink" onclick="return fnRemittanceSearch();" href="javascript:void();">New Remittances</a></li></ul><div class="clear"></div></li> 
+<li class="check"><a  class="toggleLink" href="/ManagePatients/default.aspx?id=PatientEligibility">Check Patient Eligibility</a><div class="clear"></div></li> 
+<li class="payments"><a  class="toggleLink" target="GediMarketing" href="http://www.trizettoprovider.com/physician-tools/credit-card-processing">Accept Patient Payments</a><div class="clear"></div></li> 
+<li class="npi"><a  class="toggleLink" target="_blank" href="https://npiregistry.cms.hhs.gov/">NPI Look-up</a><div class="clear"></div></li> 
+<li class="Customize"><a class="toggleLink" target="ControlPanel"  href="MyAccount/ManageProducts/CustomizeWorkFlow.aspx">CUSTOMIZE YOUR WORK FLOW</a></li></ul>
+</div>
+</li>
+<li>
+<a href="javascript:void(0);" id="tab_weekly" class="tab"><strong>Weekly Tasks</strong></a><div id="panel_weekly" class="panel" style="display:none"><span style="display:inline;font:arial;margin: 0px; padding: 0px; font-size: 18px; position: absolute; top: -60px; left: 1px; width: 255px; height: 25px;">Work Flow-Weekly Tasks</span><ul><li class="bill"><a  class="toggleLink" target="GediMarketing" href="http://www.trizettoprovider.com/physician-tools/patient-statements">Bill Patients</a><div class="clear"></div></li> 
+<li class="analyze"><a  class="toggleLink" href="/Reports/AnalyzeRejections.aspx">Analyze Rejections</a><div class="clear"></div></li> 
+<li class="safetynet"><a  class="toggleLink" href="/Reports/SafetyNet.aspx">Run Safety Net Report</a><div class="clear"></div></li> 
+<li class="reconcile"><a  class="toggleLink" href="/ManageClaims/SendReceiveResults.aspx">View Claim File Reconciliation</a><div class="clear"></div></li> 
+<li class="patientEx"><a  class="toggleLink" target="GediMarketing" href="http://www.trizettoprovider.com/physician-tools/patient-exchange">Monitor Patient Exchange</a><div class="clear"></div></li> 
+<li class="Customize"><a class="toggleLink" target="ControlPanel"  href="MyAccount/ManageProducts/CustomizeWorkFlow.aspx">CUSTOMIZE YOUR WORK FLOW</a></li></ul>
+</div>
+</li>
+<li>
+<a href="javascript:void(0);" id="tab_monthly" class="tab" ><strong>Monthly Tasks</strong></a><div id="panel_monthly" class="panel"  style="display:none"><span style="display:inline;font:arial;margin: 0px; padding: 0px; font-size: 18px; position: absolute; top: -60px; left: 1px; width: 255px; height: 25px;">Work Flow-Monthly Tasks</span><ul><li class="productivity"><a class="toggleLink" href="Reports/StaffProductivity.aspx">Run Staff Productivity Report</a><div class="clear"></div></li> 
+<li class="summary"><a  class="toggleLink" href="/Reports/TransactionSummary.aspx">Run Transaction Summary</a><div class="clear"></div></li> 
+<li class="eraanalysis"><a  class="toggleLink" href="/ManagePayments/EraAnalysis">Run ERA Analysis</a><div class="clear"></div></li> 
+<li class="Customize"><a class="toggleLink" target="ControlPanel"  href="MyAccount/ManageProducts/CustomizeWorkFlow.aspx">CUSTOMIZE YOUR WORK FLOW</a></li></ul>
+</div>
+</li>
+</ul>
+
+    <div class="clear"></div>
+</div>
+
+		</div>
+		<div id="Middle">
+			
+			<div id="MiddleCharts" style="position: relative; width: 465px; height: 365px">
+				<input type="hidden" id="chartExists" value="false" />
+				
+				<img alt="Loading..." src="/images/loading.gif" style="position: absolute; left: 215px; top: 130px" />
+				
+			</div>
+
+			
+
+			<div class="clear">
+			</div>
+			
+			<hr class="HomePageDivider" />
+			
+<div id="News">
+    <h3>
+        <span>News</span></h3>
+    <ul id="Feed">
+        <li><a href="javascript:void(0);" id="tab_gedi" class="tab"><strong>TriZetto Provider Solutions&trade;
+            News</strong></a>
+            
+            <div class="panel" id="panel_gedi" style="display:none;">
+                
+                <hr />
+                <h4 ><a href="newsitems.aspx" title="News Archive" class="toggleLink NewsArchive">News Archive</a></h4>
+                <hr />
+            </div>
+        </li>
+        
+        <li><a href="javascript:void(0);" class="tab" id="tab_industry"><strong>Industry News</strong></a>
+            <div class="panel" id="panel_industry" style="display:none;">
+                
+                <a href="/MyAccount/ManageProducts/CustomizeNewsFeeds.aspx" class="customize" target="ControlPanel">Customize this news feed...</a>
+                <h4 class="list">
+  <a class="toggleLink" href="http://www.cms.hhs.gov/MedicaidEligibility/" title="" target="IndustryNews">Medicaid Eligibility</a>
+</h4>
+<p class="list" />
+<p class="date list">Thu, 25 Oct 2007 18:24:28 GMT</p>
+<p class="date list">http://www.cms.hhs.gov/<br /><br /></p>
+<hr />
+<h4 class="list">
+  <a class="toggleLink" href="http://www.cms.hhs.gov/MCRAdvPartDEnrolData/CAP/" title="" target="IndustryNews">Medicare Part C And D Corrective Action Plan Data</a>
+</h4>
+<p class="list" />
+<p class="date list">Thu, 25 Oct 2007 18:24:56 GMT</p>
+<p class="date list">http://www.cms.hhs.gov/<br /><br /></p>
+<hr />
+<h4 class="list">
+  <a class="toggleLink" href="http://www.cms.hhs.gov/center/openenrollment.asp" title="" target="IndustryNews">2008 Drug Plan Information</a>
+</h4>
+<p class="list" />
+<p class="date list">Thu, 25 Oct 2007 18:25:14 GMT</p>
+<p class="date list">http://www.cms.hhs.gov/<br /><br /></p>
+<hr />
+<h4 class="list">
+  <a class="toggleLink" href="http://www.cms.hhs.gov/center/intergovernmental.asp" title="" target="IndustryNews">Tamper-resistant Prescription Pad Guidance</a>
+</h4>
+<p class="list" />
+<p class="date list">Thu, 25 Oct 2007 18:25:34 GMT</p>
+<p class="date list">http://www.cms.hhs.gov/<br /><br /></p>
+<hr />
+<h4 class="list">
+  <a class="toggleLink" href="http://www.cms.hhs.gov/apps/media/press/release.asp" title="" target="IndustryNews">Press Release: Medicare Part D Plan Premiums For 2008</a>
+</h4>
+<p class="list" />
+<p class="date list">Thu, 25 Oct 2007 18:25:56 GMT</p>
+<p class="date list">http://www.cms.hhs.gov/<br /><br /></p>
+<hr />
+            </div>
+        </li>
+        
+        <li class="clear"></li>
+    <div style="clear:both;"></div>
+    </ul>
+</div>
+
+			
+		</div>
+		<div id="Right">
+			
+			
+			<hr class="HomePageDivider" />
+			
+			<div style="height: 135px;">
+				<a href="/Resources/Webinar" id="Training" style="float: left; margin-top: 0;">
+					<img src="/Images/webicon_training-024.jpg" style="width: 112px; height: 112px; padding-right: 5px" />
+				</a>
+			   <a id="ProductBannerAdRotator" href="https://trizettoprovidersolutions.wufoo.com/forms/zi19c9r0phjlh6/" target="_blank" style="margin-top: 0"><img src="https://mytools.gatewayedi.com/webcontent/RCMSURVEY.jpg" alt="2019 TPS RCMS Survey" height="112" width="112" border="0" /></a>
+			</div>
+			<hr class="HomePageDivider" />
+
+			
+<div id="WebPoll">
+	<h3><span>Web Poll</span></h3>
+	
+
+<span id="PollCtrl_lblPollData" name="lblPollData"></span>
+<script language="javascript" type="text/javascript">ajaxMain('PollCtrl', 'onInitNormal');</script>
+		
+</div>
+			<hr class="HomePageDivider" />
+			
+			<hr class="HomePageDivider" />
+
+
+			
+
+			<hr class="HomePageDivider" />
+		</div>
+		<div class="clear">
+		</div>
+	</div>
+	<!--End Widgets-->
+	<div class="clear">
+	</div>
+	<div id="Sponsors">
+		<h3>Sponsors</h3>
+		<a href="http://www.cooperativeexchange.com" style="text-decoration: none">
+			<img src="Images/Widgets/Sponsors/lblCoopEx.gif" title="Cooperative Exchange" alt="Cooperative Exchange" style="padding: 15px 15px 25px 15px;" />
+		</a>
+		<a>
+			<img src="Images/Widgets/Sponsors/lblMGMA.gif" title="MGMA Corporate Affiliate" alt="MGMA Corporate Affiliate" style="padding: 15px 15px 25px 15px;" />
+		</a>
+		<img src="Images/Widgets/Sponsors/lblEHNAC.gif" title="EHNAC Accredited" alt="EHNAC Accredited" style="padding: 15px 15px 20px 15px;" />
+		<a href="http://www.caqh.org/CORE_overview.php" target="_blank" style="text-decoration: none">
+			<img src="Images/Widgets/Sponsors/CAQH_CORE2_Logo.jpg" width="90px" height="110px" title="CORE" alt="CORE" style="padding: 15px 15px 15px 15px;" />
+		</a>
+		<a href="http://www.caqh.org/CORE_overview.php" target="_blank" style="text-decoration: none">
+			<img src="Images/Widgets/Sponsors/CAQH_CORE3_Logo.jpg" width="90px" height="110px" title="CORE Phase III" alt="CORE Phase III" style="padding: 15px 15px 15px 15px;" />
+		</a>
+
+		<a>
+			<img src="Images/Widgets/Sponsors/lblCEHN.gif" title="Maryland Health Care Commission - Certified Electronic Health Network" alt="Maryland Health Care Commission - Certified Electronic Health Network" style="padding: 15px 15px 25px 15px;" />
+		</a>
+		<a>
+			<img src="Images/Widgets/Sponsors/edifecs.png" title="Edifecs" alt="Edifecs" style="padding: 15px 15px 60px 15px;" />
+		</a>
+		<!-- script id="scriptVerisign"></script -->
+	</div>
+
+	<!-- /div This is included in the footer control -->
+	
+
+			<div class="clear"></div>
+			
+		</div>
+
+	</div>
+
+	<div class="clear"></div>
+
+	<div id="Footer">
+			<span id="name">&copy;2019 TriZetto Provider Solutions&trade;</span>
+	        <span id="links">
+	            
+	            <a href="/help/" target="Help">Online Help</a> | 
+                <a href="/Resources/Contacts.aspx">Contact Us</a> |
+                <a href="/LogOut.aspx">Log Out</a>
+	        </span>
+    <div class="clear"></div>
+	</div>
+
+  <div class="clear"></div>
+
+			
+	<div class="clear">
+	</div>
+	<!-- /div This is included in the footer control -->
+</body>
+</html>
